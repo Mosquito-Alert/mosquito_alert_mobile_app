@@ -80,7 +80,8 @@ class ReportsList extends StatelessWidget {
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: Image.network(
-                                  'http://webserver.mosquitoalert.com' +
+                                  'http://madev.creaf.cat'+
+                                  // 'http://webserver.mosquitoalert.com' +
                                       reports[index].photos[0].photo,
                                   width: 50,
                                   height: 50,

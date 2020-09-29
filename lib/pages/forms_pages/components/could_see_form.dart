@@ -63,7 +63,7 @@ class _CouldSeeFormState extends State<CouldSeeForm> {
                         id == 82
                             ? widget.addReport(true)
                             : widget.addReport(false);
-                        widget.setValid(true);
+                        // widget.setValid(true);
                         widget.nextPage();
                       },
                       child: SmallQuestionOption(

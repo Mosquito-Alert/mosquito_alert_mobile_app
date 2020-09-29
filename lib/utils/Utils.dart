@@ -141,7 +141,8 @@ class Utils {
       imagePath = [];
       editReport.photos.forEach((element) {
         imagePath.add({
-          'image': 'http://webserver.mosquitoalert.com/media/${element.photo}',
+          'image': 'http://madev.creaf.cat/media/${element.photo}',
+          // 'image': 'http://webserver.mosquitoalert.com/media/${element.photo}',
           'id': editReport.version_UUID
         });
       });
@@ -169,7 +170,8 @@ class Utils {
   }
 
   static deleteLastReport() {
-    report = reportsList.last;
+    report = null;
+    report = new Report.fromJson(reportsList.last.toJson());
     reportsList.removeLast();
     print(reportsList);
   }

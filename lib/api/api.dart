@@ -19,9 +19,9 @@ import 'package:path_provider/path_provider.dart';
 
 class ApiSingleton {
 
-  // static String testUrl = 'http://madev.creaf.cat/api';
-  static String productionUrl = 'http://webserver.mosquitoalert.com/api';
-  static String serverUrl = productionUrl;
+  static String testUrl = 'http://madev.creaf.cat/api';
+  // static String productionUrl = 'http://webserver.mosquitoalert.com/api';
+  static String serverUrl = testUrl;
 
   static String token = "D4w29W49rMKC7L6vYQ3ua3rd6fQ12YZ6n70P";
 

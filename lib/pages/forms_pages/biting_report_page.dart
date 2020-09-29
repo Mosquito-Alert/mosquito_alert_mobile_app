@@ -185,14 +185,14 @@ class _BitingReportPageState extends State<BitingReportPage> {
                   double currentPage = _pagesController.page;
 
                   if (currentPage == 0.0) {
-                    if (Utils.reportsList != null &&
-                        Utils.reportsList.isNotEmpty &&
-                        widget.editReport == null) {
-                      Utils.deleteLastReport();
-                    } else {
+                    // if (Utils.reportsList != null &&
+                    //     Utils.reportsList.isNotEmpty &&
+                    //     widget.editReport == null) {
+                    //   Utils.deleteLastReport();
+                    // } else {
                       _onWillPop();
                       // Utils.resetReport();
-                    }
+                    // }
                   } else if (currentPage == 1) {
                     _pagesController
                         .previousPage(
@@ -369,6 +369,9 @@ class _BitingReportPageState extends State<BitingReportPage> {
         Navigator.pop(context);
       }, context);
     } else {
+      if(Utils.reportsList.isNotEmpty){
+        Utils.deleteLastReport();
+      }
       Navigator.pop(context);
     }
   }

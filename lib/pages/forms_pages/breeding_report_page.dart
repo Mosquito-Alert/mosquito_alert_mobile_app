@@ -186,12 +186,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                   double currentPage = _pagesController.page;
 
                   if (currentPage == 0.0) {
-                    if (Utils.reportsList != null &&
-                        Utils.reportsList.isNotEmpty) {
-                      Utils.deleteLastReport();
-                    } else {
-                      _onWillPop();
-                    }
+                    _onWillPop();
                   } else {
                     _pagesController
                         .previousPage(

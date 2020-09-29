@@ -80,7 +80,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
   _initLocation() {
     if (Utils.location != null) {
       location = Utils.location;
-    } 
+    }
   }
 
   _initMemoryClustering() {
@@ -381,7 +381,6 @@ class _MyReportsPageState extends State<MyReportsPage> {
                   ? MediaQuery.of(context).size.height * 0.55
                   : MediaQuery.of(context).size.height * 0.45,
             ),
-            // color: Colors.white,
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -397,6 +396,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
               // height: double.infinity,
               margin: EdgeInsets.symmetric(horizontal: 15),
               child: SingleChildScrollView(
+                physics: ClampingScrollPhysics(),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -526,7 +526,8 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                                           BorderRadius.circular(
                                                               15),
                                                       child: Image.network(
-                                                        'http://webserver.mosquitoalert.com' +
+                                                        'http://madev.creaf.cat' +
+                                                            // 'http://webserver.mosquitoalert.com' +
                                                             report.photos[index]
                                                                 .photo,
                                                         height: 60,

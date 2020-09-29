@@ -293,12 +293,12 @@ class _AdultReportPageState extends State<AdultReportPage> {
                     setState(() {
                       index = currentPage - 1;
                     });
-                    if (Utils.reportsList != null &&
-                        Utils.reportsList.isNotEmpty) {
-                      Utils.deleteLastReport();
-                    } else {
-                      _onWillPop();
-                    }
+                    // if (Utils.reportsList != null &&
+                    //     Utils.reportsList.isNotEmpty) {
+                    //   Utils.deleteLastReport();
+                    // } else {
+                    _onWillPop();
+                    // }
                   } else {
                     if (currentPage == 2.0 &&
                         !Utils.report.responses
@@ -313,6 +313,14 @@ class _AdultReportPageState extends State<AdultReportPage> {
                           .then((value) {
                         setValid(true);
                         addOtherReport(null);
+                      });
+                    } else if (currentPage == 4.0) {
+                      addBitingReport(false);
+                      _pagesController.previousPage(
+                          duration: Duration(microseconds: 300),
+                          curve: Curves.ease);
+                      setState(() {
+                        index = currentPage - 1;
                       });
                     } else {
                       setState(() {

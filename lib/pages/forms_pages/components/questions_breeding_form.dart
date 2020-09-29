@@ -94,7 +94,8 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
                       onTap: () {
                         addQuestion(text, id);
                         widget.setValid(true);
-                        widget.nextPage();
+                        widget.nextPage != null && widget.nextPage();
+                        // widget.nextPage();
                       },
                       child: SmallQuestionOption(
                         text,
