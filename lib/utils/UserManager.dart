@@ -34,7 +34,7 @@ class UserManager {
       prefs.setBool("trackingDisabled", false);
 
       await ApiSingleton().createUser(uuid);
-      Utils.getLanguage();
+      // Utils.getLanguage();
       setLanguage(Utils.language.languageCode);
       setLanguageCountry(Utils.language.countryCode);
     } else {
