@@ -662,6 +662,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
           Navigator.pop(context);
         } else {
           Navigator.of(context).popUntil((r) => r.isFirst);
+          Utils.resetReport();
         }
       },
       barrierDismissible: false,
@@ -680,6 +681,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
           Navigator.pop(context);
         } else {
           Navigator.of(context).popUntil((r) => r.isFirst);
+          Utils.resetReport();
         }
       },
       barrierDismissible: false,

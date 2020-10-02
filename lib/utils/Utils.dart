@@ -141,7 +141,7 @@ class Utils {
       imagePath = [];
       editReport.photos.forEach((element) {
         imagePath.add({
-          'image': 'http://madev.creaf.cat/media/${element.photo}',
+          'image': '${ApiSingleton.baseUrl}/media/${element.photo}',
           // 'image': 'http://webserver.mosquitoalert.com/media/${element.photo}',
           'id': editReport.version_UUID
         });
@@ -334,8 +334,8 @@ class Utils {
       }
 
       closeSession();
-      resetReport();
-      imagePath = [];
+      // resetReport();
+      // imagePath = [];
       return isCreated;
     }
   }

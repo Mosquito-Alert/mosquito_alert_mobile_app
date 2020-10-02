@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/models/report.dart';
@@ -190,8 +191,8 @@ class _BitingReportPageState extends State<BitingReportPage> {
                     //     widget.editReport == null) {
                     //   Utils.deleteLastReport();
                     // } else {
-                      _onWillPop();
-                      // Utils.resetReport();
+                    _onWillPop();
+                    // Utils.resetReport();
                     // }
                   } else if (currentPage == 1) {
                     _pagesController
@@ -332,6 +333,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
           Navigator.pop(context);
         } else {
           Navigator.of(context).popUntil((r) => r.isFirst);
+          Utils.resetReport();
         }
       },
       barrierDismissible: false,
@@ -350,6 +352,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
           Navigator.pop(context);
         } else {
           Navigator.of(context).popUntil((r) => r.isFirst);
+          Utils.resetReport();
         }
       },
       barrierDismissible: false,
@@ -369,7 +372,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
         Navigator.pop(context);
       }, context);
     } else {
-      if(Utils.reportsList.isNotEmpty){
+      if (Utils.reportsList.isNotEmpty) {
         Utils.deleteLastReport();
       }
       Navigator.pop(context);

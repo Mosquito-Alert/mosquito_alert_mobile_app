@@ -430,6 +430,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       context,
       onPressed: () {
         Navigator.pop(context);
+        Utils.resetReport();
         if (widget.editReport != null) {
           Navigator.pop(context);
         } else {
@@ -448,6 +449,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       context,
       onPressed: () {
         Navigator.pop(context);
+        Utils.resetReport();
         if (widget.editReport != null) {
           Navigator.pop(context);
         } else {
