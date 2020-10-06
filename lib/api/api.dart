@@ -18,12 +18,11 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ApiSingleton {
-
   static String baseUrl = 'http://madev.creaf.cat';
   // static String baseUrl = 'http://webserver.mosquitoalert.com';
-  static String serverUrl = "$baseUrl/api";
+  static String serverUrl = '$baseUrl/api';
 
-  static String token = "D4w29W49rMKC7L6vYQ3ua3rd6fQ12YZ6n70P";
+  static String token = 'D4w29W49rMKC7L6vYQ3ua3rd6fQ12YZ6n70P';
 
   //User
   static const users = '/users/';
@@ -50,8 +49,8 @@ class ApiSingleton {
 
   //Headders
   var headers = {
-    "Content-Type": " application/json",
-    "Authorization": "Token " + token
+    'Content-Type': ' application/json',
+    'Authorization': 'Token ' + token
   };
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -64,7 +63,7 @@ class ApiSingleton {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  static final ApiSingleton _singleton = new ApiSingleton._internal();
+  static final ApiSingleton _singleton = ApiSingleton._internal();
 
   factory ApiSingleton() {
     return _singleton;
@@ -73,7 +72,7 @@ class ApiSingleton {
   ApiSingleton._internal();
 
   static ApiSingleton getInstance() {
-    return new ApiSingleton();
+    return ApiSingleton();
   }
 
   //User
@@ -87,6 +86,7 @@ class ApiSingleton {
 
       if (response.statusCode != 201) {
         print(
+            // ignore: prefer_single_quotes
             "Request: ${response.request.toString()} -> Response: ${response.body}");
         return ApiResponse.fromJson(json.decode(response.body));
       }
@@ -102,7 +102,7 @@ class ApiSingleton {
   }
 
   Future<dynamic> singUp(String email, String password) async {
-    final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
+    final user = (await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     ))
@@ -249,7 +249,6 @@ class ApiSingleton {
         headers: headers,
       );
 
-      print(response);
       if (response.statusCode != 200) {
         print(
             "Request: ${response.request.toString()} -> Response: ${response.body}");

@@ -10,7 +10,7 @@ class GalleryPage extends StatefulWidget {
 }
 
 class _GalleryPageState extends State<GalleryPage> {
-  List<Slide> slides = new List();
+  List<Slide> slides = [];
 
   Function goToTab;
 
@@ -20,79 +20,79 @@ class _GalleryPageState extends State<GalleryPage> {
   }
 
   List<Slide> initSlides() {
-    slides.add(new Slide(
-        title: "",
-        description: MyLocalizations.of(context, "gallery_info_01"),
-        pathImage: "assets/img/gallery/guia_1.png",
-        backgroundImage: "assets/img/gallery/guia_1.png"));
+    slides.add(Slide(
+        title: '',
+        description: MyLocalizations.of(context, 'gallery_info_01'),
+        pathImage: 'assets/img/gallery/guia_1.png',
+        backgroundImage: 'assets/img/gallery/guia_1.png'));
     slides.add(
-      new Slide(
-        title: "",
-        description: MyLocalizations.of(context, "gallery_info_02"),
-        pathImage: "assets/img/gallery/guia_2.png",
+      Slide(
+        title: '',
+        description: MyLocalizations.of(context, 'gallery_info_02'),
+        pathImage: 'assets/img/gallery/guia_2.png',
       ),
     );
     slides.add(
-      new Slide(
-        title: "",
-        description: MyLocalizations.of(context, "gallery_info_03"),
-        pathImage: "assets/img/gallery/guia_3.png",
+      Slide(
+        title: '',
+        description: MyLocalizations.of(context, 'gallery_info_03'),
+        pathImage: 'assets/img/gallery/guia_3.png',
       ),
     );
     slides.add(
-      new Slide(
-        title: "",
-        description: MyLocalizations.of(context, "gallery_info_04"),
-        pathImage: "assets/img/gallery/guia_4.png",
+      Slide(
+        title: '',
+        description: MyLocalizations.of(context, 'gallery_info_04'),
+        pathImage: 'assets/img/gallery/guia_4.png',
       ),
     );
     slides.add(
-      new Slide(
-        title: "",
-        description: MyLocalizations.of(context, "gallery_info_05"),
-        pathImage: "assets/img/gallery/guia_5.png",
+      Slide(
+        title: '',
+        description: MyLocalizations.of(context, 'gallery_info_05'),
+        pathImage: 'assets/img/gallery/guia_5.png',
       ),
     );
     slides.add(
-      new Slide(
-        title: "",
-        description: MyLocalizations.of(context, "gallery_info_06"),
-        pathImage: "assets/img/gallery/guia_6.png",
+      Slide(
+        title: '',
+        description: MyLocalizations.of(context, 'gallery_info_06'),
+        pathImage: 'assets/img/gallery/guia_6.png',
       ),
     );
     slides.add(
-      new Slide(
-        title: "",
-        description: MyLocalizations.of(context, "gallery_info_07"),
-        pathImage: "assets/img/gallery/guia_7.png",
+      Slide(
+        title: '',
+        description: MyLocalizations.of(context, 'gallery_info_07'),
+        pathImage: 'assets/img/gallery/guia_7.png',
       ),
     );
     slides.add(
-      new Slide(
-        title: "",
-        description: MyLocalizations.of(context, "gallery_info_08"),
-        pathImage: "assets/img/gallery/guia_8.png",
+      Slide(
+        title: '',
+        description: MyLocalizations.of(context, 'gallery_info_08'),
+        pathImage: 'assets/img/gallery/guia_8.png',
       ),
     );
     slides.add(
-      new Slide(
-        title: "",
-        description: MyLocalizations.of(context, "gallery_info_09"),
-        pathImage: "assets/img/gallery/guia_9.png",
+      Slide(
+        title: '',
+        description: MyLocalizations.of(context, 'gallery_info_09'),
+        pathImage: 'assets/img/gallery/guia_9.png',
       ),
     );
     slides.add(
-      new Slide(
-        title: "",
-        description: MyLocalizations.of(context, "gallery_info_10"),
-        pathImage: "assets/img/gallery/guia_10.png",
+      Slide(
+        title: '',
+        description: MyLocalizations.of(context, 'gallery_info_10'),
+        pathImage: 'assets/img/gallery/guia_10.png',
       ),
     );
     slides.add(
-      new Slide(
-        title: "",
-        description: MyLocalizations.of(context, "gallery_info_11"),
-        pathImage: "assets/img/gallery/guia_11.png",
+      Slide(
+        title: '',
+        description: MyLocalizations.of(context, 'gallery_info_11'),
+        pathImage: 'assets/img/gallery/guia_11.png',
       ),
     );
     return slides;
@@ -145,7 +145,7 @@ class _GalleryPageState extends State<GalleryPage> {
                   child: Image.asset(
                 currentSlide.pathImage,
                 width: MediaQuery.of(context).size.width * 0.9,
-                height: MediaQuery.of(context).size.height * 0.6,
+                height: MediaQuery.of(context).size.height * 0.55,
                 fit: BoxFit.contain,
               )),
               // Container(
@@ -161,7 +161,7 @@ class _GalleryPageState extends State<GalleryPage> {
                   currentSlide.description,
                   // style: currentSlide.styleDescription,
                   textAlign: TextAlign.center,
-                  maxLines: 10,
+                  maxLines: 20,
                   // overflow: TextOverflow.ellipsis,
                 ),
                 margin: EdgeInsets.all(20.0),
@@ -183,7 +183,7 @@ class _GalleryPageState extends State<GalleryPage> {
         title: Style.title(MyLocalizations.of(context, 'mosquitos_gallery_txt'),
             fontSize: 16),
       ),
-      body: new IntroSlider(
+      body: IntroSlider(
         // List slides
         slides: initSlides(),
 
@@ -192,11 +192,11 @@ class _GalleryPageState extends State<GalleryPage> {
         isShowSkipBtn: false,
 
         // Next button
-        renderNextBtn: this.renderNextBtn(),
+        renderNextBtn: renderNextBtn(),
 
         // Done button
-        renderDoneBtn: this.renderDoneBtn(),
-        onDonePress: this.onDonePress,
+        renderDoneBtn: renderDoneBtn(),
+        onDonePress: onDonePress,
         colorDoneBtn: Style.colorPrimary.withOpacity(0.2),
         highlightColorDoneBtn: Style.colorPrimary,
 
@@ -207,17 +207,17 @@ class _GalleryPageState extends State<GalleryPage> {
         // typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
 
         // Tabs
-        listCustomTabs: this.renderListCustomTabs(),
+        listCustomTabs: renderListCustomTabs(),
         backgroundColorAllSlides: Colors.white,
         refFuncGoToTab: (refFunc) {
-          this.goToTab = refFunc;
+          goToTab = refFunc;
         },
 
         // Show or hide status bar
         shouldHideStatusBar: false,
 
         // On tab change completed
-        onTabChangeCompleted: this.onTabChangeCompleted,
+        onTabChangeCompleted: onTabChangeCompleted,
       ),
     );
   }

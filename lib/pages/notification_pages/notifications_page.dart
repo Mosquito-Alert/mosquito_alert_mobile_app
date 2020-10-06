@@ -50,13 +50,13 @@ class _NotificationsPageState extends State<NotificationsPage> {
             ),
             body: notifications.length == 0 || notifications.isEmpty
                 ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Center(
-                      child: Style.body(MyLocalizations.of(
-                          context, "no_notifications_yet_txt")),
-                    ),
-                  ])
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                        Center(
+                          child: Style.body(MyLocalizations.of(
+                              context, "no_notifications_yet_txt")),
+                        ),
+                      ])
                 : Container(
                     margin: EdgeInsets.all(15),
                     child: ListView.builder(
@@ -65,9 +65,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         itemCount: notifications.length,
                         itemBuilder: (ctx, index) {
                           return Opacity(
-                            opacity: !notifications[index].acknowledged
-                                ? 1
-                                : 0.5,
+                            opacity:
+                                !notifications[index].acknowledged ? 1 : 0.5,
                             child: Card(
                               elevation: 2,
                               shape: RoundedRectangleBorder(
@@ -82,18 +81,17 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                       context, notifications[index]);
                                 },
                                 title: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Style.titleMedium(
                                         notifications[index].expert_comment,
                                         fontSize: 14),
-                                    // Style.body(
-                                    //     "Lorem ipsum dolor sit amet, consectetur adipis..."),
                                     SizedBox(
                                       height: 10,
                                     ),
-                                    Style.bodySmall("Leer más",
+                                    Style.bodySmall(
+                                        MyLocalizations.of(
+                                            context, "see_more_txt"),
                                         color: Colors.grey),
                                   ],
                                 ),

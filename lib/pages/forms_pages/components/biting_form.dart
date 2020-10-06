@@ -27,7 +27,7 @@ class _BitingFormState extends State<BitingForm> {
   bool showDaytime = false;
   bool valid = false;
 
-  TextEditingController _textController = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _BitingFormState extends State<BitingForm> {
     questions = [];
 
     if (Utils.report != null) {
-      for (Question q in Utils.report.responses) {
+      for (var q in Utils.report.responses) {
         if (q.question_id == 1) {
           bites = int.parse(q.answer_value);
         }
@@ -47,7 +47,7 @@ class _BitingFormState extends State<BitingForm> {
         }
       }
     }
-    bool isValid = canContinue();
+    var isValid = canContinue();
     // widget.setValid(isValid);
     setState(() {
       valid = isValid;
@@ -89,16 +89,20 @@ class _BitingFormState extends State<BitingForm> {
                       var question = widget.displayQuestions
                           .where((q) => q['question']['id'] == 1)
                           .toList();
-                      Utils.report.responses.removeLast();
+
+                      // Utils.report.responses.removeLast();
+
+                      removeBite();
+
                       setState(() {
                         questions = Utils.report.responses;
                       });
-                      addToList(question[0]['question']['text'], "",
+                      addToList(question[0]['question']['text'], '',
                           question_id: 1,
                           answer_id: 11,
                           answer_value: _textController.text);
 
-                      bool isValid = canContinue();
+                      var isValid = canContinue();
                       // widget.setValid(isValid);
                       setState(() {
                         valid = isValid;
@@ -111,7 +115,7 @@ class _BitingFormState extends State<BitingForm> {
                   Expanded(
                       flex: 1,
                       child: Style.textField(
-                        "a",
+                        'a',
                         _textController,
                         context,
                         enabled: false,
@@ -579,5 +583,24 @@ class _BitingFormState extends State<BitingForm> {
       return false;
     }
     return false;
+  }
+
+  void removeBite() {
+    var bodyParts = Utils.report.responses
+        .where((element) => element.question_id == 2)
+        .toList();
+    if (bodyParts != null) {
+      if (int.parse(bodyParts.last.answer_value) > 1) {
+        bodyParts.last.answer_value =
+            (int.parse(bodyParts.last.answer_value) - 1).toString();
+      } else {
+        bodyParts.removeLast();
+        // report.responses.removeWhere((element) => element.question_id == 2);
+        // report.responses.addAll(bodyParts);
+      }
+    }
+
+    Utils.report.responses =
+        [...Utils.report.responses, ...bodyParts].toSet().toList();
   }
 }

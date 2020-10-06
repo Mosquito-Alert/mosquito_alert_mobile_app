@@ -39,9 +39,9 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
 
     if (Utils.report != null) {
       switch (Utils.report.location_choice) {
-        case "selected":
+        case 'selected':
           streamType.add(LocationType.selected);
-          markers.add(new Marker(
+          markers.add(Marker(
               markerId: MarkerId('mk_${markers.length}'),
               position: LatLng(Utils.report.selected_location_lat,
                   Utils.report.selected_location_lon)));
@@ -50,9 +50,9 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
               longitude: Utils.report.selected_location_lon);
           widget.setValid(true);
           break;
-        case "current":
+        case 'current':
           streamType.add(LocationType.current);
-          markers.add(new Marker(
+          markers.add(Marker(
               markerId: MarkerId('mk_${markers.length}'),
               position: LatLng(Utils.report.current_location_lat,
                   Utils.report.current_location_lon)));
@@ -69,13 +69,12 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
     }
   }
 
-  _getCurrentLocation() async {
+  void _getCurrentLocation() async {
     // if (Utils.location == null) {
     //   await Utils.getLocation();
     //   if (Utils.location != null && controller != null) {
-
-    //     // controller.animateCamera(CameraUpdate.newLatLng(
-    //     //     LatLng(Utils.location.latitude, Utils.location.longitude)));
+    //     controller.animateCamera(CameraUpdate.newLatLng(
+    //         LatLng(Utils.location.latitude, Utils.location.longitude)));
     //   } else {
     //     streamType.add(LocationType.selected);
     //   }
@@ -88,8 +87,8 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
     currentLocation == null ? _getCurrentLocation() : null;
   }
 
-  updateMarker(LatLng markerPosition) {
-    Marker mk = Marker(
+  void updateMarker(LatLng markerPosition) {
+    var mk = Marker(
         markerId: MarkerId('mk${markers.length}'), position: markerPosition);
     Utils.setSelectedLocation(mk.position.latitude, mk.position.longitude);
     widget.setValid(true);
@@ -99,23 +98,18 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
     });
   }
 
-  updateType(type, {context}) async {
+  void updateType(type, {context}) async {
     streamType.add(type);
 
-    List<Marker> currentMarkers = [];
+    var currentMarkers = <Marker>[];
     switch (type) {
       case LocationType.current:
-        Geolocator geolocator = Geolocator()
-          ..forceAndroidLocationManager = true;
-
-        bool geolocationEnabled = await geolocator.isLocationServiceEnabled();
+        var geolocationEnabled = await isLocationServiceEnabled();
         streamType.add(type);
 
         if (geolocationEnabled) {
-          Geolocator geolocator = Geolocator()
-            ..forceAndroidLocationManager = false;
-          Position currentPosition = await Geolocator()
-              .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+          Position currentPosition =
+              await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
           print(currentPosition);
           Utils.setCurrentLocation(
               currentPosition.latitude, currentPosition.longitude);
@@ -136,8 +130,8 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
           widget.setValid(true);
         } else {
           Utils.showAlert(
-              MyLocalizations.of(context, "location_not_active_title"),
-              MyLocalizations.of(context, "location_not_active_txt"),
+              MyLocalizations.of(context, 'location_not_active_title'),
+              MyLocalizations.of(context, 'location_not_active_txt'),
               context, onPressed: () {
             Navigator.pop(context);
           });

@@ -473,18 +473,14 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                         context, "exact_time_register_txt"),
                                     fontSize: 14),
                                 Style.body(
-                                    DateFormat('EEEE, dd MMMM yyyy')
+                                    DateFormat('EEEE, dd MMMM yyyy',
+                                            Utils.language.languageCode)
                                         .format(DateTime.parse(
                                             report.creation_time))
                                         .toString(),
                                     fontSize: 12),
                                 Style.body(
-                                    MyLocalizations.of(context, "at_time_txt") +
-                                        DateFormat.Hms()
-                                            .format(DateTime.parse(
-                                                report.creation_time))
-                                            .toString() +
-                                        ' horas',
+                                    "${MyLocalizations.of(context, "at_time_txt")} ${DateFormat.Hms().format(DateTime.parse(report.creation_time))} ${MyLocalizations.of(context, 'hours')}",
                                     fontSize: 12),
                               ],
                             ),

@@ -211,7 +211,7 @@ class Style {
     handleChange,
   }) {
     return TextField(
-      keyboardType: keyboardType == null ? TextInputType.text : keyboardType,
+      keyboardType: keyboardType ?? TextInputType.text,
       textCapitalization: textCapitalization == null
           ? TextCapitalization.none
           : textCapitalization,

@@ -50,7 +50,7 @@ class Utils {
     imagePath.removeWhere((element) => element['image'] == image);
   }
 
-  static closeSession() {
+  static void closeSession() {
     session.session_end_time = DateTime.now().toIso8601String();
     ApiSingleton().closeSession(session);
   }
@@ -290,7 +290,7 @@ class Utils {
       }
     } else {
       Question newQuestion = new Question(
-        question: '¿Como era el mosquito?',
+        question: 'question_7',
         answer: answer,
         question_id: 7,
         answer_id: answerId,
@@ -407,7 +407,7 @@ class Utils {
   }
 
   static getLocation() async {
-    location = await Geolocator().getLastKnownPosition();
+    location = await getLastKnownPosition();
   }
 
   static final RegExp mailRegExp = RegExp(
@@ -682,7 +682,7 @@ class Utils {
   }
 
   static infoAdultCamera(context, getImage, {bool gallery = false}) async {
-    bool showInfo = await UserManager.getShowInfoAdult();
+    var showInfo = await UserManager.getShowInfoAdult();
     if (showInfo == null || !showInfo) {
       return showDialog(
           barrierDismissible: true,
@@ -694,7 +694,7 @@ class Utils {
               content: Container(
                 padding: EdgeInsets.all(20),
                 constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.55,
+                  maxHeight: MediaQuery.of(context).size.height * 0.50,
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
@@ -728,7 +728,7 @@ class Utils {
                       children: <Widget>[
                         Expanded(
                           child: Style.noBgButton(
-                            MyLocalizations.of(context, "ok_next_txt"),
+                            MyLocalizations.of(context, 'ok_next_txt'),
                             () {
                               Navigator.of(context).pop();
                               !gallery
@@ -764,7 +764,7 @@ class Utils {
   }
 
   static infoBreedingCamera(context, getImage, {bool gallery = false}) async {
-    bool showInfo = await UserManager.getShowInfoBreeding();
+    var showInfo = await UserManager.getShowInfoBreeding();
 
     if (showInfo == null || !showInfo) {
       return showDialog(
@@ -775,12 +775,11 @@ class Utils {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               content: Container(
-                height: double.infinity,
+                // height: double.infinity,
                 constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.45,
+                  maxHeight: MediaQuery.of(context).size.height * 0.35,
                 ),
                 child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Style.body(
                       MyLocalizations.of(
@@ -793,15 +792,17 @@ class Utils {
                       MyLocalizations.of(
                           context, 'camera_info_breeding_txt_02'),
                     ),
-                    SizedBox(
-                      height: 10,
+                    Expanded(
+                      child: SizedBox(
+                        height: 10,
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Expanded(
                           child: Style.noBgButton(
-                            MyLocalizations.of(context, "ok_next_txt"),
+                            MyLocalizations.of(context, 'ok_next_txt'),
                             () {
                               Navigator.of(context).pop();
                               !gallery
@@ -813,7 +814,7 @@ class Utils {
                         ),
                         Expanded(
                           child: Style.noBgButton(
-                            MyLocalizations.of(context, "no_show_again"),
+                            MyLocalizations.of(context, 'no_show_again'),
                             () {
                               UserManager.setSowInfoBreeding(true);
                               Navigator.of(context).pop();

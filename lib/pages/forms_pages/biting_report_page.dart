@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/models/report.dart';
@@ -27,59 +26,58 @@ class _BitingReportPageState extends State<BitingReportPage> {
   String otherReport;
   bool seeButton = false;
   bool addMosquito = false;
-  StreamController<bool> loadingStream = new StreamController<bool>.broadcast();
-  StreamController<bool> validStream = new StreamController<bool>.broadcast();
-  StreamController<double> percentStream =
-      new StreamController<double>.broadcast();
+  StreamController<bool> loadingStream = StreamController<bool>.broadcast();
+  StreamController<bool> validStream = StreamController<bool>.broadcast();
+  StreamController<double> percentStream = StreamController<double>.broadcast();
   double index = 0;
 
   List<Map> displayQuestions = [
     {
-      "question": {"id": 1, "text": "question_1"},
-      "answers": [
+      'question': {'id': 1, 'text': 'question_1'},
+      'answers': [
         //Number of bites - value equals TOTAL number of bites
-        {"id": 11, "text": "question_1_answer_11"}
+        {'id': 11, 'text': 'question_1_answer_11'}
       ]
     },
     {
-      "question": {"id": 2, "text": "question_2"},
-      "answers": [
+      'question': {'id': 2, 'text': 'question_2'},
+      'answers': [
         //Bites by body are - value equals number of bites in each area, must be = to total number of bites
-        {"id": 21, "text": "question_2_answer_21"},
-        {"id": 22, "text": "question_2_answer_22"},
-        {"id": 23, "text": "question_2_answer_23"},
-        {"id": 24, "text": "question_2_answer_24"},
-        {"id": 25, "text": "question_2_answer_25"},
-        {"id": 26, "text": "question_2_answer_26"}
+        {'id': 21, 'text': 'question_2_answer_21'},
+        {'id': 22, 'text': 'question_2_answer_22'},
+        {'id': 23, 'text': 'question_2_answer_23'},
+        {'id': 24, 'text': 'question_2_answer_24'},
+        {'id': 25, 'text': 'question_2_answer_25'},
+        {'id': 26, 'text': 'question_2_answer_26'}
       ]
     },
     {
-      "question": {"id": 4, "text": "question_4"},
-      "answers": [
-        {"id": 41, "text": "question_4_answer_41"},
-        {"id": 42, "text": "question_4_answer_42"},
-        {"id": 43, "text": "question_4_answer_43"},
-        {"id": 44, "text": "question_4_answer_44"},
+      'question': {'id': 4, 'text': 'question_4'},
+      'answers': [
+        {'id': 41, 'text': 'question_4_answer_41'},
+        {'id': 42, 'text': 'question_4_answer_42'},
+        {'id': 43, 'text': 'question_4_answer_43'},
+        {'id': 44, 'text': 'question_4_answer_44'},
       ]
     },
     {
-      "question": {"id": 5, "text": "question_5"},
-      "answers": [
-        {"id": 51, "text": "question_5_answer_51"},
-        {"id": 52, "text": "question_5_answer_52"},
+      'question': {'id': 5, 'text': 'question_5'},
+      'answers': [
+        {'id': 51, 'text': 'question_5_answer_51'},
+        {'id': 52, 'text': 'question_5_answer_52'},
       ]
     },
     {
-      "question": {"id": 3, "text": "question_3"},
-      "answers": [
-        {"id": 31, "text": "question_3_answer_31"},
-        {"id": 32, "text": "question_3_answer_32"},
-        {"id": 33, "text": "question_3_answer_33"},
-        {"id": 34, "text": "question_3_answer_34"},
+      'question': {'id': 3, 'text': 'question_3'},
+      'answers': [
+        {'id': 31, 'text': 'question_3_answer_31'},
+        {'id': 32, 'text': 'question_3_answer_32'},
+        {'id': 33, 'text': 'question_3_answer_33'},
+        {'id': 34, 'text': 'question_3_answer_34'},
       ]
     },
     {
-      "question": {"id": 14, "text": "question_14"},
+      'question': {'id': 14, 'text': 'question_14'},
     },
   ];
   Report toEditReport;
@@ -183,7 +181,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
               leading: IconButton(
                 icon: Style.iconBack,
                 onPressed: () {
-                  double currentPage = _pagesController.page;
+                  var currentPage = _pagesController.page;
 
                   if (currentPage == 0.0) {
                     // if (Utils.reportsList != null &&
@@ -212,7 +210,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
                 },
               ),
               title: Style.title(
-                  MyLocalizations.of(context, "biting_report_txt"),
+                  MyLocalizations.of(context, 'biting_report_txt'),
                   fontSize: 16),
               actions: <Widget>[],
             ),
@@ -243,9 +241,9 @@ class _BitingReportPageState extends State<BitingReportPage> {
                                                   vertical: 6, horizontal: 12),
                                               child: Style.button(
                                                   MyLocalizations.of(
-                                                      context, "continue_txt"),
+                                                      context, 'continue_txt'),
                                                   () {
-                                                double currentPage =
+                                                var currentPage =
                                                     _pagesController.page;
 
                                                 if (currentPage == 2 &&
@@ -280,7 +278,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
                                                   vertical: 6, horizontal: 12),
                                               child: Style.button(
                                                   MyLocalizations.of(
-                                                      context, "continue_txt"),
+                                                      context, 'continue_txt'),
                                                   null),
                                             );
                                     })),
@@ -292,7 +290,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
                               margin: EdgeInsets.symmetric(
                                   vertical: 6, horizontal: 12),
                               child: Style.button(
-                                MyLocalizations.of(context, "send_data"),
+                                MyLocalizations.of(context, 'send_data'),
                                 () {
                                   _saveData();
                                 },
@@ -322,7 +320,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
   _showAlertOk() {
     loadingStream.add(false);
     Utils.showAlert(
-      MyLocalizations.of(context, "app_name"),
+      MyLocalizations.of(context, 'app_name'),
       widget.editReport == null
           ? MyLocalizations.of(context, 'save_report_ok_txt')
           : MyLocalizations.of(context, 'edited_report_ok_txt'),
@@ -343,7 +341,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
   _showAlertKo() {
     loadingStream.add(false);
     Utils.showAlert(
-      MyLocalizations.of(context, "app_name"),
+      MyLocalizations.of(context, 'app_name'),
       MyLocalizations.of(context, 'save_report_ko_txt'),
       context,
       onPressed: () {
