@@ -245,7 +245,7 @@ class ApiSingleton {
       String userUUID = await UserManager.getUUID();
 
       final response = await http.get(
-        '$serverUrl$userScore?user_id=$userUUID',
+        '$serverUrl$userScore?user_id=$userUUID&update=True',
         headers: headers,
       );
 
