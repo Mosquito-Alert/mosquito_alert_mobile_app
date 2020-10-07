@@ -110,7 +110,6 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
         if (geolocationEnabled) {
           Position currentPosition =
               await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-          print(currentPosition);
           Utils.setCurrentLocation(
               currentPosition.latitude, currentPosition.longitude);
           controller.moveCamera(
