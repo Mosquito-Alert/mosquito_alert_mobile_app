@@ -18,6 +18,7 @@ class InfoPage extends StatefulWidget {
 
 class _InfoPageState extends State<InfoPage> {
   WebViewController _controller;
+  var title;
 
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
 
@@ -29,12 +30,12 @@ class _InfoPageState extends State<InfoPage> {
           appBar: AppBar(
             backgroundColor: Colors.white,
             centerTitle: true,
-            title: Image.asset(
+            title: title == null ? Image.asset(
               'assets/img/ic_logo.png',
               height: 45,
-            ),
+            ) : Text(title),
           ),
-          body: Stack(
+          body: SafeArea(child: Stack(
             children: [
               Builder(builder: (BuildContext context) {
                 return WebView(
@@ -49,6 +50,9 @@ class _InfoPageState extends State<InfoPage> {
                   ].toSet(),
                   onPageFinished: (String url) {
                     loadingStream.add(false);
+                  },
+                  onPageStarted: (String url) {
+                    loadingStream.add(true);
                   },
                   gestureNavigationEnabled: true,
                 );
@@ -68,7 +72,7 @@ class _InfoPageState extends State<InfoPage> {
                     return Container();
                   }),
             ],
-          ),
+          ),),
         ),
       ],
     );

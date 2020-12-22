@@ -129,7 +129,7 @@
     "gallery_info_03": "De huissteekmug (Culex pipiens): deze muggensoort bijt voornamelijk 's nachts. Deze mug is gelig tot lichtbruin.",
     "gallery_info_04": "De andere vier muggensoorten waar we naar opzoek zijn, zijn onderdeel van het genus Aedes en zijn soorten die recentelijk Europa hebben gekoloniseerd. Deze muggen zijn vaak donker of zwart met witte markeringen en bijten over het algemeen overdag. Twee van deze soorten hebben een wit patroon op het borststuk, de andere twee hebben een gouden patroon op het borststuk.\n\nGa verder om te leren hoe u deze vier soorten van elkaar kunt onderscheiden.",
     "gallery_info_05": "De Aziatische tijgermug (Aedes albopictus): Zwart met witte lijnen en vlekken. Deze muggensoort heeft een witte lijn op de kop en op het borststuk. De gelekoortsmug (Aedes aegypti): Donkerbruin met witte vlekken en lijnen. Deze muggensoort heeft een liervormig patroon op het borststuk. Dit patroon is altijd wit.",
-    "gallery_info_06": "Aedes japonicus en Aedes koreicus hebben een goud patroon op het borststuk en lijken erg op elkaar. Om deze soorten uit elkaar te houden zijn de poten belangrijk, vooral de markeringen op het derde pootpaar. Aedes koreicus heeft witte markeringen op het laatste segment van dit pootpaar, deze witte banden zijn er niet bij Aedes japonicus, daar is het laatste segment volledig zwart.",
+    "gallery_info_06": "Aedes japonicus en Aedes koreicus hebben een gouden patroon op het borststuk en lijken erg op elkaar. Om deze soorten uit elkaar te houden zijn de poten belangrijk, vooral de markeringen op het derde pootpaar. Aedes koreicus heeft witte markeringen op het laatste segment van dit pootpaar, deze witte banden zijn er niet bij Aedes japonicus, daar is het laatste segment volledig zwart.",
     "gallery_info_07": "Muggen hebben een complexe levenscyclus met vier stadia: (1) adulte vrouwtjes leggen (2) eitjes in objecten met stilstaand water; binnen enkele dagen komen de (3) larven uit de eitjes, die zich na vier larvale stadia ontwikkelen tot (4) pop. Uit deze poppen komen de adulte steekmuggen. Deze levenscyclus kan binnen een week doorlopen worden. Één vrouwtje kan honderden eitjes leggen. Onthoud: zonder stilstaand water geen muggen.",
     "gallery_info_08": "Een aantal muggeneitjes van het Aedes genus. De vrouwtjes leggen eitjes op de droge wand van kleine objecten met stilstaand water. De eitjes zijn zo klein dat ze met het blote oog moeilijk te zien zijn. Eronder, larven (langwerpig) en poppen (rond) van Aedes muggen.",
     "gallery_info_09": "De aquatische larven ontwikkelen zich snel via het popstadium naar het adulte stadium, dit proces wordt 'metamorfose' genoemd. Vrouwtjes kunnen in het adulte stadium onderscheiden worden van de mannetjes door de veer-achtige antennen op de kop. Links wordt een mannelijke tijgermug weergegeven, rechts een vrouwelijke tijgermug.",
@@ -255,7 +255,7 @@
     "consent_txt_02": "Anoniem observaties van muggen, broedplaatsen of muggenbeten verzamelen. Deze informatie is zeer relevant voor het monitoren van steekmuggen.",
     "consent_txt_03": "Uw privacy is belangrijk",
     "consent_txt_04": "Deze applicatie verzamelt geen persoonlijke informatie, hierdoor blijft anonimiteit gewaarborgd.",
-    "consent_txt_05": "De applicatie gebruik op de achtergrond uw geschatte locatie op willekeurige momenten. Deze schatting is niet exact, maar eerder een indicatie dat u zich bevind in een gebied tussen 1,6 en 7,7 vierkante kilometer. Deze informatie is van wetenschappelijke waarde, maar u kunt deze functie op elk gewenst moment uitzetten.",
+    "consent_txt_05": "De applicatie gebruikt op de achtergrond uw geschatte locatie op willekeurige momenten. Deze schatting is niet exact, maar eerder een indicatie dat u zich bevindt in een gebied tussen 1,6 en 7,7 vierkante kilometer. Deze informatie is van wetenschappelijke waarde, maar u kunt deze functie op elk gewenst moment uitzetten.",
     "consent_txt_06": "Laten we beginnen!",
     "consent_txt_07": "Voor meer informatie kunt u deze documenten raadplegen, accepteer de gebruiksvoorwaarden om mee te doen. Heel erg bedankt!",
     "consent_txt_10": "Ik heb gelezen de ",
@@ -284,5 +284,5 @@
     "consent_txt_14": "Over ",
     "consent_txt_15": "ons",
     "see_more_txt": "Lees verder",
-    "hours": "uren"
+    "hours": "uur"
 }

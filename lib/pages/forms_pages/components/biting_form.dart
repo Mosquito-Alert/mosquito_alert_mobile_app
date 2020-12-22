@@ -84,6 +84,7 @@ class _BitingFormState extends State<BitingForm> {
                   Style.button(
                     '-',
                     () {
+
                       bites = max(bites - 1, 0);
                       _textController.text = bites.toString();
                       var question = widget.displayQuestions
