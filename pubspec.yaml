@@ -1,7 +1,7 @@
 name: mosquito_alert_app
 description: A new Flutter project.
 
-version: 2.0.1+1275
+version: 2.0.1+1284
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
