@@ -1,4 +1,3 @@
-
 class Question {
   int question_id;
   String question;
@@ -22,7 +21,7 @@ class Question {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['question_id'] = this.question_id;
     data['question'] = this.question;
     data['answer_id'] = this.answer_id;

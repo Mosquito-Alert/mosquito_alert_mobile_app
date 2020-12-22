@@ -6,6 +6,7 @@ import 'package:flutter_twitter/flutter_twitter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosquito_alert_app/models/notification.dart';
+import 'package:mosquito_alert_app/models/owcampaing.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/models/response.dart';
 import 'package:mosquito_alert_app/models/session.dart';
@@ -46,6 +47,9 @@ class ApiSingleton {
 
   //Fixes
   static const fixes = '/fixes/';
+
+  //Owcampaigns
+  static const campaigns = '/owcampaigns/';
 
   //Headders
   var headers = {
@@ -550,7 +554,7 @@ class ApiSingleton {
 
       if (response.statusCode != 200) {
         print(
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
         return null;
       } else {
         Map<String, dynamic> jsonAnswer = json.decode(response.body);
@@ -595,7 +599,7 @@ class ApiSingleton {
       var response = await dio.post('$serverUrl$photos',
           data: data,
           options: Options(
-            headers: {"Authorization": "Token " + token},
+            headers: {'Authorization': 'Token ' + token},
             contentType: 'multipart/form-data',
           ));
 
@@ -627,12 +631,43 @@ class ApiSingleton {
 
       if (response.statusCode != 201) {
         print(
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
         return false;
       }
 
       return true;
     } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> getCampaigns(countryId) async {
+    try {
+      final response = await http.get(
+        '$serverUrl$campaigns?country_id=$countryId',
+        headers: headers,
+      );
+
+      if (response.statusCode != 200) {
+        print(
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
+        return ApiResponse.fromJson(json.decode(response.body));
+      } else {
+        List<dynamic> jsonAnswer = json.decode(response.body);
+        var allCampaigns = <Campaign>[];
+
+        for (var item in jsonAnswer) {
+          allCampaigns.add(Campaign.fromJson(item));
+        }
+
+        // if (allCampaigns.isEmpty) {
+        //   return 0;
+        // }
+
+        return allCampaigns;
+      }
+    } catch (e) {
+      print(e.message);
       return false;
     }
   }

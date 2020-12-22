@@ -284,5 +284,8 @@
     "consent_txt_14": "About ",
     "consent_txt_15": "us",
     "see_more_txt": "Read more",
-    "hours": "hours"
+    "hours": "hours",
+    "campaign_not_fount_title": "Service not available", 
+    "campaign_not_fount_text": "This service is not available in your country right now :(",
+    "alert_campaing_found_title": "You can send your mosquito to our labs!"
 }

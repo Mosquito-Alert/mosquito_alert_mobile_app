@@ -486,6 +486,75 @@ class Utils {
     }
   }
 
+  static Future showCustomAlert(String title, Widget body, BuildContext context,
+      {onPressed, barrierDismissible}) {
+    if (Platform.isAndroid) {
+      return showDialog(
+        context: context,
+        barrierDismissible: barrierDismissible != null
+            ? barrierDismissible
+            : true, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(title),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  body,
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(MyLocalizations.of(context, 'ok')),
+                onPressed: () {
+                  if (onPressed != null) {
+                    onPressed();
+                  } else {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      return showDialog(
+        context: context, //
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: new Text(
+              title,
+              style: TextStyle(letterSpacing: -0.3),
+            ),
+            content: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 4,
+                ),
+                body,
+              ],
+            ),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text(MyLocalizations.of(context, 'ok')),
+                onPressed: () {
+                  if (onPressed != null) {
+                    onPressed();
+                  } else {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   static Future showAlertYesNo(
     String title,
     String text,
@@ -862,9 +931,10 @@ class Utils {
   }
 
   static launchUrl(url) async {
-    if (await canLaunch(url))
+    if (await canLaunch(url)) {
       await launch(url, forceSafariVC: false);
-    else
+    } else {
       throw 'Could not launch';
+    }
   }
 }
