@@ -940,7 +940,22 @@ class Utils {
               FlatButton(
                 child: Text(MyLocalizations.of(context, 'show_info')),
                 onPressed: () {
-                  //TODO: open custom alert with info
+                  Navigator.pop(context);
+                  Utils.showCustomAlert(
+                    MyLocalizations.of(context, 'alert_campaing_found_title'),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Style.titleMedium('Id: ' + report.report_id),
+                        Style.body(activeCampaign.postingAddress),
+                      ],
+                    ),
+                    context,
+                    // onPressed: () {
+                    //   Navigator.of(context).popUntil((r) => r.isFirst);
+                    //   Utils.resetReport();
+                    // },
+                  );
                 },
               ),
               FlatButton(
@@ -978,7 +993,22 @@ class Utils {
                 isDefaultAction: true,
                 child: Text(MyLocalizations.of(context, 'show_info')),
                 onPressed: () {
-                  //TODO: open custom alert with info
+                  Navigator.pop(context);
+                  Utils.showCustomAlert(
+                    MyLocalizations.of(context, 'alert_campaing_found_title'),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Style.titleMedium('Id: ' + report.report_id),
+                        Style.body(activeCampaign.postingAddress),
+                      ],
+                    ),
+                    context,
+                    // onPressed: () {
+                    //   Navigator.of(context).popUntil((r) => r.isFirst);
+                    //   Utils.resetReport();
+                    // },
+                  );
                 },
               ),
               CupertinoDialogAction(
