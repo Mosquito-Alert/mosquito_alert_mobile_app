@@ -5,6 +5,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mosquito_alert_app/api/api.dart';
+import 'package:mosquito_alert_app/models/owcampaing.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_other_report_form.dart';
@@ -43,117 +45,117 @@ class _AdultReportPageState extends State<AdultReportPage> {
 
   List<Map> displayQuestions = [
     {
-      "question": {"id": 6, "text": "question_6"},
-      "answers": [
+      'question': {'id': 6, 'text': 'question_6'},
+      'answers': [
         {
-          "id": 61,
-          "img": "assets/img/ic_invasive_aedes.png",
-          "text": "question_6_answer_61"
+          'id': 61,
+          'img': 'assets/img/ic_invasive_aedes.png',
+          'text': 'question_6_answer_61'
         },
         {
-          "id": 62,
-          "img": "assets/img/ic_common_mosquito.png",
-          "text": "question_6_answer_62"
+          'id': 62,
+          'img': 'assets/img/ic_common_mosquito.png',
+          'text': 'question_6_answer_62'
         },
         {
-          "id": 63,
-          "img": "assets/img/ic_other_mosquito.png",
-          "text": "question_6_answer_63"
+          'id': 63,
+          'img': 'assets/img/ic_other_mosquito.png',
+          'text': 'question_6_answer_63'
         },
         {
-          "id": 64,
-          "img": "assets/img/ic_dont_know.png",
-          "text": "question_6_answer_64"
+          'id': 64,
+          'img': 'assets/img/ic_dont_know.png',
+          'text': 'question_6_answer_64'
         }
       ]
     },
     {
-      "question": {"id": 7, "text": "question_7"},
-      "answers": [
+      'question': {'id': 7, 'text': 'question_7'},
+      'answers': [
         [
           {
-            "id": 711,
-            "img": "assets/img/torax_711.png",
-            "text": "question_7_answer_711"
+            'id': 711,
+            'img': 'assets/img/torax_711.png',
+            'text': 'question_7_answer_711'
           },
           {
-            "id": 712,
-            "img": "assets/img/torax_712.png",
-            "text": "question_7_answer_712"
+            'id': 712,
+            'img': 'assets/img/torax_712.png',
+            'text': 'question_7_answer_712'
           },
           {
-            "id": 713,
-            "img": "assets/img/torax_713.png",
-            "text": "question_7_answer_713"
+            'id': 713,
+            'img': 'assets/img/torax_713.png',
+            'text': 'question_7_answer_713'
           },
           {
-            "id": 714,
-            "img": "assets/img/torax_714.png",
-            "text": "question_7_answer_714"
+            'id': 714,
+            'img': 'assets/img/torax_714.png',
+            'text': 'question_7_answer_714'
           },
         ],
         [
           {
-            "id": 721,
-            "img": "assets/img/abdomen_721.png",
-            "text": "question_7_answer_721"
+            'id': 721,
+            'img': 'assets/img/abdomen_721.png',
+            'text': 'question_7_answer_721'
           },
           {
-            "id": 722,
-            "img": "assets/img/abdomen_722.png",
-            "text": "question_7_answer_722"
+            'id': 722,
+            'img': 'assets/img/abdomen_722.png',
+            'text': 'question_7_answer_722'
           },
           {
-            "id": 723,
-            "img": "assets/img/abdomen_723.png",
-            "text": "question_7_answer_723"
+            'id': 723,
+            'img': 'assets/img/abdomen_723.png',
+            'text': 'question_7_answer_723'
           },
           {
-            "id": 724,
-            "img": "assets/img/abdomen_724.png",
-            "text": "question_7_answer_724"
+            'id': 724,
+            'img': 'assets/img/abdomen_724.png',
+            'text': 'question_7_answer_724'
           },
         ],
         [
           {
-            "id": 731,
-            "img": "assets/img/leg_731.png",
-            "text": "question_7_answer_731"
+            'id': 731,
+            'img': 'assets/img/leg_731.png',
+            'text': 'question_7_answer_731'
           },
           {
-            "id": 732,
-            "img": "assets/img/leg_732.png",
-            "text": "question_7_answer_732"
+            'id': 732,
+            'img': 'assets/img/leg_732.png',
+            'text': 'question_7_answer_732'
           },
           {
-            "id": 733,
-            "img": "assets/img/leg_733.png",
-            "text": "question_7_answer_733"
+            'id': 733,
+            'img': 'assets/img/leg_733.png',
+            'text': 'question_7_answer_733'
           },
           {
-            "id": 734,
-            "img": "assets/img/leg_734.png",
-            "text": "question_7_answer_734"
+            'id': 734,
+            'img': 'assets/img/leg_734.png',
+            'text': 'question_7_answer_734'
           }
         ],
       ]
     },
     {
-      "question": {"id": 13, "text": "question_13"},
-      "answers": [
-        {"id": 131, "text": "question_13_answer_131"},
-        {"id": 132, "text": "question_13_answer_132"},
-        {"id": 133, "text": "question_13_answer_133"},
+      'question': {'id': 13, 'text': 'question_13'},
+      'answers': [
+        {'id': 131, 'text': 'question_13_answer_131'},
+        {'id': 132, 'text': 'question_13_answer_132'},
+        {'id': 133, 'text': 'question_13_answer_133'},
       ]
     },
     {
-      "question": {"id": 15, "text": "question_15"},
+      'question': {'id': 15, 'text': 'question_15'},
     },
     {
-      "question": {"id": 8, "text": "question_8"},
-      "answers": [
-        {"id": 82, "text": "question_8_answer_82"},
-        {"id": 81, "text": "question_8_answer_81"},
+      'question': {'id': 8, 'text': 'question_8'},
+      'answers': [
+        {'id': 82, 'text': 'question_8_answer_82'},
+        {'id': 81, 'text': 'question_8_answer_81'},
       ]
     },
   ];
@@ -200,34 +202,34 @@ class _AdultReportPageState extends State<AdultReportPage> {
     }
   }
 
-  setSkip3(skip) {
+  void setSkip3(skip) {
     print(skip);
     skipParts.add(skip);
   }
 
-  setShowCamera(data) {
+  void setShowCamera(data) {
     setState(() {
       showCamera = data;
     });
   }
 
-  addBitingReport(addReport) {
+  void addBitingReport(addReport) {
     setState(() {
       addBiting = addReport;
     });
   }
 
-  addOtherReport(String reportType) {
+  void addOtherReport(String reportType) {
     setState(() {
       otherReport = reportType;
     });
   }
 
-  setValid(isValid) {
+  void setValid(isValid) {
     validStream.add(isValid);
   }
 
-  goNextPage() {
+  void goNextPage() {
     if (addBiting) {
       Utils.addOtherReport('bite');
       Navigator.push(
@@ -244,17 +246,32 @@ class _AdultReportPageState extends State<AdultReportPage> {
     }
   }
 
-  _createReport() async {
+  void _createReport() async {
     loadingStream.add(true);
     setState(() {
       percentStream.add(0.8);
     });
-    bool res = await Utils.createReport();
+    var res = await Utils.createReport();
 
     if (!res) {
       _showAlertKo();
     } else {
-      _showAlertOk();
+      if (Utils.savedAdultReport != null) {
+        List<Campaign> campaingsList =
+            await ApiSingleton().getCampaigns(Utils.savedAdultReport.country);
+        var now = DateTime.now();
+        if (campaingsList.any((element) =>
+            DateTime.parse(element.startDate).isBefore(now) &&
+            DateTime.parse(element.endDate).isAfter(now))) {
+          var activeCampaign = campaingsList.firstWhere((element) =>
+              DateTime.parse(element.startDate).isBefore(now) &&
+              DateTime.parse(element.endDate).isAfter(now));
+          Utils.showAlertCampaign(context, activeCampaign);
+        } else {
+          _showAlertOk();
+        }
+      }
+      // _showAlertOk();
       setState(() {
         percentStream.add(1.0);
       });
@@ -287,7 +304,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
               leading: IconButton(
                 icon: Style.iconBack,
                 onPressed: () {
-                  double currentPage = _pagesController.page;
+                  var currentPage = _pagesController.page;
 
                   if (currentPage == 0.0) {
                     setState(() {
@@ -339,7 +356,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                 },
               ),
               title: Style.title(
-                  MyLocalizations.of(context, "adult_report_title"),
+                  MyLocalizations.of(context, 'adult_report_title'),
                   fontSize: 16),
             ),
             body: Stack(
@@ -369,7 +386,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                               vertical: 6, horizontal: 12),
                                           child: Style.button(
                                               MyLocalizations.of(
-                                                  context, "continue_txt"), () {
+                                                  context, 'continue_txt'), () {
                                             double currentPage =
                                                 _pagesController.page;
 
@@ -408,7 +425,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                               vertical: 6, horizontal: 12),
                                           child: Style.button(
                                               MyLocalizations.of(
-                                                  context, "continue_txt"),
+                                                  context, 'continue_txt'),
                                               null),
                                         );
                                 }),
@@ -422,7 +439,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                         vertical: 6, horizontal: 12),
                                     child: Style.button(
                                       MyLocalizations.of(
-                                          context, "understand_txt"),
+                                          context, 'understand_txt'),
                                       () {
                                         Navigator.pop(context);
                                         Utils.resetReport();
@@ -436,7 +453,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                     margin: EdgeInsets.symmetric(
                                         vertical: 6, horizontal: 12),
                                     child: Style.button(
-                                      MyLocalizations.of(context, "send_data"),
+                                      MyLocalizations.of(context, 'send_data'),
                                       () {
                                         _createReport();
                                       },
@@ -465,8 +482,8 @@ class _AdultReportPageState extends State<AdultReportPage> {
 
   _skipReport(bool skip) {
     if (widget.editReport != null && skip) {
-      Utils.showAlertYesNo(MyLocalizations.of(context, "app_name"),
-          MyLocalizations.of(context, "editing_adult_info_type_txt"), () {
+      Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'),
+          MyLocalizations.of(context, 'editing_adult_info_type_txt'), () {
         Utils.deleteReport(widget.editReport);
         widget.loadData();
         Navigator.pop(context);
@@ -651,7 +668,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
     loadingStream.add(false);
 
     Utils.showAlert(
-      MyLocalizations.of(context, "app_name"),
+      MyLocalizations.of(context, 'app_name'),
       widget.editReport == null
           ? MyLocalizations.of(context, 'save_report_ok_txt')
           : MyLocalizations.of(context, 'edited_report_ok_txt'),
@@ -672,7 +689,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
   _showAlertKo() {
     loadingStream.add(false);
     Utils.showAlert(
-      MyLocalizations.of(context, "app_name"),
+      MyLocalizations.of(context, 'app_name'),
       MyLocalizations.of(context, 'save_report_ko_txt'),
       context,
       onPressed: () {

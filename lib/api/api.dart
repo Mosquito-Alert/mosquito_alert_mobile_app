@@ -399,7 +399,7 @@ class ApiSingleton {
   }
 
   //Reports
-  Future<bool> createReport(Report report) async {
+  Future<Report> createReport(Report report) async {
     try {
       var body = {};
 
@@ -486,8 +486,8 @@ class ApiSingleton {
       // print(response);
       if (response.statusCode != 201) {
         print(
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
-        return false;
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
+        return null;
       }
 
       if (report.version_number > 0) {
@@ -498,10 +498,13 @@ class ApiSingleton {
         //Utils.report = Report.fromJson(json.decode(response.body));
 
       }
-      getUserScores();
-      return true;
+      var jsonAnswer = json.decode(response.body);
+      var newReport = Report.fromJson(jsonAnswer);
+
+      await getUserScores();
+      return newReport;
     } catch (e) {
-      return false;
+      return null;
     }
   }
 

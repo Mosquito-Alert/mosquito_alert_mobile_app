@@ -37,6 +37,7 @@ class Utils {
   static Report report;
   static Session session;
   static List<Report> reportsList;
+  static Report savedAdultReport;
 
   static void saveImgPath(File img) {
     if (imagePath == null) {
@@ -318,8 +319,11 @@ class Utils {
   static Future<bool> createReport() async {
     if (report.version_number > 0) {
       report.version_time = DateTime.now().toIso8601String();
-      bool res = await ApiSingleton().createReport(report);
-      return res;
+      var res = await ApiSingleton().createReport(report);
+      if (res.type == 'adult') {
+        savedAdultReport = res;
+      }
+      return res != null ? true : false;
     } else {
       report.version_time = DateTime.now().toIso8601String();
       report.creation_time = DateTime.now().toIso8601String();
@@ -327,7 +331,11 @@ class Utils {
       reportsList.add(report);
       bool isCreated;
       for (int i = 0; i < reportsList.length; i++) {
-        isCreated = await ApiSingleton().createReport(reportsList[i]);
+        var res = await ApiSingleton().createReport(reportsList[i]);
+        if (res.type == 'adult') {
+          savedAdultReport = res;
+        }
+        isCreated = res != null ? true : false;
         if (!isCreated) {
           await saveLocalReport(reportsList[i]);
         }
@@ -373,7 +381,9 @@ class Utils {
       bool isCreated;
       for (int i = 0; i < savedReports.length; i++) {
         Report savedReport = Report.fromJson(json.decode(savedReports[i]));
-        isCreated = await ApiSingleton().createReport(savedReport);
+        isCreated = await ApiSingleton().createReport(savedReport) != null
+            ? true
+            : false;
 
         if (!isCreated) {
           saveLocalReport(savedReport);
@@ -402,7 +412,8 @@ class Utils {
     deleteReport.version_number = -1;
     deleteReport.version_UUID = Uuid().v4();
 
-    bool res = await ApiSingleton().createReport(deleteReport);
+    bool res =
+        await ApiSingleton().createReport(deleteReport) != null ? true : false;
     return res;
   }
 
@@ -903,6 +914,85 @@ class Utils {
           });
     } else {
       !gallery ? getImage(ImageSource.camera) : getImage();
+    }
+  }
+
+  static showAlertCampaign(context, activeCampaign) {
+    if (Platform.isAndroid) {
+      return showDialog(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              MyLocalizations.of(context, 'app_name'),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Style.body(MyLocalizations.of(context, 'save_report_ok_txt')),
+                  Style.body(MyLocalizations.of(
+                      context, 'alert_campaign_found_create_body'))
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(MyLocalizations.of(context, 'show_info')),
+                onPressed: () {
+                  //TODO: open custom alert with info
+                },
+              ),
+              FlatButton(
+                child: Text(MyLocalizations.of(context, 'no_show_info')),
+                onPressed: () {
+                  Navigator.of(context).popUntil((r) => r.isFirst);
+                  Utils.resetReport();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      return showDialog(
+        context: context, //
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text(
+              MyLocalizations.of(context, 'app_name'),
+              style: TextStyle(letterSpacing: -0.3),
+            ),
+            content: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 4,
+                ),
+                Style.body(MyLocalizations.of(context, 'save_report_ok_txt')),
+                Style.body(MyLocalizations.of(
+                    context, 'alert_campaign_found_create_body'))
+              ],
+            ),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text(MyLocalizations.of(context, 'show_info')),
+                onPressed: () {
+                  //TODO: open custom alert with info
+                },
+              ),
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text(MyLocalizations.of(context, 'no_show_info')),
+                onPressed: () {
+                  Navigator.of(context).popUntil((r) => r.isFirst);
+                  Utils.resetReport();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 

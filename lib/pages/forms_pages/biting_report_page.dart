@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mosquito_alert_app/api/api.dart';
+import 'package:mosquito_alert_app/models/owcampaing.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_other_report_form.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
@@ -110,28 +112,28 @@ class _BitingReportPageState extends State<BitingReportPage> {
     ];
   }
 
-  addOtherReport(String reportType) {
+  void addOtherReport(String reportType) {
     setState(() {
       otherReport = reportType;
     });
   }
 
-  addAdultReport(addReport) {
+  void addAdultReport(addReport) {
     setState(() {
       addMosquito = addReport;
     });
   }
 
-  setValid(isValid) {
+  void setValid(isValid) {
     validStream.add(isValid);
   }
 
-  _saveData() async {
+  void _saveData() async {
     setState(() {
       percentStream.add(0.8);
     });
     loadingStream.add(true);
-    bool res = await Utils.createReport();
+    var res = await Utils.createReport();
 
     if (widget.editReport != null) {
       widget.loadData();
@@ -139,7 +141,23 @@ class _BitingReportPageState extends State<BitingReportPage> {
     if (!res) {
       _showAlertKo();
     } else {
-      _showAlertOk();
+      if (Utils.savedAdultReport != null) {
+        List<Campaign> campaingsList =
+            await ApiSingleton().getCampaigns(Utils.savedAdultReport.country);
+        var now = DateTime.now();
+        if (campaingsList.any((element) =>
+            DateTime.parse(element.startDate).isBefore(now) &&
+            DateTime.parse(element.endDate).isAfter(now))) {
+          var activeCampaign = campaingsList.firstWhere((element) =>
+              DateTime.parse(element.startDate).isBefore(now) &&
+              DateTime.parse(element.endDate).isAfter(now));
+          Utils.showAlertCampaign(context, activeCampaign);
+        } else {
+          _showAlertOk();
+        }
+      }
+
+      // _showAlertOk();
       setState(() {
         percentStream.add(1.0);
       });
