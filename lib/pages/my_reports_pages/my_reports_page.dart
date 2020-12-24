@@ -8,10 +8,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:material_segmented_control/material_segmented_control.dart';
 import 'package:mosquito_alert_app/api/api.dart';
+import 'package:mosquito_alert_app/models/owcampaing.dart';
 import 'package:mosquito_alert_app/models/report.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/breeding_report_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
@@ -228,12 +226,13 @@ class _MyReportsPageState extends State<MyReportsPage> {
               stream: loadingStream.stream,
               initialData: true,
               builder: (BuildContext context, AsyncSnapshot<bool> snapLoading) {
-                if (snapLoading.data == true)
+                if (snapLoading.data == true) {
                   return Container(
                     child: Center(
                       child: Utils.loading(true),
                     ),
                   );
+                }
                 return Container();
               }),
           Container(
@@ -258,7 +257,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                           icon: Style.iconBack,
                         ),
                         Style.title(
-                            MyLocalizations.of(context, "your_reports_txt"),
+                            MyLocalizations.of(context, 'your_reports_txt'),
                             fontSize: 16.0),
                         SizedBox(
                           width: 40,
@@ -296,7 +295,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
         builder: (BuildContext bc) {
           return Container(
             color: Colors.white,
-            constraints: new BoxConstraints(
+            constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height * 0.9,
             ),
             child: SingleChildScrollView(
@@ -314,7 +313,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                         height: 36,
                       ),
                       title: Style.body(
-                          MyLocalizations.of(context, "your_reports_bites_txt"),
+                          MyLocalizations.of(context, 'your_reports_bites_txt'),
                           textAlign: TextAlign.left),
                     ),
                     ListTile(
@@ -324,7 +323,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                       ),
                       title: Style.body(
                           MyLocalizations.of(
-                              context, "your_reports_adults_txt"),
+                              context, 'your_reports_adults_txt'),
                           textAlign: TextAlign.left),
                     ),
                     ListTile(
@@ -334,7 +333,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                       ),
                       title: Style.body(
                           MyLocalizations.of(
-                              context, "your_reports_breeding_txt"),
+                              context, 'your_reports_breeding_txt'),
                           textAlign: TextAlign.left),
                     ),
                     ListTile(
@@ -343,7 +342,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                         height: 36,
                       ),
                       title: Style.body(
-                          MyLocalizations.of(context, "other_reports_txt"),
+                          MyLocalizations.of(context, 'other_reports_txt'),
                           textAlign: TextAlign.left),
                     ),
                     SizedBox(
@@ -360,7 +359,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
   _reportBottomSheet(Report report) async {
     bool isMine = UserManager.profileUUIDs.any((id) => id == report.user);
     Coordinates coord;
-    if (report.location_choice == "current") {
+    if (report.location_choice == 'current') {
       coord =
           Coordinates(report.current_location_lat, report.current_location_lon);
     } else if (report.location_choice == 'selected') {
@@ -424,7 +423,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                         height: 20,
                       ),
                       Style.titleMedium(
-                          MyLocalizations.of(context, "report_of_the_day_txt") +
+                          MyLocalizations.of(context, 'report_of_the_day_txt') +
                               DateFormat('dd-MM-yyyy')
                                   .format(DateTime.parse(report.creation_time))
                                   .toString()),
@@ -439,10 +438,10 @@ class _MyReportsPageState extends State<MyReportsPage> {
                               children: <Widget>[
                                 Style.titleMedium(
                                     MyLocalizations.of(
-                                        context, "registered_location_txt"),
+                                        context, 'registered_location_txt'),
                                     fontSize: 14),
                                 Style.body(
-                                    report.location_choice == "current"
+                                    report.location_choice == 'current'
                                         ? '(' +
                                             report.current_location_lat
                                                 .toStringAsFixed(5) +
@@ -470,7 +469,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                               children: <Widget>[
                                 Style.titleMedium(
                                     MyLocalizations.of(
-                                        context, "exact_time_register_txt"),
+                                        context, 'exact_time_register_txt'),
                                     fontSize: 14),
                                 Style.body(
                                     DateFormat('EEEE, dd MMMM yyyy',
@@ -490,6 +489,44 @@ class _MyReportsPageState extends State<MyReportsPage> {
                       isMine
                           ? Column(
                               children: <Widget>[
+                                report.type == 'adult'
+                                    ? Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Container(
+                                                    color: Style.colorPrimary,
+                                                    child: Style.titleMedium(
+                                                        'ID: ' +
+                                                            report.report_id)),
+                                              ),
+                                              Expanded(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    IconButton(
+                                                        icon: Icon(Icons.mail),
+                                                        onPressed: () {
+                                                          _checkCampaign(
+                                                              report);
+                                                        }),
+                                                    IconButton(
+                                                        icon: Icon(
+                                                            Icons.find_in_page),
+                                                        onPressed: () {})
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    : Container(),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 10.0),
@@ -502,7 +539,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                         children: <Widget>[
                                           Style.titleMedium(
                                               MyLocalizations.of(context,
-                                                  "reported_images_txt"),
+                                                  'reported_images_txt'),
                                               fontSize: 14),
                                           SizedBox(
                                             height: 10,
@@ -612,7 +649,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                         ],
                                       );
                                     }),
-                                report.note != null && report.note != "null"
+                                report.note != null && report.note != 'null'
                                     ? Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -624,7 +661,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                           ),
                                           Style.titleMedium(
                                               MyLocalizations.of(
-                                                  context, "comments_txt"),
+                                                  context, 'comments_txt'),
                                               fontSize: 14),
                                           Style.body(
                                             report.note,
@@ -677,12 +714,12 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                     Expanded(
                                         child: Style.noBgButton(
                                             MyLocalizations.of(
-                                                context, "delete"), () {
+                                                context, 'delete'), () {
                                       Utils.showAlertYesNo(
                                           MyLocalizations.of(
-                                              context, "delete_report_title"),
+                                              context, 'delete_report_title'),
                                           MyLocalizations.of(
-                                              context, "delete_report_txt"),
+                                              context, 'delete_report_txt'),
                                           () {
                                         _deleteReport(report);
                                       }, context);
@@ -774,7 +811,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
       dataStream.add(myData);
       _myData = myData;
       if (myData != null && myData.isNotEmpty) {
-        var location = myData[0].location_choice == "current"
+        var location = myData[0].location_choice == 'current'
             ? LatLng(
                 myData[0].current_location_lat, myData[0].current_location_lon)
             : LatLng(myData[0].selected_location_lat,
@@ -794,7 +831,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
 
   Future<String> getCity(report) async {
     Coordinates coord;
-    if (report.location_choice == "current") {
+    if (report.location_choice == 'current') {
       coord =
           Coordinates(report.current_location_lat, report.current_location_lon);
     } else if (report.location_choice == 'selected') {
@@ -805,10 +842,10 @@ class _MyReportsPageState extends State<MyReportsPage> {
     return address[0].locality;
   }
 
-  _deleteReport(Report report) async {
+  void _deleteReport(Report report) async {
     Navigator.pop(context);
     loadingStream.add(true);
-    bool res = await Utils.deleteReport(report);
+    var res = await Utils.deleteReport(report);
     if (res) {
       loadingStream.add(false);
       _myData.removeWhere((element) => element.report_id == report.report_id);
@@ -819,8 +856,8 @@ class _MyReportsPageState extends State<MyReportsPage> {
       clusteringHelper.updateData(_listMarkers);
     } else {
       loadingStream.add(false);
-      Utils.showAlert(
-        MyLocalizations.of(context, "app_name"),
+      await Utils.showAlert(
+        MyLocalizations.of(context, 'app_name'),
         MyLocalizations.of(context, 'save_report_ko_txt'),
         context,
       );
@@ -856,7 +893,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
   _getPosition(Report report) {
     var _target;
 
-    if (report.location_choice == "current") {
+    if (report.location_choice == 'current') {
       _target =
           LatLng(report.current_location_lat, report.current_location_lon);
     } else {
@@ -873,7 +910,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
   _getMarker(Report report) {
     var marker;
     var icon = setIconMarker(report.type, report.user);
-    if (report.location_choice == "current") {
+    if (report.location_choice == 'current') {
       marker = Marker(
           markerId: MarkerId('currentMarker'),
           position: LatLng(
@@ -898,14 +935,14 @@ class _MyReportsPageState extends State<MyReportsPage> {
     if (UserManager.profileUUIDs != null &&
         UserManager.profileUUIDs.any((id) => id == user)) {
       switch (type) {
-        case "adult":
+        case 'adult':
           // return
           return iconAdultYours;
           break;
-        case "bite":
+        case 'bite':
           return iconBitesYours;
           break;
-        case "site":
+        case 'site':
           return iconBreedingYours;
           break;
         default:
@@ -922,5 +959,35 @@ class _MyReportsPageState extends State<MyReportsPage> {
     });
     _pagesController.animateToPage(index,
         duration: Duration(milliseconds: 300), curve: Curves.ease);
+  }
+
+  void _checkCampaign(Report report) async {
+    loadingStream.add(true);
+    List<Campaign> campaingsList =
+        await ApiSingleton().getCampaigns(report.country);
+    var now = DateTime.now();
+    loadingStream.add(false);
+    if (campaingsList.any((element) =>
+        DateTime.parse(element.startDate).isBefore(now) &&
+        DateTime.parse(element.endDate).isAfter(now))) {
+      var activeCampaign = campaingsList.firstWhere((element) =>
+          DateTime.parse(element.startDate).isBefore(now) &&
+          DateTime.parse(element.endDate).isAfter(now));
+      await Utils.showCustomAlert(
+          MyLocalizations.of(context, 'alert_campaing_found_title'),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Style.titleMedium('Id: ' + report.report_id),
+              Style.body(activeCampaign.postingAddress),
+            ],
+          ),
+          context);
+    } else {
+      await Utils.showAlert(
+          MyLocalizations.of(context, 'campaign_not_fount_title'),
+          MyLocalizations.of(context, 'campaign_not_fount_text'),
+          context);
+    }
   }
 }

@@ -27,34 +27,35 @@ class Report {
   String os_language;
   String app_language;
   String displayCity;
+  int country;
 
-  Report({
-    this.version_UUID,
-    this.version_number,
-    this.user,
-    this.report_id,
-    this.phone_upload_time,
-    this.creation_time,
-    this.version_time,
-    this.type,
-    this.location_choice,
-    this.current_location_lon,
-    this.current_location_lat,
-    this.selected_location_lon,
-    this.selected_location_lat,
-    this.note,
-    this.package_name,
-    this.package_version,
-    this.session,
-    this.responses,
-    this.device_manufacturer,
-    this.device_model,
-    this.os,
-    this.os_language,
-    this.os_version,
-    this.app_language,
-    this.displayCity,
-  });
+  Report(
+      {this.version_UUID,
+      this.version_number,
+      this.user,
+      this.report_id,
+      this.phone_upload_time,
+      this.creation_time,
+      this.version_time,
+      this.type,
+      this.location_choice,
+      this.current_location_lon,
+      this.current_location_lat,
+      this.selected_location_lon,
+      this.selected_location_lat,
+      this.note,
+      this.package_name,
+      this.package_version,
+      this.session,
+      this.responses,
+      this.device_manufacturer,
+      this.device_model,
+      this.os,
+      this.os_language,
+      this.os_version,
+      this.app_language,
+      this.displayCity,
+      this.country});
 
   Report.fromJson(Map<dynamic, dynamic> json) {
     version_UUID = json['version_UUID'].toString();
@@ -96,6 +97,7 @@ class Report {
     os_version = json['os_version'];
     os_language = json['os_language'];
     app_language = json['app_language'];
+    country = json['country'];
   }
 
   Map<String, dynamic> toJson() {
@@ -125,7 +127,7 @@ class Report {
     if (this.photos != null) {
       data['photos'] = this.photos.map((r) => r.toJson()).toList();
     }
-    
+
     data['device_manfacturer'] = this.device_manufacturer;
     data['device_model'] = this.device_model;
     data['os'] = this.os;
