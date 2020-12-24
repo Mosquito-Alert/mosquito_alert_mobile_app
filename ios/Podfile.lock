@@ -210,6 +210,9 @@ PODS:
   - SDWebImage/Core (5.8.3)
   - shared_preferences (0.0.1):
     - Flutter
+  - simple_connectivity (0.0.1):
+    - Flutter
+    - Reachability
   - SwiftyGif (5.3.0)
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.2):
@@ -240,6 +243,7 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - simple_connectivity (from `.symlinks/plugins/simple_connectivity/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
@@ -317,6 +321,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  simple_connectivity:
+    :path: ".symlinks/plugins/simple_connectivity/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
   webview_flutter:
@@ -370,6 +376,7 @@ SPEC CHECKSUMS:
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 112503ec94a5a2a41869503844a15e8d8f1ead5c
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  simple_connectivity: 84a7221f5ca3d54ebf18faa4d74f0bb6cc757cbe
   SwiftyGif: e466e86c660d343357ab944a819a101c4127cb40
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb

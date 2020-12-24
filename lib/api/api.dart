@@ -18,6 +18,7 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ApiSingleton {
+  static final _timeoutTimerInSeconds = 5;
   static String baseUrl = 'http://madev.creaf.cat';
   // static String baseUrl = 'http://webserver.mosquitoalert.com';
   static String serverUrl = '$baseUrl/api';
@@ -82,11 +83,17 @@ class ApiSingleton {
           headers: headers,
           body: json.encode({
             'user_UUID': uuid,
-          }));
+          })).timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );;
 
       if (response.statusCode != 201) {
         print(
-            // ignore: prefer_single_quotes
+          // ignore: prefer_single_quotes
             "Request: ${response.request.toString()} -> Response: ${response.body}");
         return ApiResponse.fromJson(json.decode(response.body));
       }
@@ -129,12 +136,12 @@ class ApiSingleton {
 
   Future<FirebaseUser> sigInWithGoogle() async {
     final GoogleSignInAccount googleUser =
-        await _googleSignIn.signIn().catchError((e) {
+    await _googleSignIn.signIn().catchError((e) {
       print(e);
       return null;
     });
     final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+    await googleUser.authentication;
 
     final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleAuth.accessToken,
@@ -171,7 +178,7 @@ class ApiSingleton {
         return currentUser;
         break;
       case FacebookLoginStatus.cancelledByUser:
-        // Todo: Show alert
+      // Todo: Show alert
         break;
       case FacebookLoginStatus.error:
         print(result.errorMessage);
@@ -225,7 +232,13 @@ class ApiSingleton {
     try {
       final response = await http.post(
           '$serverUrl$newProfile?fbt=$firebaseId&usr=$userUUID',
-          headers: headers);
+          headers: headers).timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );;
 
       // print(response);
 
@@ -247,6 +260,12 @@ class ApiSingleton {
       final response = await http.get(
         '$serverUrl$userScore?user_id=$userUUID&update=True',
         headers: headers,
+      ).timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
       );
 
       if (response.statusCode != 200) {
@@ -273,6 +292,12 @@ class ApiSingleton {
       final response = await http.get(
         '$serverUrl$notifications?user_id=$userUUID&locale=$locale',
         headers: headers,
+      ).timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
       );
 
       print(response);
@@ -282,17 +307,9 @@ class ApiSingleton {
         return ApiResponse.fromJson(json.decode(response.body));
       }
 
-      // print(json.decode(response.body));
-      // Map<String, dynamic> jsonAnswer = json.decode(response.body);
-
-      // print(json.decode(response.body));
-
-      // List data = jsonAnswer['body'].toList();
-      // return data;
-
       var list = json.decode(response.body) as List;
       List<MyNotification> data =
-          list.map((i) => MyNotification.fromJson(i)).toList();
+      list.map((i) => MyNotification.fromJson(i)).toList();
       return data;
     } catch (e) {
       return false;
@@ -304,7 +321,13 @@ class ApiSingleton {
       final response = await http.post(
         '$serverUrl$notifications?id=$id&acknowledged=$aknowlaged',
         headers: headers,
-      );
+      ).timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );;
 
       print(response);
       if (response.statusCode != 200) {
@@ -327,7 +350,13 @@ class ApiSingleton {
       final response = await http.get(
         '$serverUrl$sessions?user=$userUUID',
         headers: headers,
-      );
+      ).timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );;
 
       if (response.statusCode != 200) {
         print(
@@ -359,7 +388,13 @@ class ApiSingleton {
           headers: headers,
           body: json.encode(
             session.toJson(),
-          ));
+          )).timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );;
 
       if (response.statusCode != 201) {
         print(
@@ -380,7 +415,13 @@ class ApiSingleton {
       final response = await http.put(
           '$serverUrl$sessionUpdate${session.session_ID}/',
           headers: headers,
-          body: json.encode({'session_end_time': session.session_end_time}));
+          body: json.encode({'session_end_time': session.session_end_time})).timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );;
 
       if (response.statusCode != 200) {
         print(
@@ -475,7 +516,13 @@ class ApiSingleton {
         '$serverUrl$reports',
         headers: headers,
         body: json.encode(body),
-      );
+      ).timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );;
 
       await saveImages(report);
 
@@ -509,7 +556,7 @@ class ApiSingleton {
             bool isSaved = await saveImage(img['image'], report.version_UUID);
             if (!isSaved) {
               final Directory directory =
-                  await getApplicationDocumentsDirectory();
+              await getApplicationDocumentsDirectory();
               File newImage = await img['imageFile']
                   .copy('${directory.path}/${report.version_UUID}.png');
 
@@ -524,14 +571,14 @@ class ApiSingleton {
   }
 
   Future<List<Report>> getReportsList(
-    lat,
-    lon, {
-    int page,
-    List<Report> allReports,
-    bool show_hidden,
-    int radius,
-    bool show_verions,
-  }) async {
+      lat,
+      lon, {
+        int page,
+        List<Report> allReports,
+        bool show_hidden,
+        int radius,
+        bool show_verions,
+      }) async {
     try {
       var userUUID = await UserManager.getUUID();
 
@@ -540,13 +587,14 @@ class ApiSingleton {
             (show_hidden == true ? '&show_hidden=1' : '') +
             (show_verions == true ? '&show_versions=1' : ''),
         headers: headers,
+      ).timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
       );
-      // final response = await http.get(
-      //   '$serverUrl$nearbyReports?lat=$lat&lon=$lon&page=${page != null ? page : '1'}&user=$userUUID&page_size=75&radius=${radius != null ? radius : 1000}' +
-      //       (show_hidden == true ? '&show_hidden=1' : '') +
-      //       (show_verions == true ? '&show_versions=1' : ''),
-      //   headers: headers,
-      // );
+
 
       if (response.statusCode != 200) {
         print(
@@ -623,7 +671,13 @@ class ApiSingleton {
         '$serverUrl$fixes',
         headers: headers,
         body: json.encode(body),
-      );
+      ).timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );;
 
       if (response.statusCode != 201) {
         print(

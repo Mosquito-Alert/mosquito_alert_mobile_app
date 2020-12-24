@@ -105,8 +105,11 @@ class _BitingFormState extends State<BitingForm> {
 
                       var isValid = canContinue();
                       // widget.setValid(isValid);
+                      Utils.resetBitingQuestion();
                       setState(() {
                         valid = isValid;
+                        questions = Utils.report.responses;
+
                       });
                     },
                   ),
@@ -596,8 +599,6 @@ class _BitingFormState extends State<BitingForm> {
             (int.parse(bodyParts.last.answer_value) - 1).toString();
       } else {
         bodyParts.removeLast();
-        // report.responses.removeWhere((element) => element.question_id == 2);
-        // report.responses.addAll(bodyParts);
       }
     }
 

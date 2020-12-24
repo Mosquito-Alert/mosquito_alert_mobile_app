@@ -667,7 +667,8 @@ class Utils {
 
   static Widget loading(_isLoading, [Color indicatorColor]) {
     return _isLoading == true
-        ? new Container(
+        ?  IgnorePointer(
+        child: Container(
             color: Colors.transparent,
             child: Center(
               child: new CircularProgressIndicator(
@@ -677,7 +678,7 @@ class Utils {
                         : indicatorColor),
               ),
             ),
-          )
+          ))
         : new Container();
   }
 

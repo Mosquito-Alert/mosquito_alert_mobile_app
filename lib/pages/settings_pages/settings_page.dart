@@ -6,6 +6,7 @@ import 'package:mosquito_alert_app/pages/auth/login_main_page.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page.dart';
 import 'package:mosquito_alert_app/pages/main/main_vc.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/settings_menu_widget.dart';
+import 'package:mosquito_alert_app/pages/settings_pages/countries_involved.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/gallery_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/Application.dart';
@@ -191,6 +192,17 @@ class _SettingsPageState extends State<SettingsPage> {
                         InfoPage(MyLocalizations.of(context, 'url_about_us'))),
               );
             }),
+                SizedBox(
+                  height: 10,
+                ),
+                SettingsMenuWidget("countries_involved", () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            CountriesInvolvedPage()),
+                  );
+                }),
             SizedBox(
               height: 30,
             ),

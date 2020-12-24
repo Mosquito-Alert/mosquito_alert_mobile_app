@@ -18,8 +18,8 @@ import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
-    as bg;
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart' as bg;
+import 'package:connectivity_widget/connectivity_widget.dart';
 
 class MainVC extends StatefulWidget {
   @override
@@ -29,8 +29,7 @@ class MainVC extends StatefulWidget {
 class _MainVCState extends State<MainVC> {
   String userName;
 
-  StreamController<String> nameStream =
-      new StreamController<String>.broadcast();
+  StreamController<String> nameStream = new StreamController<String>.broadcast();
   String userUuid;
   StreamController<bool> loadingStream = new StreamController<bool>.broadcast();
 
@@ -93,18 +92,13 @@ class _MainVCState extends State<MainVC> {
   }
 
   void _onLocation(bg.Location location) {
-    Utils.location = Position(
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude);
+    Utils.location = Position(latitude: location.coords.latitude, longitude: location.coords.longitude);
 
     if ((location.coords.latitude).abs() <= 66.5) {
-      double lat = (location.coords.latitude / Utils.maskCoordsValue).floor() *
-          Utils.maskCoordsValue;
-      double lon = (location.coords.longitude / Utils.maskCoordsValue).floor() *
-          Utils.maskCoordsValue;
+      double lat = (location.coords.latitude / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue;
+      double lon = (location.coords.longitude / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue;
 
-      ApiSingleton()
-          .sendFixes(lat, lon, location.timestamp, location.battery.level);
+      ApiSingleton().sendFixes(lat, lon, location.timestamp, location.battery.level);
     }
   }
 
@@ -123,9 +117,7 @@ class _MainVCState extends State<MainVC> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            SettingsPage(enableTracking: _bgTracking)),
+                    MaterialPageRoute(builder: (context) => SettingsPage(enableTracking: _bgTracking)),
                   );
                 },
               ),
@@ -139,278 +131,266 @@ class _MainVCState extends State<MainVC> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => NotificationsPage()),
+                      MaterialPageRoute(builder: (context) => NotificationsPage()),
                     );
                   },
                 )
               ],
             ),
-            body: LayoutBuilder(
-              builder:
-                  (BuildContext context, BoxConstraints viewportConstraints) {
-                return SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: viewportConstraints.maxHeight,
-                    ),
-                    child: IntrinsicHeight(
+            body: ConnectivityWidget(
+                offlineBanner: SafeArea(
+                  child: Container(
+                      padding: EdgeInsets.all(8),
+                      margin: EdgeInsets.all(8),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4),  color: Colors.red.withOpacity(0.95),),
+                      width: double.infinity,
+
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            child: Column(
-                              children: <Widget>[
-                                SizedBox(
-                                  height: 24,
-                                ),
-                                Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Expanded(
-                                        flex: 2,
-                                        child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.wifi_off,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              Text(
+                                "no_internet_connection",
+                                style: TextStyle(fontSize: 14, color: Colors.white),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            "app_may_not_work_as_expected",
+                            style: TextStyle(fontSize: 12, color: Colors.white.withOpacity(0.9)),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      )),
+                ),
+                onlineCallback: () {
+                  print('test');
+                },
+                builder: (context, isOnline) => LayoutBuilder(
+                      builder: (BuildContext context, BoxConstraints viewportConstraints) {
+                        return SingleChildScrollView(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: viewportConstraints.maxHeight,
+                            ),
+                            child: IntrinsicHeight(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 12),
+                                    child: Column(
+                                      children: <Widget>[
+                                        SizedBox(
+                                          height: 24,
+                                        ),
+                                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
                                               StreamBuilder<String>(
                                                   stream: nameStream.stream,
                                                   initialData: userName,
-                                                  builder: (context,
-                                                      AsyncSnapshot<String>
-                                                          snapshot) {
+                                                  builder: (context, AsyncSnapshot<String> snapshot) {
                                                     if (snapshot.hasData) {
                                                       print(snapshot.data);
-                                                      return Style.title(
-                                                          " ${MyLocalizations.of(context, "welcome_text")}, ${snapshot.data}.",
-                                                          fontSize: 20);
+                                                      return Style.title("${MyLocalizations.of(context, "welcome_text")}, ${snapshot.data}.", fontSize: 20);
                                                     } else {
-                                                      return Style.title(
-                                                          " ${MyLocalizations.of(context, "welcome_text")}",
-                                                          fontSize: 20);
+                                                      return Style.title("${MyLocalizations.of(context, "welcome_text")}", fontSize: 20);
                                                     }
                                                   }),
                                               SizedBox(
                                                 height: 4,
                                               ),
-                                              Style.body(
-                                                  MyLocalizations.of(context,
-                                                      "what_to_do_txt"),
-                                                  fontSize: 14),
+                                              Style.body(MyLocalizations.of(context, "what_to_do_txt"), fontSize: 14),
                                             ]),
-                                      ),
-                                      SizedBox(
-                                        width: 12,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => InfoPage(
-                                                    "${MyLocalizations.of(context, 'url_point_1')}$userUuid")),
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 60,
-                                          width: 60,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage(
-                                                  "assets/img/points_box.png"),
+                                          ),
+                                          SizedBox(
+                                            width: 12,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => InfoPage("${MyLocalizations.of(context, 'url_point_1')}$userUuid")),
+                                              );
+                                            },
+                                            child: Container(
+                                              height: 60,
+                                              width: 60,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/img/points_box.png"),
+                                                ),
+                                              ),
+                                              child: StreamBuilder<int>(
+                                                  stream: Utils.userScoresController.stream,
+                                                  initialData: UserManager.userScore,
+                                                  builder: (context, snapshot) {
+                                                    return Center(
+                                                        child: AutoSizeText(
+                                                      snapshot.data != null && snapshot.hasData ? snapshot.data.toString() : '',
+                                                      maxLines: 1,
+                                                      maxFontSize: 26,
+                                                      minFontSize: 16,
+                                                      style: TextStyle(color: Color(0xFF4B3D04), fontWeight: FontWeight.w500, fontSize: 24),
+                                                    ));
+                                                  }),
                                             ),
                                           ),
-                                          child: StreamBuilder<int>(
-                                              stream: Utils
-                                                  .userScoresController.stream,
-                                              initialData:
-                                                  UserManager.userScore,
-                                              builder: (context, snapshot) {
-                                                return Center(
-                                                    child: AutoSizeText(
-                                                  snapshot.data != null &&
-                                                          snapshot.hasData
-                                                      ? snapshot.data.toString()
-                                                      : '',
-                                                  maxLines: 1,
-                                                  maxFontSize: 26,
-                                                  minFontSize: 16,
-                                                  style: TextStyle(
-                                                      color: Color(0xFF4B3D04),
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 24),
-                                                ));
-                                              }),
+                                        ]),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                          child: Divider(),
                                         ),
-                                      ),
-                                    ]),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 6.0),
-                                  child: Divider(),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    GestureDetector(
-                                      onTap: () {
-                                        loadingStream.add(true);
-                                        _createBiteReport();
-                                      },
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.45,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.5,
-                                        child: CustomCard(
-                                          img: 'assets/img/ic_bite_report.png',
-                                          title: MyLocalizations.of(
-                                              context, 'report_biting_txt'),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              onTap: () {
+                                                loadingStream.add(true);
+                                                _createBiteReport();
+                                              },
+                                              child: Container(
+                                                width: MediaQuery.of(context).size.width * 0.45,
+                                                height: MediaQuery.of(context).size.width * 0.5,
+                                                child: CustomCard(
+                                                  img: 'assets/img/ic_bite_report.png',
+                                                  title: MyLocalizations.of(context, 'report_biting_txt'),
+                                                ),
+                                              ),
+                                            ),
+                                            // SizedBox(
+                                            //   width: 5,
+                                            // ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                loadingStream.add(true);
+                                                _createAdultReport();
+                                              },
+                                              child: Container(
+                                                width: MediaQuery.of(context).size.width * 0.45,
+                                                height: MediaQuery.of(context).size.width * 0.5,
+                                                child: CustomCard(
+                                                  img: 'assets/img/ic_mosquito_report.png',
+                                                  title: MyLocalizations.of(context, 'report_adults_txt'),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: <Widget>[
+                                            Container(
+                                                width: MediaQuery.of(context).size.width * 0.45,
+                                                height: MediaQuery.of(context).size.width * 0.5,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    loadingStream.add(true);
+                                                    _createSiteReport();
+                                                  },
+                                                  child: CustomCard(
+                                                    img: 'assets/img/ic_breeding_report.png',
+                                                    title: MyLocalizations.of(context, 'report_nest_txt'),
+                                                  ),
+                                                )),
+                                            Container(
+                                                width: MediaQuery.of(context).size.width * 0.45,
+                                                height: MediaQuery.of(context).size.width * 0.5,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(builder: (context) => MyReportsPage()),
+                                                    );
+                                                  },
+                                                  child: CustomCard(
+                                                    img: 'assets/img/ic_my_reports.png',
+                                                    title: MyLocalizations.of(context, 'your_reports_txt'),
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        // Card(
+                                        //   elevation: 2,
+                                        //   shape: RoundedRectangleBorder(
+                                        //       borderRadius: BorderRadius.circular(20)),
+                                        //   child: Container(
+                                        //     padding: EdgeInsets.only(left: 20, right: 10, top: 15, bottom: 15),
+                                        //     child: Row(
+                                        //       children: <Widget>[
+                                        //         Image.asset(
+                                        //           'assets/img/ic_validate_photos.png',
+                                        //           width: 55,
+                                        //           fit: BoxFit.fitWidth,
+                                        //         ),
+                                        //         SizedBox(width: 15,),
+                                        //         Expanded(
+                                        //           flex: 2,
+                                        //           child: Column(
+                                        //             children: <Widget>[
+                                        //               Style.titleMedium(
+                                        //                   MyLocalizations.of(context,
+                                        //                       'help_validating_other_photos_txt'),
+                                        //                   fontSize: 16),
+                                        //               SizedBox(
+                                        //                 height: 5,
+                                        //               ),
+                                        //               Style.bodySmall(MyLocalizations.of(
+                                        //                   context, 'we_need_help_txt')),
+                                        //               SizedBox(
+                                        //                 height: 5,
+                                        //               ),
+                                        //             ],
+                                        //           ),
+                                        //         )
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                      ],
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: 25),
+                                      child: SvgPicture.asset(
+                                        'assets/img/ic_bottom_waves.svg',
+                                        width: double.infinity,
+                                        fit: BoxFit.fitWidth,
+                                        alignment: Alignment.bottomCenter,
                                       ),
                                     ),
-                                    // SizedBox(
-                                    //   width: 5,
-                                    // ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        loadingStream.add(true);
-                                        _createAdultReport();
-                                      },
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.45,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.5,
-                                        child: CustomCard(
-                                          img:
-                                              'assets/img/ic_mosquito_report.png',
-                                          title: MyLocalizations.of(
-                                              context, 'report_adults_txt'),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.45,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.5,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            loadingStream.add(true);
-                                            _createSiteReport();
-                                          },
-                                          child: CustomCard(
-                                            img:
-                                                'assets/img/ic_breeding_report.png',
-                                            title: MyLocalizations.of(
-                                                context, 'report_nest_txt'),
-                                          ),
-                                        )),
-                                    Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.45,
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.5,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      MyReportsPage()),
-                                            );
-                                          },
-                                          child: CustomCard(
-                                            img: 'assets/img/ic_my_reports.png',
-                                            title: MyLocalizations.of(
-                                                context, 'your_reports_txt'),
-                                          ),
-                                        )),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                // Card(
-                                //   elevation: 2,
-                                //   shape: RoundedRectangleBorder(
-                                //       borderRadius: BorderRadius.circular(20)),
-                                //   child: Container(
-                                //     padding: EdgeInsets.only(left: 20, right: 10, top: 15, bottom: 15),
-                                //     child: Row(
-                                //       children: <Widget>[
-                                //         Image.asset(
-                                //           'assets/img/ic_validate_photos.png',
-                                //           width: 55,
-                                //           fit: BoxFit.fitWidth,
-                                //         ),
-                                //         SizedBox(width: 15,),
-                                //         Expanded(
-                                //           flex: 2,
-                                //           child: Column(
-                                //             children: <Widget>[
-                                //               Style.titleMedium(
-                                //                   MyLocalizations.of(context,
-                                //                       'help_validating_other_photos_txt'),
-                                //                   fontSize: 16),
-                                //               SizedBox(
-                                //                 height: 5,
-                                //               ),
-                                //               Style.bodySmall(MyLocalizations.of(
-                                //                   context, 'we_need_help_txt')),
-                                //               SizedBox(
-                                //                 height: 5,
-                                //               ),
-                                //             ],
-                                //           ),
-                                //         )
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
-                            ),
-                          ),
-                          Flexible(
-                            child: Container(
-                              margin: EdgeInsets.only(top: 25),
-                              child: SvgPicture.asset(
-                                'assets/img/ic_bottom_waves.svg',
-                                width: double.infinity,
-                                fit: BoxFit.fitWidth,
-                                alignment: Alignment.bottomCenter,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            )),
+                        );
+                      },
+                    ))),
         Positioned.fill(
           child: StreamBuilder<bool>(
             stream: loadingStream.stream,
@@ -438,8 +418,7 @@ class _MainVCState extends State<MainVC> {
         MaterialPageRoute(builder: (context) => BitingReportPage()),
       );
     } else {
-      Utils.showAlert(MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'save_report_ko_txt'), context);
+      Utils.showAlert(MyLocalizations.of(context, 'app_name'), MyLocalizations.of(context, 'save_report_ko_txt'), context);
     }
   }
 
@@ -452,8 +431,7 @@ class _MainVCState extends State<MainVC> {
         MaterialPageRoute(builder: (context) => AdultReportPage()),
       );
     } else {
-      Utils.showAlert(MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'save_report_ko_txt'), context);
+      Utils.showAlert(MyLocalizations.of(context, 'app_name'), MyLocalizations.of(context, 'save_report_ko_txt'), context);
     }
   }
 
@@ -466,8 +444,7 @@ class _MainVCState extends State<MainVC> {
         MaterialPageRoute(builder: (context) => BreedingReportPage()),
       );
     } else {
-      Utils.showAlert(MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'save_report_ko_txt'), context);
+      Utils.showAlert(MyLocalizations.of(context, 'app_name'), MyLocalizations.of(context, 'save_report_ko_txt'), context);
     }
   }
 }
