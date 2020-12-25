@@ -48,10 +48,9 @@ android {
     }
 
     defaultConfig {
-        // applicationId "ceab.movelab.tigatrapp"
+        multiDexEnabled true
         applicationId "ceab.movelab.tigabib"
-        minSdkVersion 21
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 23
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -75,6 +74,13 @@ android {
             // background_geolocation requires custom Proguard Rules with minifyEnabled
            proguardFiles "${background_geolocation.projectDir}/proguard-rules.pro"
         }
+        debug {
+            minifyEnabled true
+            signingConfig signingConfigs.debug
+        }
+    }
+    defaultConfig {
+        multiDexEnabled true
     }
 }
 
@@ -84,6 +90,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:multidex:1.0.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
