@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
-import 'package:connectivity_widget/connectivity_widget.dart';
+//import 'package:connectivity_widget/connectivity_widget.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/main/main_vc.dart';
@@ -86,14 +86,14 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-    ConnectivityUtils.initialize(
+    /*ConnectivityUtils.initialize(
         serverToPing:
         'http://madev.creaf.cat',
         callback: (response) {
           print(response);
           return response != null;
 
-        });
+        });*/
 
     return MaterialApp(
       title: 'Mosquito alert',
