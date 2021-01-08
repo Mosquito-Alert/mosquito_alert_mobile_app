@@ -22,7 +22,8 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
   List<Slide> initSlides() {
     slides.add(Slide(
         title: '',
-        description: MyLocalizations.of(context, 'campaign_info_01'),
+        // description: MyLocalizations.of(context, 'campaign_info_01'),
+        description: 'campaign_info',
         pathImage: 'assets/img/gallery/guia_1.png',
         backgroundImage: 'assets/img/gallery/guia_1.png'));
 
@@ -111,8 +112,9 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Style.title(MyLocalizations.of(context, 'campaign_tutorial_txt'),
-            fontSize: 16),
+        title: Style.title('campaign_tutorial_txt'),
+        // title: Style.title(MyLocalizations.of(context, 'campaign_tutorial_txt'),
+        //     fontSize: 16),
       ),
       body: IntroSlider(
         // List slides
