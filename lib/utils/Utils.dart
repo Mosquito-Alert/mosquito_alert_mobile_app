@@ -747,8 +747,8 @@ class Utils {
 
   static Widget loading(_isLoading, [Color indicatorColor]) {
     return _isLoading == true
-        ?  IgnorePointer(
-        child: Container(
+        ? IgnorePointer(
+            child: Container(
             color: Colors.transparent,
             child: Center(
               child: new CircularProgressIndicator(
@@ -918,10 +918,10 @@ class Utils {
     }
   }
 
-  static showAlertCampaign(context, activeCampaign) {
+  static showAlertCampaign(ctx, activeCampaign, onPressed) {
     if (Platform.isAndroid) {
       return showDialog(
-        context: context,
+        context: ctx,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
@@ -939,26 +939,10 @@ class Utils {
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text(MyLocalizations.of(context, 'show_info')),
-                onPressed: () {
-                  Navigator.pop(context);
-                  Utils.showCustomAlert(
-                    MyLocalizations.of(context, 'alert_campaing_found_title'),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Style.titleMedium('Id: ' + report.report_id),
-                        Style.body(activeCampaign.postingAddress),
-                      ],
-                    ),
-                    context,
-                    // onPressed: () {
-                    //   Navigator.of(context).popUntil((r) => r.isFirst);
-                    //   Utils.resetReport();
-                    // },
-                  );
-                },
-              ),
+                  child: Text(MyLocalizations.of(context, 'show_info')),
+                  onPressed: () {
+                    onPressed(context);
+                  }),
               FlatButton(
                 child: Text(MyLocalizations.of(context, 'no_show_info')),
                 onPressed: () {
@@ -972,7 +956,7 @@ class Utils {
       );
     } else {
       return showDialog(
-        context: context, //
+        context: ctx, //
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
             title: Text(
@@ -991,27 +975,11 @@ class Utils {
             ),
             actions: <Widget>[
               CupertinoDialogAction(
-                isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'show_info')),
-                onPressed: () {
-                  Navigator.pop(context);
-                  Utils.showCustomAlert(
-                    MyLocalizations.of(context, 'alert_campaing_found_title'),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Style.titleMedium('Id: ' + report.report_id),
-                        Style.body(activeCampaign.postingAddress),
-                      ],
-                    ),
-                    context,
-                    // onPressed: () {
-                    //   Navigator.of(context).popUntil((r) => r.isFirst);
-                    //   Utils.resetReport();
-                    // },
-                  );
-                },
-              ),
+                  isDefaultAction: true,
+                  child: Text(MyLocalizations.of(context, 'show_info')),
+                  onPressed: () {
+                    onPressed(context);
+                  }),
               CupertinoDialogAction(
                 isDefaultAction: true,
                 child: Text(MyLocalizations.of(context, 'no_show_info')),

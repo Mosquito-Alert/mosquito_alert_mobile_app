@@ -290,5 +290,7 @@
     "alert_campaing_found_title": "You can send your mosquito to our labs!",
     "alert_campaign_found_create_body": "In this country you have the option to also send your mosquito by post to a laboratory.",
     "show_info": "See how", 
-    "no_show_info": "Not now"
+    "no_show_info": "Not now", 
+    "campaign_info_01": "Campaign tutorial", 
+    "campaign_tutorial_txt": "Campaign tutorial"
 }
