@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:connectivity/connectivity.dart';
+//import 'package:connectivity/connectivity.dart';
 import 'package:firebase_core/firebase_core.dart';
 //import 'package:connectivity_widget/connectivity_widget.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -15,11 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  try {
-    await Firebase.initializeApp();
-  }catch(err){
-    print("$err");
-  }
+  await Firebase.initializeApp();
   // ignore: invalid_use_of_visible_for_testing_member
   SharedPreferences.setMockInitialValues({});
   runApp(MyApp());
@@ -35,7 +31,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
-  StreamSubscription<ConnectivityResult> subscription;
+  //StreamSubscription<ConnectivityResult> subscription;
 
   MyLocalizationsDelegate _newLocaleDelegate = MyLocalizationsDelegate();
 
@@ -63,7 +59,7 @@ class _MyAppState extends State<MyApp> {
     });
 
     //backgroud sync reports
-    subscription = Connectivity()
+    /*subscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
       switch (result) {
@@ -74,7 +70,7 @@ class _MyAppState extends State<MyApp> {
         case ConnectivityResult.none:
           break;
       }
-    });
+    });*/
     application.onLocaleChanged = onLocaleChange;
 
 
@@ -90,7 +86,7 @@ class _MyAppState extends State<MyApp> {
   @override
   dispose() {
     super.dispose();
-    subscription.cancel();
+    //subscription.cancel();
   }
 
   @override
