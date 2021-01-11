@@ -1,7 +1,7 @@
 name: mosquito_alert_app
 description: A new Flutter project.
 
-version: 2.0.1+1291
+version: 2.0.2+1300
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -32,7 +32,7 @@ dependencies:
   auto_size_text: ^2.1.0
   file_picker: ^1.10.0
   geocoder: ^0.2.1
-  device_info: ^0.4.2+4
+  device_info: ^1.0.0
   package_info: ^0.4.3+2
   flutter_launcher_icons: ^0.7.5
   url_launcher: ^5.2.5
@@ -48,7 +48,7 @@ dependencies:
   flutter_material_pickers: ^1.7.1
   permission_handler: ^5.0.1+1
   language_pickers: ^0.2.0+1
-  #connectivity: ^0.4.9+3
+  connectivity: ^2.0.2
   #connectivity_widget: ^0.1.7
 
 dev_dependencies:
