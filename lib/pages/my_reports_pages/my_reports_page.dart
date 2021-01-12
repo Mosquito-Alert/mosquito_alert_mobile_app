@@ -10,6 +10,7 @@ import 'package:material_segmented_control/material_segmented_control.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/owcampaing.dart';
 import 'package:mosquito_alert_app/models/report.dart';
+import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
@@ -497,13 +498,13 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                           ),
                                           Row(
                                             children: [
-                                              Expanded(
-                                                child: Container(
-                                                    color: Style.colorPrimary,
-                                                    child: Style.titleMedium(
-                                                        'ID: ' +
-                                                            report.report_id)),
-                                              ),
+                                              Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10),
+                                                  color: Style.colorPrimary,
+                                                  child: Style.titleMedium(
+                                                      'ID: ' +
+                                                          report.report_id)),
                                               Expanded(
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -518,7 +519,15 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                                     IconButton(
                                                         icon: Icon(
                                                             Icons.find_in_page),
-                                                        onPressed: () {})
+                                                        onPressed: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        CampaignTutorialPage()),
+                                                          );
+                                                        })
                                                   ],
                                                 ),
                                               ),

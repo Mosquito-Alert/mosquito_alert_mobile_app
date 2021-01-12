@@ -284,5 +284,13 @@
     "consent_txt_14": "Despre ",
     "consent_txt_15": "noi",
     "see_more_txt": "Citeste mai mult",
-    "hours": "ore"
+    "hours": "ore",
+    "campaign_not_fount_title": "Service not available", 
+    "campaign_not_fount_text": "This service is not available in your country right now :(",
+    "alert_campaing_found_title": "You can send your mosquito to our labs!",
+    "alert_campaign_found_create_body": "In this country you have the option to also send your mosquito by post to a laboratory.",
+    "show_info": "See how", 
+    "no_show_info": "Not now", 
+    "campaign_info_01": "Campaign tutorial", 
+    "campaign_tutorial_txt": "Campaign tutorial"
 }

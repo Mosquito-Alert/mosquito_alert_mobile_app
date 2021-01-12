@@ -266,7 +266,29 @@ class _AdultReportPageState extends State<AdultReportPage> {
           var activeCampaign = campaingsList.firstWhere((element) =>
               DateTime.parse(element.startDate).isBefore(now) &&
               DateTime.parse(element.endDate).isAfter(now));
-          Utils.showAlertCampaign(context, activeCampaign);
+          Utils.showAlertCampaign(
+            context,
+            activeCampaign,
+            (ctx) {
+              Navigator.pop(context);
+              Utils.showCustomAlert(
+                MyLocalizations.of(context, 'alert_campaing_found_title'),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Style.titleMedium('Id: ' + Utils.report.report_id),
+                    Style.body(activeCampaign.postingAddress),
+                  ],
+                ),
+                ctx,
+                onPressed: () {
+                  // Navigator.pop(context);
+                  Navigator.of(context).popUntil((r) => r.isFirst);
+                  Utils.resetReport();
+                },
+              );
+            },
+          );
         } else {
           _showAlertOk();
         }
