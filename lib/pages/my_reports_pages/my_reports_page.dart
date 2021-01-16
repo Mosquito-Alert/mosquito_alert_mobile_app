@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -357,6 +358,20 @@ class _MyReportsPageState extends State<MyReportsPage> {
         });
   }
 
+  Future<Campaign> _checkCampaigns(int country) async {
+    List<Campaign> campaignsList = await ApiSingleton().getCampaigns(country);
+    var now = DateTime.now();
+    if (campaignsList.any((element) =>
+    DateTime.parse(element.startDate).isBefore(now) &&
+        DateTime.parse(element.endDate).isAfter(now))) {
+      var activeCampaign = campaignsList.firstWhere((element) =>
+      DateTime.parse(element.startDate).isBefore(now) &&
+          DateTime.parse(element.endDate).isAfter(now));
+      return activeCampaign;
+    }
+    return null;
+  }
+
   _reportBottomSheet(Report report) async {
     bool isMine = UserManager.profileUUIDs.any((id) => id == report.user);
     Coordinates coord;
@@ -367,8 +382,9 @@ class _MyReportsPageState extends State<MyReportsPage> {
       coord = Coordinates(
           report.selected_location_lat, report.selected_location_lon);
     }
+    Campaign campaign = await _checkCampaigns(report.country);
     var address = await Geocoder.local.findAddressesFromCoordinates(coord);
-    CustomShowModalBottomSheet.customShowModalBottomSheet(
+    await CustomShowModalBottomSheet.customShowModalBottomSheet(
         context: context,
         dismissible: true,
         builder: (BuildContext bc) {
@@ -496,11 +512,12 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                           SizedBox(
                                             height: 15,
                                           ),
+                                          campaign != null ?
                                           Row(
                                             children: [
                                               Container(
                                                   padding: EdgeInsets.symmetric(
-                                                      horizontal: 10),
+                                                      horizontal: 10, vertical: 4),
                                                   color: Style.colorPrimary,
                                                   child: Style.titleMedium(
                                                       'ID: ' +
@@ -511,14 +528,13 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                                       MainAxisAlignment.end,
                                                   children: [
                                                     IconButton(
-                                                        icon: Icon(Icons.mail),
+                                                        icon: SvgPicture.asset("assets/img/sendmodule/ic_pin_send.svg", color: Colors.black,),
                                                         onPressed: () {
                                                           _checkCampaign(
-                                                              report);
+                                                              report, campaign);
                                                         }),
                                                     IconButton(
-                                                        icon: Icon(
-                                                            Icons.find_in_page),
+                                                        icon: SvgPicture.asset("assets/img/sendmodule/ic_send_mosquito.svg", color: Colors.black,),
                                                         onPressed: () {
                                                           Navigator.push(
                                                             context,
@@ -532,7 +548,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                                 ),
                                               ),
                                             ],
-                                          ),
+                                          ) : Container()
                                         ],
                                       )
                                     : Container(),
@@ -970,33 +986,26 @@ class _MyReportsPageState extends State<MyReportsPage> {
         duration: Duration(milliseconds: 300), curve: Curves.ease);
   }
 
-  void _checkCampaign(Report report) async {
-    loadingStream.add(true);
-    List<Campaign> campaingsList =
-        await ApiSingleton().getCampaigns(report.country);
-    var now = DateTime.now();
-    loadingStream.add(false);
-    if (campaingsList.any((element) =>
-        DateTime.parse(element.startDate).isBefore(now) &&
-        DateTime.parse(element.endDate).isAfter(now))) {
-      var activeCampaign = campaingsList.firstWhere((element) =>
-          DateTime.parse(element.startDate).isBefore(now) &&
-          DateTime.parse(element.endDate).isAfter(now));
-      await Utils.showCustomAlert(
-          MyLocalizations.of(context, 'alert_campaing_found_title'),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Style.titleMedium('Id: ' + report.report_id),
-              Style.body(activeCampaign.postingAddress),
-            ],
-          ),
-          context);
-    } else {
-      await Utils.showAlert(
-          MyLocalizations.of(context, 'campaign_not_fount_title'),
-          MyLocalizations.of(context, 'campaign_not_fount_text'),
-          context);
-    }
+  void _checkCampaign(Report report, Campaign campaign) async {
+    var activeCampaign = campaign;
+    await Utils.showCustomAlert(
+        MyLocalizations.of(context, 'alert_campaing_found_title'),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 12,),
+            Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 4),
+                color: Style.colorPrimary,
+                child: Style.titleMedium(
+                    'ID: ' +
+                        report.report_id)),
+            SizedBox(height: 20,),
+            Style.body(activeCampaign.postingAddress,  textAlign: TextAlign.center),
+          ],
+        ),
+        context);
   }
 }

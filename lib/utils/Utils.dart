@@ -13,6 +13,7 @@ import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/question.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/models/session.dart';
+import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:package_info/package_info.dart';
@@ -903,7 +904,6 @@ class Utils {
                                   ? getImage(ImageSource.camera)
                                   : getImage();
                             },
-                            // textColor: Style.colorPrimary,
                           ),
                         ),
                       ],
@@ -922,7 +922,7 @@ class Utils {
     if (Platform.isAndroid) {
       return showDialog(
         context: ctx,
-        barrierDismissible: false, // user must tap button!
+        barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
@@ -941,6 +941,12 @@ class Utils {
               FlatButton(
                   child: Text(MyLocalizations.of(context, 'show_info')),
                   onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CampaignTutorialPage()),
+                    );
                     onPressed(context);
                   }),
               FlatButton(
@@ -956,7 +962,7 @@ class Utils {
       );
     } else {
       return showDialog(
-        context: ctx, //
+        context: ctx,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
             title: Text(
@@ -968,9 +974,12 @@ class Utils {
                 SizedBox(
                   height: 4,
                 ),
-                Style.body(MyLocalizations.of(context, 'save_report_ok_txt')),
+                Style.body(MyLocalizations.of(context, 'save_report_ok_txt'), textAlign: TextAlign.center),
+                SizedBox(
+                  height: 8,
+                ),
                 Style.body(MyLocalizations.of(
-                    context, 'alert_campaign_found_create_body'))
+                    context, 'alert_campaign_found_create_body'), textAlign: TextAlign.center)
               ],
             ),
             actions: <Widget>[
@@ -978,6 +987,12 @@ class Utils {
                   isDefaultAction: true,
                   child: Text(MyLocalizations.of(context, 'show_info')),
                   onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CampaignTutorialPage()),
+                    );
                     onPressed(context);
                   }),
               CupertinoDialogAction(
