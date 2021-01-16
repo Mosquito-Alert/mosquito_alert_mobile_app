@@ -75,6 +75,7 @@ flutter:
    - assets/
    - assets/img/
    - assets/img/maps/
+   - assets/img/sendmodule/
    - assets/img/gallery/
    - assets/img/tutorial/
    - assets/language/
