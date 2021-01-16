@@ -257,15 +257,14 @@ class _AdultReportPageState extends State<AdultReportPage> {
       _showAlertKo();
     } else {
       if (Utils.savedAdultReport != null) {
-        List<Campaign> campaingsList =
-            await ApiSingleton().getCampaigns(Utils.savedAdultReport.country);
+        List<Campaign> campaignsList = await ApiSingleton().getCampaigns(Utils.savedAdultReport.country);
         var now = DateTime.now();
-        if (campaingsList.any((element) =>
-            DateTime.parse(element.startDate).isBefore(now) &&
+        if (campaignsList.any((element) => DateTime.parse(element.startDate).isBefore(now) &&
             DateTime.parse(element.endDate).isAfter(now))) {
-          var activeCampaign = campaingsList.firstWhere((element) =>
+          var activeCampaign = campaignsList.firstWhere((element) =>
               DateTime.parse(element.startDate).isBefore(now) &&
               DateTime.parse(element.endDate).isAfter(now));
+
           Utils.showAlertCampaign(
             context,
             activeCampaign,
@@ -276,13 +275,12 @@ class _AdultReportPageState extends State<AdultReportPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Style.titleMedium('Id: ' + Utils.report.report_id),
+                    Style.titleMedium('ID: ' + Utils.report.report_id),
                     Style.body(activeCampaign.postingAddress),
                   ],
                 ),
                 ctx,
                 onPressed: () {
-                  // Navigator.pop(context);
                   Navigator.of(context).popUntil((r) => r.isFirst);
                   Utils.resetReport();
                 },

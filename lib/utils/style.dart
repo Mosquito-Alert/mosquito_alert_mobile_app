@@ -19,7 +19,7 @@ class Style {
     maxLines,
     textAlign,
     double fontSize,
-    height,
+        height,
   }) {
     return Text(
       text != null ? text : '',
