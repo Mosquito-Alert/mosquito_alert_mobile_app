@@ -21,8 +21,6 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
   @override
   void initState() {
     super.initState();
-
-
   }
 
   @override
@@ -59,12 +57,12 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
   // Slide Management
   List<Slide> initSlides() {
     slides.clear();
-    for (int idx = 1; idx < 9; idx ++) {
+    for (int idx = 0; idx < 9; idx ++) {
       slides.add(Slide(
           title: '',
-          description: MyLocalizations.of(context, 'tutorial_send_module_00$idx'),
-          pathImage: 'assets/img/sendmodule/fg_module_00$idx.png',
-          backgroundImage: 'assets/img/sendmodule/fg_module_00$idx.png'));
+          description: MyLocalizations.of(context, 'tutorial_send_module_00${idx+1}'),
+          pathImage: 'assets/img/sendmodule/fg_module_00${idx+1}.png',
+          backgroundImage: 'assets/img/sendmodule/fg_module_00${idx+1}.png'));
     }
     return slides;
   }
