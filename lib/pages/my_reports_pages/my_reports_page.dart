@@ -534,7 +534,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                                               report, campaign);
                                                         }),
                                                     IconButton(
-                                                        icon: SvgPicture.asset("assets/img/sendmodule/ic_send_mosquito.svg", color: Colors.black,),
+                                                        icon: SvgPicture.asset("assets/img/sendmodule/ic_adn.svg", color: Colors.black,),
                                                         onPressed: () {
                                                           Navigator.push(
                                                             context,
