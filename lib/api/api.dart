@@ -311,7 +311,7 @@ class ApiSingleton {
         return ApiResponse.fromJson(json.decode(response.body));
       }
 
-      var list = json.decode(response.body) as List;
+      var list = json.decode(utf8.decode(response.bodyBytes)) as List;
       List<MyNotification> data =
       list.map((i) => MyNotification.fromJson(i)).toList();
       return data;
