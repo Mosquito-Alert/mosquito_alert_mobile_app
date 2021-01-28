@@ -225,9 +225,8 @@ class Style {
       focusNode: focusNode,
       obscureText: obscure == null ? false : obscure,
       decoration: textFieldDecoration(hint, suffixIcon),
-      maxLines:
-          expands != null && expands || keyboardType == TextInputType.multiline
-              ? null
+      maxLines: expands != null && expands || keyboardType == TextInputType.multiline
+              ? maxLines == null ? null : maxLines
               : 1,
       expands: expands != null ? expands : false,
       textAlignVertical: textAlignVertical != null

@@ -57,15 +57,15 @@ class _AddOtherReportPageState extends State<AddOtherReportPage> {
               ),
             ),
             SizedBox(
-              height: 40,
+              height: 20,
             ),
             Style.title(MyLocalizations.of(context, "add_comments_question")),
             SizedBox(
-              height: 30,
+              height: 12,
             ),
             Style.textField(MyLocalizations.of(context, "comments_txt"),
                 _commentsController, context,
-                keyboardType: TextInputType.multiline, handleChange: (text) {
+                keyboardType: TextInputType.multiline, maxLines: 4, expands: false, handleChange: (text) {
               Utils.report.note = text;
             }),
             Style.bottomOffset,

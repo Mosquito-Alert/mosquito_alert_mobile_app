@@ -39,104 +39,39 @@ class _AdultReportPageState extends State<AdultReportPage> {
   StreamController<bool> loadingStream = new StreamController<bool>.broadcast();
   StreamController<bool> validStream = new StreamController<bool>.broadcast();
   StreamController<bool> skipParts = new StreamController<bool>.broadcast();
-  StreamController<double> percentStream =
-      new StreamController<double>.broadcast();
+  StreamController<double> percentStream = new StreamController<double>.broadcast();
   double index;
 
   List<Map> displayQuestions = [
     {
       'question': {'id': 6, 'text': 'question_6'},
       'answers': [
-        {
-          'id': 61,
-          'img': 'assets/img/ic_invasive_aedes.png',
-          'text': 'question_6_answer_61'
-        },
-        {
-          'id': 62,
-          'img': 'assets/img/ic_common_mosquito.png',
-          'text': 'question_6_answer_62'
-        },
-        {
-          'id': 63,
-          'img': 'assets/img/ic_other_mosquito.png',
-          'text': 'question_6_answer_63'
-        },
-        {
-          'id': 64,
-          'img': 'assets/img/ic_dont_know.png',
-          'text': 'question_6_answer_64'
-        }
+        {'id': 61, 'img': 'assets/img/ic_invasive_aedes.png', 'text': 'question_6_answer_61'},
+        {'id': 62, 'img': 'assets/img/ic_common_mosquito.png', 'text': 'question_6_answer_62'},
+        {'id': 63, 'img': 'assets/img/ic_other_mosquito.png', 'text': 'question_6_answer_63'},
+        {'id': 64, 'img': 'assets/img/ic_dont_know.png', 'text': 'question_6_answer_64'}
       ]
     },
     {
       'question': {'id': 7, 'text': 'question_7'},
       'answers': [
         [
-          {
-            'id': 711,
-            'img': 'assets/img/torax_711.png',
-            'text': 'question_7_answer_711'
-          },
-          {
-            'id': 712,
-            'img': 'assets/img/torax_712.png',
-            'text': 'question_7_answer_712'
-          },
-          {
-            'id': 713,
-            'img': 'assets/img/torax_713.png',
-            'text': 'question_7_answer_713'
-          },
-          {
-            'id': 714,
-            'img': 'assets/img/torax_714.png',
-            'text': 'question_7_answer_714'
-          },
+          {'id': 711, 'img': 'assets/img/torax_711.png', 'text': 'question_7_answer_711'},
+          {'id': 712, 'img': 'assets/img/torax_712.png', 'text': 'question_7_answer_712'},
+          {'id': 713, 'img': 'assets/img/torax_713.png', 'text': 'question_7_answer_713'},
+          {'id': 714, 'img': 'assets/img/torax_714.png', 'text': 'question_7_answer_714'},
         ],
         [
-          {
-            'id': 721,
-            'img': 'assets/img/abdomen_721.png',
-            'text': 'question_7_answer_721'
-          },
-          {
-            'id': 722,
-            'img': 'assets/img/abdomen_722.png',
-            'text': 'question_7_answer_722'
-          },
-          {
-            'id': 723,
-            'img': 'assets/img/abdomen_723.png',
-            'text': 'question_7_answer_723'
-          },
-          {
-            'id': 724,
-            'img': 'assets/img/abdomen_724.png',
-            'text': 'question_7_answer_724'
-          },
+          {'id': 721, 'img': 'assets/img/abdomen_721.png', 'text': 'question_7_answer_721'},
+          {'id': 722, 'img': 'assets/img/abdomen_722.png', 'text': 'question_7_answer_722'},
+          {'id': 723, 'img': 'assets/img/abdomen_723.png', 'text': 'question_7_answer_723'},
+          {'id': 724, 'img': 'assets/img/abdomen_724.png', 'text': 'question_7_answer_724'},
         ],
         [
-          {
-            'id': 731,
-            'img': 'assets/img/leg_731.png',
-            'text': 'question_7_answer_731'
-          },
-          {
-            'id': 732,
-            'img': 'assets/img/leg_732.png',
-            'text': 'question_7_answer_732'
-          },
-          {
-            'id': 733,
-            'img': 'assets/img/leg_733.png',
-            'text': 'question_7_answer_733'
-          },
-          {
-            'id': 734,
-            'img': 'assets/img/leg_734.png',
-            'text': 'question_7_answer_734'
-          }
+          {'id': 731, 'img': 'assets/img/leg_731.png', 'text': 'question_7_answer_731'},
+          {'id': 732, 'img': 'assets/img/leg_732.png', 'text': 'question_7_answer_732'},
+          {'id': 733, 'img': 'assets/img/leg_733.png', 'text': 'question_7_answer_733'},
+          {'id': 734, 'img': 'assets/img/leg_734.png', 'text': 'question_7_answer_734'}
         ],
       ]
     },
@@ -175,29 +110,22 @@ class _AdultReportPageState extends State<AdultReportPage> {
     _pagesController = PageController();
     index = 0.0;
     _initialformsRepot = [
-      MosquitoTypeForm(setSkip3, displayQuestions.elementAt(0), setValid,
-          setShowCamera, _chooseTypeImage, _skipReport),
-      MosquitoPartsForm(displayQuestions.elementAt(1), setValid, skipParts,
-          widget.editReport != null),
-      BitingLocationForm(
-          setValid, displayQuestions.elementAt(3)['question']['text']),
-      QuestionsBreedingForm(
-          displayQuestions.elementAt(2), setValid, false, null),
-      CouldSeeForm(
-          addBitingReport, displayQuestions.elementAt(4), setValid, goNextPage),
+      MosquitoTypeForm(setSkip3, displayQuestions.elementAt(0), setValid, setShowCamera, _chooseTypeImage, _skipReport),
+      MosquitoPartsForm(displayQuestions.elementAt(1), setValid, skipParts, widget.editReport != null),
+      BitingLocationForm(setValid, displayQuestions.elementAt(3)['question']['text']),
+      QuestionsBreedingForm(displayQuestions.elementAt(2), setValid, false, null),
+      CouldSeeForm(addBitingReport, displayQuestions.elementAt(4), setValid, goNextPage),
       AddOtherReportPage(_createReport, setValid, percentStream),
     ];
 
     _formsRepot = _initialformsRepot;
 
     _skipRepotForms = [
-      MosquitoTypeForm(setSkip3, displayQuestions.elementAt(0), setValid,
-          setShowCamera, _chooseTypeImage, _skipReport),
+      MosquitoTypeForm(setSkip3, displayQuestions.elementAt(0), setValid, setShowCamera, _chooseTypeImage, _skipReport),
       OtherMosquitoInfo(),
     ];
 
-    if (widget.editReport != null ||
-        Utils.reportsList.isNotEmpty && Utils.reportsList.length == 1) {
+    if (widget.editReport != null || Utils.reportsList.isNotEmpty && Utils.reportsList.length == 1) {
       _formsRepot.removeAt(4);
     }
   }
@@ -237,9 +165,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
         MaterialPageRoute(builder: (context) => BitingReportPage()),
       );
     } else {
-      _pagesController
-          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-          .then((value) => setValid(widget.editReport != null));
+      _pagesController.nextPage(duration: Duration(microseconds: 300), curve: Curves.ease).then((value) => setValid(widget.editReport != null));
       setState(() {
         index = _pagesController.page + 1;
       });
@@ -257,40 +183,40 @@ class _AdultReportPageState extends State<AdultReportPage> {
       _showAlertKo();
     } else {
       if (Utils.savedAdultReport != null) {
-        List<Campaign> campaignsList = await ApiSingleton().getCampaigns(Utils.savedAdultReport.country);
-        var now = DateTime.now();
-        if (campaignsList.any((element) => DateTime.parse(element.startDate).isBefore(now) &&
-            DateTime.parse(element.endDate).isAfter(now))) {
-          var activeCampaign = campaignsList.firstWhere((element) =>
-              DateTime.parse(element.startDate).isBefore(now) &&
-              DateTime.parse(element.endDate).isAfter(now));
+        if (Utils.savedAdultReport.country != null) {
+          List<Campaign> campaignsList = await ApiSingleton().getCampaigns(Utils.savedAdultReport.country);
+          var now = DateTime.now();
+          if (campaignsList.any((element) => DateTime.parse(element.startDate).isBefore(now) && DateTime.parse(element.endDate).isAfter(now))) {
+            var activeCampaign = campaignsList.firstWhere((element) => DateTime.parse(element.startDate).isBefore(now) && DateTime.parse(element.endDate).isAfter(now));
 
-          Utils.showAlertCampaign(
-            context,
-            activeCampaign,
-            (ctx) {
-              Navigator.pop(context);
-              Utils.showCustomAlert(
-                MyLocalizations.of(context, 'alert_campaing_found_title'),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Style.titleMedium('ID: ' + Utils.report.report_id),
-                    Style.body(activeCampaign.postingAddress),
-                  ],
-                ),
-                ctx,
-                onPressed: () {
-                  Navigator.of(context).popUntil((r) => r.isFirst);
-                  Utils.resetReport();
-                },
-              );
-            },
-          );
-        } else {
-          _showAlertOk();
+            Utils.showAlertCampaign(
+              context,
+              activeCampaign,
+              (ctx) {
+                Navigator.pop(context);
+                Utils.showCustomAlert(
+                  MyLocalizations.of(context, 'alert_campaing_found_title'),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Style.titleMedium('ID: ' + Utils.report.report_id),
+                      Style.body(activeCampaign.postingAddress),
+                    ],
+                  ),
+                  ctx,
+                  onPressed: () {
+                    Navigator.of(context).popUntil((r) => r.isFirst);
+                    Utils.resetReport();
+                  },
+                );
+              },
+            );
+          } else {
+            _showAlertOk();
+          }
         }
       }
+
       // _showAlertOk();
       setState(() {
         percentStream.add(1.0);
@@ -337,25 +263,17 @@ class _AdultReportPageState extends State<AdultReportPage> {
                     _onWillPop();
                     // }
                   } else {
-                    if (currentPage == 2.0 &&
-                        !Utils.report.responses
-                            .any((element) => element.answer_id == 61)) {
+                    if (currentPage == 2.0 && !Utils.report.responses.any((element) => element.answer_id == 61)) {
                       setState(() {
                         index = 0;
                       });
-                      _pagesController
-                          .animateToPage(0,
-                              duration: Duration(microseconds: 300),
-                              curve: Curves.ease)
-                          .then((value) {
+                      _pagesController.animateToPage(0, duration: Duration(microseconds: 300), curve: Curves.ease).then((value) {
                         setValid(true);
                         addOtherReport(null);
                       });
                     } else if (currentPage == 4.0) {
                       addBitingReport(false);
-                      _pagesController.previousPage(
-                          duration: Duration(microseconds: 300),
-                          curve: Curves.ease);
+                      _pagesController.previousPage(duration: Duration(microseconds: 300), curve: Curves.ease);
                       setState(() {
                         index = currentPage - 1;
                       });
@@ -363,11 +281,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                       setState(() {
                         index = currentPage - 1;
                       });
-                      _pagesController
-                          .previousPage(
-                              duration: Duration(microseconds: 300),
-                              curve: Curves.ease)
-                          .then((value) {
+                      _pagesController.previousPage(duration: Duration(microseconds: 300), curve: Curves.ease).then((value) {
                         setValid(true);
                         addOtherReport(null);
                       });
@@ -375,9 +289,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                   }
                 },
               ),
-              title: Style.title(
-                  MyLocalizations.of(context, 'adult_report_title'),
-                  fontSize: 16),
+              title: Style.title(MyLocalizations.of(context, 'adult_report_title'), fontSize: 16),
             ),
             body: Stack(
               alignment: Alignment.bottomCenter,
@@ -396,28 +308,20 @@ class _AdultReportPageState extends State<AdultReportPage> {
                             child: StreamBuilder<bool>(
                                 stream: validStream.stream,
                                 initialData: false,
-                                builder: (BuildContext ctxt,
-                                    AsyncSnapshot<bool> snapshot) {
+                                builder: (BuildContext ctxt, AsyncSnapshot<bool> snapshot) {
                                   return snapshot.data
                                       ? Container(
                                           width: double.infinity,
                                           height: 54,
-                                          margin: EdgeInsets.symmetric(
-                                              vertical: 6, horizontal: 12),
-                                          child: Style.button(
-                                              MyLocalizations.of(
-                                                  context, 'continue_txt'), () {
-                                            double currentPage =
-                                                _pagesController.page;
+                                          margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                                          child: Style.button(MyLocalizations.of(context, 'continue_txt'), () {
+                                            double currentPage = _pagesController.page;
 
-                                            if (currentPage == 3.0 &&
-                                                addBiting) {
+                                            if (currentPage == 3.0 && addBiting) {
                                               Utils.addOtherReport('bite');
                                               Navigator.push(
                                                 context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        BitingReportPage()),
+                                                MaterialPageRoute(builder: (context) => BitingReportPage()),
                                               );
                                             } else {
                                               if (showCamera) {
@@ -426,14 +330,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                                 setState(() {
                                                   index = currentPage + 1;
                                                 });
-                                                _pagesController
-                                                    .nextPage(
-                                                        duration: Duration(
-                                                            microseconds: 300),
-                                                        curve: Curves.ease)
-                                                    .then((value) => setValid(
-                                                        widget.editReport !=
-                                                            null));
+                                                _pagesController.nextPage(duration: Duration(microseconds: 300), curve: Curves.ease).then((value) => setValid(widget.editReport != null));
                                               }
                                             }
                                           }),
@@ -441,12 +338,8 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                       : Container(
                                           width: double.infinity,
                                           height: 54,
-                                          margin: EdgeInsets.symmetric(
-                                              vertical: 6, horizontal: 12),
-                                          child: Style.button(
-                                              MyLocalizations.of(
-                                                  context, 'continue_txt'),
-                                              null),
+                                          margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                                          child: Style.button(MyLocalizations.of(context, 'continue_txt'), null),
                                         );
                                 }),
                           ))
@@ -455,11 +348,9 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                 ? Container(
                                     width: double.infinity,
                                     height: 54,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 6, horizontal: 12),
+                                    margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                                     child: Style.button(
-                                      MyLocalizations.of(
-                                          context, 'understand_txt'),
+                                      MyLocalizations.of(context, 'understand_txt'),
                                       () {
                                         Navigator.pop(context);
                                         Utils.resetReport();
@@ -470,8 +361,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                 : Container(
                                     width: double.infinity,
                                     height: 54,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 6, horizontal: 12),
+                                    margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                                     child: Style.button(
                                       MyLocalizations.of(context, 'send_data'),
                                       () {
@@ -502,8 +392,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
 
   _skipReport(bool skip) {
     if (widget.editReport != null && skip) {
-      Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'editing_adult_info_type_txt'), () {
+      Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'), MyLocalizations.of(context, 'editing_adult_info_type_txt'), () {
         Utils.deleteReport(widget.editReport);
         widget.loadData();
         Navigator.pop(context);
@@ -515,9 +404,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
       });
 
       if (skip) {
-        _pagesController
-            .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-            .then((value) => setValid(true));
+        _pagesController.nextPage(duration: Duration(microseconds: 300), curve: Curves.ease).then((value) => setValid(true));
       }
     }
   }
@@ -552,17 +439,13 @@ class _AdultReportPageState extends State<AdultReportPage> {
             setShowCamera(false);
             Utils.imagePath = [];
             int page = 2;
-            if (Utils.report.responses
-                .any((element) => element.answer_id == 61)) {
+            if (Utils.report.responses.any((element) => element.answer_id == 61)) {
               page = 1;
             }
             setState(() {
               index = _pagesController.page + page;
             });
-            _pagesController
-                .animateToPage(page,
-                    duration: Duration(microseconds: 300), curve: Curves.ease)
-                .then((value) => setValid(widget.editReport != null));
+            _pagesController.animateToPage(page, duration: Duration(microseconds: 300), curve: Curves.ease).then((value) => setValid(widget.editReport != null));
           },
           child: Text(
             MyLocalizations.of(context, 'continue_without_photo'),
@@ -579,8 +462,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.all(20),
-            child: Text(MyLocalizations.of(context, 'camara'),
-                style: TextStyle(color: Colors.blue, fontSize: 15)),
+            child: Text(MyLocalizations.of(context, 'camara'), style: TextStyle(color: Colors.blue, fontSize: 15)),
           ),
         ),
         Divider(height: 1.0),
@@ -592,8 +474,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.all(20),
-            child: Text(MyLocalizations.of(context, 'gallery'),
-                style: TextStyle(color: Colors.blue, fontSize: 15)),
+            child: Text(MyLocalizations.of(context, 'gallery'), style: TextStyle(color: Colors.blue, fontSize: 15)),
           ),
         ),
         Divider(height: 1.0),
@@ -603,42 +484,28 @@ class _AdultReportPageState extends State<AdultReportPage> {
             setShowCamera(false);
             Utils.imagePath = [];
             int page = 2;
-            if (Utils.report.responses
-                .any((element) => element.answer_id == 61)) {
+            if (Utils.report.responses.any((element) => element.answer_id == 61)) {
               page = 1;
             }
 
             setState(() {
               index = _pagesController.page + page;
             });
-            _pagesController
-                .animateToPage(page,
-                    duration: Duration(microseconds: 300), curve: Curves.ease)
-                .then((value) => setValid(widget.editReport != null));
+            _pagesController.animateToPage(page, duration: Duration(microseconds: 300), curve: Curves.ease).then((value) => setValid(widget.editReport != null));
           },
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.all(20),
-            child: Text(MyLocalizations.of(context, 'continue_without_photo'),
-                style: TextStyle(color: Colors.blue, fontSize: 15)),
+            child: Text(MyLocalizations.of(context, 'continue_without_photo'), style: TextStyle(color: Colors.blue, fontSize: 15)),
           ),
         ),
       ];
 
-      Utils.modalDetailTrackingforPlatform(
-          Theme.of(context).platform == TargetPlatform.iOS
-              ? listForiOS
-              : listForAndroid,
-          Theme.of(context).platform,
-          context, () {
+      Utils.modalDetailTrackingforPlatform(Theme.of(context).platform == TargetPlatform.iOS ? listForiOS : listForAndroid, Theme.of(context).platform, context, () {
         Navigator.pop(context);
-      },
-          title:
-              '${MyLocalizations.of(context, 'bs_info_adult_title_optional')}:');
+      }, title: '${MyLocalizations.of(context, 'bs_info_adult_title_optional')}:');
     } else {
-      _pagesController
-          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-          .then((value) => setValid(widget.editReport != null));
+      _pagesController.nextPage(duration: Duration(microseconds: 300), curve: Curves.ease).then((value) => setValid(widget.editReport != null));
     }
   }
 
@@ -652,9 +519,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
       setState(() {
         index = _pagesController.page + 1;
       });
-      _pagesController
-          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-          .then((value) => setValid(widget.editReport != null));
+      _pagesController.nextPage(duration: Duration(microseconds: 300), curve: Curves.ease).then((value) => setValid(widget.editReport != null));
     }
 
     if (files != null) {
@@ -675,9 +540,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
       Utils.saveImgPath(file);
       setShowCamera(false);
 
-      _pagesController
-          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-          .then((value) => setValid(widget.editReport != null));
+      _pagesController.nextPage(duration: Duration(microseconds: 300), curve: Curves.ease).then((value) => setValid(widget.editReport != null));
       setState(() {
         index = _pagesController.page + 1;
       });
@@ -689,9 +552,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
 
     Utils.showAlert(
       MyLocalizations.of(context, 'app_name'),
-      widget.editReport == null
-          ? MyLocalizations.of(context, 'save_report_ok_txt')
-          : MyLocalizations.of(context, 'edited_report_ok_txt'),
+      widget.editReport == null ? MyLocalizations.of(context, 'save_report_ok_txt') : MyLocalizations.of(context, 'edited_report_ok_txt'),
       context,
       onPressed: () {
         Navigator.pop(context);
@@ -727,8 +588,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
 
   _onWillPop() {
     if (Utils.report.responses.isNotEmpty) {
-      Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'close_report_no_save_txt'), () {
+      Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'), MyLocalizations.of(context, 'close_report_no_save_txt'), () {
         if (Utils.reportsList != null && Utils.reportsList.isNotEmpty) {
           Utils.deleteLastReport();
         } else {

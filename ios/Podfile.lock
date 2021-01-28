@@ -112,7 +112,7 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 6.7)
     - Protobuf (>= 3.9.2, ~> 3.9)
   - Flutter (1.0.0)
-  - flutter_background_geolocation (1.10.3):
+  - flutter_background_geolocation (1.11.0):
     - CocoaLumberjack (~> 3.6.0)
     - Flutter
   - flutter_facebook_login (0.0.1):
@@ -129,7 +129,7 @@ PODS:
     - Flutter
   - google_maps_flutter (0.0.1):
     - Flutter
-    - GoogleMaps (< 3.10)
+    - GoogleMaps
   - google_sign_in (0.0.1):
     - Flutter
     - GoogleSignIn (~> 5.0)
@@ -321,12 +321,12 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: bd3ffc24367f901a43c063b36c640b345a4a5dd1
   FirebaseMessaging: 5eca4ef173de76253352511aafef774caa1cba2a
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_background_geolocation: b8ec4241be85c55a74331ada78da40caaf3c1aba
+  flutter_background_geolocation: 5a1e2c73ba4499a1063db68d604c3ed47e460f80
   flutter_facebook_login: cfb5659f686b1c575ef205c6b6fd20db9679d3c4
   flutter_twitter: f33a30ee64ecf27e189e2f3cb53ce3318b8bb396
   geocoder: 3cfab70531a0b367e917bafe82df4c30f6d4c45a
   geolocator: 057a0c63a43e9c5296d8ad845a3ac8e6df23d899
-  google_maps_flutter: c7f9c73576de1fbe152a227bfd6e6c4ae8088619
+  google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
   google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
   GoogleMaps: 4b5346bddfe6911bb89155d43c903020170523ac
