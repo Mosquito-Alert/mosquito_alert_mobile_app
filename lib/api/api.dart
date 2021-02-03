@@ -711,16 +711,13 @@ class ApiSingleton {
         return ApiResponse.fromJson(json.decode(response.body));
       } else {
         List<dynamic> jsonAnswer = json.decode(response.body);
+
+        print(json.decode(response.body));
         var allCampaigns = <Campaign>[];
 
         for (var item in jsonAnswer) {
           allCampaigns.add(Campaign.fromJson(item));
         }
-
-        // if (allCampaigns.isEmpty) {
-        //   return 0;
-        // }
-
         return allCampaigns;
       }
     } catch (e) {
