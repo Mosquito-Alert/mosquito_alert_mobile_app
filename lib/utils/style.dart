@@ -19,7 +19,7 @@ class Style {
     maxLines,
     textAlign,
     double fontSize,
-    height,
+        height,
   }) {
     return Text(
       text != null ? text : '',
@@ -211,7 +211,7 @@ class Style {
     handleChange,
   }) {
     return TextField(
-      keyboardType: keyboardType == null ? TextInputType.text : keyboardType,
+      keyboardType: keyboardType ?? TextInputType.text,
       textCapitalization: textCapitalization == null
           ? TextCapitalization.none
           : textCapitalization,
@@ -225,9 +225,8 @@ class Style {
       focusNode: focusNode,
       obscureText: obscure == null ? false : obscure,
       decoration: textFieldDecoration(hint, suffixIcon),
-      maxLines:
-          expands != null && expands || keyboardType == TextInputType.multiline
-              ? null
+      maxLines: expands != null && expands || keyboardType == TextInputType.multiline
+              ? maxLines == null ? null : maxLines
               : 1,
       expands: expands != null ? expands : false,
       textAlignVertical: textAlignVertical != null

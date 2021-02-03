@@ -22,14 +22,12 @@ class MosquitoPartsForm extends StatefulWidget {
 
 class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
   List<Question> questions = List();
-  String language;
 
   @override
   void initState() {
     super.initState();
 
     widget.setValid(true);
-    language = Utils.getLanguage();
     if (Utils.report != null) {
       for (Question q in Utils.report.responses) {
         if (q.question_id == widget.displayQuestion['question']['id']) {
@@ -53,7 +51,6 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                 height: 40,
               ),
               AddPhotoButton(widget.isEditing, false),
-
               StreamBuilder(
                 stream: widget.showParts.stream,
                 initialData:
@@ -65,22 +62,10 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Style.title(
-                          widget.displayQuestion['question']['text'][language]),
-                      // SizedBox(
-                      //   height: 5,
-                      // ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(builder: (context) => InfoPage('d')),
-                      //     );
-                      //   },
-                      //   child: Style.bodySmall("mas info de eto",
-                      //       color: Style.colorPrimary),
-                      // ),
-                       Style.body(MyLocalizations.of(context, "could_recognise_txt")),
+                      Style.title(MyLocalizations.of(
+                          context, widget.displayQuestion['question']['text'])),
+                      Style.body(
+                          MyLocalizations.of(context, "mosquito_parts_helper_txt")),
                       SizedBox(
                         height: 20,
                       ),
@@ -93,7 +78,7 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                               int id = widget.displayQuestion['answers'][0]
                                   [index]['id'];
                               String txt = widget.displayQuestion['answers'][0]
-                                  [index]['text'][language];
+                                  [index]['text'];
 
                               return GestureDetector(
                                 onTap: () {
@@ -104,7 +89,6 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                                   margin: EdgeInsets.only(right: 5),
                                   child: ImageQuestionOption(
                                     questions.any((q) => q.answer_id == id),
-                                    '',
                                     '',
                                     widget.displayQuestion['answers'][0][index]
                                         ['img'],
@@ -125,7 +109,7 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                               int id = widget.displayQuestion['answers'][1]
                                   [index]['id'];
                               String txt = widget.displayQuestion['answers'][1]
-                                  [index]['text'][language];
+                                  [index]['text'];
                               return GestureDetector(
                                 onTap: () {
                                   onSelect(txt, id, 720);
@@ -135,7 +119,6 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                                   margin: EdgeInsets.only(right: 5),
                                   child: ImageQuestionOption(
                                     questions.any((q) => q.answer_id == id),
-                                    '',
                                     '',
                                     widget.displayQuestion['answers'][1][index]
                                         ['img'],
@@ -156,7 +139,7 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                               int id = widget.displayQuestion['answers'][2]
                                   [index]['id'];
                               String txt = widget.displayQuestion['answers'][2]
-                                  [index]['text'][language];
+                                  [index]['text'];
                               return GestureDetector(
                                 onTap: () {
                                   onSelect(txt, id, 730);
@@ -166,7 +149,6 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                                   margin: EdgeInsets.only(right: 5),
                                   child: ImageQuestionOption(
                                     questions.any((q) => q.answer_id == id),
-                                    '',
                                     '',
                                     widget.displayQuestion['answers'][2][index]
                                         ['img'],

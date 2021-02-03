@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mosquito_alert_app/api/api.dart';
+import 'package:mosquito_alert_app/models/owcampaing.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_other_report_form.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
@@ -26,263 +28,112 @@ class _BitingReportPageState extends State<BitingReportPage> {
   String otherReport;
   bool seeButton = false;
   bool addMosquito = false;
-  bool validContent = false;
-  StreamController<bool> loadingStream = new StreamController<bool>.broadcast();
-  StreamController<bool> validStream = new StreamController<bool>.broadcast();
-  StreamController<double> percentStream =
-      new StreamController<double>.broadcast();
+  StreamController<bool> loadingStream = StreamController<bool>.broadcast();
+  StreamController<bool> validStream = StreamController<bool>.broadcast();
+  StreamController<double> percentStream = StreamController<double>.broadcast();
   double index = 0;
 
   List<Map> displayQuestions = [
     {
-      "question": {
-        "id": 1,
-        "text": {
-          "en": "How many bites did you get?",
-          "ca": "Quantes picades tens i en quina part del cos?",
-          "es": "¿Cuántas picaduras tienes y en qué parte del cuerpo?"
-        }
-      },
-      "answers": [
+      'question': {'id': 1, 'text': 'question_1'},
+      'answers': [
         //Number of bites - value equals TOTAL number of bites
-        {
-          "id": 11,
-          "text": {
-            "en": "",
-            "ca": "",
-            "es": "",
-          }
-        }
+        {'id': 11, 'text': 'question_1_answer_11'}
       ]
     },
-     {
-      "question": {
-        "id": 2,
-        "text": {
-          "en": "Where have you been bitten?",
-          "ca": "On t'han picat?",
-          "es": "¿Donde te han picado?"
-        }
-      },
-      "answers": [
+    {
+      'question': {'id': 2, 'text': 'question_2'},
+      'answers': [
         //Bites by body are - value equals number of bites in each area, must be = to total number of bites
-        {
-          "id": 21,
-          "text": {"en": "Head", "ca": "Cap", "es": "Cap"}
-        },
-        {
-          "id": 22,
-          "text": {
-            "en": "Left arm",
-            "ca": "Braç esquerre",
-            "es": "Braç esquerre"
-          }
-        },
-        {
-          "id": 23,
-          "text": {"en": "Right arm", "ca": "Braç dret", "es": "Braç dret"}
-        },
-        {
-          "id": 24,
-          "text": {"en": "Chest", "ca": "Tronc", "es": "Tronc"}
-        },
-        {
-          "id": 25,
-          "text": {
-            "en": "Left leg",
-            "ca": "Cama esquerra",
-            "es": "Cama esquerra"
-          }
-        },
-        {
-          "id": 26,
-          "text": {"en": "Right leg", "ca": "Cama dreta", "es": "Cama dreta"}
-        }
+        {'id': 21, 'text': 'question_2_answer_21'},
+        {'id': 22, 'text': 'question_2_answer_22'},
+        {'id': 23, 'text': 'question_2_answer_23'},
+        {'id': 24, 'text': 'question_2_answer_24'},
+        {'id': 25, 'text': 'question_2_answer_25'},
+        {'id': 26, 'text': 'question_2_answer_26'}
       ]
     },
     {
-      "question": {
-        "id": 4,
-        "text": {
-          "en": "Were you indoors or outdoors when you were bitten?",
-          "ca": "T'han picar en un espai interior o exterior?",
-          "es": "¿Te han picado en un espacio interior o exterior?"
-        }
-      },
-      "answers": [
-        {
-          "id": 41,
-          "text": {
-            "en": "Indoors",
-            "ca": "Interior",
-            "es": "Interior",
-          }
-        },
-        {
-          "id": 42,
-          "text": {
-            "en": "Outdoors",
-            "ca": "Exterior",
-            "es": "Exterior",
-          }
-        },
+      'question': {'id': 4, 'text': 'question_4'},
+      'answers': [
+        {'id': 41, 'text': 'question_4_answer_41'},
+        {'id': 42, 'text': 'question_4_answer_42'},
+        {'id': 43, 'text': 'question_4_answer_43'},
+        {'id': 44, 'text': 'question_4_answer_44'},
       ]
     },
     {
-      "question": {
-        "id": 13,
-        "text": {
-          "en": "When did the mosquiti bite you?",
-          "ca": "Quan t'ha picat?",
-          "es": "¿Cuando te han picado?"
-        }
-      },
-      "answers": [
-        {
-          "id": 131,
-          "text": {
-            "en": "Just now",
-            "ca": "Ara mateix",
-            "es": "Ahora mismo",
-          }
-        },
-        {
-          "id": 132,
-          "text": {
-            "en": "in the last 24h",
-            "ca": "A les darreres 24h",
-            "es": "En las ultimas 24h",
-          }
-        },
+      'question': {'id': 5, 'text': 'question_5'},
+      'answers': [
+        {'id': 51, 'text': 'question_5_answer_51'},
+        {'id': 52, 'text': 'question_5_answer_52'},
       ]
     },
     {
-      "question": {
-        "id": 3,
-        "text": {
-          "en": "At what time of the day were you bitten?",
-          "ca": "En quin moment ha estat?",
-          "es": "¿En qué momento ha sido?"
-        }
-      },
-      "answers": [
-        {
-          "id": 31,
-          "text": {
-            "en": "Sunrise",
-            "ca": "Matí",
-            "es": "Mañana",
-          }
-        },
-        {
-          "id": 32,
-          "text": {
-            "en": "Mid-day",
-            "ca": "Migdia",
-            "es": "Mediodía",
-          }
-        },
-        {
-          "id": 33,
-          "text": {
-            "en": "Sunset",
-            "ca": "Tarda",
-            "es": 'Tarde',
-          }
-        },
-        {
-          "id": 34,
-          "text": {
-            "en": "Night",
-            "ca": "Nit",
-            "es": "Noche",
-          }
-        },
+      'question': {'id': 3, 'text': 'question_3'},
+      'answers': [
+        {'id': 31, 'text': 'question_3_answer_31'},
+        {'id': 32, 'text': 'question_3_answer_32'},
+        {'id': 33, 'text': 'question_3_answer_33'},
+        {'id': 34, 'text': 'question_3_answer_34'},
       ]
     },
     {
-      "question": {
-        "id": 6,
-        "text": {
-          "en": "Where were you when you were bitten?",
-          "ca": "On estaves quan et van picar?",
-          "es": "¿Dónde te encontrabas cuando te han picado?"
-        }
-      },
-      "answers": [
-        {
-          "id": 61, //Location - value equals WKT of point
-          "text": {"en": "", "ca": "", "es": ""}
-        }
-      ]
+      'question': {'id': 14, 'text': 'question_14'},
     },
-    {
-      "question": {
-        "id": 11,
-        "text": {
-          "en": "Did you see any of the mosquitoes that have bitten you?",
-          "ca": "Has vist algun dels mosquits que t'han picat?",
-          "es": "¿Has visto alguno de los mosquitos que te han picado?"
-        }
-      },
-      "answers": [
-        {
-          "id": 101,
-          "text": {"en": "Yes", "ca": "Sí", "es": "Sí"}
-        },
-        {
-          "id": 81,
-          "text": {"en": "No", "ca": "No", "es": "No"}
-        }
-      ]
-    }
   ];
+  Report toEditReport;
 
   @override
   void initState() {
     super.initState();
     if (widget.editReport != null) {
-      Utils.setEditReport(widget.editReport);
+      toEditReport = Report.fromJson(widget.editReport.toJson());
+      Utils.setEditReport(toEditReport);
     }
     _pagesController = PageController();
     _formsRepot = [
-      BitingForm([
-        displayQuestions.elementAt(0),
-        displayQuestions.elementAt(1),
-        displayQuestions.elementAt(2),
-        displayQuestions.elementAt(3),
-        displayQuestions.elementAt(4),
-      ], setValid, goNextPage),
+      BitingForm(
+        [
+          displayQuestions.elementAt(0),
+          displayQuestions.elementAt(1),
+          displayQuestions.elementAt(2),
+          displayQuestions.elementAt(3),
+          displayQuestions.elementAt(4),
+        ],
+        setValid,
+        goNextPage,
+      ),
       BitingLocationForm(
         setValid,
-        displayQuestions.elementAt(5)['question']['text'][Utils.getLanguage()],
+        displayQuestions.elementAt(5)['question']['text'],
       ),
       AddOtherReportPage(_saveData, setValid, percentStream),
     ];
   }
 
-  addOtherReport(String reportType) {
+  void addOtherReport(String reportType) {
     setState(() {
       otherReport = reportType;
     });
   }
 
-  addAdultReport(addReport) {
+  void addAdultReport(addReport) {
     setState(() {
       addMosquito = addReport;
     });
   }
 
-  setValid(isValid) {
+  void setValid(isValid) {
     validStream.add(isValid);
   }
 
-  _saveData() async {
+  void _saveData() async {
     setState(() {
       percentStream.add(0.8);
     });
     loadingStream.add(true);
-    bool res = await Utils.createReport();
+    var res = await Utils.createReport();
 
     if (widget.editReport != null) {
       widget.loadData();
@@ -290,7 +141,45 @@ class _BitingReportPageState extends State<BitingReportPage> {
     if (!res) {
       _showAlertKo();
     } else {
-      _showAlertOk();
+      if (Utils.savedAdultReport != null) {
+        List<Campaign> campaingsList =
+            await ApiSingleton().getCampaigns(Utils.savedAdultReport.country);
+        var now = DateTime.now();
+        if (campaingsList.any((element) =>
+            DateTime.parse(element.startDate).isBefore(now) &&
+            DateTime.parse(element.endDate).isAfter(now))) {
+          var activeCampaign = campaingsList.firstWhere((element) =>
+              DateTime.parse(element.startDate).isBefore(now) &&
+              DateTime.parse(element.endDate).isAfter(now));
+          Utils.showAlertCampaign(
+            context,
+            activeCampaign,
+            (ctx) {
+              Navigator.pop(context);
+              Utils.showCustomAlert(
+                MyLocalizations.of(context, 'alert_campaing_found_title'),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Style.titleMedium('Id: ' + Utils.report.report_id),
+                    Style.body(activeCampaign.postingAddress),
+                  ],
+                ),
+                ctx,
+                onPressed: () {
+                  // Navigator.pop(context);
+                  Navigator.of(context).popUntil((r) => r.isFirst);
+                  Utils.resetReport();
+                },
+              );
+            },
+          );
+        } else {
+          _showAlertOk();
+        }
+      }
+
+      // _showAlertOk();
       setState(() {
         percentStream.add(1.0);
       });
@@ -332,18 +221,17 @@ class _BitingReportPageState extends State<BitingReportPage> {
               leading: IconButton(
                 icon: Style.iconBack,
                 onPressed: () {
-                  double currentPage = _pagesController.page;
+                  var currentPage = _pagesController.page;
 
                   if (currentPage == 0.0) {
-                    if (Utils.reportsList != null &&
-                        Utils.reportsList.isNotEmpty &&
-                        widget.editReport == null) {
-                      Utils.deleteLastReport();
-                    } else {
-                      Utils.resetReport();
-                    }
-
-                    Navigator.pop(context);
+                    // if (Utils.reportsList != null &&
+                    //     Utils.reportsList.isNotEmpty &&
+                    //     widget.editReport == null) {
+                    //   Utils.deleteLastReport();
+                    // } else {
+                    _onWillPop();
+                    // Utils.resetReport();
+                    // }
                   } else if (currentPage == 1) {
                     _pagesController
                         .previousPage(
@@ -362,7 +250,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
                 },
               ),
               title: Style.title(
-                  MyLocalizations.of(context, "biting_report_txt"),
+                  MyLocalizations.of(context, 'biting_report_txt'),
                   fontSize: 16),
               actions: <Widget>[],
             ),
@@ -393,9 +281,9 @@ class _BitingReportPageState extends State<BitingReportPage> {
                                                   vertical: 6, horizontal: 12),
                                               child: Style.button(
                                                   MyLocalizations.of(
-                                                      context, "continue_txt"),
+                                                      context, 'continue_txt'),
                                                   () {
-                                                double currentPage =
+                                                var currentPage =
                                                     _pagesController.page;
 
                                                 if (currentPage == 2 &&
@@ -430,21 +318,23 @@ class _BitingReportPageState extends State<BitingReportPage> {
                                                   vertical: 6, horizontal: 12),
                                               child: Style.button(
                                                   MyLocalizations.of(
-                                                      context, "continue_txt"),
+                                                      context, 'continue_txt'),
                                                   null),
                                             );
                                     })),
                           )
-                        : Container(
-                            width: double.infinity,
-                            height: 54,
-                            margin: EdgeInsets.symmetric(
-                                vertical: 6, horizontal: 12),
-                            child: Style.button(
-                              MyLocalizations.of(context, "send_data"),
-                              () {
-                                _saveData();
-                              },
+                        : SafeArea(
+                            child: Container(
+                              width: double.infinity,
+                              height: 54,
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 6, horizontal: 12),
+                              child: Style.button(
+                                MyLocalizations.of(context, 'send_data'),
+                                () {
+                                  _saveData();
+                                },
+                              ),
                             ),
                           ),
               ],
@@ -470,8 +360,10 @@ class _BitingReportPageState extends State<BitingReportPage> {
   _showAlertOk() {
     loadingStream.add(false);
     Utils.showAlert(
-      MyLocalizations.of(context, "app_name"),
-      widget.editReport == null ? MyLocalizations.of(context, 'save_report_ok_txt') :  MyLocalizations.of(context, 'edited_report_ok_txt'),
+      MyLocalizations.of(context, 'app_name'),
+      widget.editReport == null
+          ? MyLocalizations.of(context, 'save_report_ok_txt')
+          : MyLocalizations.of(context, 'edited_report_ok_txt'),
       context,
       onPressed: () {
         Navigator.pop(context);
@@ -479,6 +371,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
           Navigator.pop(context);
         } else {
           Navigator.of(context).popUntil((r) => r.isFirst);
+          Utils.resetReport();
         }
       },
       barrierDismissible: false,
@@ -488,7 +381,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
   _showAlertKo() {
     loadingStream.add(false);
     Utils.showAlert(
-      MyLocalizations.of(context, "app_name"),
+      MyLocalizations.of(context, 'app_name'),
       MyLocalizations.of(context, 'save_report_ko_txt'),
       context,
       onPressed: () {
@@ -497,6 +390,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
           Navigator.pop(context);
         } else {
           Navigator.of(context).popUntil((r) => r.isFirst);
+          Utils.resetReport();
         }
       },
       barrierDismissible: false,
@@ -504,15 +398,22 @@ class _BitingReportPageState extends State<BitingReportPage> {
   }
 
   _onWillPop() {
-    Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'),
-        MyLocalizations.of(context, 'close_report_no_save_txt'), () {
-      if (Utils.reportsList != null && Utils.reportsList.isNotEmpty) {
+    if (Utils.report.responses.isNotEmpty) {
+      Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'),
+          MyLocalizations.of(context, 'close_report_no_save_txt'), () {
+        if (Utils.reportsList != null && Utils.reportsList.isNotEmpty) {
+          Utils.deleteLastReport();
+        } else {
+          Utils.resetReport();
+          Utils.imagePath = null;
+        }
+        Navigator.pop(context);
+      }, context);
+    } else {
+      if (Utils.reportsList.isNotEmpty) {
         Utils.deleteLastReport();
-      } else {
-        Utils.resetReport();
-        Utils.imagePath = null;
       }
       Navigator.pop(context);
-    }, context);
+    }
   }
 }

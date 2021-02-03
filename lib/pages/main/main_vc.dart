@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:mosquito_alert_app/pages/info_pages/info_page.dart';
 import 'package:mosquito_alert_app/pages/main/components/custom_card_wodget.dart';
 import 'package:mosquito_alert_app/pages/my_reports_pages/my_reports_page.dart';
 import 'package:mosquito_alert_app/pages/notification_pages/notifications_page.dart';
+import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/settings_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
@@ -19,6 +21,7 @@ import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
+//import 'package:connectivity_widget/connectivity_widget.dart';
 
 class MainVC extends StatefulWidget {
   @override
@@ -27,9 +30,10 @@ class MainVC extends StatefulWidget {
 
 class _MainVCState extends State<MainVC> {
   String userName;
-  int userScore = 1;
+
+  StreamController<String> nameStream =
+      new StreamController<String>.broadcast();
   String userUuid;
-  String language;
   StreamController<bool> loadingStream = new StreamController<bool>.broadcast();
 
   @override
@@ -43,18 +47,19 @@ class _MainVCState extends State<MainVC> {
     await UserManager.startFirstTime(context);
     var user = await UserManager.fetchUser();
     userUuid = await UserManager.getUUID();
-    language = Utils.getLanguage();
-    int points = await ApiSingleton().getUserScores();
+    await ApiSingleton().getUserScores();
 
     if (user != null) {
+      nameStream.add(user.email);
       setState(() {
-        userName = user.displayName;
+        userName = UserManager.user.email;
       });
     }
-    setState(() {
-      userScore = points;
-    });
-    _bgTracking();
+
+    if (Platform.isAndroid) {
+      _bgTracking();
+    }
+
     loadingStream.add(false);
   }
 
@@ -68,14 +73,17 @@ class _MainVCState extends State<MainVC> {
 
       // 2.  Configure the plugin
       bg.BackgroundGeolocation.ready(bg.Config(
-              desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
-              distanceFilter: 1000.0,
-              stopOnTerminate: false,
-              startOnBoot: true,
-              debug: false,
-              deferTime: 3600000, //1h
-              logLevel: bg.Config.LOG_LEVEL_VERBOSE))
-          .then((bg.State state) {
+        desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
+        distanceFilter: 0,
+        stopOnTerminate: false,
+        startOnBoot: true,
+        debug: false,
+        disableElasticity: true,
+        allowIdenticalLocations: true,
+        // deferTime: 17280000, // 4.8h
+        locationUpdateInterval: 17280000, // 4.8h
+        // logLevel: bg.Config.LOG_LEVEL_VERBOSE,
+      )).then((bg.State state) {
         if (!state.enabled) {
           // 3.  Start the plugin.
           bg.BackgroundGeolocation.start().then((bg.State bgState) {
@@ -91,13 +99,15 @@ class _MainVCState extends State<MainVC> {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude);
 
-    double lat = (location.coords.latitude / Utils.maskCoordsValue).floor() *
-        Utils.maskCoordsValue;
-    double lon = (location.coords.longitude / Utils.maskCoordsValue).floor() *
-        Utils.maskCoordsValue;
+    if ((location.coords.latitude).abs() <= 66.5) {
+      double lat = (location.coords.latitude / Utils.maskCoordsValue).floor() *
+          Utils.maskCoordsValue;
+      double lon = (location.coords.longitude / Utils.maskCoordsValue).floor() *
+          Utils.maskCoordsValue;
 
-    ApiSingleton()
-        .sendFixes(lat, lon, location.timestamp, location.battery.level);
+      ApiSingleton()
+          .sendFixes(lat, lon, location.timestamp, location.battery.level);
+    }
   }
 
   @override
@@ -126,6 +136,16 @@ class _MainVCState extends State<MainVC> {
                 height: 40,
               ),
               actions: <Widget>[
+                IconButton(
+                  icon: SvgPicture.asset("assets/img/sendmodule/ic_adn.svg", height: 26,),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CampaignTutorialPage()),
+                    );
+                  },
+                ),
                 IconButton(
                   icon: Icon(Icons.notifications),
                   onPressed: () {
@@ -167,11 +187,23 @@ class _MainVCState extends State<MainVC> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Style.title(
-                                                  userName != null
-                                                      ? " ${MyLocalizations.of(context, "welcome_text")}, $userName."
-                                                      : " ${MyLocalizations.of(context, "welcome_text")}",
-                                                  fontSize: 20),
+                                              StreamBuilder<String>(
+                                                  stream: nameStream.stream,
+                                                  initialData: userName,
+                                                  builder: (context,
+                                                      AsyncSnapshot<String>
+                                                          snapshot) {
+                                                    if (snapshot.hasData) {
+                                                      print(snapshot.data);
+                                                      return Style.title(
+                                                          "${MyLocalizations.of(context, "welcome_text")}, ${snapshot.data}.",
+                                                          fontSize: 20);
+                                                    } else {
+                                                      return Style.title(
+                                                          "${MyLocalizations.of(context, "welcome_text")}",
+                                                          fontSize: 20);
+                                                    }
+                                                  }),
                                               SizedBox(
                                                 height: 4,
                                               ),
@@ -190,7 +222,7 @@ class _MainVCState extends State<MainVC> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) => InfoPage(
-                                                    "${MyLocalizations.of(context, 'url_point_1')}$language${MyLocalizations.of(context, 'url_point_2')}$userUuid")),
+                                                    "${MyLocalizations.of(context, 'url_point_1')}$userUuid")),
                                           );
                                         },
                                         child: Container(
@@ -202,19 +234,28 @@ class _MainVCState extends State<MainVC> {
                                                   "assets/img/points_box.png"),
                                             ),
                                           ),
-                                          child: Center(
-                                              child: AutoSizeText(
-                                            userScore != null
-                                                ? userScore.toString()
-                                                : '',
-                                            maxLines: 1,
-                                            maxFontSize: 26,
-                                            minFontSize: 16,
-                                            style: TextStyle(
-                                                color: Color(0xFF4B3D04),
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 24),
-                                          )),
+                                          child: StreamBuilder<int>(
+                                              stream: Utils
+                                                  .userScoresController.stream,
+                                              initialData:
+                                                  UserManager.userScore,
+                                              builder: (context, snapshot) {
+                                                return Center(
+                                                    child: AutoSizeText(
+                                                  snapshot.data != null &&
+                                                          snapshot.hasData
+                                                      ? snapshot.data.toString()
+                                                      : '',
+                                                  maxLines: 1,
+                                                  maxFontSize: 26,
+                                                  minFontSize: 16,
+                                                  style: TextStyle(
+                                                      color: Color(0xFF4B3D04),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 24),
+                                                ));
+                                              }),
                                         ),
                                       ),
                                     ]),
@@ -243,8 +284,6 @@ class _MainVCState extends State<MainVC> {
                                           img: 'assets/img/ic_bite_report.png',
                                           title: MyLocalizations.of(
                                               context, 'report_biting_txt'),
-                                          subtitle: MyLocalizations.of(context,
-                                              'bitten_by_mosquito_question_txt'),
                                         ),
                                       ),
                                     ),
@@ -268,8 +307,6 @@ class _MainVCState extends State<MainVC> {
                                               'assets/img/ic_mosquito_report.png',
                                           title: MyLocalizations.of(
                                               context, 'report_adults_txt'),
-                                          subtitle: MyLocalizations.of(context,
-                                              'report_us_adult_mosquitos_txt'),
                                         ),
                                       ),
                                     ),
@@ -299,9 +336,6 @@ class _MainVCState extends State<MainVC> {
                                                 'assets/img/ic_breeding_report.png',
                                             title: MyLocalizations.of(
                                                 context, 'report_nest_txt'),
-                                            subtitle: MyLocalizations.of(
-                                                context,
-                                                'found_breeding_place_question_txt'),
                                           ),
                                         )),
                                     Container(
@@ -324,9 +358,6 @@ class _MainVCState extends State<MainVC> {
                                             img: 'assets/img/ic_my_reports.png',
                                             title: MyLocalizations.of(
                                                 context, 'your_reports_txt'),
-                                            subtitle: MyLocalizations.of(
-                                                context,
-                                                'explore_your_reports_txt'),
                                           ),
                                         )),
                                   ],
@@ -391,7 +422,261 @@ class _MainVCState extends State<MainVC> {
                   ),
                 );
               },
-            )),
+            ) /*ConnectivityWidget(
+                offlineBanner: SafeArea(
+                  child: Container(
+                      padding: EdgeInsets.all(8),
+                      margin: EdgeInsets.all(8),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4),  color: Colors.red.withOpacity(0.95),),
+                      width: double.infinity,
+
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.wifi_off,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              Text(
+                                "no_internet_connection",
+                                style: TextStyle(fontSize: 14, color: Colors.white),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            "app_may_not_work_as_expected",
+                            style: TextStyle(fontSize: 12, color: Colors.white.withOpacity(0.9)),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      )),
+                ),
+                onlineCallback: () {
+                  print('test');
+                },
+                builder: (context, isOnline) => LayoutBuilder(
+                      builder: (BuildContext context, BoxConstraints viewportConstraints) {
+                        return SingleChildScrollView(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: viewportConstraints.maxHeight,
+                            ),
+                            child: IntrinsicHeight(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 12),
+                                    child: Column(
+                                      children: <Widget>[
+                                        SizedBox(
+                                          height: 24,
+                                        ),
+                                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                                              StreamBuilder<String>(
+                                                  stream: nameStream.stream,
+                                                  initialData: userName,
+                                                  builder: (context, AsyncSnapshot<String> snapshot) {
+                                                    if (snapshot.hasData) {
+                                                      print(snapshot.data);
+                                                      return Style.title("${MyLocalizations.of(context, "welcome_text")}, ${snapshot.data}.", fontSize: 20);
+                                                    } else {
+                                                      return Style.title("${MyLocalizations.of(context, "welcome_text")}", fontSize: 20);
+                                                    }
+                                                  }),
+                                              SizedBox(
+                                                height: 4,
+                                              ),
+                                              Style.body(MyLocalizations.of(context, "what_to_do_txt"), fontSize: 14),
+                                            ]),
+                                          ),
+                                          SizedBox(
+                                            width: 12,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => InfoPage("${MyLocalizations.of(context, 'url_point_1')}$userUuid")),
+                                              );
+                                            },
+                                            child: Container(
+                                              height: 60,
+                                              width: 60,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: AssetImage("assets/img/points_box.png"),
+                                                ),
+                                              ),
+                                              child: StreamBuilder<int>(
+                                                  stream: Utils.userScoresController.stream,
+                                                  initialData: UserManager.userScore,
+                                                  builder: (context, snapshot) {
+                                                    return Center(
+                                                        child: AutoSizeText(
+                                                      snapshot.data != null && snapshot.hasData ? snapshot.data.toString() : '',
+                                                      maxLines: 1,
+                                                      maxFontSize: 26,
+                                                      minFontSize: 16,
+                                                      style: TextStyle(color: Color(0xFF4B3D04), fontWeight: FontWeight.w500, fontSize: 24),
+                                                    ));
+                                                  }),
+                                            ),
+                                          ),
+                                        ]),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                          child: Divider(),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              onTap: () {
+                                                loadingStream.add(true);
+                                                _createBiteReport();
+                                              },
+                                              child: Container(
+                                                width: MediaQuery.of(context).size.width * 0.45,
+                                                height: MediaQuery.of(context).size.width * 0.5,
+                                                child: CustomCard(
+                                                  img: 'assets/img/ic_bite_report.png',
+                                                  title: MyLocalizations.of(context, 'report_biting_txt'),
+                                                ),
+                                              ),
+                                            ),
+                                            // SizedBox(
+                                            //   width: 5,
+                                            // ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                loadingStream.add(true);
+                                                _createAdultReport();
+                                              },
+                                              child: Container(
+                                                width: MediaQuery.of(context).size.width * 0.45,
+                                                height: MediaQuery.of(context).size.width * 0.5,
+                                                child: CustomCard(
+                                                  img: 'assets/img/ic_mosquito_report.png',
+                                                  title: MyLocalizations.of(context, 'report_adults_txt'),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: <Widget>[
+                                            Container(
+                                                width: MediaQuery.of(context).size.width * 0.45,
+                                                height: MediaQuery.of(context).size.width * 0.5,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    loadingStream.add(true);
+                                                    _createSiteReport();
+                                                  },
+                                                  child: CustomCard(
+                                                    img: 'assets/img/ic_breeding_report.png',
+                                                    title: MyLocalizations.of(context, 'report_nest_txt'),
+                                                  ),
+                                                )),
+                                            Container(
+                                                width: MediaQuery.of(context).size.width * 0.45,
+                                                height: MediaQuery.of(context).size.width * 0.5,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(builder: (context) => MyReportsPage()),
+                                                    );
+                                                  },
+                                                  child: CustomCard(
+                                                    img: 'assets/img/ic_my_reports.png',
+                                                    title: MyLocalizations.of(context, 'your_reports_txt'),
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        // Card(
+                                        //   elevation: 2,
+                                        //   shape: RoundedRectangleBorder(
+                                        //       borderRadius: BorderRadius.circular(20)),
+                                        //   child: Container(
+                                        //     padding: EdgeInsets.only(left: 20, right: 10, top: 15, bottom: 15),
+                                        //     child: Row(
+                                        //       children: <Widget>[
+                                        //         Image.asset(
+                                        //           'assets/img/ic_validate_photos.png',
+                                        //           width: 55,
+                                        //           fit: BoxFit.fitWidth,
+                                        //         ),
+                                        //         SizedBox(width: 15,),
+                                        //         Expanded(
+                                        //           flex: 2,
+                                        //           child: Column(
+                                        //             children: <Widget>[
+                                        //               Style.titleMedium(
+                                        //                   MyLocalizations.of(context,
+                                        //                       'help_validating_other_photos_txt'),
+                                        //                   fontSize: 16),
+                                        //               SizedBox(
+                                        //                 height: 5,
+                                        //               ),
+                                        //               Style.bodySmall(MyLocalizations.of(
+                                        //                   context, 'we_need_help_txt')),
+                                        //               SizedBox(
+                                        //                 height: 5,
+                                        //               ),
+                                        //             ],
+                                        //           ),
+                                        //         )
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                      ],
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: 25),
+                                      child: SvgPicture.asset(
+                                        'assets/img/ic_bottom_waves.svg',
+                                        width: double.infinity,
+                                        fit: BoxFit.fitWidth,
+                                        alignment: Alignment.bottomCenter,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ))*/
+            ),
         Positioned.fill(
           child: StreamBuilder<bool>(
             stream: loadingStream.stream,

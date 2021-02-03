@@ -11,23 +11,28 @@ class MosquitoTypeForm extends StatefulWidget {
   final Map displayQuestion;
   final Function setValid, showCamera, nextPage, skipReport;
 
-  MosquitoTypeForm(this.setSkip3, this.displayQuestion, this.setValid,
-      this.showCamera, this.nextPage, this.skipReport,);
+  MosquitoTypeForm(
+    this.setSkip3,
+    this.displayQuestion,
+    this.setValid,
+    this.showCamera,
+    this.nextPage,
+    this.skipReport,
+  );
   @override
   _MosquitoTypeFormState createState() => _MosquitoTypeFormState();
 }
 
 class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
   Question question = Question();
-  String language;
 
   @override
   void initState() {
     super.initState();
-    language = Utils.getLanguage();
     question = new Question(
-        question: widget.displayQuestion['question']['text'][language],
-        question_id: widget.displayQuestion['question']['id']);
+      question: widget.displayQuestion['question']['text'],
+      question_id: widget.displayQuestion['question']['id'],
+    );
     if (Utils.report != null) {
       int index = Utils.report.responses.indexWhere(
           (q) => q.question_id == widget.displayQuestion['question']['id']);
@@ -53,8 +58,8 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
               SizedBox(
                 height: 35,
               ),
-              Style.title(widget.displayQuestion['question']['text'][language]),
-              Style.body(MyLocalizations.of(context, "could_recognise_txt")),
+              Style.title(MyLocalizations.of(
+                  context, widget.displayQuestion['question']['text'])),
               Container(
                 margin: EdgeInsets.only(top: 10),
                 child: Column(
@@ -71,7 +76,7 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
                             onTap: () {
                               onSelect(
                                   widget.displayQuestion['answers'][index]
-                                      ['text'][language],
+                                      ['text'],
                                   widget.displayQuestion['answers'][index]
                                       ['id']);
 
@@ -91,14 +96,10 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
                                           ['id'])
                                   ? true
                                   : false,
-                              widget.displayQuestion['answers'][index]['text']
-                                  [language],
-                              widget.displayQuestion['answers'][index]['id'] ==
-                                      63
-                                  ? MyLocalizations.of(
-                                      context, "not_a_mosquito")
-                                  : MyLocalizations.of(
-                                      context, "recognize_it_txt"),
+                              MyLocalizations.of(
+                                  context,
+                                  widget.displayQuestion['answers'][index]
+                                      ['text']),
                               widget.displayQuestion['answers'][index]['img'],
                               disabled: question.answer_id != null &&
                                   widget.displayQuestion['answers'][index]
@@ -129,6 +130,10 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
       question.answer_id = answerId;
     });
     // widget.setValid(true);
+
+    if (question.answer_id != 61) {
+      Utils.report.responses.removeWhere((element) => element.question_id == 7);
+    }
     Utils.addResponse(question);
   }
 }

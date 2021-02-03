@@ -1,16 +1,24 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class InfoPage extends StatelessWidget {
+class InfoPage extends StatefulWidget {
   final String url;
+  final bool localHtml;
 
-  InfoPage(this.url);
+  InfoPage(this.url, {this.localHtml = false});
 
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+  @override
+  _InfoPageState createState() => _InfoPageState();
+}
+
+class _InfoPageState extends State<InfoPage> {
+  WebViewController _controller;
+  var title;
 
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
 
@@ -22,40 +30,50 @@ class InfoPage extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.white,
             centerTitle: true,
-            title: Image.asset(
+            title: title == null ? Image.asset(
               'assets/img/ic_logo.png',
               height: 45,
-            ),
+            ) : Text(title),
           ),
-          body: Builder(builder: (BuildContext context) {
-            return WebView(
-              initialUrl: url,
-              javascriptMode: JavascriptMode.unrestricted,
-              onWebViewCreated: (WebViewController webViewController) {
-                _controller.complete(webViewController);
-              },
-              javascriptChannels: <JavascriptChannel>[
-                _toasterJavascriptChannel(context),
-              ].toSet(),
-              onPageFinished: (String url) {
-                loadingStream.add(false);
-              },
-              gestureNavigationEnabled: true,
-            );
-          }),
-        ),
-        StreamBuilder<bool>(
-            stream: loadingStream.stream,
-            initialData: true,
-            builder: (BuildContext context, AsyncSnapshot<bool> snapLoading) {
-              if (snapLoading.data == true)
-                return Container(
-                  child: Center(
-                    child: Utils.loading(true),
-                  ),
+          body: SafeArea(child: Stack(
+            children: [
+              Builder(builder: (BuildContext context) {
+                return WebView(
+                  initialUrl: widget.localHtml ? 'about:blank' : widget.url,
+                  javascriptMode: JavascriptMode.unrestricted,
+                  onWebViewCreated: (WebViewController webViewController) {
+                    _controller = webViewController;
+                    widget.localHtml ? _loadHtmlFromAssets() : null;
+                  },
+                  javascriptChannels: <JavascriptChannel>[
+                    _toasterJavascriptChannel(context),
+                  ].toSet(),
+                  onPageFinished: (String url) {
+                    loadingStream.add(false);
+                  },
+                  onPageStarted: (String url) {
+                    loadingStream.add(true);
+                  },
+                  gestureNavigationEnabled: true,
                 );
-              return Container();
-            }),
+              }),
+              StreamBuilder<bool>(
+                  stream: loadingStream.stream,
+                  initialData: true,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<bool> snapLoading) {
+                    if (snapLoading.data == true) {
+                      return Container(
+                        child: Center(
+                          child: Utils.loading(true),
+                        ),
+                      );
+                    }
+                    return Container();
+                  }),
+            ],
+          ),),
+        ),
       ],
     );
   }
@@ -68,5 +86,12 @@ class InfoPage extends StatelessWidget {
             SnackBar(content: Text(message.message)),
           );
         });
+  }
+
+  void _loadHtmlFromAssets() async {
+    var fileText = await rootBundle.loadString(widget.url);
+    await _controller.loadUrl(Uri.dataFromString(fileText,
+            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+        .toString());
   }
 }

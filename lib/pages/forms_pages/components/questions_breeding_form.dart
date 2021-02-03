@@ -3,6 +3,7 @@ import 'package:mosquito_alert_app/models/question.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_photo_button_widget.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/image_question_option_widget.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/small_question_option_widget.dart';
+import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
@@ -21,14 +22,12 @@ class QuestionsBreedingForm extends StatefulWidget {
 
 class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
   Question question;
-  String language;
 
   @override
   void initState() {
     super.initState();
-    language = Utils.getLanguage();
     question = new Question(
-      question: widget.displayQuestion['question']['text'][language],
+      question: widget.displayQuestion['question']['text'],
       question_id: widget.displayQuestion['question']['id'],
     );
     if (Utils.report != null) {
@@ -56,7 +55,7 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
             widget.displayQuestion['question']['id'] == 10
                 ? AddPhotoButton(true, true)
                 : Container(),
-            Style.title(widget.displayQuestion['question']['text'][language]),
+            Style.title(MyLocalizations.of(context, widget.displayQuestion['question']['text'])),
             SizedBox(
               height: 30,
             ),
@@ -71,7 +70,7 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
               ),
               itemBuilder: (context, index) {
                 String text =
-                    widget.displayQuestion['answers'][index]['text'][language];
+                    widget.displayQuestion['answers'][index]['text'];
                 int id = widget.displayQuestion['answers'][index]['id'];
                 if (widget.hasImage) {
                   return Container(
@@ -83,8 +82,7 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
                       },
                       child: ImageQuestionOption(
                         question.answer_id == id ? true : false,
-                        text,
-                        "",
+                        MyLocalizations.of(context, text),
                         widget.displayQuestion['answers'][index]['img'],
                       ),
                     ),
@@ -96,7 +94,8 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
                       onTap: () {
                         addQuestion(text, id);
                         widget.setValid(true);
-                        widget.nextPage();
+                        widget.nextPage != null && widget.nextPage();
+                        // widget.nextPage();
                       },
                       child: SmallQuestionOption(
                         text,

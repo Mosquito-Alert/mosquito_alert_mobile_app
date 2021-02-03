@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class SmallQuestionOption extends StatelessWidget {
   final bool selected, disabled;
-  final String text, index;
+  final String text;
   SmallQuestionOption(
     this.text, {
     this.selected,
-    this.index,
     this.disabled,
   });
 
@@ -28,7 +28,8 @@ class SmallQuestionOption extends StatelessWidget {
                       blurRadius: 2,
                     )
                   ]),
-              child: Style.body(text, maxLines: 2, textAlign: TextAlign.center),
+              child: Style.body(MyLocalizations.of(context, text),
+                  maxLines: 2, textAlign: TextAlign.center),
             ),
           )
         : Container(
@@ -41,37 +42,13 @@ class SmallQuestionOption extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                index != null
-                    ? Expanded(
-                        child: Container(
-                          width: 10,
-                          height: 22,
-                          margin: EdgeInsets.all(8),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(3),
-                            color: Colors.white.withOpacity(0.4),
-                          ),
-                          // padding: EdgeInsets.all(5),
-                          child: Style.body(index, color: Colors.white),
-                        ),
-                      )
-                    : Container(),
                 Expanded(
                   flex: 3,
-                  child: Style.body(text,
+                  child: Style.body(MyLocalizations.of(context, text),
                       color: Colors.white,
                       maxLines: 3,
                       textAlign: TextAlign.center),
                 ),
-                index != null
-                    ? Expanded(
-                        child: Container(),
-                        // child: SizedBox(
-                        //                    width:  10 : 0,
-                        // ),
-                      )
-                    : Container(),
               ],
             ),
           );

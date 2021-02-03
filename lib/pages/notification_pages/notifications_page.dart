@@ -44,17 +44,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
             appBar: AppBar(
               backgroundColor: Colors.white,
               centerTitle: true,
-              title: Style.title(
-                  MyLocalizations.of(context, "notifications_title"),
-                  fontSize: 16),
+              title: Style.title(MyLocalizations.of(context, "notifications_title"), fontSize: 16),
             ),
             body: notifications.length == 0 || notifications.isEmpty
-                ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
+                ? Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
                     Center(
-                      child: Style.body(MyLocalizations.of(
-                          context, "no_notifications_yet_txt")),
+                      child: Style.body(MyLocalizations.of(context, "no_notifications_yet_txt")),
                     ),
                   ])
                 : Container(
@@ -65,36 +60,23 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         itemCount: notifications.length,
                         itemBuilder: (ctx, index) {
                           return Opacity(
-                            opacity: !notifications[index].acknowledged
-                                ? 1
-                                : 0.5,
+                            opacity: !notifications[index].acknowledged ? 1 : 0.5,
                             child: Card(
                               elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                               child: ListTile(
                                 onTap: () {
-                                  !notifications[index].acknowledged
-                                      ? _updateNotification(
-                                          notifications[index].id)
-                                      : null;
-                                  _infoBottomSheet(
-                                      context, notifications[index]);
+                                  !notifications[index].acknowledged ? _updateNotification(notifications[index].id) : null;
+                                  _infoBottomSheet(context, notifications[index]);
                                 },
                                 title: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Style.titleMedium(
-                                        notifications[index].expert_comment,
-                                        fontSize: 14),
-                                    // Style.body(
-                                    //     "Lorem ipsum dolor sit amet, consectetur adipis..."),
+                                    Style.titleMedium(notifications[index].expert_comment, fontSize: 14),
                                     SizedBox(
                                       height: 10,
                                     ),
-                                    Style.bodySmall("Leer más",
-                                        color: Colors.grey),
+                                    Style.bodySmall(MyLocalizations.of(context, "see_more_txt"), color: Colors.grey),
                                   ],
                                 ),
                                 // trailing: Image.asset(
@@ -108,17 +90,17 @@ class _NotificationsPageState extends State<NotificationsPage> {
                           );
                         }))),
         StreamBuilder<bool>(
-            stream: loadingStream.stream,
-            initialData: true,
-            builder: (BuildContext context, AsyncSnapshot<bool> snapLoading) {
-              if (snapLoading.data == true)
-                return Container(
-                  child: Center(
-                    child: Utils.loading(true),
-                  ),
-                );
-              return Container();
-            }),
+                stream: loadingStream.stream,
+                initialData: true,
+                builder: (BuildContext context, AsyncSnapshot<bool> snapLoading) {
+                  if (snapLoading.data == true)
+                    return Container(
+                      child: Center(
+                        child: Utils.loading(true),
+                      ),
+                    );
+                  return Container();
+                }),
       ],
     );
   }
@@ -178,10 +160,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       SizedBox(
                         height: 10,
                       ),
-                      Style.bodySmall(
-                          DateFormat('dd-MM-yyyy hh:mm').format(
-                              DateTime.parse(notification.date_comment)),
-                          color: Colors.grey)
+                      Style.bodySmall(DateFormat('dd-MM-yyyy hh:mm').format(DateTime.parse(notification.date_comment)), color: Colors.grey)
                     ],
                   ),
                 ),

@@ -4,10 +4,10 @@ import 'package:mosquito_alert_app/utils/style.dart';
 
 class ImageQuestionOption extends StatelessWidget {
   final bool selected, disabled;
-  final String title, text;
+  final String title;
   final String img;
 
-  ImageQuestionOption(this.selected, this.title, this.text, this.img,
+  ImageQuestionOption(this.selected, this.title, this.img,
       {this.disabled = false});
 
   @override
@@ -28,8 +28,7 @@ class ImageQuestionOption extends StatelessWidget {
                 // color: Colors.blue,
                 borderRadius: BorderRadius.circular(15),
                 image: DecorationImage(
-                  image: AssetImage(
-                      img != null ? img : ""),
+                  image: AssetImage(img != null ? img : ""),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -45,24 +44,23 @@ class ImageQuestionOption extends StatelessWidget {
                 ),
               ),
             ),
-            text != null
-                ? Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.symmetric(horizontal: 3),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        AutoSizeText(title, style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),  textAlign: TextAlign.center),
-                        Style.bodySmall(
-                          text,
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(horizontal: 3),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  AutoSizeText(title,
+                      style: TextStyle(
                           color: Colors.white,
-                        ),
-                        SizedBox(height: 10),
-                      ],
-                    ),
-                  )
-                : Container(),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center),
+                  SizedBox(height: 10),
+                ],
+              ),
+            ),
           ],
         ),
       ),

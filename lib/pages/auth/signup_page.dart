@@ -97,22 +97,6 @@ class _SignupPageState extends State<SignupPage> {
                                           ),
                                           Style.textField(
                                               MyLocalizations.of(
-                                                  context, "first_name_txt"),
-                                              _firstNameController,
-                                              context),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Style.textField(
-                                              MyLocalizations.of(
-                                                  context, "last_name_txt"),
-                                              _lastNameController,
-                                              context),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Style.textField(
-                                              MyLocalizations.of(
                                                   context, "password_txt"),
                                               _passwordController,
                                               context,
@@ -169,12 +153,13 @@ class _SignupPageState extends State<SignupPage> {
   _signUp() async {
     loadingStream.add(true);
     ApiSingleton()
-        .singUp(_emailController.text, _passwordController.text,
-            _firstNameController.text, _lastNameController.text)
+        .singUp(
+      _emailController.text,
+      _passwordController.text,
+    )
         .then((user) async {
       loadingStream.add(false);
       UserManager.user = user;
-      await UserManager.setUserName(user.displayName);
       await UserManager.setFrirebaseId(user.uid);
 
       var createProfile = await ApiSingleton().createProfile(user.uid);

@@ -39,9 +39,9 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
 
     if (Utils.report != null) {
       switch (Utils.report.location_choice) {
-        case "selected":
+        case 'selected':
           streamType.add(LocationType.selected);
-          markers.add(new Marker(
+          markers.add(Marker(
               markerId: MarkerId('mk_${markers.length}'),
               position: LatLng(Utils.report.selected_location_lat,
                   Utils.report.selected_location_lon)));
@@ -50,9 +50,9 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
               longitude: Utils.report.selected_location_lon);
           widget.setValid(true);
           break;
-        case "current":
+        case 'current':
           streamType.add(LocationType.current);
-          markers.add(new Marker(
+          markers.add(Marker(
               markerId: MarkerId('mk_${markers.length}'),
               position: LatLng(Utils.report.current_location_lat,
                   Utils.report.current_location_lon)));
@@ -64,32 +64,22 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
         default:
           streamType.add(LocationType.missing);
       }
-      if (Utils.report.responses.any((r) => r.question_id == 5)) {
-        Utils.report.responses.forEach((q) {
-          if (q.question_id == 5) {
-            var res = q.answer_value
-                .substring(q.answer_value.indexOf('( ') + 2,
-                    q.answer_value.indexOf(')'))
-                .split(', ');
-            markers.add(new Marker(
-                markerId: MarkerId('mk_${markers.length}'),
-                position: LatLng(double.parse(res[0]), double.parse(res[1]))));
-          }
-        });
-      }
     } else {
       _getCurrentLocation();
     }
   }
 
-  _getCurrentLocation() async {
-    if (Utils.location == null) {
-      await Utils.getLocation();
-      if (Utils.location != null && controller != null) {
-        controller.animateCamera(CameraUpdate.newLatLng(
-            LatLng(Utils.location.latitude, Utils.location.longitude)));
-      }
-    }
+  void _getCurrentLocation() async {
+    // if (Utils.location == null) {
+    //   await Utils.getLocation();
+    //   if (Utils.location != null && controller != null) {
+    //     controller.animateCamera(CameraUpdate.newLatLng(
+    //         LatLng(Utils.location.latitude, Utils.location.longitude)));
+    //   } else {
+    //     streamType.add(LocationType.selected);
+    //   }
+    // }
+    updateType(LocationType.current, context: context);
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -97,44 +87,29 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
     currentLocation == null ? _getCurrentLocation() : null;
   }
 
-  updateMarker(LatLng markerPosition) {
-    Marker mk = Marker(
+  void updateMarker(LatLng markerPosition) {
+    var mk = Marker(
         markerId: MarkerId('mk${markers.length}'), position: markerPosition);
-
-    // if (Utils.report.selected_location_lat != null &&
-    //     Utils.report.type == "bite") {
-    //   Utils.addLocationResponse(mk.position.latitude, mk.position.longitude);
-    //   setState(() {
-    //     markers.add(mk);
-    //   });
-    // } else {
     Utils.setSelectedLocation(mk.position.latitude, mk.position.longitude);
     widget.setValid(true);
 
     setState(() {
       markers = [mk];
     });
-    // }
   }
 
-  updateType(type, {context}) async {
+  void updateType(type, {context}) async {
     streamType.add(type);
 
-    List<Marker> currentMarkers = [];
+    var currentMarkers = <Marker>[];
     switch (type) {
       case LocationType.current:
-        Geolocator geolocator = Geolocator()
-          ..forceAndroidLocationManager = true;
-
-        bool geolocationEnabled = await geolocator.isLocationServiceEnabled();
+        var geolocationEnabled = await isLocationServiceEnabled();
         streamType.add(type);
 
         if (geolocationEnabled) {
-          Geolocator geolocator = Geolocator()
-            ..forceAndroidLocationManager = false;
-          Position currentPosition = await Geolocator()
-              .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-          print(currentPosition);
+          Position currentPosition =
+              await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
           Utils.setCurrentLocation(
               currentPosition.latitude, currentPosition.longitude);
           controller.moveCamera(
@@ -154,8 +129,8 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
           widget.setValid(true);
         } else {
           Utils.showAlert(
-              MyLocalizations.of(context, "location_not_active_title"),
-              MyLocalizations.of(context, "location_not_active_txt"),
+              MyLocalizations.of(context, 'location_not_active_title'),
+              MyLocalizations.of(context, 'location_not_active_txt'),
               context, onPressed: () {
             Navigator.pop(context);
           });
@@ -230,13 +205,18 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                 SizedBox(
                   height: 35,
                 ),
-                Style.title(widget.displayQuestion),
+                Style.title(
+                    MyLocalizations.of(context, widget.displayQuestion)),
                 Style.body(MyLocalizations.of(context, "chose_option_txt")),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 30),
                   child: StreamBuilder(
                     stream: streamType.stream,
-                    initialData: LocationType.selected,
+                    initialData: Utils.report.location_choice != null
+                        ? Utils.report.location_choice == "selected"
+                            ? LocationType.selected
+                            : LocationType.current
+                        : LocationType.current,
                     builder: (BuildContext context,
                         AsyncSnapshot<LocationType> snapshot) {
                       return Column(
@@ -251,12 +231,9 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                                         onTap: () {
                                           updateType(LocationType.current,
                                               context: context);
-                                          // getPosition(LocationType.current,
-                                          //     context: context);
                                         },
                                         child: SmallQuestionOption(
-                                          MyLocalizations.of(
-                                              context, "current_location_txt"),
+                                          "current_location_txt",
                                           selected: snapshot.data ==
                                               LocationType.current,
                                         ))),
@@ -270,8 +247,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                                     updateType(LocationType.selected);
                                   },
                                   child: SmallQuestionOption(
-                                    MyLocalizations.of(
-                                        context, "select_location_txt"),
+                                    "select_location_txt",
                                     selected:
                                         snapshot.data == LocationType.selected,
                                   ),

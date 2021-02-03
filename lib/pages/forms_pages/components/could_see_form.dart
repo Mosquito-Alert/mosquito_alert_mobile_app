@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/small_question_option_widget.dart';
+import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
@@ -18,12 +19,10 @@ class CouldSeeForm extends StatefulWidget {
 
 class _CouldSeeFormState extends State<CouldSeeForm> {
   String selected;
-  String language;
 
   @override
   void initState() {
     super.initState();
-    language = Utils.getLanguage();
   }
 
   @override
@@ -37,7 +36,7 @@ class _CouldSeeFormState extends State<CouldSeeForm> {
             SizedBox(
               height: 35,
             ),
-            Style.title(widget.displayQuestion['question']['text'][language]),
+            Style.title(MyLocalizations.of(context, widget.displayQuestion['question']['text'])),
             SizedBox(
               height: 30,
             ),
@@ -52,7 +51,7 @@ class _CouldSeeFormState extends State<CouldSeeForm> {
               ),
               itemBuilder: (context, index) {
                 String text =
-                    widget.displayQuestion['answers'][index]['text'][language];
+                    widget.displayQuestion['answers'][index]['text'];
                 int id = widget.displayQuestion['answers'][index]['id'];
                 return Container(
                   padding: EdgeInsets.all(5),
@@ -61,13 +60,10 @@ class _CouldSeeFormState extends State<CouldSeeForm> {
                         setState(() {
                           selected = text;
                         });
-                        id == 101
+                        id == 82
                             ? widget.addReport(true)
                             : widget.addReport(false);
-                        id == 111
-                            ? widget.addOtherReport('adult')
-                            : id == 112 ? widget.addOtherReport('bite') : null;
-                        widget.setValid(true);
+                        // widget.setValid(true);
                         widget.nextPage();
                       },
                       child: SmallQuestionOption(

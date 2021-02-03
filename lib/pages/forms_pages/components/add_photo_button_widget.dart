@@ -38,7 +38,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
     }
   }
 
-  _initImages ()  async {
+  _initImages() async {
     if (Utils.imagePath != null && Utils.imagePath.isNotEmpty) {
       Utils.imagePath.forEach((element) async {
         if (element['id'] == Utils.report.version_UUID) {
@@ -54,7 +54,6 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
       });
     }
   }
-
 
   Future<File> urlToFile(String imageUrl) async {
     // generate random number.
@@ -74,11 +73,9 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
     return file;
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return images.isEmpty
+    return images == null || images.isEmpty
         ? GestureDetector(
             onTap: () {
               _chooseTypeImage();
@@ -142,11 +139,11 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
                                   child: Image.file(
-                                          File(images[index]),
-                                          fit: BoxFit.cover,
-                                          height: 100,
-                                          width: 100,
-                                        )),
+                                    File(images[index]),
+                                    fit: BoxFit.cover,
+                                    height: 100,
+                                    width: 100,
+                                  )),
                             ),
                             Container(
                               height: double.infinity,
@@ -207,15 +204,15 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
           style: TextStyle(color: Colors.blue),
         ),
       ),
-      CupertinoActionSheetAction(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: Text(
-          MyLocalizations.of(context, 'continue_without_photo'),
-          style: TextStyle(color: Colors.blue),
-        ),
-      ),
+      // CupertinoActionSheetAction(
+      //   onPressed: () {
+      //     Navigator.pop(context);
+      //   },
+      //   child: Text(
+      //     MyLocalizations.of(context, 'continue_without_photo'),
+      //     style: TextStyle(color: Colors.blue),
+      //   ),
+      // ),
     ];
     List<Widget> listForAndroid = <Widget>[
       InkWell(
@@ -247,25 +244,25 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
               style: TextStyle(color: Colors.blue, fontSize: 15)),
         ),
       ),
-      Utils.report.type == 'adult'
-          ? Column(
-              children: <Widget>[
-                Divider(height: 1.0),
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(20),
-                    child: Text(
-                        MyLocalizations.of(context, 'continue_without_photo'),
-                        style: TextStyle(color: Colors.blue, fontSize: 15)),
-                  ),
-                ),
-              ],
-            )
-          : Container(),
+      // Utils.report.type == 'adult'
+      //     ? Column(
+      //         children: <Widget>[
+      //           Divider(height: 1.0),
+      //           InkWell(
+      //             onTap: () {
+      //               Navigator.pop(context);
+      //             },
+      //             child: Container(
+      //               width: double.infinity,
+      //               padding: EdgeInsets.all(20),
+      //               child: Text(
+      //                   MyLocalizations.of(context, 'continue_without_photo'),
+      //                   style: TextStyle(color: Colors.blue, fontSize: 15)),
+      //             ),
+      //           ),
+      //         ],
+      //       )
+      //     : Container(),
     ];
 
     Utils.modalDetailTrackingforPlatform(
@@ -275,7 +272,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
         Theme.of(context).platform,
         context, () {
       Navigator.pop(context);
-    });
+    }, title: '${MyLocalizations.of(context, 'bs_info_adult_title')}:');
   }
 
   _deleteImage(String img, int index) {
@@ -309,11 +306,13 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
   }
 
   Future getImage(source) async {
-    var image = await ImagePicker.pickImage(
+    final _picker = ImagePicker();
+    var image = await _picker.getImage(
       source: source,
     );
     if (image != null) {
-      Utils.saveImgPath(image);
+      final File file = File(image.path);
+      Utils.saveImgPath(file);
       setState(() {
         images.add(image.path);
       });

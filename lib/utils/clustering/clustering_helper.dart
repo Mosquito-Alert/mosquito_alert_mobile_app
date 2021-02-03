@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
 import 'package:mosquito_alert_app/models/report.dart';
@@ -136,17 +137,32 @@ class ClusteringHelper {
       return;
     }
 
-    ImageConfiguration imageConfig = ImageConfiguration(devicePixelRatio: 3.0);
+    // ImageConfiguration imageConfig = ImageConfiguration(devicePixelRatio: 1.0);
 
-    _iconAdultYours = await BitmapDescriptor.fromAssetImage(
-        imageConfig, 'assets/img/maps/report_001.png');
-    _iconAdultOthers = await BitmapDescriptor.fromAssetImage(
-        imageConfig, 'assets/img/maps/report_002.png');
-    _iconBitesYours = await BitmapDescriptor.fromAssetImage(
-        imageConfig, 'assets/img/maps/report_003.png');
-    _iconBreedingYours = await BitmapDescriptor.fromAssetImage(
-        imageConfig, 'assets/img/maps/report_004.png');
+    final Uint8List imageAdult =
+        await getBytesFromAsset('assets/img/maps/ic_yellow_marker.png', 100);
+    final Uint8List imageOthers =
+        await getBytesFromAsset('assets/img/maps/ic_green_marker.png', 100);
+    final Uint8List imageBites =
+        await getBytesFromAsset('assets/img/maps/ic_red_marker.png', 100);
+    final Uint8List imageBreeding =
+        await getBytesFromAsset('assets/img/maps/ic_blue_marker.png', 100);
+    // final Marker marker = Marker(icon: BitmapDescriptor.fromBytes(markerIcon));
 
+    _iconAdultYours = BitmapDescriptor.fromBytes(imageAdult);
+    _iconAdultOthers = BitmapDescriptor.fromBytes(imageOthers);
+    _iconBitesYours = BitmapDescriptor.fromBytes(imageBites);
+    _iconBreedingYours = BitmapDescriptor.fromBytes(imageBreeding);
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+        .buffer
+        .asUint8List();
   }
 
   BitmapDescriptor getIcon(Report report, selected) {

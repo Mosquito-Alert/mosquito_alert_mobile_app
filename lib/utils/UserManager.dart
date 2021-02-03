@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/api/api.dart';
-import 'package:mosquito_alert_app/pages/settings_pages/tutorial_page.dart';
+import 'package:mosquito_alert_app/pages/settings_pages/consent_form.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+
+import 'Application.dart';
 
 class UserManager {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -20,28 +22,36 @@ class UserManager {
     if (firstTime == null || !firstTime) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => TutorialPage(false),
+          builder: (context) => ConsentForm(),
         ),
       );
 
       prefs.setBool("firstTime", true);
       var uuid = new Uuid().v4();
       var trackingUuid = new Uuid().v4();
-      String language = Utils.getLanguage();
       prefs.setString("uuid", uuid);
       prefs.setString("trackingUUID", trackingUuid);
       prefs.setBool("trackingDisabled", false);
 
       await ApiSingleton().createUser(uuid);
-      setUserScores(1);
-      setLanguage(language);
-
-      userScore = await ApiSingleton().getUserScores();
+      // Utils.getLanguage();
+      setLanguage(Utils.language.languageCode);
+      setLanguageCountry(Utils.language.countryCode);
+    } else {
+      String languageCode = await getLanguage();
+      String countryCode = await getLanguageCountry();
+      if (languageCode != null && countryCode != null) {
+        Utils.language = Locale(languageCode, countryCode);
+      } else {
+        Utils.getLanguage();
+      }
     }
 
+    application.onLocaleChanged(Utils.language);
     fetchUser();
+    userScore = await ApiSingleton().getUserScores();
     setUserScores(userScore);
-    Utils.language = await getLanguage();
+
     return true;
   }
 
@@ -51,11 +61,6 @@ class UserManager {
   }
 
   //set
-  static Future<void> setUserName(name) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("userName", name);
-  }
-
   static Future<void> setFrirebaseId(id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("firebaseId", id);
@@ -86,6 +91,21 @@ class UserManager {
     prefs.setString("language", language);
   }
 
+  static Future<void> setLanguageCountry(lngCountry) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("languageCountry", lngCountry);
+  }
+
+  static Future<void> setReportList(reportList) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList("reportsList", reportList);
+  }
+
+  static Future<void> setImageList(imageList) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList("imagesList", imageList);
+  }
+
   //get
   static Future<String> getUUID() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -95,11 +115,6 @@ class UserManager {
   static Future<String> getTrackingId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.get("trackingUUID");
-  }
-
-  static Future<String> getUserName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("userName");
   }
 
   static Future<String> getFirebaseId() async {
@@ -130,6 +145,21 @@ class UserManager {
   static Future<String> getLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString("language");
+  }
+
+  static Future<String> getLanguageCountry() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("languageCountry");
+  }
+
+  static Future<List<String>> getReportList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList("reportsList");
+  }
+
+  static Future<List<String>> getImageList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList("imagesList");
   }
 
   static signOut() async {

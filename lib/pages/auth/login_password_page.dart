@@ -153,6 +153,7 @@ class _LoginPasswordState extends State<LoginPassword> {
         .then((FirebaseUser user) {
       loadingStream.add(false);
       ApiSingleton().createProfile(user.uid);
+      Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MainVC()),

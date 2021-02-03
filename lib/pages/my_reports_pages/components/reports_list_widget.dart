@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
@@ -28,7 +29,11 @@ class ReportsList extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  onTap(reports[index]);
+                  Report reporteItem = List.from(reports)
+                      .where((element) =>
+                          element.report_id == reports[index].report_id)
+                      .toList()[0];
+                  onTap(reporteItem);
                 },
                 child: Card(
                   margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -41,10 +46,10 @@ class ReportsList extends StatelessWidget {
                       children: <Widget>[
                         Image.asset(
                           reports[index].type == 'adult'
-                              ? 'assets/img/maps/report_001.png'
+                              ? 'assets/img/maps/ic_yellow_marker.png'
                               : reports[index].type == 'site'
-                                  ? 'assets/img/maps/report_004.png'
-                                  : 'assets/img/maps/report_003.png',
+                                  ? 'assets/img/maps/ic_blue_marker.png'
+                                  : 'assets/img/maps/ic_red_marker.png',
                           width: 40,
                         ),
                         Container(height: 60, child: VerticalDivider()),
@@ -76,7 +81,7 @@ class ReportsList extends StatelessWidget {
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: Image.network(
-                                  'http://humboldt.ceab.csic.es/media/' +
+                                  ApiSingleton.baseUrl +
                                       reports[index].photos[0].photo,
                                   width: 50,
                                   height: 50,
