@@ -303,5 +303,10 @@
     "tutorial_send_module_008": "Al fine di proteggere la tua privacy, evitiamo di raccogliere qualsiasi tipo di informazione personale. Per favore, evita di scrivere il tuo nome o il tuo indirizzo nella busta.  Ti informeremo sui risultati attraverso il sistema di notifica dell'app. Abbiamo bisogno solo del ID della zanzara sulla busta per contattarti.",
     "tutorial_send_module_009": "Grazie mille per la partecipazione. I ricercatori ti informeranno dei risultati otttenuti attraverso l'app Mosquito Alert. Scusaci, se tarderemo un po', dipenderà dal lavoro da svolgere.",
     "text_next_icons": "Puoi spedire questa zanzara al seguente indirizzo postale",
-    "ver-laboratorio-de-referencia": "Vedi laboratorio di riferimento"
+    "ver-laboratorio-de-referencia": "Vedi laboratorio di riferimento",
+
+    "more_info": "Más info:",
+    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
+    "you_can_send_report_id": "Usando este ID: ",
+    "identifier_small": "ID: "
 }

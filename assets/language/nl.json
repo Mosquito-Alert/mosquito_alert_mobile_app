@@ -303,5 +303,10 @@
     "tutorial_send_module_008": "Om uw privacy te beschermen, vermijden we het verzamelen van persoonlijke informatie. Schrijf uw naam en adres niet op de enveloppe. We zullen u informeren over de uitslag via het Mosquito Alert notificatie systeem. We hebben alleen de code van de mug nodig in de enveloppe.",
     "tutorial_send_module_009": "Hartelijk bedankt voor uw deelname. De onderzoekers streven ernaar u te laten weten welke muggensoort u heeft ingestuurd via het Mosquito Alert notificatie systeem.\nDit kan echter even duren, afhankelijk van de onderzoeksplanning.",
     "text_next_icons": "U kunt de mug via briefpost versturen naar",
-    "ver-laboratorio-de-referencia": "Bekijk referentielaboratorium"
+    "ver-laboratorio-de-referencia": "Bekijk referentielaboratorium",
+
+    "more_info": "Más info:",
+    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
+    "you_can_send_report_id": "Usando este ID: ",
+    "identifier_small": "ID: "
 }

@@ -303,5 +303,10 @@
     "tutorial_send_module_008": "Um deine Privatsphäre zu schützen, vermeiden wir das Sammeln persönlicher Daten. Bitte vermeide es, deinen Namen oder Adresse auf den Umschlag zu schreiben. Wir werden dich über das Mosquito Alert-Benachrichtigungssystem über die Ergebnisse informieren. Wir brauchen nur die Kennung (ID) der Stechmücke im Umschlag.",
     "tutorial_send_module_009": "Vielen Dank für deine Teilnahme. Wissenschaftler werden dir, soweit möglich, mitteilen, welche Stechmücke du über das Benachrichtigungssystem von Mosquito Alert an sie gesendet hast. Dies kann jedoch je nach Forschungsplanung eine Weile dauern.",
     "text_next_icons": "Du kannst diese Stechmücke per Post verschicken an",
-    "ver-laboratorio-de-referencia": "siehe Referenzlabor"
+    "ver-laboratorio-de-referencia": "siehe Referenzlabor",
+
+    "more_info": "Más info:",
+    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
+    "you_can_send_report_id": "Usando este ID: ",
+    "identifier_small": "ID: "
 }

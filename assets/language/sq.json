@@ -303,5 +303,11 @@
     "tutorial_send_module_008": "Në mënyrë që të ruhet privatësia juaj, mbledhja e informacioneve personale do të shmanget. Ju lutem, shmangni shkrimin e emrit ose adresës suaj në zarf. Ne do ju njoftojmë mbi rezultatet me anë të sistemit të njoftimit të aplikacionit \"Mosquito Alert\". Kemi nevojë vetëm për kodin e mushkonjës në zarf.",
     "tutorial_send_module_009": "Faleminderit shumë për pjesëmarrjen tuaj.  Shkencëtarët kanë për qëllim t'ju bëjnë të ditur se cila është mushkonja që ju keni dërguar nëpërmjet sistemit të njoftimit të aplikacionit \"Mosquito Alert\". Megjithatë, kjo, mund të kërkojë pak kohë, në varësi të planifikimeve të kërkimit.",
     "text_next_icons": "Mund t'a dërgoni këtë mushkonjë tek njëri nga laboratorët tanë.",
-    "ver-laboratorio-de-referencia": "Shihni laboratorin e referencës"
+    "ver-laboratorio-de-referencia": "Shihni laboratorin e referencës",
+
+
+    "more_info": "Más info:",
+    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
+    "you_can_send_report_id": "Usando este ID: ",
+    "identifier_small": "ID: "
 }

@@ -5,6 +5,7 @@ import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/owcampaing.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_other_report_form.dart';
+import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -154,24 +155,13 @@ class _BitingReportPageState extends State<BitingReportPage> {
           Utils.showAlertCampaign(
             context,
             activeCampaign,
-            (ctx) {
-              Navigator.pop(context);
-              Utils.showCustomAlert(
-                MyLocalizations.of(context, 'alert_campaing_found_title'),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Style.titleMedium('Id: ' + Utils.report.report_id),
-                    Style.body(activeCampaign.postingAddress),
-                  ],
-                ),
-                ctx,
-                onPressed: () {
-                  // Navigator.pop(context);
-                  Navigator.of(context).popUntil((r) => r.isFirst);
-                  Utils.resetReport();
-                },
+                (ctx) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CampaignTutorialPage(fromReport: true,)),
               );
+              Utils.resetReport();
             },
           );
         } else {

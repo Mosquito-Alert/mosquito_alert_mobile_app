@@ -881,10 +881,6 @@ class Utils {
                   ),
                   onPressed: () {
                     Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CampaignTutorialPage()),
-                    );
                     onPressed(context);
                   }),
               FlatButton(
@@ -938,10 +934,6 @@ class Utils {
                   ),
                   onPressed: () {
                     Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CampaignTutorialPage()),
-                    );
                     onPressed(context);
                   }),
               CupertinoDialogAction(

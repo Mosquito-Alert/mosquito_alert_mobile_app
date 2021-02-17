@@ -303,5 +303,10 @@
     "tutorial_send_module_008": "Kako bismo zaštitili Vašu privatnost, izbjegavamo prikupljanje osobnih podataka. Izbjegavajte pisanje imena ili adresa na omotnicu. O rezultatima ćemo Vas obavijestiti putem sustava obavijesti Mosquito Alert. Samo nam je potreban kod komarca koji ćete napisati na omotnicu. ",
     "tutorial_send_module_009": "Hvala Vam puno na sudjelovanju. Znanstvenicima  je cilj da Vas obavijeste koju vrstu komarca ste poslali preko Mosquito Alert sistema. Međutim, ovo može potrajati neko vrijeme, ovisno o planiranju istraživanja.",
     "text_next_icons": "",
-    "ver-laboratorio-de-referencia": "Pogledajte referentni laboratorij"
+    "ver-laboratorio-de-referencia": "Pogledajte referentni laboratorij",
+
+    "more_info": "Más info:",
+    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
+    "you_can_send_report_id": "Usando este ID: ",
+    "identifier_small": "ID: "
 }

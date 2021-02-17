@@ -9,6 +9,10 @@ import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class CampaignTutorialPage extends StatefulWidget {
+  bool fromReport;
+
+  CampaignTutorialPage({this.fromReport});
+
   @override
   _CampaignTutorialPageState createState() => _CampaignTutorialPageState();
 }
@@ -30,6 +34,15 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_outlined),
+          onPressed: () {
+          if (widget.fromReport != null && widget.fromReport) {
+            Navigator.popUntil(context, (route) => route.isFirst);
+          } else {
+            Navigator.pop(context);
+          }
+        },),
         title: Style.title(MyLocalizations.of(context, "campaign_tutorial_txt",), fontSize: 16),
       ),
       body: IntroSlider(
@@ -68,6 +81,9 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
   }
   void onDonePress() {
     Navigator.pop(context);
+    if (widget.fromReport != null && widget.fromReport) {
+      Navigator.popUntil(context, (route) => route.isFirst);
+    }
   }
   void onTabChangeCompleted(int page) {
   }

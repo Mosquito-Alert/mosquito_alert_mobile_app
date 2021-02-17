@@ -5,7 +5,8 @@ import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class TutorialPage extends StatefulWidget {
-  bool goBack;
+  final bool goBack;
+
   TutorialPage(this.goBack);
   @override
   _TutorialPageState createState() => _TutorialPageState();
@@ -129,8 +130,6 @@ class _TutorialPageState extends State<TutorialPage> {
   }
 
   void onDonePress() {
-    // Back to the first tab
-    // this.goToTab(0);
     Navigator.pop(context);
   }
 
@@ -216,38 +215,22 @@ class _TutorialPageState extends State<TutorialPage> {
             : Container(),
       ),
       body: IntroSlider(
-        // List slides
         slides: initSlides(),
-
-        //skip button
         isShowSkipBtn: false,
-
-        // Next button
         renderNextBtn: renderNextBtn(),
-
-        // Done button
         renderDoneBtn: renderDoneBtn(),
         onDonePress: onDonePress,
         colorDoneBtn: Style.colorPrimary.withOpacity(0.2),
         highlightColorDoneBtn: Style.colorPrimary,
-
-        // Dot indicator
         colorDot: Style.colorPrimary.withOpacity(0.4),
         sizeDot: 5.0,
         colorActiveDot: Style.colorPrimary,
-        // typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
-
-        // Tabs
         listCustomTabs: renderListCustomTabs(),
         backgroundColorAllSlides: Colors.white,
         refFuncGoToTab: (refFunc) {
           goToTab = refFunc;
         },
-
-        // Show or hide status bar
         shouldHideStatusBar: false,
-
-        // On tab change completed
         onTabChangeCompleted: onTabChangeCompleted,
       ),
     );

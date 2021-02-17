@@ -392,58 +392,74 @@ class _MyReportsPageState extends State<MyReportsPage> {
                     height: 20,
                   ),
                   report.type == 'adult' && campaign != null
-                      ? Column(
-                          children: [
-                            SizedBox(
-                              height: 0,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                    flex: 3,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Style.body(MyLocalizations.of(context, "you_can_send_info_address"), fontSize: 14, textAlign: TextAlign.start),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Style.titleMedium(campaign.postingAddress, fontSize: 14),
-                                      ],
-                                    )),
-                                SizedBox(
-                                  width: 12,
-                                ),
-                                Expanded(
-                                    flex: 1,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Style.body(MyLocalizations.of(context, "more_info"), fontSize: 12, textAlign: TextAlign.center),
-                                        SizedBox(
-                                          height: 2,
-                                        ),
-                                        IconButton(
-                                            icon: SvgPicture.asset(
-                                              "assets/img/sendmodule/ic_adn.svg",
-                                              color: Colors.black,
-                                            ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(builder: (context) => CampaignTutorialPage()),
-                                              );
-                                            })
-                                      ],
-                                    )),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                          ],
+                      ? Container(
+                          padding: EdgeInsets.all(12),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 0,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      flex: 3,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Style.body(MyLocalizations.of(context, "you_can_send_info_address"), fontSize: 14, textAlign: TextAlign.start),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Style.titleMedium(campaign.postingAddress, fontSize: 14),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Style.body("${MyLocalizations.of(context, "you_can_send_report_id")}", fontSize: 14, textAlign: TextAlign.start),
+                                              SizedBox(width: 6,),
+                                              Style.titleMedium(report.report_id, fontSize: 14),
+                                            ],
+                                          )
+                                        ],
+                                      )),
+                                  SizedBox(
+                                    width: 12,
+                                  ),
+                                  Expanded(
+                                      flex: 1,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Style.body(MyLocalizations.of(context, "more_info"), fontSize: 12, textAlign: TextAlign.center),
+                                          SizedBox(
+                                            height: 2,
+                                          ),
+                                          IconButton(
+                                              icon: SvgPicture.asset(
+                                                "assets/img/sendmodule/ic_adn.svg",
+                                                color: Colors.black,
+                                              ),
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => CampaignTutorialPage()),
+                                                );
+                                              })
+                                        ],
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                          color: Colors.orange[50],
+                        )
+                      : Container(),
+                  report.type == 'adult' && campaign != null
+                      ? SizedBox(
+                          height: 20,
                         )
                       : Container(),
                   Row(

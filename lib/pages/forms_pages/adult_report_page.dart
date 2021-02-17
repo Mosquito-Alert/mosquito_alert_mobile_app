@@ -15,6 +15,7 @@ import 'package:mosquito_alert_app/pages/forms_pages/components/mosquito_parts_f
 import 'package:mosquito_alert_app/pages/forms_pages/components/mosquito_type_form.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/other_mosquito_info.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/questions_breeding_form.dart';
+import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -193,37 +194,12 @@ class _AdultReportPageState extends State<AdultReportPage> {
               context,
               activeCampaign,
                   (ctx) {
-                Navigator.pop(context);
-                Utils.showCustomAlert(
-                  MyLocalizations.of(context, 'app_name'),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(MyLocalizations.of(context, 'alert_campaing_found_title')),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                        child: Style.title("ID: ${Utils.report.report_id}", fontSize: 18),
-                        decoration: BoxDecoration(color: Style.colorPrimary.withOpacity(0.2), border: Border.all(color: Style.colorPrimary, width: 1.0)),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(MyLocalizations.of(context, 'you_can_send_info_address')),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Style.title(activeCampaign.postingAddress,  fontSize: 16),
-                    ],
-                  ),
-                  ctx,
-                  onPressed: () {
-                    Navigator.of(context).popUntil((r) => r.isFirst);
-                    Utils.resetReport();
-                  },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CampaignTutorialPage(fromReport: true,)),
                 );
+                Utils.resetReport();
               },
             );
           } else {

@@ -303,5 +303,10 @@
     "tutorial_send_module_008": "Amb la finalitat de protegir la teva privacitat, evitem recollir tot tipus d'informació personal. Si us plau, evita escriure el teu nom o adreça en el sobre. T'informarem dels resultats a través del sistema de notificacions de l'app. Només necessitem el ID del mosquit per a contactar amb tu.",
     "tutorial_send_module_009": "Moltes gràcies per la teva participació. Els investigadors t'informaran dels resultats obtinguts a través de l'app Mosquito Alert. Tingues en compte, que poden trigar una mica en funció del treball que tinguin.",
     "text_next_icons": "Pots enviar per correu postal aquest mosquit a ",
-    "ver-laboratorio-de-referencia": "veure el laboratori de referència"
+    "ver-laboratorio-de-referencia": "veure el laboratori de referència",
+
+    "more_info": "Más info:",
+    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
+    "you_can_send_report_id": "Usando este ID: ",
+    "identifier_small": "ID: "
 }

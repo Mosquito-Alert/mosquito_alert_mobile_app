@@ -21,7 +21,7 @@ main() async {
     print("$err");
   }
   // ignore: invalid_use_of_visible_for_testing_member
-  SharedPreferences.setMockInitialValues({});
+  //SharedPreferences.setMockInitialValues({});
   runApp(MyApp());
 }
 
@@ -77,7 +77,6 @@ class _MyAppState extends State<MyApp> {
     });
     application.onLocaleChanged = onLocaleChange;
 
-
     UserManager.fetchUser();
   }
 
@@ -95,16 +94,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
-    /*ConnectivityUtils.initialize(
-        serverToPing:
-        'http://madev.creaf.cat',
-        callback: (response) {
-          print(response);
-          return response != null;
-
-        });*/
-
     return MaterialApp(
       title: 'Mosquito alert',
       debugShowCheckedModeBanner: false,
