@@ -194,7 +194,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
               context,
               activeCampaign,
                   (ctx) {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => CampaignTutorialPage(fromReport: true,)),
