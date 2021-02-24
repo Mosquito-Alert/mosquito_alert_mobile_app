@@ -860,9 +860,13 @@ class Utils {
               MyLocalizations.of(context, 'app_name'),
             ),
             content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[Style.body(MyLocalizations.of(context, 'save_report_ok_txt')), Style.body(MyLocalizations.of(context, 'alert_campaign_found_create_body'))],
-              ),
+              child: ListBody(children: <Widget>[
+                Style.body(MyLocalizations.of(context, 'save_report_ok_txt')),
+                SizedBox(
+                  height: 12,
+                ),
+                Style.title(MyLocalizations.of(context, 'alert_campaign_found_create_body'), textAlign: TextAlign.left, fontSize: 15.0, height: 1.2)
+              ]),
             ),
             actions: <Widget>[
               FlatButton(
@@ -910,9 +914,9 @@ class Utils {
                 ),
                 Style.body(MyLocalizations.of(context, 'save_report_ok_txt'), textAlign: TextAlign.center),
                 SizedBox(
-                  height: 8,
+                  height: 12,
                 ),
-                Style.body(MyLocalizations.of(context, 'alert_campaign_found_create_body'), textAlign: TextAlign.center)
+                Style.title(MyLocalizations.of(context, 'alert_campaign_found_create_body'), textAlign: TextAlign.center, fontSize: 15.0, height: 1.2)
               ],
             ),
             actions: <Widget>[
