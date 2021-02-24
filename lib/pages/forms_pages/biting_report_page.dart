@@ -156,7 +156,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
             context,
             activeCampaign,
                 (ctx) {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) => CampaignTutorialPage(fromReport: true,)),
