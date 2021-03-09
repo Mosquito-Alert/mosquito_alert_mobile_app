@@ -297,17 +297,15 @@
     "tutorial_send_module_002": "Nëse e kapni të gjallë mushkonjën (p.sh., duke vendosur një kavanoz të vogël mbi mushkonjën që është duke qendruar, p.sh.: në mur, tavan apo diku tjetër), vendoseni në frigorifer për gjysmë ore ose më gjatë para se të bëni raportin dhe para se të bëni gati atë për t'a dërguar.",
     "tutorial_send_module_003": "Çdo mushkonjë mund të dërgohet, edhe nëse është e thërrmuar ose dëmtuar me duar ose e vrarë me anë një rakete elektrike. Sa më e padëmtuar të jetë trupi i mushkonjës, aq më lehtë mund të përcaktohet ajo. Sidoqoftë, edhe nëse është e dëmtuar ose e thërrmuar, shkencëtarët mund t'a identifikojnë nëpërmjet analizimit të ADN-së së saj.",
     "tutorial_send_module_004": "Para se të dërgoni mushkonjën me postë, duhet t'a njoftoni këtë vëzhgimin në aplikacionin \"Alert Mosquito\". Kjo gjeneron një kod ID që i lejon studiuesit të identifikojnë këtë mushkonjë. Kur plotësoni raportin, një mesazh do ju tregojë nëse është e mundur që mushkonjën t'a dërgoni me postë. Nëse mesazhi nuk shfaqet, kjo do të thotë që ky opsion nuk është i disponueshëm në vendin tuaj në atë kohë.",
-    "tutorial_send_module_005": "Tek opsioni \"Të dhënat e mia\", brenda raportit të mushkonjës do gjeni kodin identifues ID që identifikon atë mushkonjë. Kodin duhet t'a shkruani mbi zarf ose ta fusni brenda në tij së bashku me mushkonjën. Pranë kodit do të gjeni ikonën e një treguesi me një zarf brenda. Kjo tregon adresën postare në të cilën duhet të dërgoni mushkonjën. Nëse nuk e shihni ID-në, kjo do të thotë që ky opsion nuk është i disponueshëm në këtë kohë në vendin tuaj.",
+    "tutorial_send_module_005": "Tek \"Të dhënat e mia\" do të gjeni një kuti me ngjyrë të verdhë me kodin identifues ID që identifikon mushkonjën dhe adresën porstare ku do të dërgohet letra. Shkruani kodin mbi zarf ose në një copë letre që e përfshini së bashku me mushkonjën. Nëse nuk e shihni kutinë e verdhë me këtë informacion, kjo do të thotë që ky opsion nuk është i vlefshëm në atë kohë në vendin tuaj.",
     "tutorial_send_module_006": "Për të dërguar mushkonjën është e rëndësishme t'a mbroni atë nga lagështira. Për këtë, mushkonja duhet të vendoset midis dy copave të vogla kartopecetash. Së pari, vendosni një copë kartopecete (2) në fund të një kapaku ose diçka tjetër për të mbrojtur mushkonjën (1). Pastaj vendosni mushkonjën (3) mbi këtë copë kartopecete dhe i vini sipër një copë tjetër kartopecete (4). Mbështillni kapakun dhe mushkonjën me qese plastike ose letër dhe vendoseni në zarf.",
     "tutorial_send_module_007": "Është gati për t'u transportuar. Mos harroni të përfshini mbi zarf, kodin e ID-së së raportit të mushkonjës bashkë me kapakun.",
     "tutorial_send_module_008": "Në mënyrë që të ruhet privatësia juaj, mbledhja e informacioneve personale do të shmanget. Ju lutem, shmangni shkrimin e emrit ose adresës suaj në zarf. Ne do ju njoftojmë mbi rezultatet me anë të sistemit të njoftimit të aplikacionit \"Mosquito Alert\". Kemi nevojë vetëm për kodin e mushkonjës në zarf.",
     "tutorial_send_module_009": "Faleminderit shumë për pjesëmarrjen tuaj.  Shkencëtarët kanë për qëllim t'ju bëjnë të ditur se cila është mushkonja që ju keni dërguar nëpërmjet sistemit të njoftimit të aplikacionit \"Mosquito Alert\". Megjithatë, kjo, mund të kërkojë pak kohë, në varësi të planifikimeve të kërkimit.",
     "text_next_icons": "Mund t'a dërgoni këtë mushkonjë tek njëri nga laboratorët tanë.",
     "ver-laboratorio-de-referencia": "Shihni laboratorin e referencës",
-
-
-    "more_info": "Más info:",
-    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
-    "you_can_send_report_id": "Usando este ID: ",
-    "identifier_small": "ID: "
+    "more_info": "Më shumë informacion:",
+    "you_can_send_info_address": "Mund të dërgoni mushkonjën me postë në këtë adresë",
+    "you_can_send_report_id": "Duke përdorur atë ID (mjet identifikimi)",
+    "identifier_small": "ID:"
 }

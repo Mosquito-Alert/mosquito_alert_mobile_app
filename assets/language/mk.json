@@ -304,9 +304,8 @@
     "tutorial_send_module_009": "Ви благодарам многу за учеството. Научниците имаат за цел да ве известат кој комарец сте им го испратиле преку системот за известување за комарци. Ова, сепак, може да потрае, во зависност од планирањето на истражувањето.",
     "text_next_icons": "Можете да го испратите по пошта овој комарец до",
     "ver-laboratorio-de-referencia": "видете референтна лабораторија",
-
-    "more_info": "Más info:",
-    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
-    "you_can_send_report_id": "Usando este ID: ",
-    "identifier_small": "ID: "
+    "more_info": "Повеќе информации:",
+    "you_can_send_info_address": "Комарецот можете да го испратите по пошта на оваа адреса",
+    "you_can_send_report_id": "ID на оваа адреса",
+    "identifier_small": "ID:"
 }

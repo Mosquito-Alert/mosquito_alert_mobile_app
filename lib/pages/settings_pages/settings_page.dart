@@ -192,7 +192,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         InfoPage(MyLocalizations.of(context, 'url_about_us'))),
               );
             }),
-                SizedBox(
+                /*SizedBox(
                   height: 10,
                 ),
                 SettingsMenuWidget("countries_involved", () {
@@ -202,7 +202,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         builder: (context) =>
                             CountriesInvolvedPage()),
                   );
-                }),
+                }),*/
             SizedBox(
               height: 30,
             ),

@@ -296,17 +296,16 @@
     "tutorial_send_module_001": "U nekim zemljama i tijekom određenih razdoblja u godini, možete poslati komarce  kako bi znanstvenici detaljno proučavali. U tom slučaju bit ćete obaviješteni. Da biste sudjelovali, slijedite upute.",
     "tutorial_send_module_002": "Ukoliko ste uhvatili živog komarca (npr. stavljanjem male staklenke preko komarca), stavite ga u zamrzivač na pola sata ili duže prije nego što napravite izvještaj i pripremite njegovo slanje.",
     "tutorial_send_module_003": "Svakog komarca možete poslati, čak i ako je oštećen u pokušaju da ga ubijete ili ulovite. Što je više sačuvan, lakša će biti njegova identifikacija. Ipak, čak i ako je oštećen znanstvenici mogu identificirati komarca koristeći njegov DNK.",
-    "tutorial_send_module_004": "",
+    "tutorial_send_module_004": "Prije slanja komarca, morate obavijestiti preko Mosquito Alert aplikacije. Na taj način se stvori ID kod koji omogućuje znanstvenicima identifikaciju komarca. Nakon završetka izvještaja, poruka ukazuje da li postoji mogućnost slanja komarca poštom. Ako se poruka ne pojavi, trenutno nije moguće slanje u Vašoj državi.",
     "tutorial_send_module_005": "U \"Mojim podacima\" naći ćete u izvještaju o komarcima ID kod koji identificira komarca. Morate napisati ovaj kod na omotnicu ili ga staviti unutra zajedno s komarcem. Pored koda naći ćete ikonu pokazivača s omotnicom unutra. Tu se nalazi adresa na koju ćete poslati komarca. Ukoliko ne vidite ID, to znači da ova opcija trenutno nije dostupna u vašoj zemlji.",
-    "tutorial_send_module_006": "Tijekom slanja komaraca važno je zaštititi komarca od vlage. Najbolje je staviti ga između dvije papirnate maramice. Prvo stavite papirnatu maramicu (2) na dno poklopca ili drugog predmeta koji štiti komarca (1). Zatim stavite komarca (3) na papirnatu maramicu i još jednu papirnatu maramicu na vrh (4). Umotajte poklopac ili kutijicu s komarcem u plastiku ili papir i stavite ga u kovertu. ",
-    "tutorial_send_module_007": "Spremno je za slanje. Ne zaboravite na kovertu napisati ID kod izvještaj o komarcu, kao i na poklopac kutijice u kojoj se nalazi komarac.",
-    "tutorial_send_module_008": "Kako bismo zaštitili Vašu privatnost, izbjegavamo prikupljanje osobnih podataka. Izbjegavajte pisanje imena ili adresa na omotnicu. O rezultatima ćemo Vas obavijestiti putem sustava obavijesti Mosquito Alert. Samo nam je potreban kod komarca koji ćete napisati na omotnicu. ",
+    "tutorial_send_module_006": "Tijekom slanja komaraca važno je zaštititi komarca od vlage. Najbolje ga je staviti između dvije papirnate maramice. Prvo stavite papirnatu maramicu (2) na dno poklopca ili drugog predmeta koji štiti komarca (1). Zatim stavite komarca (3) na papirnatu maramicu i još jednu papirnatu maramicu na vrh (4). Umotajte poklopac ili kutijicu s komarcem u plastiku ili papir i stavite ga u kovertu.",
+    "tutorial_send_module_007": "Spremno je za slanje. Ne zaboravite na kovertu napisati ID kod izvještaja o komarcu, kao i na poklopac kutijice u kojoj se nalazi komarac.",
+    "tutorial_send_module_008": "Kako bismo zaštitili Vašu privatnost, izbjegavamo prikupljanje osobnih podataka. Izbjegavajte pisanje imena ili adresa na omotnicu. O rezultatima ćemo Vas obavijestiti putem sustava obavijesti Mosquito Alert. Potreban nam je samo kod komarca koji ćete napisati na omotnicu.",
     "tutorial_send_module_009": "Hvala Vam puno na sudjelovanju. Znanstvenicima  je cilj da Vas obavijeste koju vrstu komarca ste poslali preko Mosquito Alert sistema. Međutim, ovo može potrajati neko vrijeme, ovisno o planiranju istraživanja.",
-    "text_next_icons": "",
+    "text_next_icons": "Komarca možete poslati poštom  ",
     "ver-laboratorio-de-referencia": "Pogledajte referentni laboratorij",
-
-    "more_info": "Más info:",
-    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
-    "you_can_send_report_id": "Usando este ID: ",
-    "identifier_small": "ID: "
+    "more_info": "",
+    "you_can_send_info_address": "",
+    "you_can_send_report_id": "",
+    "identifier_small": "ID:"
 }

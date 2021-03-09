@@ -297,16 +297,15 @@
     "tutorial_send_module_002": "Si aconsegueixes capturar un mosquit viu (per exemple, amb un pot quan el mosquit està reposant), posa'l en el congelador durant més d'una hora per a assegurar-te que està mort abans de notificar-ho i preparar-ho per a l'enviament.",
     "tutorial_send_module_003": "Pots enviar qualsevol mosquit que capturis, encara que estigui xafat. Com més intacte estigui més senzilla serà la seva identificació, però, fins i tot els mosquits xafats poden ser identificats mitjançant anàlisis genètiques.",
     "tutorial_send_module_004": "Abans d'enviar per correu postal el mosquit has de notificar l'observació amb l'app Mosquito Alert. Això generarà un codi ID únic que permetrà als investigadors identificar-lo. En completar el reporti, al costat del missatge d'agraïment haurà de sortir un missatge informant de la possibilitat d'enviar el mosquit. Si el missatge no apareix, significa que aquesta opció no està disponible en aquest moment al teu país.",
-    "tutorial_send_module_005": "En \"Les meves dades\" trobaràs dins de l'informe de l'observació el codi ID que identifica el mosquit. Escriu el codi en el sobre o en un paper que incloguis amb el mosquit. Al costat del ID trobaràs la icona d'un punter amb un sobre dins que t'informarà de l'adreça postal a la qual enviar la carta. Si no veus el ID, significa que aquesta opció no està disponible en aquest moment al teu país.",
+    "tutorial_send_module_005": "En \"Les meves dades\" trobaràs una caixa ressaltada en groc amb el codi ID que identifica al mosquit i l'adreça postal a la qual enviar la carta. Escriu el codi en el sobre o en un paper que incloguis amb el mosquit. Si no veus la caixa groga amb aquesta informació significa que aquesta opció no està disponible en aquest moment al teu país.",
     "tutorial_send_module_006": "En enviar el mosquit és important evitar que s'humitegi. Per a això, col·loca al mosquit entre dos trossets de paper de cuina. Primer un tros (2) en el fons d'una tap o paquet de llumins que protegeixi el mosquit (1), després col·loca el mosquit (3) i un altre tros de paper damunt (4). Pots embolicar-ho tot amb paper o plàstic per a evitar que caigui durant l'enviament. En tot cas, no enviïs el mosquit dins del sobre sense cap protecció, millor dins d'un tap o una petita capseta.",
     "tutorial_send_module_007": "Ja està llest per a enviar. No t'oblidis d'incloure en el sobre el codi ID del mosquit juntament amb el mosquit.",
     "tutorial_send_module_008": "Amb la finalitat de protegir la teva privacitat, evitem recollir tot tipus d'informació personal. Si us plau, evita escriure el teu nom o adreça en el sobre. T'informarem dels resultats a través del sistema de notificacions de l'app. Només necessitem el ID del mosquit per a contactar amb tu.",
     "tutorial_send_module_009": "Moltes gràcies per la teva participació. Els investigadors t'informaran dels resultats obtinguts a través de l'app Mosquito Alert. Tingues en compte, que poden trigar una mica en funció del treball que tinguin.",
     "text_next_icons": "Pots enviar per correu postal aquest mosquit a ",
     "ver-laboratorio-de-referencia": "veure el laboratori de referència",
-
-    "more_info": "Más info:",
-    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
-    "you_can_send_report_id": "Usando este ID: ",
-    "identifier_small": "ID: "
+    "more_info": "Més info:",
+    "you_can_send_info_address": "Pots enviar el mosquit per correu postal a aquesta adreça",
+    "you_can_send_report_id": "Fent servir aquest ID:",
+    "identifier_small": "ID:"
 }

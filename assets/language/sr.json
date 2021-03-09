@@ -297,16 +297,15 @@
     "tutorial_send_module_002": "Ukoliko ste uhvatili živog komarca (npr. tako što ste ga pokrili teglom ili čašom), smestite ga u zamrzivač na pola sata ili duže pre nego što napravite izveštaj i pripremite njegovo slanje.",
     "tutorial_send_module_003": "Svaki komarac može biti poslat, čak i onaj koga ste oštećetili u pokušaju da ga ubijete ili ulovite. Što je više neoštećen/sačuvan lakša će biti njegova identifikacija. Bez obzira na to, naučnici mogu identifikovati vrstu komarca koristeći njegov DNK.",
     "tutorial_send_module_004": "Pre nego što pošaljete komarca poštom, neophodno je da pošaljete izveštaj aplikacijom Mosquito Alert. Tako generišete ID kod koji omogućava istraživačima da identifikuju komarca. Kada je izveštaj završen i poslat, pojaviće se poruka u kojoj ćete videti informaciju o tome da li postoji mogućnost da se komarac pošalje poštom. Ukoliko niste dobili poruku, to znači da ova opcija trenutno nije dostupna u Vašoj zemlji.",
-    "tutorial_send_module_005": "Kada pogledate \"Moji podaci\" pronaći ćete ID kod za izveštaj o komarcu koji označava identitet komarca. Neophodno je napisati kod na kovertu ili ga ubaciti u kovertu zajedno sa komarcem. Pored koda pronaći ćete ikonicu pokazivača sa kovertom unutra. Tu se nalazi adresa na koju ćete poslati komarca. Ukoliko ne vidite ID, to znači da ova opcija trenutno nije dostupna u Vašoj zemlji.",
+    "tutorial_send_module_005": "Kada pogledate \"Moji podaci\" pronaći ćete ID kod za izveštaj o komarcu koji predstavlja identitet komarca, kao i adresu na koju ćete poslati pismo sa komarcem. Napišite kod na kovertu ili na parče papira koji ćete ubaciti u kovertu zajedno sa komarcem. Ukoliko ne vidite navedene informacije koje su obojene u žuto, znači da opcija slanja komarca još uvek nije dostupna u Vašoj zemlji.",
     "tutorial_send_module_006": "Da biste sačuvali komarca neophodno je da bude zaštićen od vlage. Stoga, najbolje je da komarca smestite između dva parčeta papirne maramice. Stavite prvo parče papirne maramice (2) na dno poklopca ili nekog drugog predmeta (npr. kutijice) koji će zaštititi komarca od lomljenja (1). Potom smestite komarca na postavljenu papirnu maramicu (3) i preko komarca stavite drugo parče papirne maramice (4). Umotajte poklopac ili kutijicu u plastičnu kesu ili papir i smestite u kovertu.",
     "tutorial_send_module_007": "Spremno je za slanje. Ne zaboravite da na kovertu napišete ID kod izveštaja o komarcu  zajedno kao i na poklopac kutijice u kojoj je komarac.",
     "tutorial_send_module_008": "Sa ciljem zaštite Vaše privatnosti, izbegavamo sakupljanje ličnih podataka. Molimo Vas da Vaše ime i adresu napišete na kovertu. Obavestićemo Vas o rezultatima preko obaveštajnog sistema Mosquito Alert. Samo nam je potreban kod komarca koji ćete napisati na koverti. ",
-    "tutorial_send_module_009": "Hvala Vam mnogo na učešću. Naučnicima je cilj da Vas obaveste koju vrstu komarca ste poslali preko obaveštajnog sistema Mosquito Alert. Međutim, ovo može potrajati neko vreme, u zavisnosti od planiranja istraživanja.",
+    "tutorial_send_module_009": "Hvala Vam mnogo na učešću. Naučnicima je cilj da Vas obaveste koju vrstu komarca ste poslali preko obaveštajnog sistema Mosquito Alert. Međutim, ovo može potrajati neko vreme, u zavisnosti od planiranih istraživanja.",
     "text_next_icons": "Komarca možete poslati u našu laboratoriju",
     "ver-laboratorio-de-referencia": "Pogledajte referentnu laboratoriju",
-
-    "more_info": "Más info:",
-    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
-    "you_can_send_report_id": "Usando este ID: ",
-    "identifier_small": "ID: "
+    "more_info": "Više informacija:",
+    "you_can_send_info_address": "Možete poslati komarca poštom na ovu adresu",
+    "you_can_send_report_id": "Upotreba ovog ID",
+    "identifier_small": "ID:"
 }

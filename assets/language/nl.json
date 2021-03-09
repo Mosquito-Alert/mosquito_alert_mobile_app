@@ -297,16 +297,15 @@
     "tutorial_send_module_002": "Wanneer u de mug levend heeft gevangen (bijv. door een klein potje over de rustende mug te plaatsen), leg de mug dan in de vriezer voor tenminste een half uur voordat u de melding maakt en de mug klaar maakt voor verzending. ",
     "tutorial_send_module_003": "Elke mug kan ingestuurd worden, zelfs wanneer de mug kapotgeslagen is met de handen of een elektrische vliegenmepper. Hoe meer de mug nog intact is, hoe makkelijker het is om deze te identificeren. Desalniettemin kunnen onderzoekers zelfs een kapotgeslagen mug identificeren aan de hand van het DNA van de mug. ",
     "tutorial_send_module_004": "Voordat u de mug per post verstuurd moet u een melding maken met de Mosquito Alert applicatie. Hierdoor wordt een ID code gegenereerd waarmee de onderzoekers de mug kunnen identificeren. Wanneer u een melding afrond, zal een melding aangeven of het mogelijk is de mug per post te versturen. Wanneer de melding niet verschijnt is deze optie niet beschikbaar in uw land op dat moment.",
-    "tutorial_send_module_005": "In \"Mijn gegevens\" vind u de ID code in uw muggen melding, met deze code wordt uw ingezonden mug gekoppeld aan uw melding. Deze code moet bijgesloten worden tijdens het verzenden van de mug, schrijf de code op de enveloppe of bijgevoegd met de mug in de enveloppe. Naast de code vind u een pictogram van een aanwijzer met een enveloppe. Dit is het postadres waar u de mug naartoe kunt sturen. Wanneer de ID bij u niet zichtbaar is betekent het dat deze optie op dit moment niet beschikbaar is in uw land.",
+    "tutorial_send_module_005": "In \"Mijn gegevens\" vind u in een geel gemarkeerd veld met de ID code waarmee uw mug gekoppeld kan worden aan uw melding, hier vind u ook het adres waar u de enveloppe naartoe kunt sturen. Schrijf de code op de enveloppe of schrijf op een stukje papier en stop dit met de mug in de enveloppe. Wanneer het gele veld niet ziet is deze optie op dit moment niet voor u beschikbaar in uw land.",
     "tutorial_send_module_006": "Om de mug te kunnen versturen is het belangrijk de mug te beschermen tegen vocht. Om deze reden moet de mug tussen twee kleine stukjes tissue papier gelegd worden. Leg eerst een stuk tissue (2) op de bodem van een deksel, dopje of ander object om de mug te beschermen. Leg daarna de mug (3) op het papier en leg er een tweede stuk  tissue bovenop (4). Omwikkel het object met de mug met plastic of papier en stop het in een enveloppe. Verstuur in ieder geval geen losse mug in een enveloppe, de mug moet beschermd worden door een dopje of ander object.",
     "tutorial_send_module_007": "Het is klaar voor verzending. Vergeet niet om de ID code van uw melding aan de enveloppe toe te voegen samen met de verpakte mug.",
     "tutorial_send_module_008": "Om uw privacy te beschermen, vermijden we het verzamelen van persoonlijke informatie. Schrijf uw naam en adres niet op de enveloppe. We zullen u informeren over de uitslag via het Mosquito Alert notificatie systeem. We hebben alleen de code van de mug nodig in de enveloppe.",
     "tutorial_send_module_009": "Hartelijk bedankt voor uw deelname. De onderzoekers streven ernaar u te laten weten welke muggensoort u heeft ingestuurd via het Mosquito Alert notificatie systeem.\nDit kan echter even duren, afhankelijk van de onderzoeksplanning.",
     "text_next_icons": "U kunt de mug via briefpost versturen naar",
     "ver-laboratorio-de-referencia": "Bekijk referentielaboratorium",
-
-    "more_info": "Más info:",
-    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
-    "you_can_send_report_id": "Usando este ID: ",
-    "identifier_small": "ID: "
+    "more_info": "Meer informatie:",
+    "you_can_send_info_address": "U kunt de mug naar dit adres versturen",
+    "you_can_send_report_id": "Gebruikmakend van dat ID",
+    "identifier_small": "ID:"
 }

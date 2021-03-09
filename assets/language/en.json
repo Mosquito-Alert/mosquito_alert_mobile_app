@@ -297,16 +297,15 @@
     "tutorial_send_module_002": "If you catch the mosquito alive (e.g., by placing a small jar over a resting mosquito), place it in the freezer for half an hour or longer prior to making the report and preparing the shipment.",
     "tutorial_send_module_003": "Every mosquito can be sent, even if it is smashed with hands or an electrical fly swatter. The more intact the mosquito, the easier it is to identify it. Nevertheless, even if it is smashed scientists can identify the mosquito by its DNA.",
     "tutorial_send_module_004": "Before sending the mosquito by mail, you must notify the observation with the Mosquito Alert app. This generates an ID code that allows researchers to identify the mosquito. When completing the report, a message indicates whether there is a possibility to send the mosquito by post. If the message does not appear, it means that this option is not available in your country at that time.",
-    "tutorial_send_module_005": "In \"My data\" you will find within the mosquito report the ID code that identifies the mosquito. You must write this code on the envelope or include it inside along with the mosquito. Next to the code you will find the icon of a pointer with an envelope inside. This indicates the postal address to which to send the mosquito. If you don't see the ID, it means that this option is not available at this time in your country.",
+    "tutorial_send_module_005": "In \"My data\" you will find a highlighted yellow box with the ID code that identifies the mosquito and the postal address to which to send the letter. Write the code on the envelope or on a piece of paper that you include with the mosquito. If you don't see the yellow box with this information it means that this option is not available at this time in your country.",
     "tutorial_send_module_006": "To send the mosquito it is important to protect the mosquito from humidity. For this, it must be placed between two small pieces of tissue paper. First place a piece of tissue (2) at the bottom of a lid or other object that protects the mosquito (1). Then place the mosquito (3) on the paper and another piece of tissue on top (4). Wrap the lid with the mosquito in plastic or paper and put it in the envelope. In any case, do not send a loose mosquito inside the envelope, which is protected inside a cap or a small box.",
     "tutorial_send_module_007": "It is ready to ship. Don't forget to include the mosquito report ID code on the envelope together with the lid with the mosquito.",
     "tutorial_send_module_008": "In order to protect your privacy, we avoid collecting personal information. Please avoid writing your name or address on the envelop. We will inform you about the results through the Mosquito Alert notification system. We only need the mosquito code in the envelope.  ",
     "tutorial_send_module_009": "Thank you very much for your participation. Scientists aim to let you know what mosquito you have sent to them via the Mosquito Alert notification system. This, however, can take a while, depending on the research planning.",
     "text_next_icons": "You can mail by post this mosquito to",
     "ver-laboratorio-de-referencia": "see reference laboratory",
-
-    "more_info": "Más info:",
-    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
-    "you_can_send_report_id": "Usando este ID: ",
-    "identifier_small": "ID: "
+    "more_info": "More info:",
+    "you_can_send_info_address": "You can send the mosquito by post to this address",
+    "you_can_send_report_id": "Using that ID",
+    "identifier_small": "ID:"
 }

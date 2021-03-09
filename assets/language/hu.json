@@ -304,9 +304,8 @@
     "tutorial_send_module_009": "Nagyon köszönjük a részvételed! A szakértők célja, hogy a Mosquito Alert értesítési rendszerén keresztül tájékoztassanak arról, hogy milyen szúnyogot küldél nekik. Ez azonban eltarthat egy ideig, a kutatás tervezésétől függően.",
     "text_next_icons": "A szúnyogot elküldheti postán a",
     "ver-laboratorio-de-referencia": "referencia laboratórium megtekintése",
-
-    "more_info": "Más info:",
-    "you_can_send_info_address": "Puedes enviar el mosquito por correo (postal) a esta dirección",
-    "you_can_send_report_id": "Usando este ID: ",
-    "identifier_small": "ID: "
+    "more_info": "További információ:",
+    "you_can_send_info_address": "Az alábbi címre postázhatod a szúnyogot",
+    "you_can_send_report_id": "Ezt az azonosítót (ID) használd",
+    "identifier_small": "ID:"
 }
