@@ -121,7 +121,7 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
               // margin: EdgeInsets.only(top: 20),
               alignment: Alignment.bottomCenter,
               child: Image.asset(
-                'assets/img/ic_bottom_main.png',
+                'assets/img/bottoms/bottom_adult_1.png',
                 width: double.infinity,
                 fit: BoxFit.fitWidth,
                 alignment: Alignment.bottomCenter,

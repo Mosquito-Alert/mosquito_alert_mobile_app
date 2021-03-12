@@ -412,7 +412,7 @@ class _MainVCState extends State<MainVC> {
                             child: Container(
                               // margin: EdgeInsets.only(top: 20),
                               child: Image.asset(
-                                'assets/img/ic_bottom_main.png',
+                                'assets/img/bottoms/bottom_main.png',
                                 width: double.infinity,
                                 fit: BoxFit.fitWidth,
                                 alignment: Alignment.bottomCenter,
