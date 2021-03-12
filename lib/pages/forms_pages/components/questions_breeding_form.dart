@@ -104,14 +104,13 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
                               widget.setValid(true);
                               if (question.question_id == 10) {
                                 if (id == 81) {
-                                  //TODO: delete if exists question id 17 from report
+                                  Utils.deleteResonse(17);
                                   widget.skipPage3(true);
                                 } else {
                                   widget.skipPage3(false);
                                 }
                               }
                               widget.nextPage != null && widget.nextPage();
-                              // widget.nextPage();
                             },
                             child: SmallQuestionOption(
                               text,
