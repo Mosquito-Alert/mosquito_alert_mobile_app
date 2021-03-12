@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/models/question.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_photo_button_widget.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/image_button_widget.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/components/image_question_option_widget.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/small_question_option_widget.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
@@ -103,9 +102,13 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
                             onTap: () {
                               addQuestion(text, id);
                               widget.setValid(true);
-                              print(question.question_id == 10);
-                              if (question.question_id == 10 && id == 81) {
-                                widget.skipPage3();
+                              if (question.question_id == 10) {
+                                if (id == 81) {
+                                  //TODO: delete if exists question id 17 from report
+                                  widget.skipPage3(true);
+                                } else {
+                                  widget.skipPage3(false);
+                                }
                               }
                               widget.nextPage != null && widget.nextPage();
                               // widget.nextPage();

@@ -27,7 +27,7 @@ class BreedingReportPage extends StatefulWidget {
 
 class _BreedingReportPageState extends State<BreedingReportPage> {
   PageController _pagesController;
-  List<Widget> _formsRepot;
+  List<Widget> _formsRepot, _initialFormsReport;
   StreamController<bool> loadingStream = new StreamController<bool>.broadcast();
   StreamController<bool> validStream = new StreamController<bool>.broadcast();
   StreamController<double> percentStream =
@@ -101,18 +101,19 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
           setValid, displayQuestions.elementAt(3)['question']['text']),
       AddOtherReportPage(_createReport, setValid, percentStream),
     ];
+    _initialFormsReport = List.from(_formsRepot);
   }
 
   skipPage3(skip) {
-    //TODO: skip question 3 or add screen if prev skipped.
-
-    // if (skip) {
-    //   setState(() {
-    //     _formsRepot.removeAt(2);
-    //   });
-    // } else {
-
-    // }
+    if (skip) {
+      setState(() {
+        _formsRepot.removeAt(2);
+      });
+    } else {
+      setState(() {
+        _formsRepot = List.from(_initialFormsReport);
+      });
+    }
   }
 
   addOtherReport(String reportType) {
@@ -242,7 +243,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                   // }),
                   children: _formsRepot,
                 ),
-                index <= 1.0
+                index <= 2.0
                     ? Container()
                     : index != _formsRepot.length.toDouble() - 1
                         ? SafeArea(
