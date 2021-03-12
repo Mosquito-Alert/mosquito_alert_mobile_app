@@ -46,11 +46,12 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Container(
               margin: EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,93 +63,61 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
                       context, widget.displayQuestion['question']['text'])),
                   Container(
                     margin: EdgeInsets.only(top: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2, crossAxisSpacing: 10),
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: widget.displayQuestion['answers'].length,
-                            itemBuilder: (ctx, index) {
-                              return GestureDetector(
-                                  onTap: () {
-                                    onSelect(
-                                        widget.displayQuestion['answers'][index]
-                                            ['text'],
-                                        widget.displayQuestion['answers'][index]
-                                            ['id']);
-
+                    child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, crossAxisSpacing: 10),
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: widget.displayQuestion['answers'].length,
+                        itemBuilder: (ctx, index) {
+                          return GestureDetector(
+                              onTap: () {
+                                onSelect(
                                     widget.displayQuestion['answers'][index]
-                                                ['id'] ==
-                                            63
-                                        ? widget.skipReport(true)
-                                        : widget.nextPage();
-
+                                        ['text'],
                                     widget.displayQuestion['answers'][index]
-                                                ['id'] ==
-                                            61
-                                        ? widget.setSkip3(true)
-                                        : widget.setSkip3(false);
-                                  },
-                                  // child: ImageQuestionOption(
-                                  //   question.answer_id ==
-                                  //           (widget.displayQuestion['answers'][index]
-                                  //               ['id'])
-                                  //       ? true
-                                  //       : false,
-                                  //   MyLocalizations.of(
-                                  //       context,
-                                  //       widget.displayQuestion['answers'][index]
-                                  //           ['text']),
-                                  //   widget.displayQuestion['answers'][index]['img'],
-                                  //   disabled: question.answer_id != null &&
-                                  //       widget.displayQuestion['answers'][index]
-                                  //               ['id'] !=
-                                  //           question.answer_id,
-                                  // ),
-                                  child: CustomImageButton(
-                                    selected: question.answer_id ==
-                                            (widget.displayQuestion['answers']
-                                                [index]['id'])
-                                        ? true
-                                        : false,
-                                    title: MyLocalizations.of(
-                                        context,
-                                        widget.displayQuestion['answers'][index]
-                                            ['text']),
-                                    img: widget.displayQuestion['answers']
-                                        [index]['img'],
-                                  ));
-                            })
-                      ],
-                    ),
+                                        ['id']);
+
+                                widget.displayQuestion['answers'][index]
+                                            ['id'] ==
+                                        63
+                                    ? widget.skipReport(true)
+                                    : widget.nextPage();
+
+                                widget.displayQuestion['answers'][index]
+                                            ['id'] ==
+                                        61
+                                    ? widget.setSkip3(true)
+                                    : widget.setSkip3(false);
+                              },
+                              child: CustomImageButton(
+                                selected: question.answer_id ==
+                                        (widget.displayQuestion['answers']
+                                            [index]['id'])
+                                    ? true
+                                    : false,
+                                title: MyLocalizations.of(
+                                    context,
+                                    widget.displayQuestion['answers'][index]
+                                        ['text']),
+                                img: widget.displayQuestion['answers'][index]
+                                    ['img'],
+                              ));
+                        }),
                   ),
                   // Padding(
                   //   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   //   child: Divider(),
                   // ),
                   // AddPhotoButton(),
-                  // Style.bottomOffset,
-                  // Flexible(
-                  //   child: Container(
-                  //     // margin: EdgeInsets.only(top: 20),
-                  //     child: Image.asset(
-                  //       'assets/img/ic_bottom_main.png',
-                  //       width: double.infinity,
-                  //       fit: BoxFit.fitWidth,
-                  //       alignment: Alignment.bottomCenter,
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
+          ),
 
-            //TODO: fix image position
-            Container(
+          //TODO: fix image position
+          Expanded(
+            child: Container(
               // margin: EdgeInsets.only(top: 20),
               alignment: Alignment.bottomCenter,
               child: Image.asset(
@@ -158,8 +127,8 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
                 alignment: Alignment.bottomCenter,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
