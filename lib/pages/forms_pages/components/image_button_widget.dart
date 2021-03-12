@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
-class CustomCard extends StatelessWidget {
+class CustomImageButton extends StatelessWidget {
   final String img, title;
   final bool selected, disabled;
-  CustomCard({this.img, this.title, this.selected, this.disabled});
+  CustomImageButton({this.img, this.title, this.selected, this.disabled});
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +24,11 @@ class CustomCard extends StatelessWidget {
               children: <Widget>[
                 img != null
                     ? Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 10),
+                        padding: const EdgeInsets.only(top: 0.0, bottom: 0),
                         child: Image.asset(
                           img,
-                          height: 95,
-                          width: 95,
+                          height: 130,
+                          width: 130,
                           // fit: BoxFit.fitHeight,
                         ),
                       )

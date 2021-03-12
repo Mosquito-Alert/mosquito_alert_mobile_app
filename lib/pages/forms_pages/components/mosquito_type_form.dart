@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/models/question.dart';
-import 'package:mosquito_alert_app/pages/main/components/custom_card_widget.dart';
+import 'package:mosquito_alert_app/pages/forms_pages/components/image_button_widget.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
-
-import 'image_question_option_widget.dart';
 
 class MosquitoTypeForm extends StatefulWidget {
   final Function setSkip3;
@@ -54,8 +52,6 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
           children: [
             Container(
               margin: EdgeInsets.symmetric(horizontal: 15),
-              // height: double.infinity,
-              // width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -113,7 +109,7 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
                                   //               ['id'] !=
                                   //           question.answer_id,
                                   // ),
-                                  child: CustomCard(
+                                  child: CustomImageButton(
                                     selected: question.answer_id ==
                                             (widget.displayQuestion['answers']
                                                 [index]['id'])
@@ -150,9 +146,8 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
                 ],
               ),
             ),
-            // SizedBox.expand(),
-            // Expanded(
-            // child:
+
+            //TODO: fix image position
             Container(
               // margin: EdgeInsets.only(top: 20),
               alignment: Alignment.bottomCenter,
@@ -163,7 +158,6 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
                 alignment: Alignment.bottomCenter,
               ),
             ),
-            // ),
           ],
         ),
       ),

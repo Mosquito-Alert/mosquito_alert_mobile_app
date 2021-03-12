@@ -57,6 +57,13 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       ]
     },
     {
+      "question": {"id": 17, "text": "question_17"},
+      "answers": [
+        {"id": 101, "text": "question_10_answer_101"},
+        {"id": 81, "text": "question_10_answer_102"}
+      ]
+    },
+    {
       "question": {"id": 16, "text": "question_16"},
     },
   ];
@@ -78,14 +85,34 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     _pagesController = PageController();
 
     _formsRepot = [
+      QuestionsBreedingForm(displayQuestions.elementAt(0), setValid, true,
+          _chooseTypeImage, 'assets/img/bottoms/breeding_1.png'),
       QuestionsBreedingForm(
-          displayQuestions.elementAt(0), setValid, true, _chooseTypeImage),
-      QuestionsBreedingForm(
-          displayQuestions.elementAt(1), setValid, false, goNextPage),
+        displayQuestions.elementAt(1),
+        setValid,
+        false,
+        goNextPage,
+        'assets/img/bottoms/breeding_2.png',
+        skipPage3: skipPage3,
+      ),
+      QuestionsBreedingForm(displayQuestions.elementAt(2), setValid, false,
+          goNextPage, 'assets/img/bottoms/breeding_3.png'),
       BitingLocationForm(
-          setValid, displayQuestions.elementAt(2)['question']['text']),
+          setValid, displayQuestions.elementAt(3)['question']['text']),
       AddOtherReportPage(_createReport, setValid, percentStream),
     ];
+  }
+
+  skipPage3(skip) {
+    //TODO: skip question 3 or add screen if prev skipped.
+
+    // if (skip) {
+    //   setState(() {
+    //     _formsRepot.removeAt(2);
+    //   });
+    // } else {
+
+    // }
   }
 
   addOtherReport(String reportType) {
