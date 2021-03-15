@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:mosquito_alert_app/models/notification.dart';
 import 'package:mosquito_alert_app/models/owcampaing.dart';
+import 'package:mosquito_alert_app/models/partner.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/models/response.dart';
 import 'package:mosquito_alert_app/models/session.dart';
@@ -51,6 +52,9 @@ class ApiSingleton {
 
   //Owcampaigns
   static const campaigns = '/owcampaigns/';
+
+  //Partners
+  static const partners = '/organizationpins';
 
   //Headders
   var headers = {
@@ -746,6 +750,34 @@ class ApiSingleton {
           allCampaigns.add(Campaign.fromJson(item));
         }
         return allCampaigns;
+      }
+    } catch (e) {
+      print(e.message);
+      return false;
+    }
+  }
+
+  Future<dynamic> getPartners() async {
+    try {
+      final response = await http.get(
+        '$serverUrl$partners',
+        headers: headers,
+      );
+
+      if (response.statusCode != 200) {
+        print(
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
+        return ApiResponse.fromJson(json.decode(response.body));
+      } else {
+        List<dynamic> jsonAnswer = json.decode(response.body);
+
+        print(json.decode(response.body));
+        var allPartners = <Partner>[];
+
+        for (var item in jsonAnswer) {
+          allPartners.add(Partner.fromJson(item));
+        }
+        return allPartners;
       }
     } catch (e) {
       print(e.message);
