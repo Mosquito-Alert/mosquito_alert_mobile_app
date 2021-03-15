@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
-class CustomCard extends StatelessWidget {
+class CustomImageButton extends StatelessWidget {
   final String img, title;
   final bool selected, disabled;
-  CustomCard({this.img, this.title, this.selected, this.disabled});
+  CustomImageButton({this.img, this.title, this.selected, this.disabled});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.height;
     return Opacity(
       opacity: disabled == true ? 0.5 : 1,
       child: Container(
+        height: size * 0.1,
         // height: double.infinity,
         child: Card(
           color: selected == true ? Style.colorPrimary : Colors.white,
@@ -23,29 +25,28 @@ class CustomCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 img != null
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 10),
+                    ? Expanded(
+                        flex: 3,
                         child: Image.asset(
                           img,
-                          height: 95,
-                          width: 95,
-                          // fit: BoxFit.contain,
+                          // height: 120,
+                          // width: 120,
+                          // fit: BoxFit.fitHeight,
                         ),
                       )
                     : SizedBox(
                         height: 140,
                       ),
                 Expanded(
+                  flex: 1,
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 5),
-                    child: Style.titleMedium(
-                      title,
-                      textAlign: TextAlign.center,
-                      fontSize: 16
-                      // minFontSize: 14,
-                      // maxFontSize: 16,
-                      // style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                    ),
+                    child: Style.titleMedium(title,
+                        textAlign: TextAlign.center, fontSize: 16
+                        // minFontSize: 14,
+                        // maxFontSize: 16,
+                        // style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                        ),
                   ),
                 ),
               ],

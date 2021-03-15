@@ -32,7 +32,8 @@ class Utils {
   //Manage Data
   static Position location;
   static LatLng defaultLocation = LatLng(41.3874, 2.1688);
-  static StreamController<int> userScoresController = StreamController<int>.broadcast();
+  static StreamController<int> userScoresController =
+      StreamController<int>.broadcast();
 
   //REPORTS
   static Report report;
@@ -44,7 +45,8 @@ class Utils {
     if (imagePath == null) {
       imagePath = [];
     }
-    imagePath.add({'image': img.path, 'id': report.version_UUID, 'imageFile': img});
+    imagePath
+        .add({'image': img.path, 'id': report.version_UUID, 'imageFile': img});
   }
 
   static void deleteImage(String image) {
@@ -56,7 +58,8 @@ class Utils {
     ApiSingleton().closeSession(session);
   }
 
-  static Future<bool> createNewReport(String type, {lat, lon, locationType}) async {
+  static Future<bool> createNewReport(String type,
+      {lat, lon, locationType}) async {
     if (session == null) {
       reportsList = [];
 
@@ -65,7 +68,10 @@ class Utils {
       int sessionId = await ApiSingleton().getLastSession(userUUID);
       sessionId = sessionId + 1;
 
-      session = new Session(session_ID: sessionId, user: userUUID, session_start_time: DateTime.now().toIso8601String());
+      session = new Session(
+          session_ID: sessionId,
+          user: userUUID,
+          session_start_time: DateTime.now().toIso8601String());
 
       print(language);
 
@@ -75,7 +81,14 @@ class Utils {
     if (session.id != null && language != null) {
       var lang = await UserManager.getLanguage();
       var userUUID = await UserManager.getUUID();
-      report = new Report(type: type, report_id: randomAlphaNumeric(4).toString(), version_number: 0, version_UUID: new Uuid().v4(), user: userUUID, session: session.id, responses: []);
+      report = new Report(
+          type: type,
+          report_id: randomAlphaNumeric(4).toString(),
+          version_number: 0,
+          version_UUID: new Uuid().v4(),
+          user: userUUID,
+          session: session.id,
+          responses: []);
 
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       report.package_name = packageInfo.packageName;
@@ -147,9 +160,15 @@ class Utils {
     reportsList.add(report);
     report = null;
     if (reportsList.last.location_choice == 'selected') {
-      createNewReport(type, lat: reportsList.last.selected_location_lat, lon: reportsList.last.selected_location_lon, locationType: 'selected');
+      createNewReport(type,
+          lat: reportsList.last.selected_location_lat,
+          lon: reportsList.last.selected_location_lon,
+          locationType: 'selected');
     } else {
-      createNewReport(type, lat: reportsList.last.current_location_lat, lon: reportsList.last.current_location_lon, locationType: 'current');
+      createNewReport(type,
+          lat: reportsList.last.current_location_lat,
+          lon: reportsList.last.current_location_lon,
+          locationType: 'current');
     }
   }
 
@@ -176,7 +195,8 @@ class Utils {
     report.selected_location_lon = lon;
   }
 
-  static void addBiteResponse(String question, String answer, {question_id, answer_id, answer_value}) {
+  static void addBiteResponse(String question, String answer,
+      {question_id, answer_id, answer_value}) {
     if (report == null) {
       return;
     }
@@ -228,9 +248,11 @@ class Utils {
         // delete question from list
         _questions.removeWhere((q) => q.answer_id == answer_id);
       } else {
-        if (_questions.any((q) => q.question_id == question_id && q.answer_id != answer_id)) {
+        if (_questions.any(
+            (q) => q.question_id == question_id && q.answer_id != answer_id)) {
           //modify question
-          int index = _questions.indexWhere((q) => q.question_id == question_id);
+          int index =
+              _questions.indexWhere((q) => q.question_id == question_id);
           _questions[index].answer_id = answer_id;
           _questions[index].answer = answer;
         } else {
@@ -260,7 +282,8 @@ class Utils {
 
   static void addAdultPartsResponse(answer, answerId, i) {
     var _questions = report.responses;
-    int index = _questions.indexWhere((q) => q.answer_id > i && q.answer_id < i + 10);
+    int index =
+        _questions.indexWhere((q) => q.answer_id > i && q.answer_id < i + 10);
     if (index != -1) {
       if (_questions[index].answer_id == answerId) {
         _questions.removeAt(index);
@@ -281,7 +304,8 @@ class Utils {
   }
 
   static void addResponse(Question question) {
-    int index = report.responses.indexWhere((q) => q.question_id == question.question_id);
+    int index = report.responses
+        .indexWhere((q) => q.question_id == question.question_id);
     var _responses = report.responses;
     if (_responses == null) {
       _responses = [];
@@ -292,6 +316,10 @@ class Utils {
       _responses.add(question);
       report.responses = _responses;
     }
+  }
+
+  static void deleteResonse(id) {
+    report.responses.removeWhere((element) => element.question_id == id);
   }
 
   static Future<bool> createReport() async {
@@ -342,7 +370,8 @@ class Utils {
       savedImages = [];
     }
 
-    String imageString = json.encode({'image': image, 'verison_UUID': version_UUID});
+    String imageString =
+        json.encode({'image': image, 'verison_UUID': version_UUID});
     savedImages.add(imageString);
     await UserManager.setImageList(savedImages);
   }
@@ -358,7 +387,9 @@ class Utils {
       bool isCreated;
       for (int i = 0; i < savedReports.length; i++) {
         Report savedReport = Report.fromJson(json.decode(savedReports[i]));
-        isCreated = await ApiSingleton().createReport(savedReport) != null ? true : false;
+        isCreated = await ApiSingleton().createReport(savedReport) != null
+            ? true
+            : false;
 
         if (!isCreated) {
           saveLocalReport(savedReport);
@@ -370,7 +401,8 @@ class Utils {
       bool isCreated;
       for (int i = 0; i < savedImages.length; i++) {
         Map image = json.decode(savedImages[i]);
-        isCreated = await ApiSingleton().saveImage(image['image'], image['verison_UUID']);
+        isCreated = await ApiSingleton()
+            .saveImage(image['image'], image['verison_UUID']);
         if (!isCreated) {
           saveLocalImage(image['image'], image['verison_UUID']);
         } else {
@@ -386,7 +418,8 @@ class Utils {
     deleteReport.version_number = -1;
     deleteReport.version_UUID = Uuid().v4();
 
-    bool res = await ApiSingleton().createReport(deleteReport) != null ? true : false;
+    bool res =
+        await ApiSingleton().createReport(deleteReport) != null ? true : false;
     return res;
   }
 
@@ -394,14 +427,18 @@ class Utils {
     location = await getLastKnownPosition();
   }
 
-  static final RegExp mailRegExp = RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+  static final RegExp mailRegExp = RegExp(
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
 
   //Alerts
-  static Future showAlert(String title, String text, BuildContext context, {onPressed, barrierDismissible}) {
+  static Future showAlert(String title, String text, BuildContext context,
+      {onPressed, barrierDismissible}) {
     if (Platform.isAndroid) {
       return showDialog(
         context: context,
-        barrierDismissible: barrierDismissible != null ? barrierDismissible : true, // user must tap button!
+        barrierDismissible: barrierDismissible != null
+            ? barrierDismissible
+            : true, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(title),
@@ -466,11 +503,14 @@ class Utils {
     }
   }
 
-  static Future showCustomAlert(String title, Widget body, BuildContext context, {onPressed, barrierDismissible}) {
+  static Future showCustomAlert(String title, Widget body, BuildContext context,
+      {onPressed, barrierDismissible}) {
     if (Platform.isAndroid) {
       return showDialog(
         context: context,
-        barrierDismissible: barrierDismissible != null ? barrierDismissible : true, // user must tap button!
+        barrierDismissible: barrierDismissible != null
+            ? barrierDismissible
+            : true, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(title),
@@ -607,7 +647,9 @@ class Utils {
     }
   }
 
-  static Future modalDetailTrackingforPlatform(List<Widget> list, TargetPlatform platform, BuildContext context, Function close, {title, cancelButton}) {
+  static Future modalDetailTrackingforPlatform(List<Widget> list,
+      TargetPlatform platform, BuildContext context, Function close,
+      {title, cancelButton}) {
     if (platform == TargetPlatform.iOS) {
       return showCupertinoModalPopup(
           context: context,
@@ -639,8 +681,13 @@ class Utils {
                       title != null
                           ? Container(
                               width: double.infinity,
-                              padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 0),
-                              child: Text(title, style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w400)),
+                              padding: EdgeInsets.only(
+                                  top: 20, left: 20, right: 20, bottom: 0),
+                              child: Text(title,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w400)),
                             )
                           : Container(),
                       Wrap(children: list),
@@ -662,7 +709,8 @@ class Utils {
         child: Wrap(
           alignment: WrapAlignment.center,
           children: <Widget>[
-            Text('${MyLocalizations.of(context, 'terms_and_conditions_txt1')} ', style: TextStyle(color: Style.textColor, fontSize: 12)),
+            Text('${MyLocalizations.of(context, 'terms_and_conditions_txt1')} ',
+                style: TextStyle(color: Style.textColor, fontSize: 12)),
             InkWell(
               onTap: () async {
                 final url = MyLocalizations.of(context, 'url_politics');
@@ -671,9 +719,16 @@ class Utils {
                 else
                   throw 'Could not launch $url';
               },
-              child: Text(MyLocalizations.of(context, 'terms_and_conditions_txt2'), style: TextStyle(color: Style.textColor, fontSize: 12, decoration: TextDecoration.underline)),
+              child: Text(
+                  MyLocalizations.of(context, 'terms_and_conditions_txt2'),
+                  style: TextStyle(
+                      color: Style.textColor,
+                      fontSize: 12,
+                      decoration: TextDecoration.underline)),
             ),
-            Text(' ${MyLocalizations.of(context, 'terms_and_conditions_txt3')} ', style: TextStyle(color: Style.textColor, fontSize: 12)),
+            Text(
+                ' ${MyLocalizations.of(context, 'terms_and_conditions_txt3')} ',
+                style: TextStyle(color: Style.textColor, fontSize: 12)),
             InkWell(
               onTap: () async {
                 final url = MyLocalizations.of(context, 'url_legal');
@@ -682,7 +737,12 @@ class Utils {
                 else
                   throw 'Could not launch $url';
               },
-              child: Text(MyLocalizations.of(context, 'terms_and_conditions_txt4'), style: TextStyle(color: Style.textColor, fontSize: 12, decoration: TextDecoration.underline)),
+              child: Text(
+                  MyLocalizations.of(context, 'terms_and_conditions_txt4'),
+                  style: TextStyle(
+                      color: Style.textColor,
+                      fontSize: 12,
+                      decoration: TextDecoration.underline)),
             ),
             Text('.', style: TextStyle(color: Style.textColor, fontSize: 12)),
           ],
@@ -698,7 +758,10 @@ class Utils {
             color: Colors.transparent,
             child: Center(
               child: new CircularProgressIndicator(
-                valueColor: new AlwaysStoppedAnimation<Color>(indicatorColor == null ? Style.colorPrimary : indicatorColor),
+                valueColor: new AlwaysStoppedAnimation<Color>(
+                    indicatorColor == null
+                        ? Style.colorPrimary
+                        : indicatorColor),
               ),
             ),
           ))
@@ -755,7 +818,9 @@ class Utils {
                             MyLocalizations.of(context, 'ok_next_txt'),
                             () {
                               Navigator.of(context).pop();
-                              !gallery ? getImage(ImageSource.camera) : getImage();
+                              !gallery
+                                  ? getImage(ImageSource.camera)
+                                  : getImage();
                             },
                             textColor: Style.colorPrimary,
                           ),
@@ -764,7 +829,9 @@ class Utils {
                           child: Style.noBgButton(
                             MyLocalizations.of(context, "no_show_again"),
                             () {
-                              !gallery ? getImage(ImageSource.camera) : getImage();
+                              !gallery
+                                  ? getImage(ImageSource.camera)
+                                  : getImage();
                               UserManager.setSowInfoAdult(true);
                               Navigator.of(context).pop();
                             },
@@ -792,7 +859,8 @@ class Utils {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
               content: Container(
                 // height: double.infinity,
                 constraints: BoxConstraints(
@@ -801,13 +869,15 @@ class Utils {
                 child: Column(
                   children: <Widget>[
                     Style.body(
-                      MyLocalizations.of(context, 'camera_info_breeding_txt_01'),
+                      MyLocalizations.of(
+                          context, 'camera_info_breeding_txt_01'),
                     ),
                     SizedBox(
                       height: 5,
                     ),
                     Style.body(
-                      MyLocalizations.of(context, 'camera_info_breeding_txt_02'),
+                      MyLocalizations.of(
+                          context, 'camera_info_breeding_txt_02'),
                     ),
                     Expanded(
                       child: SizedBox(
@@ -822,7 +892,9 @@ class Utils {
                             MyLocalizations.of(context, 'ok_next_txt'),
                             () {
                               Navigator.of(context).pop();
-                              !gallery ? getImage(ImageSource.camera) : getImage();
+                              !gallery
+                                  ? getImage(ImageSource.camera)
+                                  : getImage();
                             },
                             textColor: Style.colorPrimary,
                           ),
@@ -833,7 +905,9 @@ class Utils {
                             () {
                               UserManager.setSowInfoBreeding(true);
                               Navigator.of(context).pop();
-                              !gallery ? getImage(ImageSource.camera) : getImage();
+                              !gallery
+                                  ? getImage(ImageSource.camera)
+                                  : getImage();
                             },
                           ),
                         ),
@@ -865,7 +939,12 @@ class Utils {
                 SizedBox(
                   height: 12,
                 ),
-                Style.title(MyLocalizations.of(context, 'alert_campaign_found_create_body'), textAlign: TextAlign.left, fontSize: 15.0, height: 1.2)
+                Style.title(
+                    MyLocalizations.of(
+                        context, 'alert_campaign_found_create_body'),
+                    textAlign: TextAlign.left,
+                    fontSize: 15.0,
+                    height: 1.2)
               ]),
             ),
             actions: <Widget>[
@@ -912,11 +991,17 @@ class Utils {
                 SizedBox(
                   height: 4,
                 ),
-                Style.body(MyLocalizations.of(context, 'save_report_ok_txt'), textAlign: TextAlign.center),
+                Style.body(MyLocalizations.of(context, 'save_report_ok_txt'),
+                    textAlign: TextAlign.center),
                 SizedBox(
                   height: 12,
                 ),
-                Style.title(MyLocalizations.of(context, 'alert_campaign_found_create_body'), textAlign: TextAlign.center, fontSize: 15.0, height: 1.2)
+                Style.title(
+                    MyLocalizations.of(
+                        context, 'alert_campaign_found_create_body'),
+                    textAlign: TextAlign.center,
+                    fontSize: 15.0,
+                    height: 1.2)
               ],
             ),
             actions: <Widget>[
