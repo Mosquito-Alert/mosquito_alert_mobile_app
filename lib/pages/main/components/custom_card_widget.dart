@@ -23,13 +23,16 @@ class CustomCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 img != null
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 10),
-                        child: Image.asset(
-                          img,
-                          height: 95,
-                          width: 95,
-                          // fit: BoxFit.fitHeight,
+                    ? Expanded(
+                        flex: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 20.0, bottom: 10),
+                          child: Image.asset(
+                            img,
+                            // height: 95,
+                            // width: 95,
+                            // fit: BoxFit.fitHeight,
+                          ),
                         ),
                       )
                     : SizedBox(

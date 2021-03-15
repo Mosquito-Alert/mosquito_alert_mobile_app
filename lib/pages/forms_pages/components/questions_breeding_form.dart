@@ -48,92 +48,87 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
     return SafeArea(
       child: Stack(
         children: [
-          Flexible(
-            child: Container(
-              // margin: EdgeInsets.only(top: 20),
+          Container(
+            // margin: EdgeInsets.only(top: 20),
+            alignment: Alignment.bottomCenter,
+            child: Image.asset(
+              widget.bottomImage,
+              width: double.infinity,
+              fit: BoxFit.fitWidth,
               alignment: Alignment.bottomCenter,
-              child: Image.asset(
-                widget.bottomImage,
-                width: double.infinity,
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.bottomCenter,
-              ),
             ),
           ),
-          Flexible(
-            flex: 2,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  SizedBox(
-                    height: 35,
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 35,
+                ),
+                widget.displayQuestion['question']['id'] == 10
+                    ? AddPhotoButton(true, true)
+                    : Container(),
+                Style.title(MyLocalizations.of(
+                    context, widget.displayQuestion['question']['text'])),
+                SizedBox(
+                  height: 30,
+                ),
+                GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: widget.displayQuestion['answers'].length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: widget.hasImage ? 1 : 5 / 2,
+                    crossAxisSpacing: widget.hasImage ? 10 : 0,
                   ),
-                  widget.displayQuestion['question']['id'] == 10
-                      ? AddPhotoButton(true, true)
-                      : Container(),
-                  Style.title(MyLocalizations.of(
-                      context, widget.displayQuestion['question']['text'])),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: widget.displayQuestion['answers'].length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: widget.hasImage ? 1 : 5 / 2,
-                      crossAxisSpacing: widget.hasImage ? 10 : 0,
-                    ),
-                    itemBuilder: (context, index) {
-                      String text =
-                          widget.displayQuestion['answers'][index]['text'];
-                      int id = widget.displayQuestion['answers'][index]['id'];
-                      if (widget.hasImage) {
-                        return Container(
-                          child: GestureDetector(
-                            onTap: () {
-                              addQuestion(text, id);
-                              widget.setValid(true);
-                              widget.nextPage();
-                            },
-                            child: CustomImageButton(
-                              selected: question.answer_id == id ? true : false,
-                              title: MyLocalizations.of(context, text),
-                              img: widget.displayQuestion['answers'][index]
-                                  ['img'],
-                            ),
-                          ),
-                        );
-                      }
+                  itemBuilder: (context, index) {
+                    String text =
+                        widget.displayQuestion['answers'][index]['text'];
+                    int id = widget.displayQuestion['answers'][index]['id'];
+                    if (widget.hasImage) {
                       return Container(
-                        padding: EdgeInsets.all(5),
                         child: GestureDetector(
-                            onTap: () {
-                              addQuestion(text, id);
-                              widget.setValid(true);
-                              if (question.question_id == 10) {
-                                if (id == 81) {
-                                  Utils.deleteResonse(17);
-                                  widget.skipPage3(true);
-                                } else {
-                                  widget.skipPage3(false);
-                                }
-                              }
-                              widget.nextPage != null && widget.nextPage();
-                            },
-                            child: SmallQuestionOption(
-                              text,
-                              selected: question.answer_id == id,
-                            )),
+                          onTap: () {
+                            addQuestion(text, id);
+                            widget.setValid(true);
+                            widget.nextPage();
+                          },
+                          child: CustomImageButton(
+                            selected: question.answer_id == id ? true : false,
+                            title: MyLocalizations.of(context, text),
+                            img: widget.displayQuestion['answers'][index]
+                                ['img'],
+                          ),
+                        ),
                       );
-                    },
-                  ),
-                  //Style.bottomOffset,
-                ],
-              ),
+                    }
+                    return Container(
+                      padding: EdgeInsets.all(5),
+                      child: GestureDetector(
+                          onTap: () {
+                            addQuestion(text, id);
+                            widget.setValid(true);
+                            if (question.question_id == 10) {
+                              if (id == 81) {
+                                Utils.deleteResonse(17);
+                                widget.skipPage3(true);
+                              } else {
+                                widget.skipPage3(false);
+                              }
+                            }
+                            widget.nextPage != null && widget.nextPage();
+                          },
+                          child: SmallQuestionOption(
+                            text,
+                            selected: question.answer_id == id,
+                          )),
+                    );
+                  },
+                ),
+                //Style.bottomOffset,
+              ],
             ),
           ),
         ],
