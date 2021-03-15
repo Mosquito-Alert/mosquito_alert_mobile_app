@@ -8,9 +8,11 @@ class CustomImageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.height;
     return Opacity(
       opacity: disabled == true ? 0.5 : 1,
       child: Container(
+        height: size * 0.1,
         // height: double.infinity,
         child: Card(
           color: selected == true ? Style.colorPrimary : Colors.white,
@@ -23,16 +25,20 @@ class CustomImageButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 img != null
-                    ? Image.asset(
-                        img,
-                        height: 120,
-                        width: 120,
-                        // fit: BoxFit.fitHeight,
+                    ? Expanded(
+                        flex: 3,
+                        child: Image.asset(
+                          img,
+                          // height: 120,
+                          // width: 120,
+                          // fit: BoxFit.fitHeight,
+                        ),
                       )
                     : SizedBox(
                         height: 140,
                       ),
                 Expanded(
+                  flex: 1,
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 5),
                     child: Style.titleMedium(title,

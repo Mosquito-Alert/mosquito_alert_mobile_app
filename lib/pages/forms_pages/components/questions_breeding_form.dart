@@ -46,8 +46,20 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
+      child: Stack(
         children: [
+          Flexible(
+            child: Container(
+              // margin: EdgeInsets.only(top: 20),
+              alignment: Alignment.bottomCenter,
+              child: Image.asset(
+                widget.bottomImage,
+                width: double.infinity,
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.bottomCenter,
+              ),
+            ),
+          ),
           Flexible(
             flex: 2,
             child: Container(
@@ -122,17 +134,6 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
                   //Style.bottomOffset,
                 ],
               ),
-            ),
-          ),
-          //TODO: fix image position
-          Container(
-            // margin: EdgeInsets.only(top: 20),
-            alignment: Alignment.bottomCenter,
-            child: Image.asset(
-              widget.bottomImage,
-              width: double.infinity,
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.bottomCenter,
             ),
           ),
         ],
