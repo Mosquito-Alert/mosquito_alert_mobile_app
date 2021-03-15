@@ -23,14 +23,11 @@ class CustomImageButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 img != null
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 0.0, bottom: 0),
-                        child: Image.asset(
-                          img,
-                          height: 130,
-                          width: 130,
-                          // fit: BoxFit.fitHeight,
-                        ),
+                    ? Image.asset(
+                        img,
+                        height: 120,
+                        width: 120,
+                        // fit: BoxFit.fitHeight,
                       )
                     : SizedBox(
                         height: 140,

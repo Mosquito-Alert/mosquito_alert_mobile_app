@@ -74,6 +74,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   Report toEditReport;
 
   double index = 1.0;
+  double displayContinue = 2;
 
   @override
   void initState() {
@@ -105,13 +106,17 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   }
 
   skipPage3(skip) {
+    List<Widget> list = List.from(_initialFormsReport);
     if (skip) {
+      list.removeAt(2);
       setState(() {
-        _formsRepot.removeAt(2);
+        _formsRepot = list;
+        displayContinue = 1.0;
       });
     } else {
       setState(() {
         _formsRepot = List.from(_initialFormsReport);
+        displayContinue = 2.0;
       });
     }
   }
@@ -243,7 +248,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                   // }),
                   children: _formsRepot,
                 ),
-                index <= 1.0 // TODO: fix display button
+                index <= displayContinue
                     ? Container()
                     : index != _formsRepot.length.toDouble() - 1
                         ? SafeArea(
