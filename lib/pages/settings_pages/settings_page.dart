@@ -8,6 +8,7 @@ import 'package:mosquito_alert_app/pages/main/main_vc.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/settings_menu_widget.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/countries_involved.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/gallery_page.dart';
+import 'package:mosquito_alert_app/pages/settings_pages/partners_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/Application.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
@@ -184,7 +185,8 @@ class _SettingsPageState extends State<SettingsPage> {
             SizedBox(
               height: 10,
             ),
-            SettingsMenuWidget(MyLocalizations.of(context, 'about_us_txt'), () {
+            SettingsMenuWidget(MyLocalizations.of(context, 'coordination_txt'),
+                () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -192,7 +194,16 @@ class _SettingsPageState extends State<SettingsPage> {
                         InfoPage(MyLocalizations.of(context, 'url_about_us'))),
               );
             }),
-                /*SizedBox(
+            SizedBox(
+              height: 10,
+            ),
+            SettingsMenuWidget(MyLocalizations.of(context, 'partners_txt'), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PartnersPage()),
+              );
+            }),
+            /*SizedBox(
                   height: 10,
                 ),
                 SettingsMenuWidget("countries_involved", () {
