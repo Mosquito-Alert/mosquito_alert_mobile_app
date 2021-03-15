@@ -36,11 +36,13 @@ class _PartnersPageState extends State<PartnersPage> {
           markerId: MarkerId(partner.id.toString()),
           position: LatLng(partner.point['lat'], partner.point['long']),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => InfoPage(partner.pageUrl)),
-            );
+            if (partner.pageUrl != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => InfoPage(partner.pageUrl)),
+              );
+            }
           }));
     }
 

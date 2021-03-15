@@ -98,7 +98,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Mosquito alert',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Rubik',
+        // fontFamily: 'Rubik',
         primarySwatch: Colors.orange,
       ),
       home: MainVC(),
