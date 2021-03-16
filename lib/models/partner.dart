@@ -14,7 +14,7 @@ class Partner {
   Partner.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     point = json['point'];
-    textualDescription = json['textualDescription'];
-    pageUrl = json['pageUrl'];
+    textualDescription = json['textual_description'];
+    pageUrl = json['page_url'];
   }
 }
