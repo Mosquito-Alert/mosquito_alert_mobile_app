@@ -68,7 +68,7 @@ class _PartnersPageState extends State<PartnersPage> {
           body: Column(
             children: [
               Expanded(
-                flex: 3,
+                // flex: 3,
                 child: StreamBuilder<List<Marker>>(
                   stream: markersStram.stream,
                   initialData: [],
@@ -80,17 +80,13 @@ class _PartnersPageState extends State<PartnersPage> {
                       myLocationButtonEnabled: false,
                       initialCameraPosition: CameraPosition(
                         target: LatLng(49.895268, 11.2773223),
-                        zoom: 4.0,
+                        zoom: 3.5,
                       ),
                       markers: Set<Marker>.of(snapshot.data),
                     );
                   },
                 ),
               ),
-              Expanded(
-                  child: Center(
-                child: Style.body('Example text'),
-              ))
             ],
           ),
         ),
