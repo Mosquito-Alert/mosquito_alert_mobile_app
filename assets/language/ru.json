@@ -12,8 +12,8 @@
     "ca": "",
     "en": "",
     "understand_txt": "",
-    "url_politics": "http://webserver.mosquitoalert.com/ru/terms/",
-    "url_legal": "http://webserver.mosquitoalert.com/ru/privacy/",
+    "url_politics": "http://madev.creaf.cat/ru/terms/",
+    "url_legal": "http://madev.creaf.cat/ru/privacy/",
     "url_point_1": "",
     "url_consent_form": "",
     "url_web": "",
@@ -307,5 +307,8 @@
     "more_info": "",
     "you_can_send_info_address": "",
     "you_can_send_report_id": "",
-    "identifier_small": "ID:"
+    "identifier_small": "ID:",
+    "question_17": "",
+    "coordination_txt": "",
+    "partners_txt": ""
 }
