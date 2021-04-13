@@ -17,7 +17,7 @@ main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp();
-  }catch(err){
+  } catch (err) {
     print("$err");
   }
   // ignore: invalid_use_of_visible_for_testing_member
@@ -98,7 +98,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Mosquito alert',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Rubik',
+        // fontFamily: 'Rubik',
         primarySwatch: Colors.orange,
       ),
       home: MainVC(),
@@ -108,8 +108,7 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales:
-      application.supportedLocales(),
+      supportedLocales: application.supportedLocales(),
     );
   }
 }

@@ -27,7 +27,7 @@ class BreedingReportPage extends StatefulWidget {
 
 class _BreedingReportPageState extends State<BreedingReportPage> {
   PageController _pagesController;
-  List<Widget> _formsRepot;
+  List<Widget> _formsRepot, _initialFormsReport;
   StreamController<bool> loadingStream = new StreamController<bool>.broadcast();
   StreamController<bool> validStream = new StreamController<bool>.broadcast();
   StreamController<double> percentStream =
@@ -57,6 +57,13 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       ]
     },
     {
+      "question": {"id": 17, "text": "question_17"},
+      "answers": [
+        {"id": 101, "text": "question_10_answer_101"},
+        {"id": 81, "text": "question_10_answer_102"}
+      ]
+    },
+    {
       "question": {"id": 16, "text": "question_16"},
     },
   ];
@@ -67,6 +74,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   Report toEditReport;
 
   double index = 1.0;
+  double displayContinue = 2;
 
   @override
   void initState() {
@@ -78,14 +86,39 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     _pagesController = PageController();
 
     _formsRepot = [
+      QuestionsBreedingForm(displayQuestions.elementAt(0), setValid, true,
+          _chooseTypeImage, 'assets/img/bottoms/breeding_1.png'),
       QuestionsBreedingForm(
-          displayQuestions.elementAt(0), setValid, true, _chooseTypeImage),
-      QuestionsBreedingForm(
-          displayQuestions.elementAt(1), setValid, false, goNextPage),
+        displayQuestions.elementAt(1),
+        setValid,
+        false,
+        goNextPage,
+        'assets/img/bottoms/breeding_2.png',
+        skipPage3: skipPage3,
+      ),
+      QuestionsBreedingForm(displayQuestions.elementAt(2), setValid, false,
+          goNextPage, 'assets/img/bottoms/breeding_3.png'),
       BitingLocationForm(
-          setValid, displayQuestions.elementAt(2)['question']['text']),
+          setValid, displayQuestions.elementAt(3)['question']['text']),
       AddOtherReportPage(_createReport, setValid, percentStream),
     ];
+    _initialFormsReport = List.from(_formsRepot);
+  }
+
+  skipPage3(skip) {
+    List<Widget> list = List.from(_initialFormsReport);
+    if (skip) {
+      list.removeAt(2);
+      setState(() {
+        _formsRepot = list;
+        displayContinue = 1.0;
+      });
+    } else {
+      setState(() {
+        _formsRepot = List.from(_initialFormsReport);
+        displayContinue = 2.0;
+      });
+    }
   }
 
   addOtherReport(String reportType) {
@@ -215,7 +248,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                   // }),
                   children: _formsRepot,
                 ),
-                index <= 1.0
+                index <= displayContinue
                     ? Container()
                     : index != _formsRepot.length.toDouble() - 1
                         ? SafeArea(

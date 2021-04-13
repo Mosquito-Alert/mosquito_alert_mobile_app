@@ -155,11 +155,13 @@ class _BitingReportPageState extends State<BitingReportPage> {
           Utils.showAlertCampaign(
             context,
             activeCampaign,
-                (ctx) {
+            (ctx) {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => CampaignTutorialPage(fromReport: true,)),
+                    builder: (context) => CampaignTutorialPage(
+                          fromReport: true,
+                        )),
               );
               Utils.resetReport();
             },
@@ -167,9 +169,10 @@ class _BitingReportPageState extends State<BitingReportPage> {
         } else {
           _showAlertOk();
         }
+      } else {
+        _showAlertOk();
       }
 
-      // _showAlertOk();
       setState(() {
         percentStream.add(1.0);
       });
