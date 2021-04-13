@@ -45,11 +45,13 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+        checkReleaseBuilds false
+        abortOnError false
     }
 
     defaultConfig {
         //multiDexEnabled true
-        applicationId "ceab.movelab.tigabib"
+        applicationId "ceab.movelab.tigatrapp"
         minSdkVersion 21
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
@@ -70,7 +72,7 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources false
             // background_geolocation requires custom Proguard Rules with minifyEnabled
            proguardFiles "${background_geolocation.projectDir}/proguard-rules.pro"
