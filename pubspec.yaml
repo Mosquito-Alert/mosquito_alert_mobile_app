@@ -24,7 +24,7 @@ dependencies:
   dio: ^3.0.9
   image_picker: ^0.6.7+1
   firebase_auth: ^0.17.0-dev.2
-  firebase_messaging: ^7.0.0
+  firebase_messaging: ^7.0.3
   firebase_core: ^0.5.0
   google_sign_in: ^4.4.4
   flutter_facebook_login: ^3.0.0

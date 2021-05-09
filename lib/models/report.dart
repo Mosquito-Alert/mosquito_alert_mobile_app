@@ -28,6 +28,8 @@ class Report {
   String app_language;
   String displayCity;
   int country;
+  String nuts3;
+  String nuts2;
 
   Report(
       {this.version_UUID,
@@ -54,7 +56,9 @@ class Report {
       this.os_language,
       this.os_version,
       this.app_language,
-      this.displayCity,
+        this.displayCity,
+        this.nuts3,
+        this.nuts2,
       this.country});
 
   Report.fromJson(Map<dynamic, dynamic> json) {
@@ -98,6 +102,8 @@ class Report {
     os_language = json['os_language'];
     app_language = json['app_language'];
     country = json['country'];
+    nuts3 = json['nuts3'];
+    nuts2 = json['nuts2'];
   }
 
   Map<String, dynamic> toJson() {

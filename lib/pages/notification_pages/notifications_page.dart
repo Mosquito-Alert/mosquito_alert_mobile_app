@@ -28,6 +28,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   _getData() async {
     List<MyNotification> response = await ApiSingleton().getNotifications();
+    print(response);
     if (response != null) {
       setState(() {
         notifications = response;

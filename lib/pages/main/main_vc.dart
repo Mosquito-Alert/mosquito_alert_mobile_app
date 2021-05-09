@@ -16,6 +16,7 @@ import 'package:mosquito_alert_app/pages/notification_pages/notifications_page.d
 import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/settings_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -40,6 +41,7 @@ class _MainVCState extends State<MainVC> {
   void initState() {
     super.initState();
     _getData();
+    _loadFirebase();
     loadingStream.add(true);
   }
 
@@ -61,6 +63,13 @@ class _MainVCState extends State<MainVC> {
     }
 
     loadingStream.add(false);
+  }
+
+  _loadFirebase() async {
+    print('Load Firebase');
+    await PushNotificationsManager.init();
+    PushNotificationsManager.subscribeToGlobal();
+    PushNotificationsManager.subscribeToLanguage();
   }
 
   _bgTracking() async {

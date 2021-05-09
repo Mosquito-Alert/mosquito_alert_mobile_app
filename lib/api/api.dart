@@ -11,6 +11,8 @@ import 'package:mosquito_alert_app/models/partner.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/models/response.dart';
 import 'package:mosquito_alert_app/models/session.dart';
+import 'package:mosquito_alert_app/models/topic.dart';
+import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,9 +23,10 @@ import 'package:path_provider/path_provider.dart';
 
 class ApiSingleton {
   static final _timeoutTimerInSeconds = 5;
-  //static String baseUrl = 'http://madev.creaf.cat';
+
+  static String devBASEURL = 'http://madev.creaf.cat';
   static String baseUrl = 'http://webserver.mosquitoalert.com';
-  static String serverUrl = '$baseUrl/api';
+  static String serverUrl = '$devBASEURL/api';
 
   static String token = 'D4w29W49rMKC7L6vYQ3ua3rd6fQ12YZ6n70P';
 
@@ -46,6 +49,11 @@ class ApiSingleton {
 
   //Notifications
   static const notifications = '/user_notifications/';
+  static const mark_notification_as_read = '/api/mark_notif_as_ack/';
+  static const subscribe_to_topic = '/api/subscribe_to_topic/';
+  static const unsub_from_topic = '/api/unsub_from_topic/';
+  static const get_my_topics = '/api/topics_subscribed/';
+  static const firebaseToken = '/api/token/';
 
   //Fixes
   static const fixes = '/fixes/';
@@ -56,7 +64,7 @@ class ApiSingleton {
   //Partners
   static const partners = '/organizationpins';
 
-  //Headders
+  //Headers
   var headers = {
     'Content-Type': ' application/json',
     'Authorization': 'Token ' + token
@@ -298,72 +306,6 @@ class ApiSingleton {
     }
   }
 
-  //Notifications
-  Future<dynamic> getNotifications() async {
-    try {
-      String userUUID = await UserManager.getUUID();
-      String locale = await UserManager.getLanguage();
-
-      final response = await http
-          .get(
-        '$serverUrl$notifications?user_id=$userUUID&locale=$locale',
-        headers: headers,
-      )
-          .timeout(
-        Duration(seconds: 10),
-        onTimeout: () {
-          print('Request timed out');
-          return;
-        },
-      );
-
-      print(response);
-      if (response.statusCode != 200) {
-        print(
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
-        return ApiResponse.fromJson(json.decode(response.body));
-      }
-
-      var list = json.decode(utf8.decode(response.bodyBytes)) as List;
-      List<MyNotification> data =
-          list.map((i) => MyNotification.fromJson(i)).toList();
-      return data;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<dynamic> updateNotification(id, aknowlaged) async {
-    try {
-      final response = await http
-          .post(
-        '$serverUrl$notifications?id=$id&acknowledged=$aknowlaged',
-        headers: headers,
-      )
-          .timeout(
-        Duration(seconds: _timeoutTimerInSeconds),
-        onTimeout: () {
-          print('Request timed out');
-          return;
-        },
-      );
-      ;
-
-      print(response);
-      if (response.statusCode != 200) {
-        print(
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
-        return ApiResponse.fromJson(json.decode(response.body));
-      }
-      Map<String, dynamic> jsonAnswer = json.decode(response.body);
-
-      print(jsonAnswer);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
   //Sessions
   Future<dynamic> getLastSession(String userUUID) async {
     try {
@@ -556,8 +498,6 @@ class ApiSingleton {
       ;
 
       await saveImages(report);
-
-      // print(response);
       if (response.statusCode != 201) {
         print(
             'Request: ${response.request.toString()} -> Response: ${response.body}');
@@ -574,6 +514,8 @@ class ApiSingleton {
       }
       var jsonAnswer = json.decode(response.body);
       var newReport = Report.fromJson(jsonAnswer);
+
+      PushNotificationsManager.subscribeToReportResult(newReport);
 
       await getUserScores();
       return newReport;
@@ -781,6 +723,200 @@ class ApiSingleton {
       }
     } catch (e) {
       print(e.message);
+      return false;
+    }
+  }
+
+  /*
+  * Notifications Module
+  * */
+  Future<dynamic> getNotifications() async {
+    try {
+      String userUUID = await UserManager.getUUID();
+      String locale = await UserManager.getLanguage();
+
+      final response = await http
+          .get(
+        '$serverUrl$notifications?user_id=$userUUID&locale=$locale',
+        headers: headers,
+      )
+          .timeout(
+        Duration(seconds: 10),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );
+
+      if (response.statusCode != 200) {
+        print(
+            "Request: ${response.request.toString()} -> Response: ${response.body}");
+        return ApiResponse.fromJson(json.decode(response.body));
+      }
+
+      var list = json.decode(utf8.decode(response.bodyBytes)) as List;
+      List<MyNotification> data =
+          list.map((i) => MyNotification.fromJson(i)).toList();
+      return data;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<dynamic> updateNotification(id, acknowledge) async {
+    try {
+      final response = await http
+          .post(
+        '$serverUrl$notifications?id=$id&acknowledged=$acknowledge',
+        headers: headers,
+      )
+          .timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );
+      ;
+      if (response.statusCode != 200) {
+        print(
+            "Request: ${response.request.toString()} -> Response: ${response.body}");
+        return ApiResponse.fromJson(json.decode(response.body));
+      }
+      Map<String, dynamic> jsonAnswer = json.decode(response.body);
+      return true;
+    } catch (e) {
+      print("updateNotification, failed for ${e}");
+      return false;
+    }
+  }
+
+  Future<dynamic> markNotificationAsRead(
+      String userIdentifier, int notificationId) async {
+    try {
+      final response = await http
+          .delete(
+              '$serverUrl$mark_notification_as_read?user=$userIdentifier&notif=${notificationId}',
+              headers: headers)
+          .timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );
+      if (response.statusCode == 204) {
+        return true;
+      }
+      print("markNotificationAsRead failed");
+      return false;
+    } catch (e) {
+      print("markNotificationAsRead, failed for ${e}");
+      return false;
+    }
+  }
+
+  Future<bool> subscribeToTopic(
+      String userIdentifier, String topicIdentifier) async {
+    try {
+      final response = await http
+          .post(
+              '$serverUrl$subscribe_to_topic?user=$userIdentifier&code=$topicIdentifier',
+              headers: headers)
+          .timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );
+      if (response.statusCode == 201) {
+        return true;
+      }
+      print("subscribeToTopic, failed.");
+      return false;
+    } catch (e) {
+      print("subscribeToTopic, failed for ${e}");
+      return false;
+    }
+  }
+
+  Future<bool> unsubscribeFromTopic(
+      String userIdentifier, String topicIdentifier) async {
+    try {
+      final response = await http
+          .post(
+              '$serverUrl$unsub_from_topic?user=$userIdentifier&code=$topicIdentifier',
+              headers: headers)
+          .timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );
+      if (response.statusCode == 204) {
+        return true;
+      }
+      print("unsubscribeFromTopic, failed.");
+      return false;
+    } catch (e) {
+      print("unsubscribeFromTopic, failed for ${e}.");
+      return false;
+    }
+  }
+
+  Future<List<Topic>> getTopicsSubscribed(String userIdentifier) async {
+    try {
+      final response = await http
+          .get('$serverUrl$get_my_topics?user=${userIdentifier}',
+              headers: headers)
+          .timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as List;
+        var topicList = <Topic>[];
+        for (dynamic top in data) {
+          var topic = Topic.fromJson(top);
+          topicList.add(topic);
+        }
+        return topicList;
+      }
+      print("getTopicsSubscribed, failed.");
+      return null;
+    } catch (e) {
+      print("getTopicsSubscribed, failed for ${e}");
+      return null;
+    }
+  }
+
+  Future<bool> setFirebaseToken(String userIdentifier, String fcmToken) async {
+    print(userIdentifier);
+    print(fcmToken);
+    try {
+      final response = await http
+          .post(
+              '$serverUrl$firebaseToken?user_id=$userIdentifier&token=$fcmToken',
+              headers: headers)
+          .timeout(
+        Duration(seconds: _timeoutTimerInSeconds),
+        onTimeout: () {
+          print('Request timed out');
+          return;
+        },
+      );
+      if (response.statusCode == 200) {
+        return true;
+      }
+      print("setFirebaseToken, failed");
+      return false;
+    } catch (e) {
+      print("setFirebaseToken, failed for ${e}");
       return false;
     }
   }

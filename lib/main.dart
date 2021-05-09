@@ -43,25 +43,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-      },
-    );
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {});
-    _firebaseMessaging.getToken().then((String token) {
-      assert(token != null);
-    });
-
     //backgroud sync reports
     subscription = Connectivity()
         .onConnectivityChanged
@@ -76,7 +57,6 @@ class _MyAppState extends State<MyApp> {
       }
     });
     application.onLocaleChanged = onLocaleChange;
-
     UserManager.fetchUser();
   }
 
