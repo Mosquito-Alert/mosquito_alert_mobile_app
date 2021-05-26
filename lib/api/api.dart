@@ -683,9 +683,8 @@ class ApiSingleton {
             'Request: ${response.request.toString()} -> Response: ${response.body}');
         return ApiResponse.fromJson(json.decode(response.body));
       } else {
-        List<dynamic> jsonAnswer = json.decode(response.body);
+        List<dynamic> jsonAnswer = json.decode(utf8.decode(response.bodyBytes));
 
-        print(json.decode(response.body));
         var allCampaigns = <Campaign>[];
 
         for (var item in jsonAnswer) {
@@ -732,8 +731,8 @@ class ApiSingleton {
   * */
   Future<dynamic> getNotifications() async {
     try {
-      String userUUID = await UserManager.getUUID();
-      String locale = await UserManager.getLanguage();
+      var userUUID = await UserManager.getUUID();
+      var locale = await UserManager.getLanguage();
 
       final response = await http
           .get(
