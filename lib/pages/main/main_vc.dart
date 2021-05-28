@@ -41,7 +41,6 @@ class _MainVCState extends State<MainVC> {
   void initState() {
     super.initState();
     _getData();
-    _loadFirebase();
     loadingStream.add(true);
   }
 
@@ -50,6 +49,7 @@ class _MainVCState extends State<MainVC> {
     var user = await UserManager.fetchUser();
     userUuid = await UserManager.getUUID();
     await ApiSingleton().getUserScores();
+    await _loadFirebase();
 
     if (user != null) {
       nameStream.add(user.email);
@@ -68,7 +68,7 @@ class _MainVCState extends State<MainVC> {
   _loadFirebase() async {
     print('Load Firebase');
     await PushNotificationsManager.init();
-    PushNotificationsManager.subscribeToGlobal();
+    // PushNotificationsManager.subscribeToGlobal();
     PushNotificationsManager.subscribeToLanguage();
   }
 
