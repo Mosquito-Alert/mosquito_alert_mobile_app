@@ -49,11 +49,11 @@ class ApiSingleton {
 
   //Notifications
   static const notifications = '/user_notifications/';
-  static const mark_notification_as_read = '/api/mark_notif_as_ack/';
-  static const subscribe_to_topic = '/api/subscribe_to_topic/';
-  static const unsub_from_topic = '/api/unsub_from_topic/';
-  static const get_my_topics = '/api/topics_subscribed/';
-  static const firebaseToken = '/api/token/';
+  static const mark_notification_as_read = '/mark_notif_as_ack/';
+  static const subscribe_to_topic = '/subscribe_to_topic/';
+  static const unsub_from_topic = '/unsub_from_topic/';
+  static const get_my_topics = '/topics_subscribed/';
+  static const firebaseToken = '/token/';
 
   //Fixes
   static const fixes = '/fixes/';
