@@ -49,6 +49,7 @@ dependencies:
   language_pickers: ^0.2.0+1
   connectivity: ^2.0.2
   #connectivity_widget: ^0.1.7
+  overlay_support: ^1.0.2
 
 dev_dependencies:
   pedantic: ^1.9.0

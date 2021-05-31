@@ -8,10 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/main/main_vc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mosquito_alert_app/utils/Application.dart';
+import 'package:mosquito_alert_app/utils/MessageNotification.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizationsDelegate.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'utils/MyLocalizations.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,8 +27,6 @@ main() async {
   } catch (err) {
     print("$err");
   }
-  // ignore: invalid_use_of_visible_for_testing_member
-  //SharedPreferences.setMockInitialValues({});
   runApp(MyApp());
 }
 
@@ -60,6 +65,7 @@ class _MyAppState extends State<MyApp> {
     UserManager.fetchUser();
   }
 
+
   void onLocaleChange(Locale locale) {
     setState(() {
       _newLocaleDelegate = MyLocalizationsDelegate(newLocale: locale);
@@ -74,13 +80,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return OverlaySupport(child: MaterialApp(
       title: 'Mosquito alert',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // fontFamily: 'Rubik',
         primarySwatch: Colors.orange,
       ),
+      navigatorKey: navigatorKey,
       home: MainVC(),
       localizationsDelegates: [
         _newLocaleDelegate,
@@ -89,6 +95,6 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: application.supportedLocales(),
-    );
+    ));
   }
 }

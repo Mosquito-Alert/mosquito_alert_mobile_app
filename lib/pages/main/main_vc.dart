@@ -66,10 +66,8 @@ class _MainVCState extends State<MainVC> {
   }
 
   _loadFirebase() async {
-    print('Load Firebase');
     await PushNotificationsManager.init();
-    // PushNotificationsManager.subscribeToGlobal();
-    PushNotificationsManager.subscribeToLanguage();
+    await PushNotificationsManager.subscribeToLanguage();
   }
 
   _bgTracking() async {
