@@ -33,12 +33,18 @@ class PushNotificationsManager {
       _firebaseMessaging.requestNotificationPermissions();
       _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
+          print(message);
+          print('-->3');
           launchMessage(message);
         },
         onLaunch: (Map<String, dynamic> message) async {
+          print(message);
+          print('-->2');
           openMessageScreen(message);
         },
         onResume: (Map<String, dynamic> message) async {
+          print(message);
+          print('-->');
           openMessageScreen(message);
         },
       );
@@ -103,11 +109,6 @@ class PushNotificationsManager {
       }
     }
 
-    print(title);
-    print(msg);
-    print(notifId);
-
-
     if (title.isNotEmpty || msg.isNotEmpty) {
       showOverlayNotification((context) {
         return MessageNotification(
@@ -152,8 +153,8 @@ class PushNotificationsManager {
 
   static Future<void> registerFCMToken(String fcmToken) async {
     var userId = await UserManager.getUUID();
-    print(userId);
     var result = ApiSingleton().setFirebaseToken(userId, fcmToken);
+    await subscribeToGlobal();
   }
 
   static Future<void> subscribeToGlobal() async {
@@ -190,6 +191,8 @@ class PushNotificationsManager {
       var result = await ApiSingleton().subscribeToTopic(userId, topic);
       if (result != null && result) {
         await _firebaseMessaging.subscribeToTopic(topic);
+      } else if (topic == 'global') {
+        await _firebaseMessaging.subscribeToTopic('global');
       }
     }
   }

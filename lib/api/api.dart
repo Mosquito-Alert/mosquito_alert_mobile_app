@@ -832,10 +832,10 @@ class ApiSingleton {
       if (response.statusCode == 201) {
         return true;
       }
-      print("subscribeToTopic, failed.");
+      print("subscribeToTopic $topicIdentifier, failed.");
       return false;
     } catch (e) {
-      print("subscribeToTopic, failed for ${e}");
+      print("subscribeToTopic $topicIdentifier, failed for ${e}");
       return false;
     }
   }
