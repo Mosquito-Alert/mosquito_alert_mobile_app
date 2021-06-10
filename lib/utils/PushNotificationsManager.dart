@@ -33,8 +33,7 @@ class PushNotificationsManager {
       _firebaseMessaging.requestNotificationPermissions();
       _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
-          openMessageScreen(message);
-          //launchMessage(message);
+          launchMessage(message);
         },
         onLaunch: (Map<String, dynamic> message) async {
           openMessageScreen(message);
