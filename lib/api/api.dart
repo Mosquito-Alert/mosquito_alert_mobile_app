@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_twitter/flutter_twitter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -16,7 +15,6 @@ import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';

@@ -10,6 +10,8 @@ import 'package:mosquito_alert_app/utils/customModalBottomSheet.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:intl/intl.dart';
 
+import '../../utils/UserManager.dart';
+
 class NotificationsPage extends StatefulWidget {
   final String notificationId;
 
@@ -208,7 +210,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   _updateNotification(id) async {
-    var res = await ApiSingleton().updateNotification(id, true);
+    var userId = await UserManager.getUUID();
+    var res = await ApiSingleton().markNotificationAsRead(userId, id);
 
     if (res) {
       var index = notifications.indexWhere((element) => element.id == id);

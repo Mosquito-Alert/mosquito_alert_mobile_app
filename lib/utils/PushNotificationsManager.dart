@@ -20,7 +20,7 @@ class PushNotificationsManager {
 
   factory PushNotificationsManager() => _instance;
   static final PushNotificationsManager _instance =
-  PushNotificationsManager._();
+      PushNotificationsManager._();
   static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   static bool _initialized = false;
   static List<Topic> currentTopics = <Topic>[];
@@ -33,18 +33,13 @@ class PushNotificationsManager {
       _firebaseMessaging.requestNotificationPermissions();
       _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
-          print(message);
-          print('-->3');
-          launchMessage(message);
+          openMessageScreen(message);
+          //launchMessage(message);
         },
         onLaunch: (Map<String, dynamic> message) async {
-          print(message);
-          print('-->2');
           openMessageScreen(message);
         },
         onResume: (Map<String, dynamic> message) async {
-          print(message);
-          print('-->');
           openMessageScreen(message);
         },
       );
@@ -66,10 +61,9 @@ class PushNotificationsManager {
 
     if (Platform.isIOS) {
       final jsonData = jsonDecode(message['notification']);
-      final jsonNotifData = jsonDecode(message['data']);
 
       try {
-        title = jsonData["title"] ;
+        title = jsonData["title"];
       } catch (e) {
         print(e);
       }
@@ -79,18 +73,14 @@ class PushNotificationsManager {
       } catch (e) {
         print(e);
       }
-
-
       try {
-        notifId = "${jsonNotifData['notification']['id']}";
+        notifId = "${jsonDecode(message['notification_id'])}";
       } catch (e) {
         print(e);
       }
     } else {
-
-      print(message);
       try {
-        title = message['notification']["title"] ;
+        title = message['notification']["title"];
       } catch (e) {
         print(e);
       }
@@ -101,9 +91,8 @@ class PushNotificationsManager {
         print(e);
       }
 
-      final jsonNotifData = jsonDecode(message['data']['data']);
       try {
-        notifId = "${jsonNotifData['notification']['id']}";
+        notifId = "${message['data']['notification_id']}";
       } catch (e) {
         print(e);
       }
@@ -119,8 +108,7 @@ class PushNotificationsManager {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      NotificationsPage(
+                  builder: (context) => NotificationsPage(
                         notificationId: notifId,
                       ),
                   fullscreenDialog: true),
@@ -133,16 +121,26 @@ class PushNotificationsManager {
 
   static openMessageScreen(Map<String, dynamic> message) {
     var notifId = "";
-    try {
-      notifId = message['data']['notification']['id'];
-    } catch (e) {}
+
+    if (Platform.isIOS) {
+      try {
+        notifId = "${jsonDecode(message['notification_id'])}";
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      try {
+        notifId = "${message['data']['notification_id']}";
+      } catch (e) {
+        print(e);
+      }
+    }
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Navigator.push(
         navigatorKey.currentContext,
         MaterialPageRoute(
-            builder: (context) =>
-                NotificationsPage(
+            builder: (context) => NotificationsPage(
                   notificationId: notifId,
                 ),
             fullscreenDialog: true),
