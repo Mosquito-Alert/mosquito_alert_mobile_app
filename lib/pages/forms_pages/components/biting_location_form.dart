@@ -161,22 +161,30 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
           widget.setValid(true);
         }
         //get markers in responses
-        if (Utils.report.responses.any((r) => r.question_id == 5)) {
-          int i = 0;
-          Utils.report.responses.forEach((q) {
-            i++;
-            if (q.question_id == 5) {
-              var res = q.answer_value
-                  .substring(q.answer_value.indexOf('( ') + 2,
-                      q.answer_value.indexOf(')'))
-                  .split(', ');
-              currentMarkers.add(new Marker(
-                  markerId: MarkerId('mk_$i'),
-                  position:
-                      LatLng(double.parse(res[0]), double.parse(res[1]))));
-            }
-          });
+        try {
+          if (Utils.report.responses.any((r) => r.question_id == 5)) {
+            int i = 0;
+            Utils.report.responses.forEach((q) {
+              i++;
+              if (q.question_id == 5) {
+
+                print(q.answer_value);
+
+                var res = q.answer_value
+                    .substring(q.answer_value.indexOf('( ') + 2,
+                    q.answer_value.indexOf(')'))
+                    .split(', ');
+                currentMarkers.add(new Marker(
+                    markerId: MarkerId('mk_$i'),
+                    position:
+                    LatLng(double.parse(res[0]), double.parse(res[1]))));
+              }
+            });
+          }
+        } catch (e) {
+          print(e);
         }
+
         break;
       default:
         streamType.add(LocationType.missing);

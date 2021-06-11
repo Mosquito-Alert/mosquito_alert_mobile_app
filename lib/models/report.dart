@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:mosquito_alert_app/models/question.dart';
 
 class Report {
@@ -62,6 +64,7 @@ class Report {
       this.country});
 
   Report.fromJson(Map<dynamic, dynamic> json) {
+    log(json.toString());
     version_UUID = json['version_UUID'].toString();
     version_number = json['version_number'];
     user = json['user'].toString();
@@ -102,8 +105,8 @@ class Report {
     os_language = json['os_language'];
     app_language = json['app_language'];
     country = json['country'];
-    nuts3 = json['nuts3'];
-    nuts2 = json['nuts2'];
+    nuts3 = json['nuts_3'];
+    nuts2 = json['nuts_2'];
   }
 
   Map<String, dynamic> toJson() {

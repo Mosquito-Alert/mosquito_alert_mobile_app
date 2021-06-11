@@ -513,7 +513,8 @@ class ApiSingleton {
       var jsonAnswer = json.decode(response.body);
       var newReport = Report.fromJson(jsonAnswer);
 
-      PushNotificationsManager.subscribeToReportResult(newReport);
+
+      await PushNotificationsManager.subscribeToReportResult(newReport);
 
       await getUserScores();
       return newReport;
@@ -827,7 +828,10 @@ class ApiSingleton {
           return;
         },
       );
+      print(response.statusCode);
       if (response.statusCode == 201) {
+        print("Succes subscribing to $topicIdentifier.");
+
         return true;
       }
       print("subscribeToTopic $topicIdentifier, failed.");
