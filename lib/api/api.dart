@@ -20,7 +20,7 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ApiSingleton {
-  static final _timeoutTimerInSeconds = 5;
+  static final _timeoutTimerInSeconds = 10;
 
   static String devBASEURL = 'http://madev.creaf.cat';
   static String baseUrl = 'http://webserver.mosquitoalert.com';

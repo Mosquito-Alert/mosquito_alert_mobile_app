@@ -112,7 +112,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
                     crossAxisCount: 3,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10),
-                itemCount: images.length + 1,
+                itemCount: min(3, images.length + 1),
                 itemBuilder: (context, index) {
                   return index == (images.length)
                       ? GestureDetector(
@@ -309,6 +309,8 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
     final _picker = ImagePicker();
     var image = await _picker.getImage(
       source: source,
+      maxHeight: 1024,
+      imageQuality: 60
     );
     if (image != null) {
       final File file = File(image.path);

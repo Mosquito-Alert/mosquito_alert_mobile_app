@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:language_pickers/language_picker_dialog.dart';
 import 'package:language_pickers/languages.dart';
 import 'package:mosquito_alert_app/api/api.dart';
@@ -24,6 +25,7 @@ class SettingsPage extends StatefulWidget {
   final Function enableTracking;
 
   SettingsPage({this.enableTracking});
+
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
@@ -78,7 +80,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final key = new GlobalKey<ScaffoldState>();
+
     return Scaffold(
+      key: key,
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
@@ -92,7 +97,36 @@ class _SettingsPageState extends State<SettingsPage> {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
                   Widget>[
             SizedBox(
-              height: 35,
+              height: 12,
+            ),
+
+            FutureBuilder(
+              future: UserManager.getUUID(),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                print(snapshot.data);
+                return Row(
+                  children: [
+                    Style.body('ID'),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Expanded(
+                        child: Style.bodySmall(snapshot.data,
+                            color: Colors.black.withOpacity(0.7))),
+                    GestureDetector(child: Icon(
+                      Icons.copy_rounded,
+                      size: 18,
+                    ), onTap: () {
+                      Clipboard.setData(ClipboardData(text: snapshot.data));
+                      key.currentState.showSnackBar(
+                          new SnackBar(content: new Text("Copied to Clipboard"),));
+                    },)
+                  ],
+                );
+              },
+            ),
+            SizedBox(
+              height: 12,
             ),
             // UserManager.user != null
             //     ? SettingsMenuWidget(MyLocalizations.of(context, "logout_txt"),
@@ -301,11 +335,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 onValuePicked: (Language language) => setState(() {
                       var languageCodes = language.isoCode.split('_');
 
-                      Utils.language =Locale(languageCodes[0], languageCodes[1]);
+                      Utils.language =
+                          Locale(languageCodes[0], languageCodes[1]);
                       UserManager.setLanguage(languageCodes[0]);
                       UserManager.setLanguageCountry(languageCodes[1]);
-                      application.onLocaleChanged(Locale(languageCodes[0], languageCodes[1]));
-                      PushNotificationsManager.subscribeToTopic(languageCodes[0]);
+                      application.onLocaleChanged(
+                          Locale(languageCodes[0], languageCodes[1]));
+                      PushNotificationsManager.subscribeToTopic(
+                          languageCodes[0]);
                     }),
                 itemBuilder: (Language language) {
                   return Row(

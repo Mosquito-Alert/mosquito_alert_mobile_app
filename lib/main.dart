@@ -12,6 +12,7 @@ import 'package:mosquito_alert_app/utils/MessageNotification.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizationsDelegate.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
+import 'package:mosquito_alert_app/utils/version_control.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,8 +63,8 @@ class _MyAppState extends State<MyApp> {
       }
     });
     application.onLocaleChanged = onLocaleChange;
-    UserManager.fetchUser();
   }
+
 
 
   void onLocaleChange(Locale locale) {

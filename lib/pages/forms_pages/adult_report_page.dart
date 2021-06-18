@@ -666,6 +666,10 @@ class _AdultReportPageState extends State<AdultReportPage> {
     final _picker = ImagePicker();
     var image = await _picker.getImage(
       source: source,
+        maxHeight: 1024,
+
+        imageQuality: 60
+
     );
 
     if (image != null) {

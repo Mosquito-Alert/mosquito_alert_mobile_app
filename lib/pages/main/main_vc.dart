@@ -22,6 +22,7 @@ import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
+import 'package:mosquito_alert_app/utils/version_control.dart';
 //import 'package:connectivity_widget/connectivity_widget.dart';
 
 class MainVC extends StatefulWidget {
@@ -40,8 +41,17 @@ class _MainVCState extends State<MainVC> {
   @override
   void initState() {
     super.initState();
-    _getData();
+    initAuthStatus();
     loadingStream.add(true);
+  }
+  initAuthStatus() async {
+    VersionControl.getInstance().packageApiKey =
+    "uqFb4yrdZCPFXsvXrJHBbJg5B5TqvSCYmxR7aPuN2uCcCKyu9FDVWettvbtNV9HKm";
+    VersionControl.getInstance().packageLanguageCode = "es";
+    var check = await VersionControl.getInstance().checkVersion(context);
+    if (check) {
+      _getData();
+    }
   }
 
   _getData() async {
