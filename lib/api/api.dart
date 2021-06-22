@@ -513,7 +513,6 @@ class ApiSingleton {
       var jsonAnswer = json.decode(response.body);
       var newReport = Report.fromJson(jsonAnswer);
 
-
       await PushNotificationsManager.subscribeToReportResult(newReport);
 
       await getUserScores();
