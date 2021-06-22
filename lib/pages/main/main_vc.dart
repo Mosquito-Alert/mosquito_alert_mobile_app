@@ -24,6 +24,7 @@ import 'package:flutter_background_geolocation/flutter_background_geolocation.da
     as bg;
 import 'package:mosquito_alert_app/utils/version_control.dart';
 //import 'package:connectivity_widget/connectivity_widget.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 class MainVC extends StatefulWidget {
   @override
@@ -45,6 +46,9 @@ class _MainVCState extends State<MainVC> {
     loadingStream.add(true);
   }
   initAuthStatus() async {
+    if (Platform.isIOS) {
+      await AppTrackingTransparency.requestTrackingAuthorization();
+    }
     VersionControl.getInstance().packageApiKey =
     "uqFb4yrdZCPFXsvXrJHBbJg5B5TqvSCYmxR7aPuN2uCcCKyu9FDVWettvbtNV9HKm";
     VersionControl.getInstance().packageLanguageCode = "es";
