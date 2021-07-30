@@ -792,55 +792,62 @@ class Utils {
                       ),
                       fit: BoxFit.cover),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 45,
-                    ),
-                    Style.body(
-                      MyLocalizations.of(context, 'camera_info_adult_txt_01'),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Style.body(
-                      MyLocalizations.of(context, 'camera_info_adult_txt_02'),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: double.infinity),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Expanded(
-                          child: Style.noBgButton(
-                            MyLocalizations.of(context, 'ok_next_txt'),
-                            () {
-                              Navigator.of(context).pop();
-                              !gallery
-                                  ? getImage(ImageSource.camera)
-                                  : getImage();
-                            },
-                            textColor: Style.colorPrimary,
-                          ),
+                        SizedBox(
+                          height: 45,
                         ),
-                        Expanded(
-                          child: Style.noBgButton(
-                            MyLocalizations.of(context, "no_show_again"),
-                            () {
-                              !gallery
-                                  ? getImage(ImageSource.camera)
-                                  : getImage();
-                              UserManager.setSowInfoAdult(true);
-                              Navigator.of(context).pop();
-                            },
-                            // textColor: Style.colorPrimary,
-                          ),
+                        Style.body(
+                          MyLocalizations.of(
+                              context, 'camera_info_adult_txt_01'),
                         ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Style.body(
+                          MyLocalizations.of(
+                              context, 'camera_info_adult_txt_02'),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                              child: Style.noBgButton(
+                                MyLocalizations.of(context, 'ok_next_txt'),
+                                () {
+                                  Navigator.of(context).pop();
+                                  !gallery
+                                      ? getImage(ImageSource.camera)
+                                      : getImage();
+                                },
+                                textColor: Style.colorPrimary,
+                              ),
+                            ),
+                            Expanded(
+                              child: Style.noBgButton(
+                                MyLocalizations.of(context, "no_show_again"),
+                                () {
+                                  !gallery
+                                      ? getImage(ImageSource.camera)
+                                      : getImage();
+                                  UserManager.setSowInfoAdult(true);
+                                  Navigator.of(context).pop();
+                                },
+                                // textColor: Style.colorPrimary,
+                              ),
+                            ),
+                          ],
+                        )
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               ),
             );
@@ -859,61 +866,66 @@ class Utils {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              contentPadding: EdgeInsets.all(0),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               content: Container(
                 // height: double.infinity,
+                padding: EdgeInsets.fromLTRB(25, 25, 25, 10),
                 constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.35,
                 ),
-                child: Column(
-                  children: <Widget>[
-                    Style.body(
-                      MyLocalizations.of(
-                          context, 'camera_info_breeding_txt_01'),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Style.body(
-                      MyLocalizations.of(
-                          context, 'camera_info_breeding_txt_02'),
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        height: 10,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: double.infinity),
+                    child: Column(
                       children: <Widget>[
-                        Expanded(
-                          child: Style.noBgButton(
-                            MyLocalizations.of(context, 'ok_next_txt'),
-                            () {
-                              Navigator.of(context).pop();
-                              !gallery
-                                  ? getImage(ImageSource.camera)
-                                  : getImage();
-                            },
-                            textColor: Style.colorPrimary,
-                          ),
+                        Style.body(
+                          MyLocalizations.of(
+                              context, 'camera_info_breeding_txt_01'),
                         ),
-                        Expanded(
-                          child: Style.noBgButton(
-                            MyLocalizations.of(context, 'no_show_again'),
-                            () {
-                              UserManager.setSowInfoBreeding(true);
-                              Navigator.of(context).pop();
-                              !gallery
-                                  ? getImage(ImageSource.camera)
-                                  : getImage();
-                            },
-                          ),
+                        SizedBox(
+                          height: 5,
                         ),
+                        Style.body(
+                          MyLocalizations.of(
+                              context, 'camera_info_breeding_txt_02'),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                              child: Style.noBgButton(
+                                MyLocalizations.of(context, 'ok_next_txt'),
+                                () {
+                                  Navigator.of(context).pop();
+                                  !gallery
+                                      ? getImage(ImageSource.camera)
+                                      : getImage();
+                                },
+                                textColor: Style.colorPrimary,
+                              ),
+                            ),
+                            Expanded(
+                              child: Style.noBgButton(
+                                MyLocalizations.of(context, 'no_show_again'),
+                                () {
+                                  UserManager.setSowInfoBreeding(true);
+                                  Navigator.of(context).pop();
+                                  !gallery
+                                      ? getImage(ImageSource.camera)
+                                      : getImage();
+                                },
+                              ),
+                            ),
+                          ],
+                        )
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               ),
             );
