@@ -24,7 +24,9 @@ class CustomCard extends StatelessWidget {
               children: <Widget>[
                 img != null
                     ? Expanded(
-                        flex: 3,
+                        flex: MediaQuery.of(context).textScaleFactor < 1.23
+                            ? 3
+                            : 2,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 20.0, bottom: 10),
                           child: Image.asset(
