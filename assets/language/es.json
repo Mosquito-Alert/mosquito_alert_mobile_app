@@ -310,5 +310,6 @@
     "identifier_small": "ID: ",
     "question_17": "¿Ves larvas de mosquito?",
     "coordination_txt": "Coordinación",
-    "partners_txt": "Socios"
+    "partners_txt": "Socios",
+    "server_down": "No se ha podido conectar con el servidor, comprueba que tienes acceso a Internet o prueba más tarde."
 }

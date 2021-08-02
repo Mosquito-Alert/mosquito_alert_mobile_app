@@ -8,6 +8,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/models/topic.dart';
 import 'package:mosquito_alert_app/utils/MessageNotification.dart';
+import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'dart:async';
 import '../api/api.dart';
@@ -45,11 +46,16 @@ class PushNotificationsManager {
       _firebaseMessaging.onIosSettingsRegistered
           .listen((IosNotificationSettings settings) {});
 
-      var token = await _firebaseMessaging.getToken();
+      var token = await _firebaseMessaging
+          .getToken()
+          .timeout(Duration(seconds: 10), onTimeout: () => null);
 
-      await registerFCMToken(token);
-      await getTopicsSubscribed();
-      _initialized = true;
+      if (token != null) {
+        await registerFCMToken(token);
+        await getTopicsSubscribed();
+        Utils.firebaseLoaded = true;
+        _initialized = true;
+      }
     }
   }
 
@@ -183,13 +189,15 @@ class PushNotificationsManager {
   }
 
   static Future<void> subscribeToTopic(String topic) async {
-    var userId = await UserManager.getUUID();
-    if (userId != null && !_checkIfSubscribed(topic)) {
-      var result = await ApiSingleton().subscribeToTopic(userId, topic);
-      if (result != null && result) {
-        await _firebaseMessaging.subscribeToTopic(topic);
-      } else if (topic == 'global') {
-        await _firebaseMessaging.subscribeToTopic('global');
+    if (_initialized) {
+      var userId = await UserManager.getUUID();
+      if (userId != null && !_checkIfSubscribed(topic)) {
+        var result = await ApiSingleton().subscribeToTopic(userId, topic);
+        if (result != null && result) {
+          await _firebaseMessaging.subscribeToTopic(topic);
+        } else if (topic == 'global') {
+          await _firebaseMessaging.subscribeToTopic('global');
+        }
       }
     }
   }

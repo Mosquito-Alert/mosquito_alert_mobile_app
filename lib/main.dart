@@ -20,7 +20,6 @@ import 'utils/MyLocalizations.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
-
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
@@ -53,9 +52,11 @@ class _MyAppState extends State<MyApp> {
     subscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
+      print('Connectivity status changed to $result');
       switch (result) {
         case ConnectivityResult.mobile:
         case ConnectivityResult.wifi:
+          Utils.checkForUnfetchedData();
           Utils.syncReports();
           break;
         case ConnectivityResult.none:
@@ -64,8 +65,6 @@ class _MyAppState extends State<MyApp> {
     });
     application.onLocaleChanged = onLocaleChange;
   }
-
-
 
   void onLocaleChange(Locale locale) {
     setState(() {
@@ -81,7 +80,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return OverlaySupport(child: MaterialApp(
+    return OverlaySupport(
+        child: MaterialApp(
       title: 'Mosquito alert',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

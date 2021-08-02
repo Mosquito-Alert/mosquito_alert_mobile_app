@@ -45,12 +45,13 @@ class _MainVCState extends State<MainVC> {
     initAuthStatus();
     loadingStream.add(true);
   }
+
   initAuthStatus() async {
     if (Platform.isIOS) {
       await AppTrackingTransparency.requestTrackingAuthorization();
     }
     VersionControl.getInstance().packageApiKey =
-    "uqFb4yrdZCPFXsvXrJHBbJg5B5TqvSCYmxR7aPuN2uCcCKyu9FDVWettvbtNV9HKm";
+        "uqFb4yrdZCPFXsvXrJHBbJg5B5TqvSCYmxR7aPuN2uCcCKyu9FDVWettvbtNV9HKm";
     VersionControl.getInstance().packageLanguageCode = "es";
     var check = await VersionControl.getInstance().checkVersion(context);
     if (check) {
@@ -59,14 +60,19 @@ class _MainVCState extends State<MainVC> {
   }
 
   _getData() async {
+    print('MainVC (_getData): Getting data...');
     await UserManager.startFirstTime(context);
-    var user = await UserManager.fetchUser();
+    // dynamic user;
+    // if (Utils.userFetched) {
+    //   user = await UserManager.fetchUser();
+    // }
     userUuid = await UserManager.getUUID();
-    await ApiSingleton().getUserScores();
-    await _loadFirebase();
+    UserManager.userScore = await ApiSingleton().getUserScores();
+    await UserManager.setUserScores(UserManager.userScore);
+    await Utils.loadFirebase();
 
-    if (user != null) {
-      nameStream.add(user.email);
+    if (UserManager.user != null) {
+      nameStream.add(UserManager.user.email);
       setState(() {
         userName = UserManager.user.email;
       });
@@ -77,11 +83,6 @@ class _MainVCState extends State<MainVC> {
     }
 
     loadingStream.add(false);
-  }
-
-  _loadFirebase() async {
-    await PushNotificationsManager.init();
-    await PushNotificationsManager.subscribeToLanguage();
   }
 
   _bgTracking() async {
@@ -743,8 +744,10 @@ class _MainVCState extends State<MainVC> {
         MaterialPageRoute(builder: (context) => BitingReportPage()),
       );
     } else {
+      print('Bite report was not created');
+      loadingStream.add(false);
       Utils.showAlert(MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'save_report_ko_txt'), context);
+          MyLocalizations.of(context, 'server_down'), context);
     }
   }
 
@@ -757,8 +760,10 @@ class _MainVCState extends State<MainVC> {
         MaterialPageRoute(builder: (context) => AdultReportPage()),
       );
     } else {
+      print('Adult report was not created');
+      loadingStream.add(false);
       Utils.showAlert(MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'save_report_ko_txt'), context);
+          MyLocalizations.of(context, 'server_down'), context);
     }
   }
 
@@ -771,8 +776,10 @@ class _MainVCState extends State<MainVC> {
         MaterialPageRoute(builder: (context) => BreedingReportPage()),
       );
     } else {
+      print('Site report was not created');
+      loadingStream.add(false);
       Utils.showAlert(MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'save_report_ko_txt'), context);
+          MyLocalizations.of(context, 'server_down'), context);
     }
   }
 }

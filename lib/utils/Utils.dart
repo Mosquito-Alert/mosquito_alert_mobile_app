@@ -15,10 +15,12 @@ import 'package:mosquito_alert_app/models/question.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/models/session.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
+import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:package_info/package_info.dart';
 import 'package:random_string/random_string.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 import '../models/question.dart';
@@ -40,6 +42,15 @@ class Utils {
   static Session session;
   static List<Report> reportsList;
   static Report savedAdultReport;
+
+  // Initialized data flags
+  static bool userFetched = false;
+  static bool userScoresFetched = false;
+  static Map<String, dynamic> userCreated = {
+    "created": false,
+    "required": false
+  };
+  static bool firebaseLoaded = false;
 
   static void saveImgPath(File img) {
     if (imagePath == null) {
@@ -65,17 +76,23 @@ class Utils {
 
       String userUUID = await UserManager.getUUID();
 
-      int sessionId = await ApiSingleton().getLastSession(userUUID);
-      sessionId = sessionId + 1;
+      dynamic response = await ApiSingleton().getLastSession(userUUID);
+      if (response is bool && !response) {
+        print('Unable to get last session.');
+        return false;
+      } else {
+        int sessionId = response + 1;
 
-      session = new Session(
-          session_ID: sessionId,
-          user: userUUID,
-          session_start_time: DateTime.now().toIso8601String());
+        session = new Session(
+            session_ID: sessionId,
+            user: userUUID,
+            session_start_time: DateTime.now().toIso8601String());
 
-      print(language);
+        print(language);
 
-      session.id = await ApiSingleton().createSession(session);
+        session.id = await ApiSingleton().createSession(session);
+        print("Session: ${jsonEncode(session.toJson())}");
+      }
     }
 
     if (session.id != null && language != null) {
@@ -125,6 +142,7 @@ class Utils {
       }
       return true;
     }
+
     return false;
   }
 
@@ -326,10 +344,14 @@ class Utils {
     if (report.version_number > 0) {
       report.version_time = DateTime.now().toIso8601String();
       var res = await ApiSingleton().createReport(report);
-      if (res.type == 'adult') {
-        savedAdultReport = res;
+      if (res != null) {
+        if (res.type == 'adult') {
+          savedAdultReport = res;
+        }
+        return true;
+      } else {
+        return false;
       }
-      return res != null ? true : false;
     } else {
       report.version_time = DateTime.now().toIso8601String();
       report.creation_time = DateTime.now().toIso8601String();
@@ -412,6 +434,40 @@ class Utils {
     }
   }
 
+  static Future<void> checkForUnfetchedData() async {
+    SharedPreferences prefs;
+    if (userCreated["required"] && !userCreated["created"]) {
+      print('Utils (checkForUnfetchedData): Creating user...');
+      prefs = await SharedPreferences.getInstance();
+      final String uuid = prefs.getString("uuid");
+      await ApiSingleton().createUser(uuid);
+    } else {
+      print(
+          'Utils (checkForUnfetchedData): Either the user was created or it was not required (${jsonEncode(userCreated)})');
+    }
+
+    if (!userScoresFetched) {
+      print('Utils (checkForUnfetchedData): Fetching user scores...');
+      UserManager.userScore = await ApiSingleton().getUserScores();
+    } else {
+      print('Utils (checkForUnfetchedData): UserScores were already fetched');
+    }
+
+    if (!userFetched) {
+      print('Utils (checkForUnfetchedData): Fetching user...');
+      await UserManager.fetchUser();
+    } else {
+      print('Utils (checkForUnfetchedData): User was already fetched');
+    }
+
+    if (!firebaseLoaded) {
+      print('Utils (checkForUnfetchedData): Loading Firebase...');
+      await loadFirebase();
+    } else {
+      print('Utils (checkForUnfetchedData): Firebase was already initialized.');
+    }
+  }
+
   static Future<bool> deleteReport(r) async {
     Report deleteReport = r;
     deleteReport.version_time = DateTime.now().toIso8601String();
@@ -421,6 +477,11 @@ class Utils {
     bool res =
         await ApiSingleton().createReport(deleteReport) != null ? true : false;
     return res;
+  }
+
+  static Future<void> loadFirebase() async {
+    await PushNotificationsManager.init();
+    await PushNotificationsManager.subscribeToLanguage();
   }
 
   static getLocation() async {

@@ -310,5 +310,6 @@
     "identifier_small": "ID:",
     "question_17": "Can you see mosquito larvae?",
     "coordination_txt": "Coordination",
-    "partners_txt": "Partners"
+    "partners_txt": "Partners",
+    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
 }

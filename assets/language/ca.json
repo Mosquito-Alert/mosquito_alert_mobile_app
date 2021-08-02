@@ -310,5 +310,6 @@
     "identifier_small": "ID:",
     "question_17": "Veus larves de mosquit?",
     "coordination_txt": "Coordinació",
-    "partners_txt": "Socis"
+    "partners_txt": "Socis",
+    "server_down": "No s'ha pogut connectar amb el servidor, comprova que tinguis accés a Internet o prova més tard."
 }

@@ -114,6 +114,8 @@ class ApiSingleton {
             "Request: ${response.request.toString()} -> Response: ${response.body}");
         return ApiResponse.fromJson(json.decode(response.body));
       }
+
+      Utils.userCreated["created"] = true;
       return true;
     } catch (c) {
       return null;
@@ -285,6 +287,7 @@ class ApiSingleton {
         Duration(seconds: _timeoutTimerInSeconds),
         onTimeout: () {
           print('Request timed out');
+          Utils.userScoresFetched = false;
           return;
         },
       );
@@ -298,6 +301,7 @@ class ApiSingleton {
 
       UserManager.userScore = jsonAnswer['total_score'];
       Utils.userScoresController.add(jsonAnswer['total_score']);
+      Utils.userScoresFetched = true;
       return UserManager.userScore;
     } catch (e) {
       return 1;
@@ -316,10 +320,9 @@ class ApiSingleton {
         Duration(seconds: _timeoutTimerInSeconds),
         onTimeout: () {
           print('Request timed out');
-          return;
+          return null;
         },
       );
-      ;
 
       if (response.statusCode != 200) {
         print(
@@ -827,13 +830,13 @@ class ApiSingleton {
           return;
         },
       );
-      print(response.statusCode);
       if (response.statusCode == 201) {
         print("Succes subscribing to $topicIdentifier.");
 
         return true;
       }
-      print("subscribeToTopic $topicIdentifier, failed.");
+      print(
+          "subscribeToTopic $topicIdentifier, failed (code ${response.statusCode})");
       return false;
     } catch (e) {
       print("subscribeToTopic $topicIdentifier, failed for ${e}");
