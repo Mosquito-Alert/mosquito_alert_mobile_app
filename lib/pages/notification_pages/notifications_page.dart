@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:intl/intl.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/customModalBottomSheet.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
-import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/UserManager.dart';
 
@@ -173,7 +174,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       ),
                       Container(
                         // padding: EdgeInsets.all(10),
-                        child: HtmlWidget(notification.expert_html),
+                        child: HtmlWidget(
+                          notification.expert_html,
+                          onTapUrl: (url) async {
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            }
+                          },
+                        ),
                       ),
                       // ClipRRect(
                       //   borderRadius: BorderRadius.circular(15),
