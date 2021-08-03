@@ -14,6 +14,7 @@ import 'package:mosquito_alert_app/pages/forms_pages/components/questions_breedi
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class BreedingReportPage extends StatefulWidget {
   final Report editReport;
@@ -435,13 +436,16 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   }
 
   Future getImage(source) async {
+    if (await Permission.camera.isDenied && Platform.isIOS) {
+      await openAppSettings();
+      return;
+    }
+
     final _picker = ImagePicker();
     var image = await _picker.getImage(
       source: source,
-        maxHeight: 1024,
-
-        imageQuality: 60
-
+      maxHeight: 1024,
+      imageQuality: 60,
     );
 
     if (image != null) {

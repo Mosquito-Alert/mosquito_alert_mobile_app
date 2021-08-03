@@ -19,6 +19,7 @@ import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.d
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'components/biting_location_form.dart';
 
@@ -663,13 +664,16 @@ class _AdultReportPageState extends State<AdultReportPage> {
   }
 
   Future getImage(source) async {
+    if (await Permission.camera.isDenied && Platform.isIOS) {
+      await openAppSettings();
+      return;
+    }
+
     final _picker = ImagePicker();
     var image = await _picker.getImage(
       source: source,
-        maxHeight: 1024,
-
-        imageQuality: 60
-
+      maxHeight: 1024,
+      imageQuality: 60,
     );
 
     if (image != null) {
