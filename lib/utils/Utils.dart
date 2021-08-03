@@ -53,6 +53,7 @@ class Utils {
     },
     "firebase": false, // Whether firebase got initialized
   };
+
   // static bool userFetched = false;
   // static bool userScoresFetched = false;
   // static Map<String, dynamic> userCreated = {
@@ -78,8 +79,12 @@ class Utils {
     ApiSingleton().closeSession(session);
   }
 
-  static Future<bool> createNewReport(String type,
-      {lat, lon, locationType}) async {
+  static Future<bool> createNewReport(
+    String type, {
+    lat,
+    lon,
+    locationType,
+  }) async {
     if (session == null) {
       reportsList = [];
 
@@ -100,7 +105,7 @@ class Utils {
         print(language);
 
         session.id = await ApiSingleton().createSession(session);
-        print("Session: ${jsonEncode(session.toJson())}");
+        // print("Session: ${jsonEncode(session.toJson())}");
       }
     }
 
