@@ -14,7 +14,6 @@ import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/question.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/models/session.dart';
-import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -23,6 +22,7 @@ import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
+
 import '../models/question.dart';
 import 'MyLocalizations.dart';
 
@@ -44,13 +44,22 @@ class Utils {
   static Report savedAdultReport;
 
   // Initialized data flags
-  static bool userFetched = false;
-  static bool userScoresFetched = false;
-  static Map<String, dynamic> userCreated = {
-    "created": false,
-    "required": false
+  static Map<String, dynamic> initializedCheckData = {
+    "user": false, // Whether the user got fetched
+    "userScores": false, // Whether the user scores got fetched
+    "userCreated": {
+      "created": false,
+      "required": false,
+    },
+    "firebase": false, // Whether firebase got initialized
   };
-  static bool firebaseLoaded = false;
+  // static bool userFetched = false;
+  // static bool userScoresFetched = false;
+  // static Map<String, dynamic> userCreated = {
+  //   "created": false,
+  //   "required": false
+  // };
+  // static bool firebaseLoaded = false;
 
   static void saveImgPath(File img) {
     if (imagePath == null) {
@@ -436,6 +445,8 @@ class Utils {
 
   static Future<void> checkForUnfetchedData() async {
     SharedPreferences prefs;
+    // if (userCreated["required"] && !userCreated["created"]) {
+    final Map<String, bool> userCreated = initializedCheckData["userCreated"];
     if (userCreated["required"] && !userCreated["created"]) {
       print('Utils (checkForUnfetchedData): Creating user...');
       prefs = await SharedPreferences.getInstance();
@@ -446,21 +457,21 @@ class Utils {
           'Utils (checkForUnfetchedData): Either the user was created or it was not required (${jsonEncode(userCreated)})');
     }
 
-    if (!userScoresFetched) {
+    if (!initializedCheckData["userScores"]) {
       print('Utils (checkForUnfetchedData): Fetching user scores...');
       UserManager.userScore = await ApiSingleton().getUserScores();
     } else {
       print('Utils (checkForUnfetchedData): UserScores were already fetched');
     }
 
-    if (!userFetched) {
+    if (!initializedCheckData["user"]) {
       print('Utils (checkForUnfetchedData): Fetching user...');
       await UserManager.fetchUser();
     } else {
       print('Utils (checkForUnfetchedData): User was already fetched');
     }
 
-    if (!firebaseLoaded) {
+    if (!initializedCheckData["firebase"]) {
       print('Utils (checkForUnfetchedData): Loading Firebase...');
       await loadFirebase();
     } else {

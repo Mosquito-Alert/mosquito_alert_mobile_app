@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,7 +10,7 @@ import 'package:mosquito_alert_app/models/topic.dart';
 import 'package:mosquito_alert_app/utils/MessageNotification.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'dart:async';
+
 import '../api/api.dart';
 import '../main.dart';
 import '../pages/notification_pages/notifications_page.dart';
@@ -53,7 +53,8 @@ class PushNotificationsManager {
       if (token != null) {
         await registerFCMToken(token);
         await getTopicsSubscribed();
-        Utils.firebaseLoaded = true;
+        // Utils.firebaseLoaded = true;
+        Utils.initializedCheckData["firebase"] = true;
         _initialized = true;
       }
     }

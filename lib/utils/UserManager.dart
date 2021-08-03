@@ -33,7 +33,8 @@ class UserManager {
       prefs.setString("trackingUUID", trackingUuid);
       prefs.setBool("trackingDisabled", false);
 
-      Utils.userCreated["required"] = true;
+      // Utils.userCreated["required"] = true;
+      Utils.initializedCheckData["userCreated"]["required"] = true;
 
       await ApiSingleton().createUser(uuid);
       // Utils.getLanguage();
@@ -66,7 +67,7 @@ class UserManager {
       return null;
     }
 
-    Utils.userFetched = true;
+    Utils.initializedCheckData["user"] = true;
     return user;
   }
 

@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_twitter/flutter_twitter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
 import 'package:mosquito_alert_app/models/owcampaing.dart';
 import 'package:mosquito_alert_app/models/partner.dart';
@@ -14,9 +18,6 @@ import 'package:mosquito_alert_app/models/topic.dart';
 import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ApiSingleton {
@@ -115,7 +116,8 @@ class ApiSingleton {
         return ApiResponse.fromJson(json.decode(response.body));
       }
 
-      Utils.userCreated["created"] = true;
+      // Utils.userCreated["created"] = true;
+      Utils.initializedCheckData["userCreated"]["created"] = true;
       return true;
     } catch (c) {
       return null;
@@ -287,7 +289,8 @@ class ApiSingleton {
         Duration(seconds: _timeoutTimerInSeconds),
         onTimeout: () {
           print('Request timed out');
-          Utils.userScoresFetched = false;
+          // Utils.userScoresFetched = false;
+          Utils.initializedCheckData["userScores"] = false;
           return;
         },
       );
@@ -301,7 +304,8 @@ class ApiSingleton {
 
       UserManager.userScore = jsonAnswer['total_score'];
       Utils.userScoresController.add(jsonAnswer['total_score']);
-      Utils.userScoresFetched = true;
+      // Utils.userScoresFetched = true;
+      Utils.initializedCheckData["userScores"] = true;
       return UserManager.userScore;
     } catch (e) {
       return 1;
