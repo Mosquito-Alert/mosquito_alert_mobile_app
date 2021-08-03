@@ -1,14 +1,15 @@
 import 'dart:io';
 import 'dart:math';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:http/http.dart' as http;
 
 class AddPhotoButton extends StatefulWidget {
   final bool isEditing;
@@ -306,12 +307,14 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
   }
 
   Future getImage(source) async {
+    if (await Permission.camera.isDenied && Platform.isIOS) {
+      await openAppSettings();
+      return;
+    }
+
     final _picker = ImagePicker();
     var image = await _picker.getImage(
-      source: source,
-      maxHeight: 1024,
-      imageQuality: 60
-    );
+        source: source, maxHeight: 1024, imageQuality: 60);
     if (image != null) {
       final File file = File(image.path);
       Utils.saveImgPath(file);
