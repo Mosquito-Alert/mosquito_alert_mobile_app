@@ -120,7 +120,10 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
                                 widget.skipPage3(false);
                               }
                             }
-                            widget.nextPage != null && widget.nextPage();
+                            if (widget.nextPage != null) {
+                              widget.nextPage();
+                            }
+                            // widget.nextPage != null && widget.nextPage();
                           },
                           child: SmallQuestionOption(
                             text,
