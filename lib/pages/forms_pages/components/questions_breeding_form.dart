@@ -48,16 +48,18 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
     return SafeArea(
       child: Stack(
         children: [
-          Container(
-            // margin: EdgeInsets.only(top: 20),
-            alignment: Alignment.bottomCenter,
-            child: Image.asset(
-              widget.bottomImage,
-              width: double.infinity,
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.bottomCenter,
-            ),
-          ),
+          widget.bottomImage != null && widget.bottomImage.isNotEmpty
+              ? Container(
+                  // margin: EdgeInsets.only(top: 20),
+                  alignment: Alignment.bottomCenter,
+                  child: Image.asset(
+                    widget.bottomImage,
+                    width: double.infinity,
+                    fit: BoxFit.fitWidth,
+                    alignment: Alignment.bottomCenter,
+                  ),
+                )
+              : Container(),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 15),
             child: Column(
