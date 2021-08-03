@@ -310,5 +310,6 @@
     "identifier_small": "ID:",
     "question_17": "Látsz szúnyoglárvákat?",
     "coordination_txt": "Koordináció",
-    "partners_txt": "Partnerek"
+    "partners_txt": "Partnerek",
+    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
 }

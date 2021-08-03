@@ -311,5 +311,5 @@
     "question_17": "Veus larves de mosquit?",
     "coordination_txt": "Coordinació",
     "partners_txt": "Socis",
-    "server_down": "No s'ha pogut connectar amb el servidor, comprova que tinguis accés a Internet o prova més tard."
+    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
 }

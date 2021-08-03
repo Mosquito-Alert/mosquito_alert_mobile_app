@@ -310,5 +310,6 @@
     "identifier_small": "ID:",
     "question_17": "Možete li vidjeti ličinke komaraca?",
     "coordination_txt": "Koordinacija",
-    "partners_txt": "Partneri"
+    "partners_txt": "Partneri",
+    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
 }

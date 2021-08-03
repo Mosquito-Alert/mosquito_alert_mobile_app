@@ -310,5 +310,6 @@
     "identifier_small": "ID:",
     "question_17": "Puteți să vedeți larve de țânțari?",
     "coordination_txt": "Coordonare",
-    "partners_txt": "Parteneri"
+    "partners_txt": "Parteneri",
+    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
 }

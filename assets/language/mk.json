@@ -310,5 +310,6 @@
     "identifier_small": "ID:",
     "question_17": "Гледате ли ларви од комарци?",
     "coordination_txt": "Координација",
-    "partners_txt": "Партнери"
+    "partners_txt": "Партнери",
+    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
 }

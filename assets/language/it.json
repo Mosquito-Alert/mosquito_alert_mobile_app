@@ -310,5 +310,6 @@
     "identifier_small": "ID:",
     "question_17": "Riesci a vedere larve di zanzare?",
     "coordination_txt": "Coordinazione",
-    "partners_txt": "Partners"
+    "partners_txt": "Partners",
+    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
 }

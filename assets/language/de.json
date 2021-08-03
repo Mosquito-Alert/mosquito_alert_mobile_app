@@ -310,5 +310,6 @@
     "identifier_small": "ID:",
     "question_17": "Kannst du Larven von Stechmücken sehen?",
     "coordination_txt": "Koordination",
-    "partners_txt": "Partner"
+    "partners_txt": "Partner",
+    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
 }
