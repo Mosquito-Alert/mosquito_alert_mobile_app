@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
+//import 'package:connectivity_widget/connectivity_widget.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
+    as bg;
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mosquito_alert_app/api/api.dart';
@@ -16,15 +20,10 @@ import 'package:mosquito_alert_app/pages/notification_pages/notifications_page.d
 import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/settings_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
-import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
-    as bg;
 import 'package:mosquito_alert_app/utils/version_control.dart';
-//import 'package:connectivity_widget/connectivity_widget.dart';
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 class MainVC extends StatefulWidget {
   @override
@@ -60,7 +59,6 @@ class _MainVCState extends State<MainVC> {
   }
 
   _getData() async {
-    print('MainVC (_getData): Getting data...');
     await UserManager.startFirstTime(context);
     // dynamic user;
     // if (Utils.userFetched) {

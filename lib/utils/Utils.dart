@@ -208,7 +208,8 @@ class Utils {
     report = null;
     report = new Report.fromJson(reportsList.last.toJson());
     reportsList.removeLast();
-    print(reportsList);
+    print('${jsonEncode(reportsList)}');
+    // print(reportsList);
   }
 
   static setCurrentLocation(double latitude, double longitude) {
