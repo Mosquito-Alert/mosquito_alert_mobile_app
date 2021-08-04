@@ -25,7 +25,7 @@ class ApiSingleton {
 
   static String devBASEURL = 'http://madev.creaf.cat';
   static String baseUrl = 'http://webserver.mosquitoalert.com';
-  static String serverUrl = '$baseUrl/api';
+  static String serverUrl = '$devBASEURL/api';
 
   static String token = 'D4w29W49rMKC7L6vYQ3ua3rd6fQ12YZ6n70P';
 
