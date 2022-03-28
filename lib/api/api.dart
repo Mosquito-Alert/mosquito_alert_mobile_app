@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:flutter_twitter/flutter_twitter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+//import 'package:flutter_twitter/flutter_twitter.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
@@ -69,13 +69,13 @@ class ApiSingleton {
     'Authorization': 'Token ' + token
   };
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
+  /*final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
       'https://www.googleapis.com/auth/contacts.readonly',
     ],
-  );
-  final facebookLogin = FacebookLogin();
+  );*/
+  /*final facebookLogin = FacebookLogin();*/
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -156,7 +156,7 @@ class ApiSingleton {
   }
 
   Future<User> sigInWithGoogle() async {
-    final GoogleSignInAccount googleUser =
+    /*final GoogleSignInAccount googleUser =
         await _googleSignIn.signIn().catchError((e) {
       print(e);
       return null;
@@ -172,11 +172,11 @@ class ApiSingleton {
     final user = (await _auth.signInWithCredential(credential)).user;
 
     _googleSignIn.signOut();
-    return user;
+    return user;*/
   }
 
   Future<User> singInWithFacebook() async {
-    AuthCredential credential;
+    /*AuthCredential credential;
     facebookLogin.loginBehavior = Platform.isIOS
         ? FacebookLoginBehavior.webViewOnly
         : FacebookLoginBehavior.nativeWithFallback;
@@ -202,11 +202,11 @@ class ApiSingleton {
       case FacebookLoginStatus.error:
         print(result.errorMessage);
         break;
-    }
+    }*/
   }
 
   Future<User> singInWithTwitter() async {
-    TwitterLogin twitterInstance = new TwitterLogin(
+    /*TwitterLogin twitterInstance = new TwitterLogin(
         consumerKey: '4mhrNfBnXQXaVntPFYdIfXtCz',
         consumerSecret: 'Vi3SE7MgpTUyOBL6ouZHKfei6okzMElpwteN2gr3QyEyapZc3F');
 
@@ -228,7 +228,7 @@ class ApiSingleton {
       return user;
     } else {
       return null;
-    }
+    }*/
   }
 
   Future<bool> logout() async {

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/pages/auth/login_email_page.dart';
 import 'package:mosquito_alert_app/pages/main/main_vc.dart';
@@ -18,7 +17,7 @@ class LoginMainPage extends StatefulWidget {
 }
 
 class _LoginMainPageState extends State<LoginMainPage> {
-  final GoogleSignIn googleSignIn = GoogleSignIn();
+
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
 
   @override
