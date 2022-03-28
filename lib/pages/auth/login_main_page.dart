@@ -166,7 +166,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
 
   _googleSignIn() async {
     loadingStream.add(true);
-    ApiSingleton().sigInWithGoogle().then((FirebaseUser user) async {
+    ApiSingleton().sigInWithGoogle().then((User user) async {
       loadingStream.add(false);
       if (user != null) {
         UserManager.user = user;
@@ -189,7 +189,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
 
   _facebookSignIn() async {
     loadingStream.add(true);
-    ApiSingleton().singInWithFacebook().then((FirebaseUser user) {
+    ApiSingleton().singInWithFacebook().then((User user) {
       loadingStream.add(false);
       Navigator.push(
         context,
@@ -204,7 +204,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
 
    _twitterSignIn() async {
     loadingStream.add(true);
-    ApiSingleton().singInWithTwitter().then((FirebaseUser user) {
+    ApiSingleton().singInWithTwitter().then((User user) {
       loadingStream.add(false);
       Navigator.push(
         context,

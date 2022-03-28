@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:language_pickers/language_picker_dialog.dart';
-import 'package:language_pickers/languages.dart';
+import 'package:language_picker/language_picker.dart';
+
+import 'package:language_picker/languages.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/pages/auth/login_main_page.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page.dart';
@@ -34,32 +35,25 @@ class _SettingsPageState extends State<SettingsPage> {
   bool enableTracking = false;
   var packageInfo;
 
-  List<Map<String, String>> languageCodes = [
-    {'name': 'Spanish', 'isoCode': 'es_ES'},
-    {'name': 'Catalan', 'isoCode': 'ca_ES'},
-    {'name': 'Albanian', 'isoCode': 'sq_AL'},
-    {'name': 'Bulgarian', 'isoCode': 'bg_BG'},
-    {'name': 'Dutch', 'isoCode': 'nl_NL'},
-    {'name': 'German', 'isoCode': 'de_DE'},
-    {'name': 'Italian', 'isoCode': 'it_IT'},
-    {'name': 'Protuguese', 'isoCode': 'pt_PT'},
-    // {'name': 'Romanian', 'isoCode': 'ro_RO'},
-    {'name': 'English', 'isoCode': 'en_US'},
-    {'name': 'Greek', 'isoCode': 'el_GR'},
-    {'name': 'French', 'isoCode': 'fr_FR'},
-    {'name': 'Croatian', 'isoCode': 'hr_HR'},
-    {'name': 'Hungarian', 'isoCode': 'hu_HU'},
-    {'name': 'Luxembourgish (Luxembourg)', 'isoCode': 'lb_LU'},
-    {
-      'name': 'Macedonian (Former Yugoslav Republic of Macedonia)',
-      'isoCode': 'mk_MK'
-    },
-    // {'name': 'Russian (Russia)', 'isoCode': 'ru_RU'},
-    {'name': 'Slovenian (Slovenia)', 'isoCode': 'sl_SI'},
-    {'name': 'Serbian', 'isoCode': 'sr_RS'},
-    {'name': 'Turkish (Turkey)', 'isoCode': 'tr_TR'},
-    // {'name': 'Chinese', 'isoCode': 'zh_CH'},
-    // {'name': 'Chinese (Traditional, Hong Kong)', 'isoCode': 'zh_HK'},
+  final languageCodes = [
+    Language('es_ES', 'Spanish'),
+    Language('ca_ES', 'Catalan'),
+    Language('sq_AL', 'Albanian'),
+    Language('bg_BG', 'Bulgarian'),
+    Language('nl_NL', 'Dutch'),
+    Language('de_DE', 'German'),
+    Language('it_IT', 'Italian'),
+    Language('pt_PT', 'Protuguese'),
+    Language('en_US', 'English'),
+    Language('el_GR', 'Greek'),
+    Language('fr_FR', 'French'),
+    Language('hr_HR', 'Croatian'),
+    Language('hu_HU', 'Hungarian'),
+    Language('lb_LU', 'Luxembourgish (Luxembourg)'),
+    Language('mk_MK', 'Macedonian (Former Yugoslav Republic of Macedonia)'),
+    Language('sl_SI', 'Slovenian (Slovenia)'),
+    Language('sr_RS', 'Serbian'),
+    Language('tr_TR', 'Turkish (Turkey)'),
   ];
 
   String selectedLanguage;
@@ -113,14 +107,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     Expanded(
                         child: Style.bodySmall(snapshot.data,
                             color: Colors.black.withOpacity(0.7))),
-                    GestureDetector(child: Icon(
-                      Icons.copy_rounded,
-                      size: 18,
-                    ), onTap: () {
-                      Clipboard.setData(ClipboardData(text: snapshot.data));
-                      key.currentState.showSnackBar(
-                          new SnackBar(content: new Text("Copied to Clipboard"),));
-                    },)
+                    GestureDetector(
+                      child: Icon(
+                        Icons.copy_rounded,
+                        size: 18,
+                      ),
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: snapshot.data));
+                        key.currentState.showSnackBar(new SnackBar(
+                          content: new Text("Copied to Clipboard"),
+                        ));
+                      },
+                    )
                   ],
                 );
               },
@@ -325,7 +323,7 @@ class _SettingsPageState extends State<SettingsPage> {
         builder: (context) => Theme(
             data: Theme.of(context).copyWith(primaryColor: Style.colorPrimary),
             child: LanguagePickerDialog(
-                languagesList: languageCodes,
+                languages: languageCodes,
                 titlePadding: EdgeInsets.all(8.0),
                 searchCursorColor: Style.colorPrimary,
                 searchInputDecoration: InputDecoration(
@@ -355,7 +353,7 @@ class _SettingsPageState extends State<SettingsPage> {
       );
 
   _signOut() async {
-    ApiSingleton().logout().then((res) {
+    await ApiSingleton().logout().then((res) {
       UserManager.signOut();
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => MainVC()));

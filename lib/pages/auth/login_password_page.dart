@@ -150,7 +150,7 @@ class _LoginPasswordState extends State<LoginPassword> {
     loadingStream.add(true);
     ApiSingleton()
         .loginEmail(widget.email, _passwordController.text)
-        .then((FirebaseUser user) {
+        .then((User user) {
       loadingStream.add(false);
       ApiSingleton().createProfile(user.uid);
       Navigator.popUntil(context, (route) => route.isFirst);

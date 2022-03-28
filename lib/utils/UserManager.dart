@@ -11,7 +11,7 @@ import 'Application.dart';
 class UserManager {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  static FirebaseUser user;
+  static User user;
   static var profileUUIDs;
   static int userScore;
 
@@ -53,15 +53,14 @@ class UserManager {
     application.onLocaleChanged(Utils.language);
     fetchUser();
     userScore = await ApiSingleton().getUserScores();
-    setUserScores(userScore);
+    await setUserScores(userScore);
 
     return true;
   }
 
   static fetchUser() async {
-    user = await _auth
-        .currentUser()
-        .timeout(Duration(seconds: 10), onTimeout: () => null);
+    user = _auth
+        .currentUser;
 
     if (user == null) {
       return null;

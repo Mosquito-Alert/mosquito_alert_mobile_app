@@ -78,7 +78,7 @@ class VersionControl {
       };
 
       final response = await http
-          .post('https://dribbot.drib.ba/api/public/v1/app/check',
+          .post(Uri.parse('https://dribbot.drib.ba/api/public/v1/app/check'),
           headers: headers,
           body: json.encode({
             "appKey": packageApiKey,

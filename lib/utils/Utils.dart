@@ -502,7 +502,7 @@ class Utils {
   }
 
   static getLocation() async {
-    location = await getLastKnownPosition();
+    location = await Geolocator.getLastKnownPosition();
   }
 
   static final RegExp mailRegExp = RegExp(

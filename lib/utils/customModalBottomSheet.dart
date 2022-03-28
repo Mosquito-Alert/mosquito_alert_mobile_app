@@ -15,7 +15,7 @@ class CustomShowModalBottomSheet {
         context,
         _CullModalBottomSheetRoute<T>(
           builder: builder,
-          theme: Theme.of(context, shadowThemeOnly: true),
+          theme: Theme.of(context,),
           barrierLabel:
               MaterialLocalizations.of(context).modalBarrierDismissLabel,
           dismissible: dismissible,

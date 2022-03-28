@@ -104,12 +104,12 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
     var currentMarkers = <Marker>[];
     switch (type) {
       case LocationType.current:
-        var geolocationEnabled = await isLocationServiceEnabled();
+        var geolocationEnabled = await Geolocator.isLocationServiceEnabled();
         streamType.add(type);
 
         if (geolocationEnabled) {
           Position currentPosition =
-              await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+              await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
           Utils.setCurrentLocation(
               currentPosition.latitude, currentPosition.longitude);
           controller.moveCamera(
@@ -298,9 +298,9 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                                                     .defaultLocation.longitude),
                                     zoom: 15.0,
                                   ),
-                                  markers: markers.isNotEmpty
+                                  markers: markers != null && markers.isNotEmpty
                                       ? Set.from(markers)
-                                      : null,
+                                      : Set(),
                                   gestureRecognizers:
                                       <Factory<OneSequenceGestureRecognizer>>[
                                     new Factory<OneSequenceGestureRecognizer>(

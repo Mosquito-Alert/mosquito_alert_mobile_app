@@ -8,6 +8,7 @@ class TutorialPage extends StatefulWidget {
   final bool goBack;
 
   TutorialPage(this.goBack);
+
   @override
   _TutorialPageState createState() => _TutorialPageState();
 }
@@ -216,12 +217,14 @@ class _TutorialPageState extends State<TutorialPage> {
       ),
       body: IntroSlider(
         slides: initSlides(),
-        isShowSkipBtn: false,
+        showSkipBtn: false,
         renderNextBtn: renderNextBtn(),
         renderDoneBtn: renderDoneBtn(),
         onDonePress: onDonePress,
-        colorDoneBtn: Style.colorPrimary.withOpacity(0.2),
-        highlightColorDoneBtn: Style.colorPrimary,
+        doneButtonStyle: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all(Style.colorPrimary.withOpacity(0.2)),
+            overlayColor: MaterialStateProperty.all(Style.colorPrimary)),
         colorDot: Style.colorPrimary.withOpacity(0.4),
         sizeDot: 5.0,
         colorActiveDot: Style.colorPrimary,
@@ -230,7 +233,7 @@ class _TutorialPageState extends State<TutorialPage> {
         refFuncGoToTab: (refFunc) {
           goToTab = refFunc;
         },
-        shouldHideStatusBar: false,
+        hideStatusBar: false,
         onTabChangeCompleted: onTabChangeCompleted,
       ),
     );

@@ -66,7 +66,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
     // create a new file in temporary path with random file name.
     File file = new File('$tempPath' + (rng.nextInt(100)).toString() + '.png');
     // call http.get method and pass imageUrl into it to get response.
-    http.Response response = await http.get(imageUrl);
+    http.Response response = await http.get(Uri.parse(imageUrl));
     // write bodyBytes received in response to file.
     await file.writeAsBytes(response.bodyBytes);
     // now return the file which is created with random name in
@@ -289,14 +289,12 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
   }
 
   getGalleryImages() async {
-    List<File> newFiles = await FilePicker.getMultiFile(
-      type: FileType.image,
-    );
+    var newFiles = await FilePicker.platform.pickFiles(      type: FileType.image,);
     List<String> paths = [];
 
-    if (newFiles != null) {
-      newFiles.forEach((image) {
-        Utils.saveImgPath(image);
+    if (newFiles != null && newFiles.files != null && newFiles.files.isNotEmpty) {
+      newFiles.files.forEach((image) {
+        Utils.saveImgPath(File(image.path));
         paths.add(image.path);
       });
 

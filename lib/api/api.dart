@@ -95,7 +95,7 @@ class ApiSingleton {
   Future<dynamic> createUser(String uuid) async {
     try {
       final response = await http
-          .post('$serverUrl$users',
+          .post(Uri.parse('$serverUrl$users'),
               headers: headers,
               body: json.encode({
                 'user_UUID': uuid,
@@ -125,7 +125,7 @@ class ApiSingleton {
   }
 
   Future<dynamic> checkEmail(String email) async {
-    var response = (await _auth.fetchSignInMethodsForEmail(email: email));
+    var response = (await _auth.fetchSignInMethodsForEmail(email));
     return response;
   }
 
@@ -142,8 +142,8 @@ class ApiSingleton {
     }
   }
 
-  Future<FirebaseUser> loginEmail(String email, String password) async {
-    final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
+  Future<User> loginEmail(String email, String password) async {
+    final user = (await _auth.signInWithEmailAndPassword(
       email: email,
       password: password,
     ))
@@ -155,7 +155,7 @@ class ApiSingleton {
     }
   }
 
-  Future<FirebaseUser> sigInWithGoogle() async {
+  Future<User> sigInWithGoogle() async {
     final GoogleSignInAccount googleUser =
         await _googleSignIn.signIn().catchError((e) {
       print(e);
@@ -164,19 +164,18 @@ class ApiSingleton {
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
 
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
+    final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
 
-    final FirebaseUser user =
-        (await _auth.signInWithCredential(credential)).user;
+    final user = (await _auth.signInWithCredential(credential)).user;
 
     _googleSignIn.signOut();
     return user;
   }
 
-  Future<FirebaseUser> singInWithFacebook() async {
+  Future<User> singInWithFacebook() async {
     AuthCredential credential;
     facebookLogin.loginBehavior = Platform.isIOS
         ? FacebookLoginBehavior.webViewOnly
@@ -184,17 +183,16 @@ class ApiSingleton {
     final result = await facebookLogin.logIn(['email', 'public_profile']);
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
-        credential = FacebookAuthProvider.getCredential(
-          accessToken: result.accessToken.token,
+        credential = FacebookAuthProvider.credential(
+          result.accessToken.token,
         );
 
-        final FirebaseUser user =
-            (await _auth.signInWithCredential(credential)).user;
+        final user = (await _auth.signInWithCredential(credential)).user;
         assert(user.email != null);
         assert(user.displayName != null);
         assert(!user.isAnonymous);
         assert(await user.getIdToken() != null);
-        final FirebaseUser currentUser = await _auth.currentUser();
+        final currentUser = _auth.currentUser;
         assert(user.uid == currentUser.uid);
         return currentUser;
         break;
@@ -207,24 +205,23 @@ class ApiSingleton {
     }
   }
 
-  Future<FirebaseUser> singInWithTwitter() async {
+  Future<User> singInWithTwitter() async {
     TwitterLogin twitterInstance = new TwitterLogin(
         consumerKey: '4mhrNfBnXQXaVntPFYdIfXtCz',
         consumerSecret: 'Vi3SE7MgpTUyOBL6ouZHKfei6okzMElpwteN2gr3QyEyapZc3F');
 
     final TwitterLoginResult result = await twitterInstance.authorize();
 
-    final AuthCredential credential = TwitterAuthProvider.getCredential(
-      authTokenSecret: result.session.secret,
-      authToken: result.session.token,
+    final AuthCredential credential = TwitterAuthProvider.credential(
+      secret: result.session.secret,
+      accessToken: result.session.token,
     );
-    final FirebaseUser user =
-        (await _auth.signInWithCredential(credential)).user;
+    final user = (await _auth.signInWithCredential(credential)).user;
     // assert(user.displayName != null);
     // assert(!user.isAnonymous);
     // assert(await user.getIdToken() != null);
 
-    final FirebaseUser currentUser = await _auth.currentUser();
+    final currentUser = _auth.currentUser;
     assert(user.uid == currentUser.uid);
 
     if (user != null) {
@@ -252,7 +249,8 @@ class ApiSingleton {
 
     try {
       final response = await http
-          .post('$serverUrl$newProfile?fbt=$firebaseId&usr=$userUUID',
+          .post(
+              Uri.parse('$serverUrl$newProfile?fbt=$firebaseId&usr=$userUUID'),
               headers: headers)
           .timeout(
         Duration(seconds: _timeoutTimerInSeconds),
@@ -282,7 +280,7 @@ class ApiSingleton {
 
       final response = await http
           .get(
-        '$serverUrl$userScore?user_id=$userUUID&update=True',
+        Uri.parse('$serverUrl$userScore?user_id=$userUUID&update=True'),
         headers: headers,
       )
           .timeout(
@@ -317,7 +315,7 @@ class ApiSingleton {
     try {
       final response = await http
           .get(
-        '$serverUrl$sessions?user=$userUUID',
+        Uri.parse('$serverUrl$sessions?user=$userUUID'),
         headers: headers,
       )
           .timeout(
@@ -355,7 +353,7 @@ class ApiSingleton {
   Future<dynamic> createSession(Session session) async {
     try {
       final response = await http
-          .post('$serverUrl$sessions/',
+          .post(Uri.parse('$serverUrl$sessions/'),
               headers: headers,
               body: json.encode(
                 session.toJson(),
@@ -386,7 +384,7 @@ class ApiSingleton {
   Future<dynamic> closeSession(Session session) async {
     try {
       final response = await http
-          .put('$serverUrl$sessionUpdate${session.session_ID}/',
+          .put(Uri.parse('$serverUrl$sessionUpdate${session.session_ID}/'),
               headers: headers,
               body: json.encode({'session_end_time': session.session_end_time}))
           .timeout(
@@ -489,7 +487,7 @@ class ApiSingleton {
 
       final response = await http
           .post(
-        '$serverUrl$reports',
+        Uri.parse('$serverUrl$reports'),
         headers: headers,
         body: json.encode(body),
       )
@@ -565,9 +563,10 @@ class ApiSingleton {
 
       final response = await http
           .get(
-        '$serverUrl$nearbyReports?lat=$lat&lon=$lon&page=${page != null ? page : '1'}&user=$userUUID&page_size=75&radius=${100}' +
-            (show_hidden == true ? '&show_hidden=1' : '') +
-            (show_verions == true ? '&show_versions=1' : ''),
+        Uri.parse(
+            '$serverUrl$nearbyReports?lat=$lat&lon=$lon&page=${page != null ? page : '1'}&user=$userUUID&page_size=75&radius=${100}' +
+                (show_hidden == true ? '&show_hidden=1' : '') +
+                (show_verions == true ? '&show_versions=1' : '')),
         headers: headers,
       )
           .timeout(
@@ -651,7 +650,7 @@ class ApiSingleton {
 
       final response = await http
           .post(
-        '$serverUrl$fixes',
+        Uri.parse('$serverUrl$fixes'),
         headers: headers,
         body: json.encode(body),
       )
@@ -679,7 +678,7 @@ class ApiSingleton {
   Future<dynamic> getCampaigns(countryId) async {
     try {
       final response = await http.get(
-        '$serverUrl$campaigns?country_id=$countryId',
+        Uri.parse('$serverUrl$campaigns?country_id=$countryId'),
         headers: headers,
       );
 
@@ -706,7 +705,7 @@ class ApiSingleton {
   Future<dynamic> getPartners() async {
     try {
       final response = await http.get(
-        '$serverUrl$partners',
+        Uri.parse('$serverUrl$partners'),
         headers: headers,
       );
 
@@ -741,7 +740,7 @@ class ApiSingleton {
 
       final response = await http
           .get(
-        '$serverUrl$notifications?user_id=$userUUID&locale=$locale',
+        Uri.parse('$serverUrl$notifications?user_id=$userUUID&locale=$locale'),
         headers: headers,
       )
           .timeout(
@@ -771,7 +770,7 @@ class ApiSingleton {
     try {
       final response = await http
           .post(
-        '$serverUrl$notifications?id=$id&acknowledged=$acknowledge',
+        Uri.parse('$serverUrl$notifications?id=$id&acknowledged=$acknowledge'),
         headers: headers,
       )
           .timeout(
@@ -800,7 +799,8 @@ class ApiSingleton {
     try {
       final response = await http
           .delete(
-              '$serverUrl$mark_notification_as_read?user=$userIdentifier&notif=${notificationId}',
+              Uri.parse(
+                  '$serverUrl$mark_notification_as_read?user=$userIdentifier&notif=${notificationId}'),
               headers: headers)
           .timeout(
         Duration(seconds: _timeoutTimerInSeconds),
@@ -825,7 +825,8 @@ class ApiSingleton {
     try {
       final response = await http
           .post(
-              '$serverUrl$subscribe_to_topic?user=$userIdentifier&code=$topicIdentifier',
+              Uri.parse(
+                  '$serverUrl$subscribe_to_topic?user=$userIdentifier&code=$topicIdentifier'),
               headers: headers)
           .timeout(
         Duration(seconds: _timeoutTimerInSeconds),
@@ -853,7 +854,8 @@ class ApiSingleton {
     try {
       final response = await http
           .post(
-              '$serverUrl$unsub_from_topic?user=$userIdentifier&code=$topicIdentifier',
+              Uri.parse(
+                  '$serverUrl$unsub_from_topic?user=$userIdentifier&code=$topicIdentifier'),
               headers: headers)
           .timeout(
         Duration(seconds: _timeoutTimerInSeconds),
@@ -876,7 +878,7 @@ class ApiSingleton {
   Future<List<Topic>> getTopicsSubscribed(String userIdentifier) async {
     try {
       final response = await http
-          .get('$serverUrl$get_my_topics?user=${userIdentifier}',
+          .get(Uri.parse('$serverUrl$get_my_topics?user=${userIdentifier}'),
               headers: headers)
           .timeout(
         Duration(seconds: _timeoutTimerInSeconds),
@@ -908,7 +910,8 @@ class ApiSingleton {
     try {
       final response = await http
           .post(
-              '$serverUrl$firebaseToken?user_id=$userIdentifier&token=$fcmToken',
+              Uri.parse(
+                  '$serverUrl$firebaseToken?user_id=$userIdentifier&token=$fcmToken'),
               headers: headers)
           .timeout(
         Duration(seconds: _timeoutTimerInSeconds),

@@ -414,13 +414,11 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   }
 
   getGalleryImages() async {
-    List<File> files = await FilePicker.getMultiFile(
-      type: FileType.image,
-    );
+    var pickFiles = await FilePicker.platform.pickFiles(type: FileType.image);
 
-    if (files != null) {
+    if (pickFiles != null && pickFiles.files != null && pickFiles.files.isNotEmpty) {
       setShowCamera(false);
-      _pagesController
+      await _pagesController
           .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
           .then((value) => setValid(widget.editReport != null));
       setState(() {
@@ -428,9 +426,9 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       });
     }
 
-    if (files != null) {
-      files.forEach((image) {
-        Utils.saveImgPath(image);
+    if (pickFiles != null && pickFiles.files != null && pickFiles.files.isNotEmpty) {
+      pickFiles.files.forEach((image) {
+        Utils.saveImgPath(File(image.path));
       });
     }
   }

@@ -22,7 +22,8 @@ class PushNotificationsManager {
   factory PushNotificationsManager() => _instance;
   static final PushNotificationsManager _instance =
       PushNotificationsManager._();
-  static final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  static final FirebaseMessaging _firebaseMessaging =
+      FirebaseMessaging.instance;
   static bool _initialized = false;
   static List<Topic> currentTopics = <Topic>[];
 
@@ -31,20 +32,16 @@ class PushNotificationsManager {
   */
   static Future<void> init() async {
     if (!_initialized) {
-      _firebaseMessaging.requestNotificationPermissions();
-      _firebaseMessaging.configure(
-        onMessage: (Map<String, dynamic> message) async {
-          launchMessage(message);
-        },
-        onLaunch: (Map<String, dynamic> message) async {
-          openMessageScreen(message);
-        },
-        onResume: (Map<String, dynamic> message) async {
-          openMessageScreen(message);
-        },
-      );
-      _firebaseMessaging.onIosSettingsRegistered
-          .listen((IosNotificationSettings settings) {});
+      await _firebaseMessaging.requestPermission();
+
+      FirebaseMessaging.onMessage.listen((RemoteMessage remoteMessage) {
+        launchMessage(remoteMessage.data);
+      });
+
+      FirebaseMessaging.onMessageOpenedApp
+          .listen((RemoteMessage remoteMessage) {
+        openMessageScreen(remoteMessage.data);
+      });
 
       var token = await _firebaseMessaging
           .getToken()

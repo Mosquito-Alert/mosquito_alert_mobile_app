@@ -189,7 +189,7 @@ class _GalleryPageState extends State<GalleryPage> {
 
         // Skip button
 
-        isShowSkipBtn: false,
+        showSkipBtn: false,
 
         // Next button
         renderNextBtn: renderNextBtn(),
@@ -197,8 +197,10 @@ class _GalleryPageState extends State<GalleryPage> {
         // Done button
         renderDoneBtn: renderDoneBtn(),
         onDonePress: onDonePress,
-        colorDoneBtn: Style.colorPrimary.withOpacity(0.2),
-        highlightColorDoneBtn: Style.colorPrimary,
+        doneButtonStyle: ButtonStyle(
+            backgroundColor:
+            MaterialStateProperty.all(Style.colorPrimary.withOpacity(0.2)),
+            overlayColor: MaterialStateProperty.all(Style.colorPrimary)),
 
         // Dot indicator
         colorDot: Style.colorPrimary.withOpacity(0.4),
@@ -214,7 +216,7 @@ class _GalleryPageState extends State<GalleryPage> {
         },
 
         // Show or hide status bar
-        shouldHideStatusBar: false,
+        hideStatusBar: false,
 
         // On tab change completed
         onTabChangeCompleted: onTabChangeCompleted,
