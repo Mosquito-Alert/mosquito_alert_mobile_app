@@ -116,6 +116,14 @@ class UserManager {
     prefs.setStringList("imagesList", imageList);
   }
 
+  static Future<void> setHashtag(String hashtag) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (hashtag == null) {
+      return prefs.remove("hashtag");
+    }
+    return prefs.setString("hashtag", hashtag);
+  }
+
   //get
   static Future<String> getUUID() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -170,6 +178,11 @@ class UserManager {
   static Future<List<String>> getImageList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getStringList("imagesList");
+  }
+
+  static Future<String> getHashtag() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("hashtag");
   }
 
   static signOut() async {

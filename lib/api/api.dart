@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 //import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 //import 'package:flutter_twitter/flutter_twitter.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
@@ -481,8 +482,13 @@ class ApiSingleton {
       if (report.app_language != null) {
         body.addAll({'app_language': report.app_language});
       }
-      if (report.note != null && report.note != "") {
-        body.addAll({'note': report.note});
+
+      var hashtag = await UserManager.getHashtag();
+      if ((report.note != null && report.note != "") || hashtag != null) {
+        body.addAll({
+          'note':
+              '${report.note != null && report.note != "" ? report.note : ''}${report.note != null && report.note != "" && hashtag != null ? ' ' : ''}${hashtag != null ? '$hashtag' : ''}'
+        });
       }
 
       final response = await http

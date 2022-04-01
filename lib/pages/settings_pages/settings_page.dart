@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:language_picker/language_picker.dart';
@@ -14,6 +17,7 @@ import 'package:mosquito_alert_app/pages/settings_pages/partners_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/Application.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/utils/MyLocalizationsDelegate.dart';
 import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
@@ -33,6 +37,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool enableTracking = false;
+  String hashtag;
   var packageInfo;
 
   final languageCodes = [
@@ -62,6 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     getTracking();
+    getHashtag();
   }
 
   getTracking() async {
@@ -70,6 +76,11 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       packageInfo = _packageInfo;
     });
+  }
+
+  getHashtag() async {
+    hashtag = await UserManager.getHashtag();
+    setState(() {});
   }
 
   @override
@@ -171,6 +182,15 @@ class _SettingsPageState extends State<SettingsPage> {
                     : MyLocalizations.of(
                         context, 'disable_background_tracking'), () {
               _disableBgTracking();
+            }),
+            SizedBox(
+              height: 10,
+            ),
+            SettingsMenuWidget(
+                hashtag == null
+                    ? MyLocalizations.of(context, 'enable_auto_hashtag')
+                    : MyLocalizations.of(context, 'disable_auto_hashtag'), () {
+              _manageHashtag();
             }),
             SizedBox(
               height: 35,
@@ -382,5 +402,151 @@ class _SettingsPageState extends State<SettingsPage> {
         enableTracking = !enableTracking;
       });
     }, context);
+  }
+
+  _manageHashtag() async {
+    if (hashtag != null) {
+      await Utils.showAlertYesNo(
+        MyLocalizations.of(context, 'app_name'),
+        MyLocalizations.of(context, 'disable_auto_hashtag_text'),
+        () async {
+          hashtag = null;
+          updateHashtag();
+        },
+        context,
+      );
+      return;
+    }
+
+    var controller = TextEditingController();
+    if (Platform.isIOS) {
+      hashtag = await showDialog(
+          context: context,
+          builder: (context) {
+            return CupertinoAlertDialog(
+              title: Text(MyLocalizations.of(context, 'app_name')),
+              content: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Material(
+                  color: Colors.transparent,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(MyLocalizations.of(
+                          context, 'enable_auto_hashtag_text')),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: 150,
+                        child: TextField(
+                          controller: controller,
+                          expands: true,
+                          minLines: null,
+                          maxLines: null,
+                          textAlign: TextAlign.start,
+                          textAlignVertical: TextAlignVertical.top,
+                          decoration: InputDecoration(
+                            hintText: MyLocalizations.of(
+                                context, 'enable_auto_hashtag_hint'),
+                            hintMaxLines: 5,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Style.colorPrimary, width: 1.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Style.colorPrimary, width: 1.0),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(MyLocalizations.of(context, 'cancel')),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text(MyLocalizations.of(context, 'save')),
+                  onPressed: () {
+                    Navigator.of(context).pop(controller.text);
+                  },
+                ),
+              ],
+            );
+          });
+    } else {
+      hashtag = await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(MyLocalizations.of(context, 'app_name')),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(MyLocalizations.of(
+                        context, 'enable_auto_hashtag_text')),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      height: 150,
+                      child: TextField(
+                        controller: controller,
+                        expands: true,
+                        minLines: null,
+                        maxLines: null,
+                        textAlign: TextAlign.start,
+                        textAlignVertical: TextAlignVertical.top,
+                        decoration: InputDecoration(
+                          hintText: MyLocalizations.of(
+                              context, 'enable_auto_hashtag_hint'),
+                          hintMaxLines: 5,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Style.colorPrimary, width: 1.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Style.colorPrimary, width: 1.0),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(MyLocalizations.of(context, 'cancel')),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text(MyLocalizations.of(context, 'save')),
+                  onPressed: () {
+                    Navigator.of(context).pop(controller.text);
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
+    updateHashtag();
+  }
+
+  void updateHashtag() async {
+    await UserManager.setHashtag(hashtag);
+
+    setState(() {});
   }
 }
