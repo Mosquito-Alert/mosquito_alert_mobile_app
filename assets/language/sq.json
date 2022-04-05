@@ -311,5 +311,9 @@
     "question_17": "A mund ti shihni larvat e mushkonjave?",
     "coordination_txt": "Koordinimi",
     "partners_txt": "Partnerët",
-    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
+    "disable_auto_hashtag": "",
+    "enable_auto_hashtag": "",
+    "disable_auto_hashtag_text": "",
+    "enable_auto_hashtag_text": "",
+    "enable_auto_hashtag_hint": ""
 }

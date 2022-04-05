@@ -308,8 +308,12 @@
     "you_can_send_info_address": "Komarja lahko pošljete na ta naslov",
     "you_can_send_report_id": "Z uporaba tega ID-ja:",
     "identifier_small": "ID:",
-    "question_17": "",
-    "coordination_txt": "",
-    "partners_txt": "",
-    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
+    "question_17": "Ali vidite ličinke komarejv?",
+    "coordination_txt": "Koordinacija",
+    "partners_txt": "Partnerji",
+    "disable_auto_hashtag": "",
+    "enable_auto_hashtag": "",
+    "disable_auto_hashtag_text": "",
+    "enable_auto_hashtag_text": "",
+    "enable_auto_hashtag_hint": ""
 }

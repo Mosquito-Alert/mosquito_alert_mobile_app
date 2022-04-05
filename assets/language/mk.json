@@ -311,5 +311,9 @@
     "question_17": "Гледате ли ларви од комарци?",
     "coordination_txt": "Координација",
     "partners_txt": "Партнери",
-    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
+    "disable_auto_hashtag": "Оневозможи авто-хаштаг",
+    "enable_auto_hashtag": "Активирајте го авто-хаштагот.",
+    "disable_auto_hashtag_text": "Автоматскиот хаштаг ќе биде оневозможен. Сигурен си?",
+    "enable_auto_hashtag_text": "Ова е автоматски начин за додавање специфичен хаштаг на сите ваши записи. Користете го само ако сакате вашите записи секогаш да се идентификуваат со уникатен.",
+    "enable_auto_hashtag_hint": "Напишете го вашиот хаштаг. Запомнете да не вклучувате лични податоци"
 }

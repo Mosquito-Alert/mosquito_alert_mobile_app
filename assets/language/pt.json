@@ -309,7 +309,11 @@
     "you_can_send_report_id": "Usando este ID:",
     "identifier_small": "ID:",
     "question_17": "Vê larvas de mosquito?",
-    "coordination_txt": "",
-    "partners_txt": "",
-    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
+    "coordination_txt": "Coordenação",
+    "partners_txt": "Parcerias",
+    "disable_auto_hashtag": "",
+    "enable_auto_hashtag": "",
+    "disable_auto_hashtag_text": "",
+    "enable_auto_hashtag_text": "",
+    "enable_auto_hashtag_hint": ""
 }

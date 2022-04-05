@@ -311,5 +311,9 @@
     "question_17": "Kannst du Larven von Stechmücken sehen?",
     "coordination_txt": "Koordination",
     "partners_txt": "Partner",
-    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
+    "disable_auto_hashtag": "",
+    "enable_auto_hashtag": "",
+    "disable_auto_hashtag_text": "",
+    "enable_auto_hashtag_text": "",
+    "enable_auto_hashtag_hint": ""
 }

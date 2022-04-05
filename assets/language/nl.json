@@ -230,7 +230,7 @@
     "question_12_answer_121": "Afvoerput",
     "question_12_answer_122": "Anders",
     "question_13": "Waar heeft u de mug aangetroffen?",
-    "question_13_answer_131": "In een voortuig",
+    "question_13_answer_131": "In een voertuig",
     "question_13_answer_132": "In een gebouw",
     "question_13_answer_133": "Buiten",
     "question_14": "Waar was u toen u werd gebeten?",
@@ -258,7 +258,7 @@
     "consent_txt_05": "De applicatie gebruikt op de achtergrond uw geschatte locatie op willekeurige momenten. Deze schatting is niet exact, maar eerder een indicatie dat u zich bevindt in een gebied tussen 1,6 en 7,7 vierkante kilometer. Deze informatie is van wetenschappelijke waarde, maar u kunt deze functie op elk gewenst moment uitzetten.",
     "consent_txt_06": "Laten we beginnen!",
     "consent_txt_07": "Voor meer informatie kunt u deze documenten raadplegen, accepteer de gebruiksvoorwaarden om mee te doen. Heel erg bedankt!",
-    "consent_txt_10": "Ik heb gelezen de ",
+    "consent_txt_10": "Ik heb kennisgenomen van het",
     "consent_txt_09": "gebruiksvoorwaarden",
     "consent_txt_08": "Ik accepteer de ",
     "consent_txt_11": "privacybeleid",
@@ -311,5 +311,9 @@
     "question_17": "Ziet u muggenlarven?",
     "coordination_txt": "Coördinatie",
     "partners_txt": "Partners",
-    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
+    "disable_auto_hashtag": "",
+    "enable_auto_hashtag": "",
+    "disable_auto_hashtag_text": "",
+    "enable_auto_hashtag_text": "",
+    "enable_auto_hashtag_hint": ""
 }

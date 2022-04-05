@@ -311,5 +311,9 @@
     "question_17": "Puteți să vedeți larve de țânțari?",
     "coordination_txt": "Coordonare",
     "partners_txt": "Parteneri",
-    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
+    "disable_auto_hashtag": "",
+    "enable_auto_hashtag": "",
+    "disable_auto_hashtag_text": "",
+    "enable_auto_hashtag_text": "",
+    "enable_auto_hashtag_hint": ""
 }

@@ -311,5 +311,9 @@
     "question_17": "¿Ves larvas de mosquito?",
     "coordination_txt": "Coordinación",
     "partners_txt": "Socios",
-    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
+    "disable_auto_hashtag": "Desactivar el auto-hashtag",
+    "enable_auto_hashtag": "Activar el auto-hashtag",
+    "disable_auto_hashtag_text": "Se desactivará el auto-hashtag. ¿Estás seguro?",
+    "enable_auto_hashtag_text": "Este es un mecanismo automático para añadir un hashtag específico a todos tus informes. Úsalo solo si quieres tener tus informes identificados con el mismo hashtag.",
+    "enable_auto_hashtag_hint": "Escribe tu hashtag.\nRecuerda no incluir información personal."
 }

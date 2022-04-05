@@ -66,7 +66,7 @@
     "save_report_ok_txt": "Podaci su uspešno poslati. Hvala Vam na učešću.",
     "edited_report_ok_txt": "Podaci su uspešno ažurirani. Hvala na učešću.",
     "save_report_ko_txt": "Došlo je do greške u slanju Vašeg izveštaja, ali je izveštaj sačuvan na Vašem telefonu i biće automatski poslat kasnije.",
-    "send_data": "Poslati podaci",
+    "send_data": "Pošaljite",
     "bytes_and_place_report_txt": "Koliko uboda imate i gde se nalaze na Vašem telu?",
     "close_report_no_save_txt": "Podaci će biti izgubljeni. Da li ste sigurni da želite da izađete pre nego sačuvate?",
     "add_comments_question": "Ukoliko želite dodati komentar",
@@ -311,5 +311,9 @@
     "question_17": "Da li vidite larvu komarca?",
     "coordination_txt": "Koordinacija",
     "partners_txt": "Partneri",
-    "server_down": "Could not connect to the Server. Please, check your internet connection or try again later."
+    "disable_auto_hashtag": "",
+    "enable_auto_hashtag": "",
+    "disable_auto_hashtag_text": "",
+    "enable_auto_hashtag_text": "",
+    "enable_auto_hashtag_hint": ""
 }
