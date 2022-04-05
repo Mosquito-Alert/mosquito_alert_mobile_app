@@ -315,5 +315,6 @@
     "enable_auto_hashtag": "Activar el auto-hashtag",
     "disable_auto_hashtag_text": "Se desactivará el auto-hashtag. ¿Estás seguro?",
     "enable_auto_hashtag_text": "Este es un mecanismo automático para añadir un hashtag específico a todos tus informes. Úsalo solo si quieres tener tus informes identificados con el mismo hashtag.",
-    "enable_auto_hashtag_hint": "Escribe tu hashtag.\nRecuerda no incluir información personal."
+    "enable_auto_hashtag_hint": "Escribe tu hashtag.\nRecuerda no incluir información personal.",
+    "save": "Guardar"
 }

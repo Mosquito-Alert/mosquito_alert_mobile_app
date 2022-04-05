@@ -315,5 +315,6 @@
     "enable_auto_hashtag": "Activar l'auto-hashtag",
     "disable_auto_hashtag_text": "Es desactivarà l'auto-hashtag. Estàs segur?",
     "enable_auto_hashtag_text": "Aquest és un mecanisme automàtic per a afegir una etiqueta (hashtag) específica a tots els teus informes. Usa'l només si vols tenir els teus informes identificats amb la mateixa etiqueta (hashtag).",
-    "enable_auto_hashtag_hint": "Escriu el teu hashtag.\nRecorda no incloure informació personal."
+    "enable_auto_hashtag_hint": "Escriu el teu hashtag.\nRecorda no incloure informació personal.",
+    "save": "Desar"
 }

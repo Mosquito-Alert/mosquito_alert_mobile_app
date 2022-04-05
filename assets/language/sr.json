@@ -311,9 +311,10 @@
     "question_17": "Da li vidite larvu komarca?",
     "coordination_txt": "Koordinacija",
     "partners_txt": "Partneri",
-    "disable_auto_hashtag": "",
-    "enable_auto_hashtag": "",
-    "disable_auto_hashtag_text": "",
-    "enable_auto_hashtag_text": "",
-    "enable_auto_hashtag_hint": ""
+    "disable_auto_hashtag": "Turn off auto-hashtag",
+    "enable_auto_hashtag": "Turn on auto-hashtag",
+    "disable_auto_hashtag_text": "Auto-hashtag will be turned off. Are you sure?",
+    "enable_auto_hashtag_text": "This is an automatic way of adding a specific hashtag to all your records. Use it only if you want to always have your records identified  by a unique hashtag.",
+    "enable_auto_hashtag_hint": "Write your hashtag.\nRemember not to include personal information.",
+    "save": "Save"
 }

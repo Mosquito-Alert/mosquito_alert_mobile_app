@@ -311,9 +311,10 @@
     "question_17": "A mund ti shihni larvat e mushkonjave?",
     "coordination_txt": "Koordinimi",
     "partners_txt": "Partnerët",
-    "disable_auto_hashtag": "",
-    "enable_auto_hashtag": "",
-    "disable_auto_hashtag_text": "",
-    "enable_auto_hashtag_text": "",
-    "enable_auto_hashtag_hint": ""
+    "disable_auto_hashtag": "Çaktivizoni vetë-hashtag-un.",
+    "enable_auto_hashtag": "Aktivizoni vetë-hashtag-un.",
+    "disable_auto_hashtag_text": "Vetë-hashtag-u do të çaktivizohet. A jeni i sigurt?",
+    "enable_auto_hashtag_text": "Kjo është mënyrë automatike për të shtuar një hashtag të veçantë për të gjitha të dhënat tuaja. Përdoreni vetëm nëse doni që të dhënat tuaja të identifikohen gjithmonë nga një hashtag i vetëm.",
+    "enable_auto_hashtag_hint": "Shkruani hashtag-un tuaj.\nKujtohuni të mos përfshini informacione personale.",
+    "save": "Save"
 }

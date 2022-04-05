@@ -311,9 +311,10 @@
     "question_17": "Βλέπετε προνύμφες κουνουπιών;",
     "coordination_txt": "Συντονισμός",
     "partners_txt": "Συνεργάτες",
-    "disable_auto_hashtag": "",
-    "enable_auto_hashtag": "",
-    "disable_auto_hashtag_text": "",
-    "enable_auto_hashtag_text": "",
-    "enable_auto_hashtag_hint": ""
+    "disable_auto_hashtag": "Απενεργοποιήστε την αυτόματη ετικέτα (hashtag)",
+    "enable_auto_hashtag": "Ενεργοποιήστε την αυτόματη ετικέτα (hashtag)",
+    "disable_auto_hashtag_text": "Η αυτόματη ετικέτα (hashtag) θα απενεργοποιηθεί. Είσαι σίγουρος?",
+    "enable_auto_hashtag_text": "Αυτός είναι ένας αυτόματος τρόπος προσθήκης μιας συγκεκριμένης ετικέτας (hashtag) σ' όλα τα αρχεία σας. Χρησιμοποιήστε το μόνο εφόσον θέλετε να αναγνωρίζονται πάντα τα αρχεία σας με μια μοναδική ετικέτα (hashtag).",
+    "enable_auto_hashtag_hint": "Γράψε την ετικέτα σου (hashtag).\nΘυμηθείτε να μην συμπεριλάβετε προσωπικά στοιχεία.",
+    "save": "Save"
 }
