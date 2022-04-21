@@ -664,7 +664,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
   }
 
   Future getImage(source) async {
-    if (await Permission.camera.isDenied && Platform.isIOS) {
+    if (await Permission.camera.isPermanentlyDenied && Platform.isIOS) {
       await openAppSettings();
       return;
     }

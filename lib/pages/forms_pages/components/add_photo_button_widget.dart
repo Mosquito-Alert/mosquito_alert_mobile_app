@@ -305,7 +305,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
   }
 
   Future getImage(source) async {
-    if (await Permission.camera.isDenied && Platform.isIOS) {
+    if (await Permission.camera.isPermanentlyDenied && Platform.isIOS) {
       await openAppSettings();
       return;
     }
