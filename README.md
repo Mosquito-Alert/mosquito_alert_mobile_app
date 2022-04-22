@@ -4,13 +4,19 @@ Mosquito Alert is an institutional mobile application that brings together citiz
 
 ![Mosquito_Alert](https://user-images.githubusercontent.com/30580652/162627346-7018489f-7525-40ca-a3f6-b0dd59b519f3.png)
 
+## How to compile the app
+1. Clone the repository to your local machine
+2. Go to android/local.properties and at the end of the file add the following lines: (If the file doesn't exist, just create it yourself)
+```
+# By leaving the values empty, the app will compile successfully but packages using those licenses will display an error (this is ok!)
+transistorsoft.Key=
+googlemaps.Key=
+```
 
 ## How to contribute
 Do you want to contribute?
 
-Feel free to fork our repository, create a new branch, make your changes and submit a pull request(*). We'll review it as soon as possible and merge it.
-
-(*)Before opening the pull request, please run the commands "flutter analyze" and "flutter test" locally to ensure that your PR passes all the tests successfully in our continuous integration (CI) workflow.
+Feel free to fork our repository, create a new branch, make your changes and submit a pull request. We'll review it as soon as possible and merge it.
 
 It would be awesome if you assign yourself to an existing task or you open a new issue in [Github Issues](https://github.com/Mosquito-Alert/MosquitoAlertApp/issues), to keep other contributors informed on what you're working on.
 
