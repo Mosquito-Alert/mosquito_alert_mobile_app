@@ -59,6 +59,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Language('sl_SI', 'Slovenian (Slovenia)'),
     Language('sr_RS', 'Serbian'),
     Language('tr_TR', 'Turkish (Turkey)'),
+    Language('ro_RO', 'Romanian'),
   ];
 
   String selectedLanguage;

@@ -379,8 +379,13 @@ class _BitingFormState extends State<BitingForm> {
               Center(
                 child: Style.button(MyLocalizations.of(context, 'reset'), () {
                   Utils.resetBitingQuestion();
+
+                  var isValid = canContinue();
+                  Utils.resetBitingQuestion();
                   setState(() {
+                    valid = isValid;
                     questions = Utils.report.responses;
+
                   });
                 }),
               ),
