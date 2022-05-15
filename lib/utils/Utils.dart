@@ -501,8 +501,20 @@ class Utils {
     await PushNotificationsManager.subscribeToLanguage();
   }
 
-  static getLocation() async {
-    location = await Geolocator.getLastKnownPosition();
+  static getLocation(BuildContext context) async {
+    await Geolocator.requestPermission();
+    var currentPermission = await Geolocator.checkPermission();
+    if (currentPermission == LocationPermission.denied ||
+        currentPermission == LocationPermission.deniedForever ||
+        currentPermission == LocationPermission.unableToDetermine) {
+      await showAlertYesNo(MyLocalizations.of(context, 'app_name'),
+          MyLocalizations.of(context, 'auto_location_disclaimer_alert'),
+          () async {
+        await Geolocator.openLocationSettings();
+      }, context);
+    } else {
+      location = await Geolocator.getLastKnownPosition();
+    }
   }
 
   static final RegExp mailRegExp = RegExp(

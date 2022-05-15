@@ -316,5 +316,9 @@
     "disable_auto_hashtag_text": "Η αυτόματη ετικέτα (hashtag) θα απενεργοποιηθεί. Είσαι σίγουρος?",
     "enable_auto_hashtag_text": "Αυτός είναι ένας αυτόματος τρόπος προσθήκης μιας συγκεκριμένης ετικέτας (hashtag) σ' όλα τα αρχεία σας. Χρησιμοποιήστε το μόνο εφόσον θέλετε να αναγνωρίζονται πάντα τα αρχεία σας με μια μοναδική ετικέτα (hashtag).",
     "enable_auto_hashtag_hint": "Γράψε την ετικέτα σου (hashtag).\nΘυμηθείτε να μην συμπεριλάβετε προσωπικά στοιχεία.",
-    "save": "Save"
+    "save": "Save",
+
+    "auto_location_disclaimer_alert": "No tenim permís per utilitzar les dades d’ubicació del teu dispositiu. Pots habilitar-la als ajustaments de l'app. Vols obrir-los?",
+    "server_down": "Sembla que Mosquito Alert no está disponible ara mateix, si us plau intenta-ho de nou més tard."
+
 }

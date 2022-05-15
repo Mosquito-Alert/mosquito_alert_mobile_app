@@ -69,6 +69,7 @@ class _MainVCState extends State<MainVC> {
     await UserManager.setUserScores(UserManager.userScore);
     await Utils.loadFirebase();
 
+    await Utils.getLocation(context);
     if (UserManager.user != null) {
       nameStream.add(UserManager.user.email);
       setState(() {
