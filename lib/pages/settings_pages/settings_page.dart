@@ -7,17 +7,14 @@ import 'package:language_picker/language_picker.dart';
 
 import 'package:language_picker/languages.dart';
 import 'package:mosquito_alert_app/api/api.dart';
-import 'package:mosquito_alert_app/pages/auth/login_main_page.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page.dart';
 import 'package:mosquito_alert_app/pages/main/main_vc.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/settings_menu_widget.dart';
-import 'package:mosquito_alert_app/pages/settings_pages/countries_involved.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/gallery_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/partners_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/Application.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
-import 'package:mosquito_alert_app/utils/MyLocalizationsDelegate.dart';
 import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';

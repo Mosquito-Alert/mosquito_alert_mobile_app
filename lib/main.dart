@@ -2,21 +2,14 @@ import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_core/firebase_core.dart';
-//import 'package:connectivity_widget/connectivity_widget.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/main/main_vc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mosquito_alert_app/utils/Application.dart';
-import 'package:mosquito_alert_app/utils/MessageNotification.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizationsDelegate.dart';
-import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
-import 'package:mosquito_alert_app/utils/version_control.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'utils/MyLocalizations.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 

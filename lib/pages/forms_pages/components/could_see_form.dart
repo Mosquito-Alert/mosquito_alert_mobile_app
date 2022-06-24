@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/small_question_option_widget.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
-import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class CouldSeeForm extends StatefulWidget {

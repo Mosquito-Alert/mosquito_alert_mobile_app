@@ -3,18 +3,14 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:meta/meta.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/clustering/aggregated_points.dart';
 import 'package:mosquito_alert_app/utils/clustering/aggregation_setup.dart';
 import 'package:mosquito_alert_app/utils/clustering/report_geohash.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
-
-import '../Utils.dart';
 
 class ClusteringHelper {
   ClusteringHelper.forMemory({
