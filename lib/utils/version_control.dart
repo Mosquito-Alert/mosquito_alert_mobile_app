@@ -47,7 +47,7 @@ class Version {
 
 class VersionControl {
   String packageApiKey;
-  String packageLanguageCode = "es";
+  String packageLanguageCode = 'es';
   BuildContext packageContext;
 
   VersionControl._internal();
@@ -73,15 +73,15 @@ class VersionControl {
 
     try {
       var headers = {
-        "Content-Type": "application/json",
-        "x-api-key": "hCyBylqVei3oTgYtGuz3rfF4GtOc"
+        'Content-Type': 'application/json',
+        'x-api-key': 'hCyBylqVei3oTgYtGuz3rfF4GtOc'
       };
 
       final response = await http
           .post(Uri.parse('https://dribbot.drib.ba/api/public/v1/app/check'),
           headers: headers,
           body: json.encode({
-            "appKey": packageApiKey,
+            'appKey': packageApiKey,
           }))
           .timeout(const Duration(seconds: 3));
 
@@ -146,17 +146,17 @@ class VersionControl {
       return null;
     }
 
-    if (packageLanguageCode == "ca") {
+    if (packageLanguageCode == 'ca') {
       remoteVersion.title = versionConfig._title._cat;
       remoteVersion.message = versionConfig._message._cat;
       remoteVersion.okButtonTitle = versionConfig._okButtonTitle._cat;
       remoteVersion.cancelButtonTitle = versionConfig._cancelButtonTitle._cat;
-    } else if (packageLanguageCode == "es") {
+    } else if (packageLanguageCode == 'es') {
       remoteVersion.title = versionConfig._title._es;
       remoteVersion.message = versionConfig._message._es;
       remoteVersion.okButtonTitle = versionConfig._okButtonTitle._es;
       remoteVersion.cancelButtonTitle = versionConfig._cancelButtonTitle._es;
-    } else if (packageLanguageCode == "en") {
+    } else if (packageLanguageCode == 'en') {
       remoteVersion.title = versionConfig._title._en;
       remoteVersion.message = versionConfig._message._en;
       remoteVersion.okButtonTitle = versionConfig._okButtonTitle._en;

@@ -26,15 +26,15 @@ class UserManager {
         ),
       );
 
-      prefs.setBool("firstTime", true);
+      prefs.setBool('firstTime', true);
       var uuid = new Uuid().v4();
       var trackingUuid = new Uuid().v4();
-      prefs.setString("uuid", uuid);
-      prefs.setString("trackingUUID", trackingUuid);
-      prefs.setBool("trackingDisabled", false);
+      prefs.setString('uuid', uuid);
+      prefs.setString('trackingUUID', trackingUuid);
+      prefs.setBool('trackingDisabled', false);
 
       // Utils.userCreated["required"] = true;
-      Utils.initializedCheckData["userCreated"]["required"] = true;
+      Utils.initializedCheckData['userCreated']['required'] = true;
 
       await ApiSingleton().createUser(uuid);
       // Utils.getLanguage();
@@ -66,129 +66,129 @@ class UserManager {
       return null;
     }
 
-    Utils.initializedCheckData["user"] = true;
+    Utils.initializedCheckData['user'] = true;
     return user;
   }
 
   //set
   static Future<void> setFrirebaseId(id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("firebaseId", id);
+    prefs.setString('firebaseId', id);
   }
 
   static Future<void> setUserScores(scores) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt("userScores", scores);
+    prefs.setInt('userScores', scores);
   }
 
   static Future<void> setTracking(enabled) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("trackingDisabled", enabled);
+    prefs.setBool('trackingDisabled', enabled);
   }
 
   static Future<void> setSowInfoAdult(show) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("infoCameraAdult", show);
+    prefs.setBool('infoCameraAdult', show);
   }
 
   static Future<void> setSowInfoBreeding(show) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("infoCameraBreeding", show);
+    prefs.setBool('infoCameraBreeding', show);
   }
 
   static Future<void> setLanguage(language) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("language", language);
+    prefs.setString('language', language);
   }
 
   static Future<void> setLanguageCountry(lngCountry) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("languageCountry", lngCountry);
+    prefs.setString('languageCountry', lngCountry);
   }
 
   static Future<void> setReportList(reportList) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList("reportsList", reportList);
+    prefs.setStringList('reportsList', reportList);
   }
 
   static Future<void> setImageList(imageList) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList("imagesList", imageList);
+    prefs.setStringList('imagesList', imageList);
   }
 
   static Future<void> setHashtag(String hashtag) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (hashtag == null) {
-      return prefs.remove("hashtag");
+      return prefs.remove('hashtag');
     }
-    return prefs.setString("hashtag", hashtag);
+    return prefs.setString('hashtag', hashtag);
   }
 
   //get
   static Future<String> getUUID() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.get("uuid");
+    return prefs.get('uuid');
   }
 
   static Future<String> getTrackingId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.get("trackingUUID");
+    return prefs.get('trackingUUID');
   }
 
   static Future<String> getFirebaseId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("firebaseId");
+    return prefs.getString('firebaseId');
   }
 
   static Future<int> getUserScores() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt("userScores");
+    return prefs.getInt('userScores');
   }
 
   static Future<bool> getTracking() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool("trackingDisabled");
+    return prefs.getBool('trackingDisabled');
   }
 
   static Future<bool> getShowInfoAdult() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool("infoCameraAdult");
+    return prefs.getBool('infoCameraAdult');
   }
 
   static Future<bool> getShowInfoBreeding() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool("infoCameraBreeding");
+    return prefs.getBool('infoCameraBreeding');
   }
 
   static Future<String> getLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("language");
+    return prefs.getString('language');
   }
 
   static Future<String> getLanguageCountry() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("languageCountry");
+    return prefs.getString('languageCountry');
   }
 
   static Future<List<String>> getReportList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getStringList("reportsList");
+    return prefs.getStringList('reportsList');
   }
 
   static Future<List<String>> getImageList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getStringList("imagesList");
+    return prefs.getStringList('imagesList');
   }
 
   static Future<String> getHashtag() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString("hashtag");
+    return prefs.getString('hashtag');
   }
 
   static signOut() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove("userName");
-    prefs.remove("firebaseId");
+    prefs.remove('userName');
+    prefs.remove('firebaseId');
     user = null;
   }
 }

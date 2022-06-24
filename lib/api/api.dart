@@ -118,7 +118,7 @@ class ApiSingleton {
       }
 
       // Utils.userCreated["created"] = true;
-      Utils.initializedCheckData["userCreated"]["created"] = true;
+      Utils.initializedCheckData['userCreated']['created'] = true;
       return true;
     } catch (c) {
       return null;
@@ -266,7 +266,7 @@ class ApiSingleton {
 
       if (response.statusCode != 200) {
         print(
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
         return ApiResponse.fromJson(json.decode(response.body));
       }
       return true;
@@ -289,14 +289,14 @@ class ApiSingleton {
         onTimeout: () {
           print('Request timed out');
           // Utils.userScoresFetched = false;
-          Utils.initializedCheckData["userScores"] = false;
+          Utils.initializedCheckData['userScores'] = false;
           return;
         },
       );
 
       if (response.statusCode != 200) {
         print(
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
         return ApiResponse.fromJson(json.decode(response.body));
       }
       Map<String, dynamic> jsonAnswer = json.decode(response.body);
@@ -304,7 +304,7 @@ class ApiSingleton {
       UserManager.userScore = jsonAnswer['total_score'];
       Utils.userScoresController.add(jsonAnswer['total_score']);
       // Utils.userScoresFetched = true;
-      Utils.initializedCheckData["userScores"] = true;
+      Utils.initializedCheckData['userScores'] = true;
       return UserManager.userScore;
     } catch (e) {
       return 1;
@@ -329,7 +329,7 @@ class ApiSingleton {
 
       if (response.statusCode != 200) {
         print(
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
         return ApiResponse.fromJson(json.decode(response.body));
       } else {
         List<dynamic> jsonAnswer = json.decode(response.body);
@@ -370,7 +370,7 @@ class ApiSingleton {
 
       if (response.statusCode != 201) {
         print(
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
         return ApiResponse.fromJson(json.decode(response.body));
       }
 
@@ -399,7 +399,7 @@ class ApiSingleton {
 
       if (response.statusCode != 200) {
         print(
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
         return ApiResponse.fromJson(json.decode(response.body));
       }
 
@@ -484,7 +484,7 @@ class ApiSingleton {
       }
 
       var hashtag = await UserManager.getHashtag();
-      if ((report.note != null && report.note != "") || hashtag != null) {
+      if ((report.note != null && report.note != '') || hashtag != null) {
         body.addAll({
           'note':
               '${report.note != null && report.note != "" ? report.note : ''}${report.note != null && report.note != "" && hashtag != null ? ' ' : ''}${hashtag != null ? '$hashtag' : ''}'
@@ -625,7 +625,7 @@ class ApiSingleton {
       var img = await MultipartFile.fromFile(image,
           filename: fileName, contentType: MediaType('image', 'jpeg'));
 
-      FormData data = FormData.fromMap({"photo": img, "report": versionUUID});
+      FormData data = FormData.fromMap({'photo': img, 'report': versionUUID});
 
       var response = await dio.post('$serverUrl$photos',
           data: data,
@@ -759,7 +759,7 @@ class ApiSingleton {
 
       if (response.statusCode != 200) {
         print(
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
         return ApiResponse.fromJson(json.decode(response.body));
       }
 
@@ -789,13 +789,13 @@ class ApiSingleton {
       ;
       if (response.statusCode != 200) {
         print(
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
         return ApiResponse.fromJson(json.decode(response.body));
       }
       Map<String, dynamic> jsonAnswer = json.decode(response.body);
       return true;
     } catch (e) {
-      print("updateNotification, failed for ${e}");
+      print('updateNotification, failed for ${e}');
       return false;
     }
   }
@@ -818,10 +818,10 @@ class ApiSingleton {
       if (response.statusCode == 204) {
         return true;
       }
-      print("markNotificationAsRead failed");
+      print('markNotificationAsRead failed');
       return false;
     } catch (e) {
-      print("markNotificationAsRead, failed for ${e}");
+      print('markNotificationAsRead, failed for ${e}');
       return false;
     }
   }
@@ -842,15 +842,15 @@ class ApiSingleton {
         },
       );
       if (response.statusCode == 201) {
-        print("Succes subscribing to $topicIdentifier.");
+        print('Succes subscribing to $topicIdentifier.');
 
         return true;
       }
       print(
-          "subscribeToTopic $topicIdentifier, failed (code ${response.statusCode})");
+          'subscribeToTopic $topicIdentifier, failed (code ${response.statusCode})');
       return false;
     } catch (e) {
-      print("subscribeToTopic $topicIdentifier, failed for ${e}");
+      print('subscribeToTopic $topicIdentifier, failed for ${e}');
       return false;
     }
   }
@@ -873,10 +873,10 @@ class ApiSingleton {
       if (response.statusCode == 204) {
         return true;
       }
-      print("unsubscribeFromTopic, failed.");
+      print('unsubscribeFromTopic, failed.');
       return false;
     } catch (e) {
-      print("unsubscribeFromTopic, failed for ${e}.");
+      print('unsubscribeFromTopic, failed for ${e}.');
       return false;
     }
   }
@@ -902,10 +902,10 @@ class ApiSingleton {
         }
         return topicList;
       }
-      print("getTopicsSubscribed, failed.");
+      print('getTopicsSubscribed, failed.');
       return null;
     } catch (e) {
-      print("getTopicsSubscribed, failed for ${e}");
+      print('getTopicsSubscribed, failed for ${e}');
       return null;
     }
   }
@@ -929,10 +929,10 @@ class ApiSingleton {
       if (response.statusCode == 200) {
         return true;
       }
-      print("setFirebaseToken, failed");
+      print('setFirebaseToken, failed');
       return false;
     } catch (e) {
-      print("setFirebaseToken, failed for ${e}");
+      print('setFirebaseToken, failed for ${e}');
       return false;
     }
   }

@@ -80,7 +80,7 @@ class _SignupPageState extends State<SignupPage> {
                                         CrossAxisAlignment.stretch,
                                     children: <Widget>[
                                       Style.titleMedium(MyLocalizations.of(
-                                          context, "signup_user_title")),
+                                          context, 'signup_user_title')),
                                       SizedBox(
                                         height: 20,
                                       ),
@@ -88,7 +88,7 @@ class _SignupPageState extends State<SignupPage> {
                                         child: Column(children: <Widget>[
                                           Style.textField(
                                               MyLocalizations.of(
-                                                  context, "email_txt"),
+                                                  context, 'email_txt'),
                                               _emailController,
                                               context,
                                               enabled: false),
@@ -97,7 +97,7 @@ class _SignupPageState extends State<SignupPage> {
                                           ),
                                           Style.textField(
                                               MyLocalizations.of(
-                                                  context, "password_txt"),
+                                                  context, 'password_txt'),
                                               _passwordController,
                                               context,
                                               obscure: true),
@@ -108,7 +108,7 @@ class _SignupPageState extends State<SignupPage> {
                                               width: double.infinity,
                                               child: Style.button(
                                                   MyLocalizations.of(
-                                                      context, "signup_btn"),
+                                                      context, 'signup_btn'),
                                                   () {
                                                 _signUp();
                                               }))
@@ -146,8 +146,8 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   _showSocialError() {
-    Utils.showAlert(MyLocalizations.of(context, "app_name"),
-        MyLocalizations.of(context, "social_login_ko_txt"), context);
+    Utils.showAlert(MyLocalizations.of(context, 'app_name'),
+        MyLocalizations.of(context, 'social_login_ko_txt'), context);
   }
 
   _signUp() async {

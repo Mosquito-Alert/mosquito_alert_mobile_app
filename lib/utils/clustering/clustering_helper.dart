@@ -165,14 +165,14 @@ class ClusteringHelper {
     if (UserManager.profileUUIDs != null &&
         UserManager.profileUUIDs.any((id) => id == report.user)) {
       switch (report.type) {
-        case "adult":
+        case 'adult':
           // return
           return _iconAdultYours;
           break;
-        case "bite":
+        case 'bite':
           return _iconBitesYours;
           break;
-        case "site":
+        case 'site':
           return _iconBreedingYours;
           break;
         default:

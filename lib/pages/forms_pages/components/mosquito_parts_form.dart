@@ -65,7 +65,7 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                       Style.title(MyLocalizations.of(
                           context, widget.displayQuestion['question']['text'])),
                       Style.body(
-                          MyLocalizations.of(context, "mosquito_parts_helper_txt")),
+                          MyLocalizations.of(context, 'mosquito_parts_helper_txt')),
                       SizedBox(
                         height: 20,
                       ),

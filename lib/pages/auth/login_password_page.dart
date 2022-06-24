@@ -71,13 +71,13 @@ class _LoginPasswordState extends State<LoginPassword> {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
                                   Style.titleMedium(MyLocalizations.of(
-                                      context, "enter_password_title")),
+                                      context, 'enter_password_title')),
                                   SizedBox(
                                     height: 20,
                                   ),
                                   Style.textField(
                                       MyLocalizations.of(
-                                          context, "user_password_txt"),
+                                          context, 'user_password_txt'),
                                       _passwordController,
                                       context,
                                       obscure: true),
@@ -88,7 +88,7 @@ class _LoginPasswordState extends State<LoginPassword> {
                                       width: double.infinity,
                                       child: Style.button(
                                           MyLocalizations.of(
-                                              context, "access_txt"), () {
+                                              context, 'access_txt'), () {
                                         _login();
                                       })),
                                   SizedBox(
@@ -99,7 +99,7 @@ class _LoginPasswordState extends State<LoginPassword> {
                                     width: double.infinity,
                                     child: Style.noBgButton(
                                         MyLocalizations.of(
-                                            context, "forgot_password_txt"),
+                                            context, 'forgot_password_txt'),
                                         () {
                                       Navigator.push(
                                         context,

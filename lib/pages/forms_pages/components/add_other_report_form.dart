@@ -59,11 +59,11 @@ class _AddOtherReportPageState extends State<AddOtherReportPage> {
             SizedBox(
               height: 20,
             ),
-            Style.title(MyLocalizations.of(context, "add_comments_question")),
+            Style.title(MyLocalizations.of(context, 'add_comments_question')),
             SizedBox(
               height: 12,
             ),
-            Style.textField(MyLocalizations.of(context, "comments_txt"),
+            Style.textField(MyLocalizations.of(context, 'comments_txt'),
                 _commentsController, context,
                 keyboardType: TextInputType.multiline, maxLines: 4, expands: false, handleChange: (text) {
               Utils.report.note = text;

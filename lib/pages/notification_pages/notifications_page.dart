@@ -70,7 +70,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
               backgroundColor: Colors.white,
               centerTitle: true,
               title: Style.title(
-                  MyLocalizations.of(context, "notifications_title"),
+                  MyLocalizations.of(context, 'notifications_title'),
                   fontSize: 16),
             ),
             body: notifications.length == 0 || notifications.isEmpty
@@ -79,7 +79,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                     children: <Widget>[
                         Center(
                           child: Style.body(MyLocalizations.of(
-                              context, "no_notifications_yet_txt")),
+                              context, 'no_notifications_yet_txt')),
                         ),
                       ])
                 : Container(
@@ -117,7 +117,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                     ),
                                     Style.bodySmall(
                                         MyLocalizations.of(
-                                            context, "see_more_txt"),
+                                            context, 'see_more_txt'),
                                         color: Colors.grey),
                                   ],
                                 ),

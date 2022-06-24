@@ -18,7 +18,7 @@ main() async {
   try {
     await Firebase.initializeApp();
   } catch (err) {
-    print("$err");
+    print('$err');
   }
   runApp(MyApp());
 }

@@ -16,8 +16,8 @@ class ReportAndGeohash {
 
   getId() {
     return location.latitude.toString() +
-        "_" +
+        '_' +
         location.longitude.toString() +
-        "_${Random().nextInt(10000)}";
+        '_${Random().nextInt(10000)}';
   }
 }

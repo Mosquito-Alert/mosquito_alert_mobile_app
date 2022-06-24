@@ -41,42 +41,42 @@ class _ConsentFormState extends State<ConsentForm> {
                           height: 35,
                         ),
                         Style.title(
-                            MyLocalizations.of(context, "consent_welcome_txt")),
+                            MyLocalizations.of(context, 'consent_welcome_txt')),
                         SizedBox(
                           height: 20,
                         ),
                         Style.body(
-                            MyLocalizations.of(context, "consent_txt_01")),
+                            MyLocalizations.of(context, 'consent_txt_01')),
                         SizedBox(
                           height: 5,
                         ),
                         Style.body(
-                            MyLocalizations.of(context, "consent_txt_02")),
+                            MyLocalizations.of(context, 'consent_txt_02')),
                         SizedBox(
                           height: 20,
                         ),
                         Style.titleMedium(
-                            MyLocalizations.of(context, "consent_txt_03")),
+                            MyLocalizations.of(context, 'consent_txt_03')),
                         SizedBox(
                           height: 10,
                         ),
                         Style.body(
-                            MyLocalizations.of(context, "consent_txt_04")),
+                            MyLocalizations.of(context, 'consent_txt_04')),
                         SizedBox(
                           height: 5,
                         ),
                         Style.body(
-                            MyLocalizations.of(context, "consent_txt_05")),
+                            MyLocalizations.of(context, 'consent_txt_05')),
                         SizedBox(
                           height: 20,
                         ),
                         Style.titleMedium(
-                            MyLocalizations.of(context, "consent_txt_06")),
+                            MyLocalizations.of(context, 'consent_txt_06')),
                         SizedBox(
                           height: 10,
                         ),
                         Style.body(
-                            MyLocalizations.of(context, "consent_txt_07")),
+                            MyLocalizations.of(context, 'consent_txt_07')),
                         Row(
                           children: <Widget>[
                             Checkbox(
@@ -96,11 +96,11 @@ class _ConsentFormState extends State<ConsentForm> {
                                     children: [
                                       TextSpan(
                                         text: MyLocalizations.of(
-                                            context, "consent_txt_08"),
+                                            context, 'consent_txt_08'),
                                       ),
                                       TextSpan(
                                           text: MyLocalizations.of(
-                                              context, "consent_txt_09"),
+                                              context, 'consent_txt_09'),
                                           style: new TextStyle(
                                               color: Style.colorPrimary),
                                           recognizer: new TapGestureRecognizer()
@@ -112,7 +112,7 @@ class _ConsentFormState extends State<ConsentForm> {
                                                         InfoPage(
                                                           MyLocalizations.of(
                                                               context,
-                                                              "terms_link"),
+                                                              'terms_link'),
                                                           localHtml: true,
                                                         )),
                                               );
@@ -141,11 +141,11 @@ class _ConsentFormState extends State<ConsentForm> {
                                     children: [
                                       TextSpan(
                                         text: MyLocalizations.of(
-                                            context, "consent_txt_10"),
+                                            context, 'consent_txt_10'),
                                       ),
                                       TextSpan(
                                         text: MyLocalizations.of(
-                                            context, "consent_txt_11"),
+                                            context, 'consent_txt_11'),
                                         style: new TextStyle(
                                             color: Style.colorPrimary),
                                         recognizer: new TapGestureRecognizer()
@@ -157,7 +157,7 @@ class _ConsentFormState extends State<ConsentForm> {
                                                       InfoPage(
                                                         MyLocalizations.of(
                                                             context,
-                                                            "privacy_link"),
+                                                            'privacy_link'),
                                                         localHtml: true,
                                                       )),
                                             );
@@ -178,11 +178,11 @@ class _ConsentFormState extends State<ConsentForm> {
                               children: [
                                 TextSpan(
                                   text: MyLocalizations.of(
-                                      context, "consent_txt_14"),
+                                      context, 'consent_txt_14'),
                                 ),
                                 TextSpan(
                                   text: MyLocalizations.of(
-                                      context, "consent_txt_15"),
+                                      context, 'consent_txt_15'),
                                   style:
                                       new TextStyle(color: Style.colorPrimary),
                                   recognizer: new TapGestureRecognizer()
@@ -192,7 +192,7 @@ class _ConsentFormState extends State<ConsentForm> {
                                         MaterialPageRoute(
                                             builder: (context) => InfoPage(
                                                   MyLocalizations.of(
-                                                      context, "url_about_us"),
+                                                      context, 'url_about_us'),
                                                   localHtml: false,
                                                 )),
                                       );
@@ -210,11 +210,11 @@ class _ConsentFormState extends State<ConsentForm> {
                               children: [
                                 TextSpan(
                                   text: MyLocalizations.of(
-                                      context, "consent_txt_12"),
+                                      context, 'consent_txt_12'),
                                 ),
                                 TextSpan(
                                   text: MyLocalizations.of(
-                                      context, "consent_txt_13"),
+                                      context, 'consent_txt_13'),
                                   style:
                                       new TextStyle(color: Style.colorPrimary),
                                   recognizer: new TapGestureRecognizer()
@@ -224,7 +224,7 @@ class _ConsentFormState extends State<ConsentForm> {
                                         MaterialPageRoute(
                                             builder: (context) => InfoPage(
                                                   MyLocalizations.of(
-                                                      context, "lisence_link"),
+                                                      context, 'lisence_link'),
                                                   localHtml: true,
                                                 )),
                                       );
@@ -250,7 +250,7 @@ class _ConsentFormState extends State<ConsentForm> {
                     margin: EdgeInsets.all(15),
                     width: double.infinity,
                     child: Style.button(
-                        MyLocalizations.of(context, "continue_txt"),
+                        MyLocalizations.of(context, 'continue_txt'),
                         snapshot.data
                             ? () {
                                 Navigator.pushReplacement(

@@ -34,7 +34,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
               child: Stack(
                 children: <Widget>[
                   Image.asset(
-                    "assets/img/bg_login.png",
+                    'assets/img/bg_login.png',
                     width: double.infinity,
                     fit: BoxFit.fitWidth,
                     alignment: Alignment.bottomCenter,
@@ -70,8 +70,8 @@ class _LoginMainPageState extends State<LoginMainPage> {
                   SizedBox(
                     height: 27.5,
                   ),
-                  Style.title(MyLocalizations.of(context, "welcome_app_title")),
-                  Style.body(MyLocalizations.of(context, "login_method_txt")),
+                  Style.title(MyLocalizations.of(context, 'welcome_app_title')),
+                  Style.body(MyLocalizations.of(context, 'login_method_txt')),
                   SizedBox(
                     height: 20,
                   ),
@@ -81,7 +81,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
                         height: 21,
                         fit: BoxFit.fitHeight,
                       ),
-                      MyLocalizations.of(context, "login_btn1"),
+                      MyLocalizations.of(context, 'login_btn1'),
                       Color(0XFF3B5998),
                       Colors.white, () {
                     _facebookSignIn();
@@ -96,7 +96,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
                         fit: BoxFit.fitHeight,
                         color: Colors.white,
                       ),
-                      MyLocalizations.of(context, "login_btn5"),
+                      MyLocalizations.of(context, 'login_btn5'),
                       Color(0XFF08a0e9),
                       Colors.white, () {
                     _twitterSignIn();
@@ -110,7 +110,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
                         height: 21,
                         fit: BoxFit.fitHeight,
                       ),
-                      MyLocalizations.of(context, "login_btn2"),
+                      MyLocalizations.of(context, 'login_btn2'),
                       Colors.white,
                       Colors.black, () {
                     _googleSignIn();
@@ -125,7 +125,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
                   Container(
                     width: double.infinity,
                     child: Style.noBgButton(
-                        MyLocalizations.of(context, "login_btn4"), () {
+                        MyLocalizations.of(context, 'login_btn4'), () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => LoginEmail()),
@@ -159,8 +159,8 @@ class _LoginMainPageState extends State<LoginMainPage> {
   }
 
   _showSocialError() {
-    Utils.showAlert(MyLocalizations.of(context, "app_name"),
-        MyLocalizations.of(context, "social_login_ko_txt"), context);
+    Utils.showAlert(MyLocalizations.of(context, 'app_name'),
+        MyLocalizations.of(context, 'social_login_ko_txt'), context);
   }
 
   _googleSignIn() async {

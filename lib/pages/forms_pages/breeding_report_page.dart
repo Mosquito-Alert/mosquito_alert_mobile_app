@@ -36,36 +36,36 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
 
   List<Map> displayQuestions = [
     {
-      "question": {"id": 12, "text": "question_12"},
-      "answers": [
+      'question': {'id': 12, 'text': 'question_12'},
+      'answers': [
         {
-          'img': "assets/img/ic_imbornal.png",
-          "id": 121,
-          "text": "question_12_answer_121"
+          'img': 'assets/img/ic_imbornal.png',
+          'id': 121,
+          'text': 'question_12_answer_121'
         },
         {
-          'img': "assets/img/ic_other_site.png",
-          "id": 122,
-          "text": "question_12_answer_122"
+          'img': 'assets/img/ic_other_site.png',
+          'id': 122,
+          'text': 'question_12_answer_122'
         }
       ]
     },
     {
-      "question": {"id": 10, "text": "question_10"},
-      "answers": [
-        {"id": 101, "text": "question_10_answer_101"},
-        {"id": 81, "text": "question_10_answer_102"}
+      'question': {'id': 10, 'text': 'question_10'},
+      'answers': [
+        {'id': 101, 'text': 'question_10_answer_101'},
+        {'id': 81, 'text': 'question_10_answer_102'}
       ]
     },
     {
-      "question": {"id": 17, "text": "question_17"},
-      "answers": [
-        {"id": 101, "text": "question_10_answer_101"},
-        {"id": 81, "text": "question_10_answer_102"}
+      'question': {'id': 17, 'text': 'question_17'},
+      'answers': [
+        {'id': 101, 'text': 'question_10_answer_101'},
+        {'id': 81, 'text': 'question_10_answer_102'}
       ]
     },
     {
-      "question": {"id": 16, "text": "question_16"},
+      'question': {'id': 16, 'text': 'question_16'},
     },
   ];
 
@@ -149,7 +149,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
 
   navigateOtherReport() async {
     switch (otherReport) {
-      case "bite":
+      case 'bite':
         Utils.addOtherReport('bite');
         Navigator.push(
           context,
@@ -163,7 +163,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       //     MaterialPageRoute(builder: (context) => BreedingReportPage()),
       //   );
       //   break;
-      case "adult":
+      case 'adult':
         Utils.addOtherReport('adult');
         Navigator.push(
           context,
@@ -234,7 +234,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                 },
               ),
               title: Style.title(
-                  MyLocalizations.of(context, "breeding_report_title"),
+                  MyLocalizations.of(context, 'breeding_report_title'),
                   fontSize: 16),
             ),
             body: Stack(
@@ -268,7 +268,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                                               vertical: 6, horizontal: 12),
                                           child: Style.button(
                                               MyLocalizations.of(
-                                                  context, "continue_txt"), () {
+                                                  context, 'continue_txt'), () {
                                             double currentPage =
                                                 _pagesController.page;
 
@@ -303,7 +303,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                                               vertical: 6, horizontal: 12),
                                           child: Style.button(
                                               MyLocalizations.of(
-                                                  context, "continue_txt"),
+                                                  context, 'continue_txt'),
                                               null),
                                         );
                                 }),
@@ -315,7 +315,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                               margin: EdgeInsets.symmetric(
                                   vertical: 6, horizontal: 12),
                               child: Style.button(
-                                MyLocalizations.of(context, "send_data"),
+                                MyLocalizations.of(context, 'send_data'),
                                 () {
                                   _createReport();
                                 },
@@ -462,7 +462,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   _showAlertOk() {
     loadingStream.add(false);
     Utils.showAlert(
-      MyLocalizations.of(context, "app_name"),
+      MyLocalizations.of(context, 'app_name'),
       widget.editReport == null
           ? MyLocalizations.of(context, 'save_report_ok_txt')
           : MyLocalizations.of(context, 'edited_report_ok_txt'),
@@ -483,7 +483,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   _showAlertKo() {
     loadingStream.add(false);
     Utils.showAlert(
-      MyLocalizations.of(context, "app_name"),
+      MyLocalizations.of(context, 'app_name'),
       MyLocalizations.of(context, 'save_report_ko_txt'),
       context,
       onPressed: () {

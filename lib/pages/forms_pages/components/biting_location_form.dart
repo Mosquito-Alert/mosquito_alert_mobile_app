@@ -215,13 +215,13 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                 ),
                 Style.title(
                     MyLocalizations.of(context, widget.displayQuestion)),
-                Style.body(MyLocalizations.of(context, "chose_option_txt")),
+                Style.body(MyLocalizations.of(context, 'chose_option_txt')),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 30),
                   child: StreamBuilder(
                     stream: streamType.stream,
                     initialData: Utils.report.location_choice != null
-                        ? Utils.report.location_choice == "selected"
+                        ? Utils.report.location_choice == 'selected'
                             ? LocationType.selected
                             : LocationType.current
                         : LocationType.current,
@@ -241,7 +241,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                                               context: context);
                                         },
                                         child: SmallQuestionOption(
-                                          "current_location_txt",
+                                          'current_location_txt',
                                           selected: snapshot.data ==
                                               LocationType.current,
                                         ))),
@@ -255,7 +255,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                                     updateType(LocationType.selected);
                                   },
                                   child: SmallQuestionOption(
-                                    "select_location_txt",
+                                    'select_location_txt',
                                     selected:
                                         snapshot.data == LocationType.selected,
                                   ),
@@ -313,7 +313,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                             height: 10,
                           ),
                           Style.button(
-                            MyLocalizations.of(context, "reset"),
+                            MyLocalizations.of(context, 'reset'),
                             () {
                               resetLocations();
                             },

@@ -76,12 +76,12 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
                                   Style.titleMedium(MyLocalizations.of(
-                                      context, "recover_password_title")),
+                                      context, 'recover_password_title')),
                                   SizedBox(
                                     height: 20,
                                   ),
                                   Style.textField(
-                                      MyLocalizations.of(context, "email_txt"),
+                                      MyLocalizations.of(context, 'email_txt'),
                                       _emailController,
                                       context),
                                   SizedBox(
@@ -91,7 +91,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
                                       width: double.infinity,
                                       child: Style.button(
                                           MyLocalizations.of(
-                                              context, "recover_password_btn"),
+                                              context, 'recover_password_btn'),
                                           () {
                                         _recoverPassword();
                                       })),

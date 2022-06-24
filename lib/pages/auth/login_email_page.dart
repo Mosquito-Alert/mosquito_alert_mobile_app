@@ -66,12 +66,12 @@ class _LoginEmailState extends State<LoginEmail> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
                                 Style.titleMedium(MyLocalizations.of(
-                                    context, "enter_email_title")),
+                                    context, 'enter_email_title')),
                                 SizedBox(
                                   height: 20,
                                 ),
                                 Style.textField(
-                                    MyLocalizations.of(context, "email_txt"),
+                                    MyLocalizations.of(context, 'email_txt'),
                                     _emailController,
                                     context,
                                     keyboardType: TextInputType.emailAddress),
@@ -82,7 +82,7 @@ class _LoginEmailState extends State<LoginEmail> {
                                     width: double.infinity,
                                     child: Style.button(
                                         MyLocalizations.of(
-                                            context, "access_txt"), () {
+                                            context, 'access_txt'), () {
                                       _checkEmail();
                                     })),
                               ],
@@ -124,8 +124,8 @@ class _LoginEmailState extends State<LoginEmail> {
 
     loadingStream.add(true);
     if (!Utils.mailRegExp.hasMatch(_emailController.text)) {
-      Utils.showAlert(MyLocalizations.of(context, "app_name"),
-          MyLocalizations.of(context, "invalid_mail_txt"), context);
+      Utils.showAlert(MyLocalizations.of(context, 'app_name'),
+          MyLocalizations.of(context, 'invalid_mail_txt'), context);
       loadingStream.add(false);
     } else {
       ApiSingleton().checkEmail(_emailController.text).then((res) {
@@ -145,8 +145,8 @@ class _LoginEmailState extends State<LoginEmail> {
         }
       }).catchError((e) {
         loadingStream.add(false);
-        Utils.showAlert(MyLocalizations.of(context, "app_name"),
-            MyLocalizations.of(context, "email_error_txt"), context);
+        Utils.showAlert(MyLocalizations.of(context, 'app_name'),
+            MyLocalizations.of(context, 'email_error_txt'), context);
         print(e);
       });
     }

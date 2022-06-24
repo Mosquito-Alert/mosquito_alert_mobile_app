@@ -24,7 +24,7 @@ class MyLocalizations {
   String translate(key) {
     return _localisedValues != null && _localisedValues[key] != null
         ? _localisedValues[key]
-        : "";
+        : '';
   }
 
   static String of(BuildContext context, String key) {

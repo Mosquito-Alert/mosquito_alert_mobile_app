@@ -39,7 +39,7 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
             Navigator.pop(context);
           }
         },),
-        title: Style.title(MyLocalizations.of(context, "campaign_tutorial_txt",), fontSize: 16),
+        title: Style.title(MyLocalizations.of(context, 'campaign_tutorial_txt',), fontSize: 16),
       ),
       body: IntroSlider(
         slides: initSlides(),

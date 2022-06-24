@@ -51,28 +51,28 @@ class PushNotificationsManager {
         await registerFCMToken(token);
         await getTopicsSubscribed();
         // Utils.firebaseLoaded = true;
-        Utils.initializedCheckData["firebase"] = true;
+        Utils.initializedCheckData['firebase'] = true;
         _initialized = true;
       }
     }
   }
 
   static launchMessage(Map<String, dynamic> message) {
-    var title = "";
-    var msg = "";
-    var notifId = "";
+    var title = '';
+    var msg = '';
+    var notifId = '';
 
     if (Platform.isIOS) {
       final jsonData = jsonDecode(message['notification']);
 
       try {
-        title = jsonData["title"];
+        title = jsonData['title'];
       } catch (e) {
         print(e);
       }
 
       try {
-        msg = jsonData["body"];
+        msg = jsonData['body'];
       } catch (e) {
         print(e);
       }
@@ -83,13 +83,13 @@ class PushNotificationsManager {
       }
     } else {
       try {
-        title = message['notification']["title"];
+        title = message['notification']['title'];
       } catch (e) {
         print(e);
       }
 
       try {
-        msg = message['notification']["body"];
+        msg = message['notification']['body'];
       } catch (e) {
         print(e);
       }
@@ -123,7 +123,7 @@ class PushNotificationsManager {
   }
 
   static openMessageScreen(Map<String, dynamic> message) {
-    var notifId = "";
+    var notifId = '';
 
     if (Platform.isIOS) {
       try {
@@ -159,7 +159,7 @@ class PushNotificationsManager {
   }
 
   static Future<void> subscribeToGlobal() async {
-    var topic = "global";
+    var topic = 'global';
     await subscribeToTopic(topic);
   }
 

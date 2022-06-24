@@ -19,7 +19,7 @@ class ReportsList extends StatelessWidget {
         !reports.any((report) =>
             UserManager.profileUUIDs.any((id) => id == report.user))) {
       return Center(
-        child: Style.body(MyLocalizations.of(context, "no_reports_yet_txt")),
+        child: Style.body(MyLocalizations.of(context, 'no_reports_yet_txt')),
       );
     } else {
       return Container(
@@ -59,7 +59,7 @@ class ReportsList extends StatelessWidget {
                             children: <Widget>[
                               Style.titleMedium(
                                   MyLocalizations.of(
-                                          context, "report_of_the_day_txt") +
+                                          context, 'report_of_the_day_txt') +
                                       DateFormat('dd-MM-yyyy')
                                           .format(DateTime.parse(
                                               reports[index].creation_time))
@@ -68,7 +68,7 @@ class ReportsList extends StatelessWidget {
                               Style.body(
                                   '${MyLocalizations.of(context, "location_txt")} ${reports[index].displayCity != null ? reports[index].displayCity : ''}'),
                               Style.body(
-                                  MyLocalizations.of(context, "at_time_txt") +
+                                  MyLocalizations.of(context, 'at_time_txt') +
                                       DateFormat.Hm()
                                           .format(DateTime.parse(
                                               reports[index].creation_time))
@@ -103,7 +103,7 @@ class ReportsList extends StatelessWidget {
 
   getCity(report) async {
     Coordinates coord;
-    if (report.location_choice == "current") {
+    if (report.location_choice == 'current') {
       coord =
           Coordinates(report.current_location_lat, report.current_location_lon);
     } else if (report.location_choice == 'selected') {

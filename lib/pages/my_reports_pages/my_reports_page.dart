@@ -128,10 +128,10 @@ class _MyReportsPageState extends State<MyReportsPage> {
   Widget build(BuildContext context) {
     _children = {
       0: Container(
-        child: Text(MyLocalizations.of(context, "map_txt")),
+        child: Text(MyLocalizations.of(context, 'map_txt')),
       ),
       1: Container(
-        child: Text(MyLocalizations.of(context, "list_txt")),
+        child: Text(MyLocalizations.of(context, 'list_txt')),
       ),
     };
 
@@ -467,7 +467,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                             children: [
                                               Style.body(
                                                   MyLocalizations.of(context,
-                                                      "you_can_send_info_address"),
+                                                      'you_can_send_info_address'),
                                                   fontSize: 14,
                                                   textAlign: TextAlign.start),
                                               SizedBox(
@@ -509,7 +509,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                             children: [
                                               Style.body(
                                                   MyLocalizations.of(
-                                                      context, "more_info"),
+                                                      context, 'more_info'),
                                                   fontSize: 12,
                                                   textAlign: TextAlign.center),
                                               SizedBox(
@@ -517,7 +517,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                               ),
                                               IconButton(
                                                   icon: SvgPicture.asset(
-                                                    "assets/img/sendmodule/ic_adn.svg",
+                                                    'assets/img/sendmodule/ic_adn.svg',
                                                     color: Colors.black,
                                                   ),
                                                   onPressed: () {
@@ -880,7 +880,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
 
       List<ReportAndGeohash> listMarkers = List();
       for (int i = 0; i < list.length; i++) {
-        if (list[i].location_choice != "missing" &&
+        if (list[i].location_choice != 'missing' &&
                 list[i].current_location_lat != null &&
                 list[i].current_location_lon != null ||
             list[i].selected_location_lat != null &&

@@ -124,7 +124,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       onTap: () {
                         Clipboard.setData(ClipboardData(text: snapshot.data));
                         key.currentState.showSnackBar(new SnackBar(
-                          content: new Text("Copied to Clipboard"),
+                          content: new Text('Copied to Clipboard'),
                         ));
                       },
                     )

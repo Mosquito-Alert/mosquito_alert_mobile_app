@@ -17,7 +17,7 @@ class OtherMosquitoInfo extends StatelessWidget {
               SizedBox(
                 height: 35,
               ),
-              Style.title(MyLocalizations.of(context, "other_type_info_txt")),
+              Style.title(MyLocalizations.of(context, 'other_type_info_txt')),
               SizedBox(
                 height: 10,
               ),

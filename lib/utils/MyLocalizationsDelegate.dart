@@ -11,29 +11,29 @@ class MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {
 
   @override
   bool isSupported(Locale locale) => [
-        "bg",
-        "ca",
-        "de",
-        "el",
-        "en",
-        "es",
-        "fr",
-        "hr",
-        "hu",
-        "it",
-        "lb",
-        "mk",
-        "nl",
-        "pt",
-        "ro",
-        "ru",
-        "sl",
-        "sq",
-        "sr",
-        "tr",
-        "zh",
+        'bg',
+        'ca',
+        'de',
+        'el',
+        'en',
+        'es',
+        'fr',
+        'hr',
+        'hu',
+        'it',
+        'lb',
+        'mk',
+        'nl',
+        'pt',
+        'ro',
+        'ru',
+        'sl',
+        'sq',
+        'sr',
+        'tr',
+        'zh',
       ].contains(
-          "${locale.languageCode}");
+          '${locale.languageCode}');
 
   @override
   Future<MyLocalizations> load(Locale locale) async {

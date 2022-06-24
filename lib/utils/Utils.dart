@@ -45,13 +45,13 @@ class Utils {
 
   // Initialized data flags
   static Map<String, dynamic> initializedCheckData = {
-    "user": false, // Whether the user got fetched
-    "userScores": false, // Whether the user scores got fetched
-    "userCreated": {
-      "created": false,
-      "required": false,
+    'user': false, // Whether the user got fetched
+    'userScores': false, // Whether the user scores got fetched
+    'userCreated': {
+      'created': false,
+      'required': false,
     },
-    "firebase": false, // Whether firebase got initialized
+    'firebase': false, // Whether firebase got initialized
   };
 
   // static bool userFetched = false;
@@ -221,7 +221,7 @@ class Utils {
   }
 
   static setSelectedLocation(double lat, lon) {
-    report.location_choice = "selected";
+    report.location_choice = 'selected';
     report.current_location_lat = null;
     report.current_location_lon = null;
     report.selected_location_lat = lat;
@@ -452,32 +452,32 @@ class Utils {
   static Future<void> checkForUnfetchedData() async {
     SharedPreferences prefs;
     // if (userCreated["required"] && !userCreated["created"]) {
-    final Map<String, bool> userCreated = initializedCheckData["userCreated"];
-    if (userCreated["required"] && !userCreated["created"]) {
+    final Map<String, bool> userCreated = initializedCheckData['userCreated'];
+    if (userCreated['required'] && !userCreated['created']) {
       print('Utils (checkForUnfetchedData): Creating user...');
       prefs = await SharedPreferences.getInstance();
-      final String uuid = prefs.getString("uuid");
+      final String uuid = prefs.getString('uuid');
       await ApiSingleton().createUser(uuid);
     } else {
       print(
           'Utils (checkForUnfetchedData): Either the user was created or it was not required (${jsonEncode(userCreated)})');
     }
 
-    if (!initializedCheckData["userScores"]) {
+    if (!initializedCheckData['userScores']) {
       print('Utils (checkForUnfetchedData): Fetching user scores...');
       UserManager.userScore = await ApiSingleton().getUserScores();
     } else {
       print('Utils (checkForUnfetchedData): UserScores were already fetched');
     }
 
-    if (!initializedCheckData["user"]) {
+    if (!initializedCheckData['user']) {
       print('Utils (checkForUnfetchedData): Fetching user...');
       await UserManager.fetchUser();
     } else {
       print('Utils (checkForUnfetchedData): User was already fetched');
     }
 
-    if (!initializedCheckData["firebase"]) {
+    if (!initializedCheckData['firebase']) {
       print('Utils (checkForUnfetchedData): Loading Firebase...');
       await loadFirebase();
     } else {
@@ -922,7 +922,7 @@ class Utils {
                             ),
                             Expanded(
                               child: Style.noBgButton(
-                                MyLocalizations.of(context, "no_show_again"),
+                                MyLocalizations.of(context, 'no_show_again'),
                                 () {
                                   !gallery
                                       ? getImage(ImageSource.camera)
@@ -1054,7 +1054,7 @@ class Utils {
                   child: Row(
                     children: [
                       SvgPicture.asset(
-                        "assets/img/sendmodule/ic_adn.svg",
+                        'assets/img/sendmodule/ic_adn.svg',
                         color: Style.colorPrimary,
                         height: 20,
                       ),
@@ -1113,7 +1113,7 @@ class Utils {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SvgPicture.asset(
-                        "assets/img/sendmodule/ic_adn.svg",
+                        'assets/img/sendmodule/ic_adn.svg',
                         color: Colors.blueAccent,
                         height: 20,
                       ),
@@ -1147,16 +1147,16 @@ class Utils {
       String stringLanguange = ui.window.locale.languageCode;
       String stringCountry = ui.window.locale.countryCode;
 
-      if (stringLanguange == "es" && stringCountry == 'ES' ||
-          stringLanguange == "ca" && stringCountry == 'ES' ||
-          stringLanguange == "en" && stringCountry == 'US' ||
-          stringLanguange == "sq" ||
-          stringLanguange == "bg" ||
-          stringLanguange == "nl" ||
-          stringLanguange == "de" ||
-          stringLanguange == "it" ||
-          stringLanguange == "pt" ||
-          stringLanguange == "ro") {
+      if (stringLanguange == 'es' && stringCountry == 'ES' ||
+          stringLanguange == 'ca' && stringCountry == 'ES' ||
+          stringLanguange == 'en' && stringCountry == 'US' ||
+          stringLanguange == 'sq' ||
+          stringLanguange == 'bg' ||
+          stringLanguange == 'nl' ||
+          stringLanguange == 'de' ||
+          stringLanguange == 'it' ||
+          stringLanguange == 'pt' ||
+          stringLanguange == 'ro') {
         language = ui.window.locale;
       }
     } else {

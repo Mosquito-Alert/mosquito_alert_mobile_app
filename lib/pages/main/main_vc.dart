@@ -50,8 +50,8 @@ class _MainVCState extends State<MainVC> {
       await AppTrackingTransparency.requestTrackingAuthorization();
     }
     VersionControl.getInstance().packageApiKey =
-        "uqFb4yrdZCPFXsvXrJHBbJg5B5TqvSCYmxR7aPuN2uCcCKyu9FDVWettvbtNV9HKm";
-    VersionControl.getInstance().packageLanguageCode = "es";
+        'uqFb4yrdZCPFXsvXrJHBbJg5B5TqvSCYmxR7aPuN2uCcCKyu9FDVWettvbtNV9HKm';
+    VersionControl.getInstance().packageLanguageCode = 'es';
     var check = await VersionControl.getInstance().checkVersion(context);
     if (check) {
       _getData();
@@ -159,7 +159,7 @@ class _MainVCState extends State<MainVC> {
               actions: <Widget>[
                 IconButton(
                   icon: SvgPicture.asset(
-                    "assets/img/sendmodule/ic_adn.svg",
+                    'assets/img/sendmodule/ic_adn.svg',
                     height: 26,
                   ),
                   onPressed: () {
@@ -245,7 +245,7 @@ class _MainVCState extends State<MainVC> {
                                                 ),
                                                 Style.body(
                                                     MyLocalizations.of(context,
-                                                        "what_to_do_txt"),
+                                                        'what_to_do_txt'),
                                                     fontSize: 14),
                                               ]),
                                         ),
@@ -267,7 +267,7 @@ class _MainVCState extends State<MainVC> {
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage(
-                                                    "assets/img/points_box.png"),
+                                                    'assets/img/points_box.png'),
                                               ),
                                             ),
                                             child: StreamBuilder<int>(

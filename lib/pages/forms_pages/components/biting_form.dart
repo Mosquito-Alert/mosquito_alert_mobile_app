@@ -135,7 +135,7 @@ class _BitingFormState extends State<BitingForm> {
                       var question = widget.displayQuestions
                           .where((q) => q['question']['id'] == 1)
                           .toList();
-                      addToList(question[0]['question']['text'], "",
+                      addToList(question[0]['question']['text'], '',
                           question_id: 1,
                           answer_id: 11,
                           answer_value: _textController.text);
@@ -161,7 +161,7 @@ class _BitingFormState extends State<BitingForm> {
                         Image.asset(
                           questions.any((question) => question.answer_id == 25)
                               ? 'assets/img/ic_left_leg_on.png'
-                              : "assets/img/ic_left_leg_off.png",
+                              : 'assets/img/ic_left_leg_off.png',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
