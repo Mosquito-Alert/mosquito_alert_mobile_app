@@ -570,7 +570,7 @@ class ApiSingleton {
       final response = await http
           .get(
         Uri.parse(
-            '$serverUrl$nearbyReports?lat=$lat&lon=$lon&page=${page != null ? page : '1'}&user=$userUUID&page_size=75&radius=${100}' +
+            '$serverUrl$nearbyReports?lat=$lat&lon=$lon&page=${page ?? '1'}&user=$userUUID&page_size=75&radius=${100}' +
                 (show_hidden == true ? '&show_hidden=1' : '') +
                 (show_verions == true ? '&show_versions=1' : '')),
         headers: headers,

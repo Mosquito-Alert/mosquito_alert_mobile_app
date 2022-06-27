@@ -132,7 +132,7 @@ class Utils {
         report.os = 'Android';
         report.os_language = language.languageCode;
         report.os_version = buildData.version.sdkInt.toString();
-        report.app_language = lang != null ? lang : language.languageCode;
+        report.app_language = lang ?? language.languageCode;
       } else if (Platform.isIOS) {
         var buildData = await DeviceInfoPlugin().iosInfo;
         report.device_manufacturer = 'Apple';
@@ -140,7 +140,7 @@ class Utils {
         report.os = buildData.systemName;
         report.os_language = language.languageCode;
         report.os_version = buildData.systemVersion;
-        report.app_language = lang != null ? lang : language.languageCode;
+        report.app_language = lang ?? language.languageCode;
       }
 
       if (lat != null && lon != null) {
@@ -526,9 +526,7 @@ class Utils {
     if (Platform.isAndroid) {
       return showDialog(
         context: context,
-        barrierDismissible: barrierDismissible != null
-            ? barrierDismissible
-            : true, // user must tap button!
+        barrierDismissible: barrierDismissible ?? true, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(title),
@@ -598,9 +596,7 @@ class Utils {
     if (Platform.isAndroid) {
       return showDialog(
         context: context,
-        barrierDismissible: barrierDismissible != null
-            ? barrierDismissible
-            : true, // user must tap button!
+        barrierDismissible: barrierDismissible ?? true, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(title),
@@ -746,9 +742,7 @@ class Utils {
           builder: (context) {
             return CupertinoActionSheet(
                 title: title != null ? Text(title) : null,
-                cancelButton: cancelButton != null
-                    ? cancelButton
-                    : CupertinoActionSheetAction(
+                cancelButton: cancelButton ?? CupertinoActionSheetAction(
                         onPressed: close,
                         child: Text(
                           MyLocalizations.of(context, 'cancel'),
@@ -849,9 +843,7 @@ class Utils {
             child: Center(
               child: new CircularProgressIndicator(
                 valueColor: new AlwaysStoppedAnimation<Color>(
-                    indicatorColor == null
-                        ? Style.colorPrimary
-                        : indicatorColor),
+                    indicatorColor ?? Style.colorPrimary),
               ),
             ),
           ))

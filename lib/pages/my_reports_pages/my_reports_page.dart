@@ -872,7 +872,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
 
       List<Report> list = await ApiSingleton().getReportsList(
           location.latitude, location.longitude,
-          radius: (distance != null ? distance : 1000 / 2).round());
+          radius: (distance ?? 1000 / 2).round());
 
       if (list == null) {
         list = [];

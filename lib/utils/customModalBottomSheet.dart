@@ -40,7 +40,7 @@ class _CullModalBottomSheetRoute<T> extends PopupRoute<T> {
   Duration get transitionDuration => Duration(milliseconds: 200);
 
   @override
-  bool get barrierDismissible => dismissible != null ? dismissible : true;
+  bool get barrierDismissible => dismissible ?? true;
 
   @override
   final String barrierLabel;

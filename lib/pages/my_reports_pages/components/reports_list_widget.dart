@@ -66,7 +66,7 @@ class ReportsList extends StatelessWidget {
                                           .toString(),
                                   fontSize: 14),
                               Style.body(
-                                  '${MyLocalizations.of(context, "location_txt")} ${reports[index].displayCity != null ? reports[index].displayCity : ''}'),
+                                  '${MyLocalizations.of(context, "location_txt")} ${reports[index].displayCity ?? ''}'),
                               Style.body(
                                   MyLocalizations.of(context, 'at_time_txt') +
                                       DateFormat.Hm()

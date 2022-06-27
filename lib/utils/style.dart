@@ -22,14 +22,14 @@ class Style {
         height,
   }) {
     return Text(
-      text != null ? text : '',
+      text ?? '',
       maxLines: maxLines,
-      textAlign: textAlign != null ? textAlign : TextAlign.left,
+      textAlign: textAlign ?? TextAlign.left,
       overflow: maxLines != null ? TextOverflow.ellipsis : null,
       style: TextStyle(
         height: height,
-        color: color == null ? textColor : color,
-        fontSize: fontSize == null ? 21 : fontSize,
+        color: color ?? textColor,
+        fontSize: fontSize ?? 21,
         fontWeight: FontWeight.w700,
       ),
     );
@@ -44,14 +44,14 @@ class Style {
     height,
   }) {
     return Text(
-      text != null ? text : '',
+      text ?? '',
       maxLines: maxLines,
-      textAlign: textAlign != null ? textAlign : TextAlign.left,
+      textAlign: textAlign ?? TextAlign.left,
       overflow: maxLines != null ? TextOverflow.ellipsis : null,
       style: TextStyle(
         height: height,
-        color: color == null ? textColor : color,
-        fontSize: fontSize == null ? 21 : fontSize,
+        color: color ?? textColor,
+        fontSize: fontSize ?? 21,
         fontWeight: FontWeight.w500,
       ),
     );
@@ -66,14 +66,14 @@ class Style {
     height,
   }) {
     return Text(
-      text != null ? text : '',
+      text ?? '',
       maxLines: maxLines,
-      textAlign: textAlign != null ? textAlign : TextAlign.left,
+      textAlign: textAlign ?? TextAlign.left,
       overflow: maxLines != null ? TextOverflow.ellipsis : null,
       style: TextStyle(
         height: height,
-        color: color == null ? textColor : color,
-        fontSize: fontSize == null ? 14 : fontSize,
+        color: color ?? textColor,
+        fontSize: fontSize ?? 14,
       ),
     );
   }
@@ -87,14 +87,14 @@ class Style {
     height,
   }) {
     return Text(
-      text != null ? text : '',
+      text ?? '',
       maxLines: maxLines,
-      textAlign: textAlign != null ? textAlign : TextAlign.left,
+      textAlign: textAlign ?? TextAlign.left,
       overflow: maxLines != null ? TextOverflow.ellipsis : null,
       style: TextStyle(
         height: height,
-        color: color == null ? textColor : color,
-        fontSize: fontSize == null ? 12 : fontSize,
+        color: color ?? textColor,
+        fontSize: fontSize ?? 12,
       ),
     );
   }
@@ -108,9 +108,9 @@ class Style {
       elevation: 0,
       highlightElevation: 0,
       hoverElevation: 0,
-      highlightColor: color != null ? color : colorPrimary.withOpacity(0.5),
+      highlightColor: color ?? colorPrimary.withOpacity(0.5),
       padding: EdgeInsets.symmetric(vertical: 14),
-      color: color != null ? color : colorPrimary,
+      color: color ?? colorPrimary,
       disabledColor: color != null
           ? color.withOpacity(0.3)
           : colorPrimary.withOpacity(0.3),
@@ -120,7 +120,7 @@ class Style {
       child: Text(
         text,
         style: TextStyle(
-            color: textColor != null ? textColor : Colors.white,
+            color: textColor ?? Colors.white,
             fontSize: 14,
             fontWeight: FontWeight.w500),
       ),
@@ -137,7 +137,7 @@ class Style {
       padding: EdgeInsets.symmetric(vertical: 14),
       color: Colors.transparent,
       disabledColor: Colors.white.withOpacity(0.3),
-      textColor: textColor != null ? textColor : Colors.black,
+      textColor: textColor ?? Colors.black,
       disabledTextColor: textColor != null
           ? textColor.withOpacity(0.3)
           : Colors.black.withOpacity(0.3),
@@ -167,7 +167,7 @@ class Style {
         shape: RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(3.0),
           side: BorderSide(
-              color: colorBorder != null ? colorBorder : color,
+              color: colorBorder ?? color,
               width: 1,
               style: BorderStyle.solid),
         ),
@@ -212,35 +212,31 @@ class Style {
   }) {
     return TextField(
       keyboardType: keyboardType ?? TextInputType.text,
-      textCapitalization: textCapitalization == null
-          ? TextCapitalization.none
-          : textCapitalization,
+      textCapitalization: textCapitalization ?? TextCapitalization.none,
       autofocus: false,
       controller: controller,
       style: TextStyle(
           fontSize: 15,
           color: enabled ? textColor : textColor.withOpacity(0.6)),
       textInputAction:
-          textInputAction == null ? TextInputAction.done : textInputAction,
+          textInputAction ?? TextInputAction.done,
       focusNode: focusNode,
-      obscureText: obscure == null ? false : obscure,
+      obscureText: obscure ?? false,
       decoration: textFieldDecoration(hint, suffixIcon),
       maxLines: expands != null && expands || keyboardType == TextInputType.multiline
-              ? maxLines == null ? null : maxLines
+              ? maxLines ?? null
               : 1,
-      expands: expands != null ? expands : false,
-      textAlignVertical: textAlignVertical != null
-          ? textAlignVertical
-          : TextAlignVertical.center,
+      expands: expands ?? false,
+      textAlignVertical: textAlignVertical ?? TextAlignVertical.center,
       textAlign: TextAlign.start,
-      enabled: enabled != null ? enabled : true,
-      onChanged: handleChange != null ? handleChange : null,
+      enabled: enabled ?? true,
+      onChanged: handleChange ?? null,
     );
   }
 
   static InputDecoration textFieldDecoration(hint, suffixIcon) {
     return InputDecoration(
-        suffixIcon: suffixIcon == null ? null : suffixIcon,
+        suffixIcon: suffixIcon ?? null,
         filled: true,
         fillColor: Colors.white,
         hintText: hint,
