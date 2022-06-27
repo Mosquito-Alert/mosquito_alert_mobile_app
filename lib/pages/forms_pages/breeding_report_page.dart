@@ -29,10 +29,10 @@ class BreedingReportPage extends StatefulWidget {
 class _BreedingReportPageState extends State<BreedingReportPage> {
   PageController _pagesController;
   List<Widget> _formsRepot, _initialFormsReport;
-  StreamController<bool> loadingStream = new StreamController<bool>.broadcast();
-  StreamController<bool> validStream = new StreamController<bool>.broadcast();
+  StreamController<bool> loadingStream = StreamController<bool>.broadcast();
+  StreamController<bool> validStream = StreamController<bool>.broadcast();
   StreamController<double> percentStream =
-      new StreamController<double>.broadcast();
+      StreamController<double>.broadcast();
 
   List<Map> displayQuestions = [
     {

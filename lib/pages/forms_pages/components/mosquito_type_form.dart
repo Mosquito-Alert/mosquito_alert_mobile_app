@@ -28,7 +28,7 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
   @override
   void initState() {
     super.initState();
-    question = new Question(
+    question = Question(
       question: widget.displayQuestion['question']['text'],
       question_id: widget.displayQuestion['question']['id'],
     );

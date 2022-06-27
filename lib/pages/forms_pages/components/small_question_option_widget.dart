@@ -23,7 +23,7 @@ class SmallQuestionOption extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: [
-                    new BoxShadow(
+                    BoxShadow(
                       color: Colors.grey,
                       blurRadius: 2,
                     )

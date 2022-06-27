@@ -91,7 +91,7 @@ class _ConsentFormState extends State<ConsentForm> {
                             Expanded(
                               child: RichText(
                                 text: TextSpan(
-                                    style: new TextStyle(
+                                    style: TextStyle(
                                         color: Style.textColor, fontSize: 14),
                                     children: [
                                       TextSpan(
@@ -101,9 +101,9 @@ class _ConsentFormState extends State<ConsentForm> {
                                       TextSpan(
                                           text: MyLocalizations.of(
                                               context, 'consent_txt_09'),
-                                          style: new TextStyle(
+                                          style: TextStyle(
                                               color: Style.colorPrimary),
-                                          recognizer: new TapGestureRecognizer()
+                                          recognizer: TapGestureRecognizer()
                                             ..onTap = () {
                                               Navigator.push(
                                                 context,
@@ -136,7 +136,7 @@ class _ConsentFormState extends State<ConsentForm> {
                             Expanded(
                               child: RichText(
                                 text: TextSpan(
-                                    style: new TextStyle(
+                                    style: TextStyle(
                                         color: Style.textColor, fontSize: 14),
                                     children: [
                                       TextSpan(
@@ -146,9 +146,9 @@ class _ConsentFormState extends State<ConsentForm> {
                                       TextSpan(
                                         text: MyLocalizations.of(
                                             context, 'consent_txt_11'),
-                                        style: new TextStyle(
+                                        style: TextStyle(
                                             color: Style.colorPrimary),
-                                        recognizer: new TapGestureRecognizer()
+                                        recognizer: TapGestureRecognizer()
                                           ..onTap = () {
                                             Navigator.push(
                                               context,
@@ -173,7 +173,7 @@ class _ConsentFormState extends State<ConsentForm> {
                         ),
                         RichText(
                           text: TextSpan(
-                              style: new TextStyle(
+                              style: TextStyle(
                                   color: Style.textColor, fontSize: 14),
                               children: [
                                 TextSpan(
@@ -184,8 +184,8 @@ class _ConsentFormState extends State<ConsentForm> {
                                   text: MyLocalizations.of(
                                       context, 'consent_txt_15'),
                                   style:
-                                      new TextStyle(color: Style.colorPrimary),
-                                  recognizer: new TapGestureRecognizer()
+                                      TextStyle(color: Style.colorPrimary),
+                                  recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       Navigator.push(
                                         context,
@@ -205,7 +205,7 @@ class _ConsentFormState extends State<ConsentForm> {
                         ),
                         RichText(
                           text: TextSpan(
-                              style: new TextStyle(
+                              style: TextStyle(
                                   color: Style.textColor, fontSize: 14),
                               children: [
                                 TextSpan(
@@ -216,8 +216,8 @@ class _ConsentFormState extends State<ConsentForm> {
                                   text: MyLocalizations.of(
                                       context, 'consent_txt_13'),
                                   style:
-                                      new TextStyle(color: Style.colorPrimary),
-                                  recognizer: new TapGestureRecognizer()
+                                      TextStyle(color: Style.colorPrimary),
+                                  recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       Navigator.push(
                                         context,

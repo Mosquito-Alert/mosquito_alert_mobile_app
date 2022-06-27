@@ -9,7 +9,7 @@ class AggregatedPoints {
   String bitmabAssetName;
 
   AggregatedPoints(this.report, this.index, this.location, this.count) {
-    this.bitmabAssetName = getBitmapDescriptor();
+    bitmabAssetName = getBitmapDescriptor();
   }
 
   String getBitmapDescriptor() {

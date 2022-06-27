@@ -22,12 +22,12 @@ class Session {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['session_ID'] = this.session_ID;
-    data['user'] = this.user;
-    data['session_start_time'] = this.session_start_time;
-    data['session_end_time'] = this.session_end_time;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['session_ID'] = session_ID;
+    data['user'] = user;
+    data['session_start_time'] = session_start_time;
+    data['session_end_time'] = session_end_time;
     return data;
   }
 }

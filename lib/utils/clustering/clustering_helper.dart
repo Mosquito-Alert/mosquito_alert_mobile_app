@@ -322,9 +322,9 @@ class ClusteringHelper {
     final Paint paint2 = Paint()..color = Style.colorPrimary;
     canvas
       ..drawRect(
-          new Rect.fromLTRB(0.0, 0.0, size.toDouble(), size.toDouble()), paint1)
+          Rect.fromLTRB(0.0, 0.0, size.toDouble(), size.toDouble()), paint1)
       ..drawRect(
-          new Rect.fromLTRB(width / 2, width / 2, size - width / 2,
+          Rect.fromLTRB(width / 2, width / 2, size - width / 2,
               size.toDouble() - width / 2),
           paint2);
     TextPainter painter = TextPainter(textDirection: TextDirection.ltr);

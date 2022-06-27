@@ -28,10 +28,11 @@ class OtherMosquitoInfo extends StatelessWidget {
                   InkWell(
                     onTap: () async {
                       final url = MyLocalizations.of(context, 'url_web');
-                      if (await canLaunch(url))
+                      if (await canLaunch(url)) {
                         await launch(url);
-                      else
+                      } else {
                         throw 'Could not launch $url';
+                      }
                     },
                     child: Text(MyLocalizations.of(context, 'url_web'),
                         style: TextStyle(

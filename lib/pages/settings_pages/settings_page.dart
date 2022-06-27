@@ -83,7 +83,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final key = new GlobalKey<ScaffoldState>();
+    final key = GlobalKey<ScaffoldState>();
 
     return Scaffold(
       key: key,
@@ -123,8 +123,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       onTap: () {
                         Clipboard.setData(ClipboardData(text: snapshot.data));
-                        key.currentState.showSnackBar(new SnackBar(
-                          content: new Text('Copied to Clipboard'),
+                        key.currentState.showSnackBar(SnackBar(
+                          content: Text('Copied to Clipboard'),
                         ));
                       },
                     )

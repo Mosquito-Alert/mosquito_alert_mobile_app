@@ -27,8 +27,8 @@ class UserManager {
       );
 
       prefs.setBool('firstTime', true);
-      var uuid = new Uuid().v4();
-      var trackingUuid = new Uuid().v4();
+      var uuid = Uuid().v4();
+      var trackingUuid = Uuid().v4();
       prefs.setString('uuid', uuid);
       prefs.setString('trackingUUID', trackingUuid);
       prefs.setBool('trackingDisabled', false);

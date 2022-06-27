@@ -153,7 +153,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
           );
           Utils.setSelectedLocation(Utils.report.selected_location_lat,
               Utils.report.selected_location_lon);
-          currentMarkers.add(new Marker(
+          currentMarkers.add(Marker(
             markerId: MarkerId('selected'),
             position: LatLng(Utils.report.selected_location_lat,
                 Utils.report.selected_location_lon),
@@ -174,7 +174,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                     .substring(q.answer_value.indexOf('( ') + 2,
                     q.answer_value.indexOf(')'))
                     .split(', ');
-                currentMarkers.add(new Marker(
+                currentMarkers.add(Marker(
                     markerId: MarkerId('mk_$i'),
                     position:
                     LatLng(double.parse(res[0]), double.parse(res[1]))));
@@ -303,8 +303,8 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                                       : Set(),
                                   gestureRecognizers:
                                       <Factory<OneSequenceGestureRecognizer>>[
-                                    new Factory<OneSequenceGestureRecognizer>(
-                                      () => new EagerGestureRecognizer(),
+                                    Factory<OneSequenceGestureRecognizer>(
+                                      () => EagerGestureRecognizer(),
                                     ),
                                   ].toSet(),
                                 )),

@@ -8,7 +8,7 @@ class MyLocalizations {
   static Map<dynamic, dynamic> _localisedValues;
 
   MyLocalizations(this.locale) {
-    this.locale = locale;
+    locale = locale;
     _localisedValues = null;
   }
 

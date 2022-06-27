@@ -56,11 +56,11 @@ class _MyReportsPageState extends State<MyReportsPage> {
   final _pagesController = PageController();
 
   StreamController<List<Report>> dataMarkersStream =
-      new StreamController<List<Report>>.broadcast();
+      StreamController<List<Report>>.broadcast();
   StreamController<List<Report>> dataStream =
-      new StreamController<List<Report>>.broadcast();
+      StreamController<List<Report>>.broadcast();
 
-  StreamController<bool> loadingStream = new StreamController<bool>.broadcast();
+  StreamController<bool> loadingStream = StreamController<bool>.broadcast();
 
   int _currentIndex = 0;
   Map<int, Widget> _children;

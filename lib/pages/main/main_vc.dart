@@ -34,9 +34,9 @@ class _MainVCState extends State<MainVC> {
   String userName;
 
   StreamController<String> nameStream =
-      new StreamController<String>.broadcast();
+      StreamController<String>.broadcast();
   String userUuid;
-  StreamController<bool> loadingStream = new StreamController<bool>.broadcast();
+  StreamController<bool> loadingStream = StreamController<bool>.broadcast();
 
   @override
   void initState() {

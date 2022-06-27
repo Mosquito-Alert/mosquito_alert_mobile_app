@@ -36,7 +36,7 @@ class _RecoverPasswordState extends State<RecoverPassword> {
           width: double.infinity,
           height: double.infinity,
           alignment: Alignment.topCenter,
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.white,
           ),
           child: SvgPicture.asset(

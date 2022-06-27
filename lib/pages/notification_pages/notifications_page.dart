@@ -129,12 +129,13 @@ class _NotificationsPageState extends State<NotificationsPage> {
             stream: loadingStream.stream,
             initialData: true,
             builder: (BuildContext context, AsyncSnapshot<bool> snapLoading) {
-              if (snapLoading.data == true)
+              if (snapLoading.data == true) {
                 return Container(
                   child: Center(
                     child: Utils.loading(true),
                   ),
                 );
+              }
               return Container();
             }),
       ],

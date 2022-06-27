@@ -52,14 +52,14 @@ class VersionControl {
 
   VersionControl._internal();
 
-  static final VersionControl _singleton = new VersionControl._internal();
+  static final VersionControl _singleton = VersionControl._internal();
 
   factory VersionControl() {
     return _singleton;
   }
 
   static VersionControl getInstance() {
-    return new VersionControl();
+    return VersionControl();
   }
 
   Future<bool> checkVersion(BuildContext context) async {
@@ -241,7 +241,7 @@ class VersionControl {
         context: packageContext, //
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: new Text(title),
+            title: Text(title),
             content: Column(
               children: <Widget>[
                 SizedBox(
@@ -277,7 +277,7 @@ class VersionControl {
         context: packageContext, //
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: new Text(title),
+            title: Text(title),
             content: Column(
               children: <Widget>[
                 SizedBox(
@@ -329,12 +329,12 @@ class VersionData {
         String apiKey,
         String createdAt,
         String updatedAt}) {
-    this._id = id;
-    this._name = name;
-    this._currentVersionConfig = currentVersionConfig;
-    this._apiKey = apiKey;
-    this._createdAt = createdAt;
-    this._updatedAt = updatedAt;
+    _id = id;
+    _name = name;
+    _currentVersionConfig = currentVersionConfig;
+    _apiKey = apiKey;
+    _createdAt = createdAt;
+    _updatedAt = updatedAt;
   }
 
   String get id => _id;
@@ -366,9 +366,9 @@ class VersionData {
     _id = json['id'];
     _name = json['name'];
     if (json['currentVersionConfig'] != null) {
-      _currentVersionConfig = new List<CurrentVersionConfig>();
+      _currentVersionConfig = List<CurrentVersionConfig>();
       json['currentVersionConfig'].forEach((v) {
-        _currentVersionConfig.add(new CurrentVersionConfig.fromJson(v));
+        _currentVersionConfig.add(CurrentVersionConfig.fromJson(v));
       });
     }
     _apiKey = json['apiKey'];
@@ -377,16 +377,16 @@ class VersionData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this._id;
-    data['name'] = this._name;
-    if (this._currentVersionConfig != null) {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = _id;
+    data['name'] = _name;
+    if (_currentVersionConfig != null) {
       data['currentVersionConfig'] =
-          this._currentVersionConfig.map((v) => v.toJson()).toList();
+          _currentVersionConfig.map((v) => v.toJson()).toList();
     }
-    data['apiKey'] = this._apiKey;
-    data['createdAt'] = this._createdAt;
-    data['updatedAt'] = this._updatedAt;
+    data['apiKey'] = _apiKey;
+    data['createdAt'] = _createdAt;
+    data['updatedAt'] = _updatedAt;
     return data;
   }
 }
@@ -412,15 +412,15 @@ class CurrentVersionConfig {
         String minSystemVersion,
         Title cancelButtonTitle,
         String okButtonActionURL}) {
-    this._title = title;
-    this._message = message;
-    this._platform = platform;
-    this._buildVersion = buildVersion;
-    this._okButtonTitle = okButtonTitle;
-    this._comparisonMode = comparisonMode;
-    this._minSystemVersion = minSystemVersion;
-    this._cancelButtonTitle = cancelButtonTitle;
-    this._okButtonActionURL = okButtonActionURL;
+    _title = title;
+    _message = message;
+    _platform = platform;
+    _buildVersion = buildVersion;
+    _okButtonTitle = okButtonTitle;
+    _comparisonMode = comparisonMode;
+    _minSystemVersion = minSystemVersion;
+    _cancelButtonTitle = cancelButtonTitle;
+    _okButtonActionURL = okButtonActionURL;
   }
 
   Title get title => _title;
@@ -463,41 +463,41 @@ class CurrentVersionConfig {
       _okButtonActionURL = okButtonActionURL;
 
   CurrentVersionConfig.fromJson(Map<String, dynamic> json) {
-    _title = json['title'] != null ? new Title.fromJson(json['title']) : null;
+    _title = json['title'] != null ? Title.fromJson(json['title']) : null;
     _message =
-    json['message'] != null ? new Title.fromJson(json['message']) : null;
+    json['message'] != null ? Title.fromJson(json['message']) : null;
     _platform = json['platform'];
     _buildVersion = json['buildVersion'];
     _okButtonTitle = json['okButtonTitle'] != null
-        ? new Title.fromJson(json['okButtonTitle'])
+        ? Title.fromJson(json['okButtonTitle'])
         : null;
     _comparisonMode = json['comparisonMode'];
     _minSystemVersion = json['minSystemVersion'];
     _cancelButtonTitle = json['cancelButtonTitle'] != null
-        ? new Title.fromJson(json['cancelButtonTitle'])
+        ? Title.fromJson(json['cancelButtonTitle'])
         : null;
     _okButtonActionURL = json['okButtonActionURL'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this._title != null) {
-      data['title'] = this._title.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (_title != null) {
+      data['title'] = _title.toJson();
     }
-    if (this._message != null) {
-      data['message'] = this._message.toJson();
+    if (_message != null) {
+      data['message'] = _message.toJson();
     }
-    data['platform'] = this._platform;
-    data['buildVersion'] = this._buildVersion;
-    if (this._okButtonTitle != null) {
-      data['okButtonTitle'] = this._okButtonTitle.toJson();
+    data['platform'] = _platform;
+    data['buildVersion'] = _buildVersion;
+    if (_okButtonTitle != null) {
+      data['okButtonTitle'] = _okButtonTitle.toJson();
     }
-    data['comparisonMode'] = this._comparisonMode;
-    data['minSystemVersion'] = this._minSystemVersion;
-    if (this._cancelButtonTitle != null) {
-      data['cancelButtonTitle'] = this._cancelButtonTitle.toJson();
+    data['comparisonMode'] = _comparisonMode;
+    data['minSystemVersion'] = _minSystemVersion;
+    if (_cancelButtonTitle != null) {
+      data['cancelButtonTitle'] = _cancelButtonTitle.toJson();
     }
-    data['okButtonActionURL'] = this._okButtonActionURL;
+    data['okButtonActionURL'] = _okButtonActionURL;
     return data;
   }
 }
@@ -508,9 +508,9 @@ class Title {
   String _cat;
 
   Title({String en, String es, String cat}) {
-    this._en = en;
-    this._es = es;
-    this._cat = cat;
+    _en = en;
+    _es = es;
+    _cat = cat;
   }
 
   String get en => _en;
@@ -532,10 +532,10 @@ class Title {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['en'] = this._en;
-    data['es'] = this._es;
-    data['cat'] = this._cat;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['en'] = _en;
+    data['es'] = _es;
+    data['cat'] = _cat;
     return data;
   }
 }

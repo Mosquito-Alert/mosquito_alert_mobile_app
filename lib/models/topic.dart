@@ -15,11 +15,11 @@ class Topic {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user'] = this.user;
-    data['topic'] = this.topic;
-    data['topic_code'] = this.topicCode;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['user'] = user;
+    data['topic'] = topic;
+    data['topic_code'] = topicCode;
     return data;
   }
 }

@@ -24,7 +24,7 @@ class _LoginMainPageState extends State<LoginMainPage> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        new Scaffold(
+        Scaffold(
           backgroundColor: Colors.white,
           body:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <

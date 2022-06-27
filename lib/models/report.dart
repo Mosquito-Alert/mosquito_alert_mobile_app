@@ -86,7 +86,7 @@ class Report {
     if (json['photos'] != null) {
       photos = <Photo>[];
       json['photos'].forEach((p) {
-        var ph = new Photo.fromJson(p);
+        var ph = Photo.fromJson(p);
         photos.add(ph);
       });
     }
@@ -94,7 +94,7 @@ class Report {
     if (json['responses'] != null) {
       responses = <Question>[];
       json['responses'].forEach((q) {
-        responses.add(new Question.fromJson(q));
+        responses.add(Question.fromJson(q));
       });
     }
 
@@ -110,39 +110,39 @@ class Report {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['version_UUID'] = this.version_UUID;
-    data['version_number'] = this.version_number;
-    data['user'] = this.user;
-    data['report_id'] = this.report_id;
-    data['phone_upload_time'] = this.phone_upload_time;
-    data['creation_time'] = this.creation_time;
-    data['version_time'] = this.version_time;
-    data['type'] = this.type;
-    data['location_choice'] = this.location_choice;
-    data['current_location_lon'] = this.current_location_lon;
-    data['current_location_lat'] = this.current_location_lat;
-    data['selected_location_lon'] = this.selected_location_lon;
-    data['selected_location_lat'] = this.selected_location_lat;
-    data['note'] = this.note;
-    data['package_name'] = this.package_name;
-    data['package_version'] = this.package_version;
-    data['session'] = this.session;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['version_UUID'] = version_UUID;
+    data['version_number'] = version_number;
+    data['user'] = user;
+    data['report_id'] = report_id;
+    data['phone_upload_time'] = phone_upload_time;
+    data['creation_time'] = creation_time;
+    data['version_time'] = version_time;
+    data['type'] = type;
+    data['location_choice'] = location_choice;
+    data['current_location_lon'] = current_location_lon;
+    data['current_location_lat'] = current_location_lat;
+    data['selected_location_lon'] = selected_location_lon;
+    data['selected_location_lat'] = selected_location_lat;
+    data['note'] = note;
+    data['package_name'] = package_name;
+    data['package_version'] = package_version;
+    data['session'] = session;
 
-    if (this.responses != null) {
-      data['responses'] = this.responses.map((r) => r.toJson()).toList();
+    if (responses != null) {
+      data['responses'] = responses.map((r) => r.toJson()).toList();
     }
 
-    if (this.photos != null) {
-      data['photos'] = this.photos.map((r) => r.toJson()).toList();
+    if (photos != null) {
+      data['photos'] = photos.map((r) => r.toJson()).toList();
     }
 
-    data['device_manfacturer'] = this.device_manufacturer;
-    data['device_model'] = this.device_model;
-    data['os'] = this.os;
-    data['os_version'] = this.os_version;
-    data['os_language'] = this.os_language;
-    data['app_language'] = this.app_language;
+    data['device_manfacturer'] = device_manufacturer;
+    data['device_model'] = device_model;
+    data['os'] = os;
+    data['os_version'] = os_version;
+    data['os_language'] = os_language;
+    data['app_language'] = app_language;
     return data;
   }
 }
@@ -165,10 +165,10 @@ class Photo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['photo'] = this.photo;
-    data['uuid'] = this.uuid;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['photo'] = photo;
+    data['uuid'] = uuid;
     return data;
   }
 }

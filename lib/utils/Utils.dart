@@ -97,7 +97,7 @@ class Utils {
       } else {
         int sessionId = response + 1;
 
-        session = new Session(
+        session = Session(
             session_ID: sessionId,
             user: userUUID,
             session_start_time: DateTime.now().toIso8601String());
@@ -112,11 +112,11 @@ class Utils {
     if (session.id != null && language != null) {
       var lang = await UserManager.getLanguage();
       var userUUID = await UserManager.getUUID();
-      report = new Report(
+      report = Report(
           type: type,
           report_id: randomAlphaNumeric(4).toString(),
           version_number: 0,
-          version_UUID: new Uuid().v4(),
+          version_UUID: Uuid().v4(),
           user: userUUID,
           session: session.id,
           responses: []);
@@ -170,7 +170,7 @@ class Utils {
     resetReport();
     report = editReport;
     report.version_number = report.version_number + 1;
-    report.version_UUID = new Uuid().v4();
+    report.version_UUID = Uuid().v4();
 
     if (editReport.photos != null || editReport.photos.isNotEmpty) {
       imagePath = [];
@@ -206,7 +206,7 @@ class Utils {
 
   static deleteLastReport() {
     report = null;
-    report = new Report.fromJson(reportsList.last.toJson());
+    report = Report.fromJson(reportsList.last.toJson());
     reportsList.removeLast();
     print('${jsonEncode(reportsList)}');
     // print(reportsList);
@@ -325,7 +325,7 @@ class Utils {
         _questions[index].answer = answer;
       }
     } else {
-      Question newQuestion = new Question(
+      Question newQuestion = Question(
         question: 'question_7',
         answer: answer,
         question_id: 7,
@@ -557,7 +557,7 @@ class Utils {
         context: context, //
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: new Text(
+            title: Text(
               title,
               style: TextStyle(letterSpacing: -0.3),
             ),
@@ -627,7 +627,7 @@ class Utils {
         context: context, //
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: new Text(
+            title: Text(
               title,
               style: TextStyle(letterSpacing: -0.3),
             ),
@@ -798,10 +798,11 @@ class Utils {
             InkWell(
               onTap: () async {
                 final url = MyLocalizations.of(context, 'url_politics');
-                if (await canLaunch(url))
+                if (await canLaunch(url)) {
                   await launch(url);
-                else
+                } else {
                   throw 'Could not launch $url';
+                }
               },
               child: Text(
                   MyLocalizations.of(context, 'terms_and_conditions_txt2'),
@@ -816,10 +817,11 @@ class Utils {
             InkWell(
               onTap: () async {
                 final url = MyLocalizations.of(context, 'url_legal');
-                if (await canLaunch(url))
+                if (await canLaunch(url)) {
                   await launch(url);
-                else
+                } else {
                   throw 'Could not launch $url';
+                }
               },
               child: Text(
                   MyLocalizations.of(context, 'terms_and_conditions_txt4'),
@@ -841,13 +843,13 @@ class Utils {
             child: Container(
             color: Colors.transparent,
             child: Center(
-              child: new CircularProgressIndicator(
-                valueColor: new AlwaysStoppedAnimation<Color>(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
                     indicatorColor ?? Style.colorPrimary),
               ),
             ),
           ))
-        : new Container();
+        : Container();
   }
 
   static infoAdultCamera(context, getImage, {bool gallery = false}) async {

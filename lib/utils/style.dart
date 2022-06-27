@@ -165,7 +165,7 @@ class Style {
         padding: EdgeInsets.all(0),
         color: color,
         shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(3.0),
+          borderRadius: BorderRadius.circular(3.0),
           side: BorderSide(
               color: colorBorder ?? color,
               width: 1,

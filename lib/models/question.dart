@@ -22,11 +22,11 @@ class Question {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['question_id'] = this.question_id;
-    data['question'] = this.question;
-    data['answer_id'] = this.answer_id;
-    data['answer'] = this.answer;
-    data['answer_value'] = this.answer_value;
+    data['question_id'] = question_id;
+    data['question'] = question;
+    data['answer_id'] = answer_id;
+    data['answer'] = answer;
+    data['answer_value'] = answer_value;
     return data;
   }
 }

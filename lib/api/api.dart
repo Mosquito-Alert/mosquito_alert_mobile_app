@@ -620,7 +620,7 @@ class ApiSingleton {
   Future<bool> saveImage(String image, String versionUUID) async {
     try {
       String fileName = image != null ? image.split('/').last : null;
-      var dio = new Dio();
+      var dio = Dio();
 
       var img = await MultipartFile.fromFile(image,
           filename: fileName, contentType: MediaType('image', 'jpeg'));
