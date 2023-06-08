@@ -1,6 +1,6 @@
 # **Mosquito Alert** 
 ## What is Mosquito Alert?
-Mosquito Alert is an institutional mobile application that brings together citizens, scientists and managers of public health and the environment to fight against the tiger mosquito and the yellow fever mosquito, vectors of dangerous diseases such as Zika, Dengue and Chikungunya.
+Mosquito Alert is a mobile phone application that is part of a larger citizen science system bringing together ordinary people, scientists and public health officials to fight against mosquitoes that can transmit diseases like Zika, dengue and chikungunya.
 
 ![Mosquito_Alert](https://user-images.githubusercontent.com/30580652/162627346-7018489f-7525-40ca-a3f6-b0dd59b519f3.png)
 
