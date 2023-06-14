@@ -19,14 +19,14 @@ flutter pub get
 flutter upgrade
 ```
 4. Connect your device or emulator and run the command ```flutter run```
-5. That's all! If you have problems, don't hesitate to open an issue on [Github Issues](https://github.com/Mosquito-Alert/MosquitoAlertApp/issues) and we'll be happy to help you!
+5. That's all! If you have problems, don't hesitate to open an issue on [Github Issues](https://github.com/Mosquito-Alert/Mosquito-Alert-Mobile-App/issues) and we'll be happy to help you!
 
 ## How to contribute
 Do you want to contribute?
 
 Feel free to fork our repository, create a new branch, make your changes and submit a pull request. We'll review it as soon as possible and merge it.
 
-It would be awesome if you assign yourself to an existing task or you open a new issue in [Github Issues](https://github.com/Mosquito-Alert/MosquitoAlertApp/issues), to keep other contributors informed on what you're working on.
+It would be awesome if you assign yourself to an existing task or you open a new issue in [Github Issues](https://github.com/Mosquito-Alert/Mosquito-Alert-Mobile-App/issues), to keep other contributors informed on what you're working on.
 
 If this project is useful for you, please consider starring this repository and giving us 5 stars on the app stores to give us more visibility.
 
@@ -51,5 +51,5 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 If you want to see the license in more detail, there are two options.
 - Open the app from your phone > Settings > Mosquito Alert License
-- See [the license file in english](https://github.com/Mosquito-Alert/MosquitoAlertApp/blob/master/assets/html/license_en.html) or see [the translated license into multiple other languages](https://github.com/Mosquito-Alert/MosquitoAlertApp/blob/master/assets/html)
+- See [the license file in english](https://github.com/Mosquito-Alert/Mosquito-Alert-Mobile-App/blob/master/assets/html/license_en.html) or see [the translated license into multiple other languages](https://github.com/Mosquito-Alert/Mosquito-Alert-Mobile-App/blob/master/assets/html)
 
