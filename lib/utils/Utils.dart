@@ -177,7 +177,7 @@ class Utils {
       editReport.photos.forEach((element) {
         imagePath.add({
           'image': '${ApiSingleton.baseUrl}/media/${element.photo}',
-          // 'image': 'http://webserver.mosquitoalert.com/media/${element.photo}',
+          // 'image': 'https://webserver.mosquitoalert.com/media/${element.photo}',
           'id': editReport.version_UUID
         });
       });
