@@ -311,14 +311,16 @@
     "question_17": "Riesci a vedere larve di zanzare?",
     "coordination_txt": "Coordinazione",
     "partners_txt": "Partners",
-    "disable_auto_hashtag": "Turn off auto-hashtag",
-    "enable_auto_hashtag": "Turn on auto-hashtag",
-    "disable_auto_hashtag_text": "Auto-hashtag will be turned off. Are you sure?",
-    "enable_auto_hashtag_text": "This is an automatic way of adding a specific hashtag to all your records. Use it only if you want to always have your records identified  by a unique hashtag.",
-    "enable_auto_hashtag_hint": "Write your hashtag.\nRemember not to include personal information.",
-    "save": "Save",
-
-    "auto_location_disclaimer_alert": "No tenim permís per utilitzar les dades d’ubicació del teu dispositiu. Pots habilitar-la als ajustaments de l'app. Vols obrir-los?",
-    "server_down": "Sembla que Mosquito Alert no está disponible ara mateix, si us plau intenta-ho de nou més tard."
-
+    "disable_auto_hashtag": "Disattiva la funzione auto-hashtag",
+    "enable_auto_hashtag": "Attiva la funzione auto-hashtag",
+    "disable_auto_hashtag_text": "Disattiva il testo dell'auto-hashtag",
+    "enable_auto_hashtag_text": "Attiva il testo dell'auto-hashtag",
+    "enable_auto_hashtag_hint": "Attiva i suggerimenti per l'auto-hashtag",
+    "save": "Salva",
+    "ma_not_available": "Mosquito Alert non è al momento disponibile",
+    "not_enough_permissions_location": "Permessi non sufficienti per rilevare la posizione",
+    "gl_ES": "Galiziano",
+    "eu_ES": "Basco",
+    "sv_SE": "Svedese",
+    "bn_BD": "Bengalese"
 }

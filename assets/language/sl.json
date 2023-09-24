@@ -317,8 +317,10 @@
     "enable_auto_hashtag_text": "This is an automatic way of adding a specific hashtag to all your records. Use it only if you want to always have your records identified  by a unique hashtag.",
     "enable_auto_hashtag_hint": "Write your hashtag.\nRemember not to include personal information.",
     "save": "Save",
-
-    "auto_location_disclaimer_alert": "No tenim permís per utilitzar les dades d’ubicació del teu dispositiu. Pots habilitar-la als ajustaments de l'app. Vols obrir-los?",
-    "server_down": "Sembla que Mosquito Alert no está disponible ara mateix, si us plau intenta-ho de nou més tard."
-
+    "ma_not_available": "Looks like Mosquito Alert isn't available right now. Please, try again later.",
+    "not_enough_permissions_location": "We don't have enough permissions to acess the location data on your device. You can enable this on the app settings. Want to go there?",
+    "gl_ES": "Galicijski",
+    "eu_ES": "Baskovščina",
+    "sv_SE": "švedščina",
+    "bn_BD": "Bengalščina"
 }

@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:intl/intl.dart';
 import 'package:mosquito_alert_app/api/api.dart';
@@ -146,6 +148,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     CustomShowModalBottomSheet.customShowModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
+          log(notification.expert_html);
           return SafeArea(
             bottom: false,
             child: Container(
@@ -174,34 +177,27 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         height: 10,
                       ),
                       Container(
-                        // padding: EdgeInsets.all(10),
-                        child: HtmlWidget(
-                          notification.expert_html,
-                          onTapUrl: (url) async {
-                            if (await canLaunch(url)) {
-                              await launch(url);
-                            }
-                          },
-                        ),
-                      ),
-                      // ClipRRect(
-                      //   borderRadius: BorderRadius.circular(15),
-                      //   child: Image.asset(
-                      //     'assets/img/placeholder.jpg',
-                      //     height: 100,
-                      //     width: double.infinity,
-                      //     fit: BoxFit.cover,
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //   height: 10,
-                      // ),
-                      // Style.title("¡Nueva especie detectada en Barcelona!"),
-                      // SizedBox(
-                      //   height: 10,
-                      // ),
-                      // Style.body(
-                      //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"),
+                          child: html.Html(
+                        data: notification.expert_html
+                            .replaceAll("<p><a", "<a")
+                            .replaceAll("</a></p>", "</a>"),
+                        onLinkTap: (String url, html.RenderContext context,
+                            Map<String, String> attributes, _) async {
+                          await launch(url, forceSafariVC: true);
+                        },
+                        style: {
+                          "a": html.Style(
+                              backgroundColor: Colors.transparent,
+                              color: Colors.blueAccent,
+                              padding: EdgeInsets.all(12),
+                              margin: EdgeInsets.all(12),
+                              textDecoration: TextDecoration.underline,
+                              textAlign: TextAlign.center,
+                              fontSize: html.FontSize(16.0)),
+                        },
+                        tagsList: html.Html.tags..addAll(["bird", "flutter"]),
+                      )),
+
                       SizedBox(
                         height: 10,
                       ),

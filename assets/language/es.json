@@ -67,7 +67,7 @@
     "edited_report_ok_txt": "Datos actualizados correctamente. Gracias por participar",
     "save_report_ko_txt": "Error, la notificación se enviará más tarde",
     "send_data": "Enviar datos",
-    "bytes_and_place_report_txt": "Indica cuantas picaduras tienes y en qué parte del cuerpo te han picado",
+    "bytes_and_place_report_txt": "Indica cuántas picaduras tienes y en qué parte del cuerpo te han picado",
     "close_report_no_save_txt": "Se perderán los datos que has introducido. ¿Seguro que quieres salir sin guardar y/o enviar?",
     "add_comments_question": "Si quieres añade un comentario",
     "comments_txt": "Recuerda no añadir información o datos personales",
@@ -184,7 +184,7 @@
     "bite_report_bodypart_rightleg": "Pierna derecha",
     "question_1": "¿Cuántas picaduras tienes y en qué parte del cuerpo?",
     "question_1_answer_11": "",
-    "question_2": "¿Donde te han picado?",
+    "question_2": "¿Dónde te han picado?",
     "question_2_answer_21": "Cabeza",
     "question_2_answer_22": "Brazo izquierdo",
     "question_2_answer_23": "Brazo derecho",
@@ -199,7 +199,7 @@
     "question_4": "¿Dónde te han picado?",
     "question_4_answer_41": "Dentro de un vehículo",
     "question_4_answer_42": "Dentro de un edificio",
-    "question_5": "¿Cuando te han picado?",
+    "question_5": "¿Cuándo te han picado?",
     "question_5_answer_51": "Ahora mismo",
     "question_5_answer_52": "En las últimas 24h",
     "question_6": "¿Qué tipo de mosquito crees que es?",
@@ -317,7 +317,10 @@
     "enable_auto_hashtag_text": "Este es un mecanismo automático para añadir un hashtag específico a todos tus informes. Úsalo solo si quieres tener tus informes identificados con el mismo hashtag.",
     "enable_auto_hashtag_hint": "Escribe tu hashtag.\nRecuerda no incluir información personal.",
     "save": "Guardar",
-
-    "auto_location_disclaimer_alert": "No tenim permís per utilitzar les dades d’ubicació del teu dispositiu. Pots habilitar-la als ajustaments de l'app. Vols obrir-los?",
-    "server_down": "Sembla que Mosquito Alert no está disponible ara mateix, si us plau intenta-ho de nou més tard."
+    "ma_not_available": "Parece que Mosquito Alert no está disponible ahora mismo. Por favor, inténtalo de nuevo más tarde.",
+    "not_enough_permissions_location": "No tenemos permiso para utilizar los datos de ubicación de tu dispositivo. Puedes habilitarlos en los ajustes de la app. ¿Quieres abrirlos?",
+    "gl_ES": "Gallego",
+    "eu_ES": "Euskera",
+    "sv_SE": "Sueco",
+    "bn_BD": "Bengalí"
 }

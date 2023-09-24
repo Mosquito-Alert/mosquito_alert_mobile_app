@@ -316,9 +316,11 @@
     "disable_auto_hashtag_text": "Vetë-hashtag-u do të çaktivizohet. A jeni i sigurt?",
     "enable_auto_hashtag_text": "Kjo është mënyrë automatike për të shtuar një hashtag të veçantë për të gjitha të dhënat tuaja. Përdoreni vetëm nëse doni që të dhënat tuaja të identifikohen gjithmonë nga një hashtag i vetëm.",
     "enable_auto_hashtag_hint": "Shkruani hashtag-un tuaj.\nKujtohuni të mos përfshini informacione personale.",
-    "save": "Save",
-
-    "auto_location_disclaimer_alert": "No tenim permís per utilitzar les dades d’ubicació del teu dispositiu. Pots habilitar-la als ajustaments de l'app. Vols obrir-los?",
-    "server_down": "Sembla que Mosquito Alert no está disponible ara mateix, si us plau intenta-ho de nou més tard."
-
+    "save": "Ruaj",
+    "ma_not_available": "Duket sikur \"Mosquito Alert\" nuk është i disponueshëm tani. Ju lutemi, provoni përsëri më vonë.",
+    "not_enough_permissions_location": "Nuk kemi leje të mjaftueshme për të hyrë tek të dhënat e vendndodhjes së pajisjes suaj. Ju mund ta mundësoni këtë tek cilësimet e aplikacionit. Dëshironi të shkoni atje?",
+    "gl_ES": "Galiane",
+    "eu_ES": "Baske",
+    "sv_SE": "Suedeze",
+    "bn_BD": "Bengal"
 }

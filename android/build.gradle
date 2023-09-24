@@ -2,7 +2,7 @@ buildscript {
     ext.kotlin_version = '1.5.0'
     ext {
         compileSdkVersion   = 31                // or higher
-        targetSdkVersion    = 31                // or higher
+        targetSdkVersion    = 33                // or higher
         appCompatVersion    = "1.0.2"           // or higher
         playServicesLocationVersion = "17.0.0"  // or higher
     }

@@ -82,20 +82,22 @@ class PushNotificationsManager {
         print(e);
       }
     } else {
+      final notification_data = jsonDecode(message['notification']);
+
       try {
-        title = message['notification']['title'];
+        title = notification_data["title"];
       } catch (e) {
         print(e);
       }
 
       try {
-        msg = message['notification']['body'];
+        msg = notification_data["body"];
       } catch (e) {
         print(e);
       }
 
       try {
-        notifId = "${message['data']['notification_id']}";
+        notifId = "${message['notification_id']}";
       } catch (e) {
         print(e);
       }
