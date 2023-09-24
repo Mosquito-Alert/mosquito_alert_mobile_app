@@ -297,7 +297,7 @@ class ApiSingleton {
       if (response.statusCode != 200) {
         print(
             'Request: ${response.request.toString()} -> Response: ${response.body}');
-        return ApiResponse.fromJson(json.decode(response.body));
+        return 0;
       }
       Map<String, dynamic> jsonAnswer = json.decode(response.body);
 

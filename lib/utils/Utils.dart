@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/question.dart';
 import 'package:mosquito_alert_app/models/report.dart';
+import 'package:mosquito_alert_app/models/response.dart';
 import 'package:mosquito_alert_app/models/session.dart';
 import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
@@ -93,6 +94,9 @@ class Utils {
       dynamic response = await ApiSingleton().getLastSession(userUUID);
       if (response is bool && !response) {
         print('Unable to get last session.');
+        return false;
+      } else if(response is ApiResponse){
+        print('response is of type ApiResponse, not a number.');
         return false;
       } else {
         int sessionId = response + 1;
