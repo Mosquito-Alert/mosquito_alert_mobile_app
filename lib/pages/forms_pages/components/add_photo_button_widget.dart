@@ -289,18 +289,24 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
   }
 
   getGalleryImages() async {
-    var newFiles = await FilePicker.platform.pickFiles(      type: FileType.image,);
-    List<String> paths = [];
+    final status = await Permission.storage.status;
 
-    if (newFiles != null && newFiles.files != null && newFiles.files.isNotEmpty) {
-      newFiles.files.forEach((image) {
-        Utils.saveImgPath(File(image.path));
-        paths.add(image.path);
-      });
+    if (status.isDenied || status.isPermanentlyDenied) {
+      await Permission.storage.request();
+    } else if (status.isGranted){
+      var newFiles = await FilePicker.platform.pickFiles(      type: FileType.image,);
+      List<String> paths = [];
 
-      setState(() {
-        images = [...images, ...paths];
-      });
+      if (newFiles != null && newFiles.files != null && newFiles.files.isNotEmpty) {
+        newFiles.files.forEach((image) {
+          Utils.saveImgPath(File(image.path));
+          paths.add(image.path);
+        });
+
+        setState(() {
+          images = [...images, ...paths];
+        });
+      }
     }
   }
 

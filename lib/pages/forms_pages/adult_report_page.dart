@@ -642,24 +642,30 @@ class _AdultReportPageState extends State<AdultReportPage> {
   }
 
   getGalleryImages() async {
-    var pickFiles = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-    );
+    final status = await Permission.storage.status;
 
-    if (pickFiles != null && pickFiles.files != null && pickFiles.files.isNotEmpty) {
-      setShowCamera(false);
-      setState(() {
-        index = _pagesController.page + 1;
-      });
-      await _pagesController
-          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-          .then((value) => setValid(widget.editReport != null));
-    }
+    if (status.isDenied || status.isPermanentlyDenied) {
+      await Permission.storage.request();
+    } else if (status.isGranted){
+      var pickFiles = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+      );
 
-    if (pickFiles != null && pickFiles.files != null && pickFiles.files.isNotEmpty) {
-      pickFiles.files.forEach((image) {
-        Utils.saveImgPath(File(image.path));
-      });
+      if (pickFiles != null && pickFiles.files != null && pickFiles.files.isNotEmpty) {
+        setShowCamera(false);
+        setState(() {
+          index = _pagesController.page + 1;
+        });
+        await _pagesController
+            .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
+            .then((value) => setValid(widget.editReport != null));
+      }
+
+      if (pickFiles != null && pickFiles.files != null && pickFiles.files.isNotEmpty) {
+        pickFiles.files.forEach((image) {
+          Utils.saveImgPath(File(image.path));
+        });
+      }
     }
   }
 
