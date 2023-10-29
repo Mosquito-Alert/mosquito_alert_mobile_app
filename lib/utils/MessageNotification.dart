@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'style.dart';
 
 class MessageNotification extends StatelessWidget {
-  final String title;
-  final String message;
-  final GestureTapCallback onTap;
+  final String? title;
+  final String? message;
+  final GestureTapCallback? onTap;
 
   const MessageNotification(
-      {Key key, @required this.title, @required this.message, this.onTap})
+      {Key? key, required this.title, required this.message, this.onTap})
       : super(key: key);
 
   @override

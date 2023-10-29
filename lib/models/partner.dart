@@ -1,8 +1,8 @@
 class Partner {
-  int id;
+  int? id;
   var point;
-  String textualDescription;
-  String pageUrl;
+  String? textualDescription;
+  String? pageUrl;
 
   Partner({
     this.id,

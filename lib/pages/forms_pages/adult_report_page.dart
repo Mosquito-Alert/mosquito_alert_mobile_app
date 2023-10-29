@@ -24,8 +24,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'components/biting_location_form.dart';
 
 class AdultReportPage extends StatefulWidget {
-  final Report editReport;
-  final Function loadData;
+  final Report? editReport;
+  final Function? loadData;
 
   AdultReportPage({this.editReport, this.loadData});
 
@@ -34,16 +34,16 @@ class AdultReportPage extends StatefulWidget {
 }
 
 class _AdultReportPageState extends State<AdultReportPage> {
-  PageController _pagesController;
-  List<Widget> _formsRepot;
-  List<Widget> _initialformsRepot;
-  List<Widget> _skipRepotForms;
+  PageController? _pagesController;
+  List<Widget>? _formsRepot;
+  List<Widget>? _initialformsRepot;
+  List<Widget>? _skipRepotForms;
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
   StreamController<bool> validStream = StreamController<bool>.broadcast();
   StreamController<bool> skipParts = StreamController<bool>.broadcast();
   StreamController<double> percentStream =
       StreamController<double>.broadcast();
-  double index;
+  double? index;
 
   List<Map> displayQuestions = [
     {
@@ -164,14 +164,14 @@ class _AdultReportPageState extends State<AdultReportPage> {
 
   bool addBiting = false;
   bool showCamera = false;
-  String otherReport;
-  Report toEditReport;
+  String? otherReport;
+  late Report toEditReport;
 
   @override
   void initState() {
     super.initState();
     if (widget.editReport != null) {
-      toEditReport = Report.fromJson(widget.editReport.toJson());
+      toEditReport = Report.fromJson(widget.editReport!.toJson());
       Utils.setEditReport(toEditReport);
     }
     _pagesController = PageController();
@@ -199,8 +199,8 @@ class _AdultReportPageState extends State<AdultReportPage> {
     ];
 
     if (widget.editReport != null ||
-        Utils.reportsList.isNotEmpty && Utils.reportsList.length == 1) {
-      _formsRepot.removeAt(4);
+        Utils.reportsList!.isNotEmpty && Utils.reportsList!.length == 1) {
+      _formsRepot!.removeAt(4);
     }
   }
 
@@ -221,7 +221,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
     });
   }
 
-  void addOtherReport(String reportType) {
+  void addOtherReport(String? reportType) {
     setState(() {
       otherReport = reportType;
     });
@@ -239,11 +239,11 @@ class _AdultReportPageState extends State<AdultReportPage> {
         MaterialPageRoute(builder: (context) => BitingReportPage()),
       );
     } else {
-      _pagesController
+      _pagesController!
           .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
           .then((value) => setValid(widget.editReport != null));
       setState(() {
-        index = _pagesController.page + 1;
+        index = _pagesController!.page! + 1;
       });
     }
   }
@@ -255,20 +255,20 @@ class _AdultReportPageState extends State<AdultReportPage> {
     });
     var res = await Utils.createReport();
 
-    if (!res) {
+    if (res!=null && res) {
       _showAlertKo();
     } else {
       if (Utils.savedAdultReport != null) {
-        if (Utils.savedAdultReport.country != null) {
+        if (Utils.savedAdultReport!.country != null) {
           List<Campaign> campaignsList =
-              await ApiSingleton().getCampaigns(Utils.savedAdultReport.country);
+              await (ApiSingleton().getCampaigns(Utils.savedAdultReport!.country) as FutureOr<List<Campaign>>);
           var now = DateTime.now();
           if (campaignsList.any((element) =>
-              DateTime.parse(element.startDate).isBefore(now) &&
-              DateTime.parse(element.endDate).isAfter(now))) {
+              DateTime.parse(element.startDate!).isBefore(now) &&
+              DateTime.parse(element.endDate!).isAfter(now))) {
             var activeCampaign = campaignsList.firstWhere((element) =>
-                DateTime.parse(element.startDate).isBefore(now) &&
-                DateTime.parse(element.endDate).isAfter(now));
+                DateTime.parse(element.startDate!).isBefore(now) &&
+                DateTime.parse(element.endDate!).isAfter(now));
 
             Utils.showAlertCampaign(
               context,
@@ -297,13 +297,13 @@ class _AdultReportPageState extends State<AdultReportPage> {
     }
     loadingStream.add(false);
     if (widget.editReport != null) {
-      widget.loadData();
+      widget.loadData!();
     }
   }
 
   @override
   void dispose() {
-    _pagesController.dispose();
+    _pagesController!.dispose();
     super.dispose();
   }
 
@@ -323,11 +323,11 @@ class _AdultReportPageState extends State<AdultReportPage> {
               leading: IconButton(
                 icon: Style.iconBack,
                 onPressed: () {
-                  var currentPage = _pagesController.page;
+                  var currentPage = _pagesController!.page;
 
                   if (currentPage == 0.0) {
                     setState(() {
-                      index = currentPage - 1;
+                      index = currentPage! - 1;
                     });
                     // if (Utils.reportsList != null &&
                     //     Utils.reportsList.isNotEmpty) {
@@ -337,12 +337,12 @@ class _AdultReportPageState extends State<AdultReportPage> {
                     // }
                   } else {
                     if (currentPage == 2.0 &&
-                        !Utils.report.responses
-                            .any((element) => element.answer_id == 61)) {
+                        !Utils.report!.responses!
+                            .any((element) => element!.answer_id == 61)) {
                       setState(() {
                         index = 0;
                       });
-                      _pagesController
+                      _pagesController!
                           .animateToPage(0,
                               duration: Duration(microseconds: 300),
                               curve: Curves.ease)
@@ -352,17 +352,17 @@ class _AdultReportPageState extends State<AdultReportPage> {
                       });
                     } else if (currentPage == 4.0) {
                       addBitingReport(false);
-                      _pagesController.previousPage(
+                      _pagesController!.previousPage(
                           duration: Duration(microseconds: 300),
                           curve: Curves.ease);
                       setState(() {
-                        index = currentPage - 1;
+                        index = currentPage! - 1;
                       });
                     } else {
                       setState(() {
-                        index = currentPage - 1;
+                        index = currentPage! - 1;
                       });
-                      _pagesController
+                      _pagesController!
                           .previousPage(
                               duration: Duration(microseconds: 300),
                               curve: Curves.ease)
@@ -384,11 +384,11 @@ class _AdultReportPageState extends State<AdultReportPage> {
                 PageView(
                   controller: _pagesController,
                   physics: NeverScrollableScrollPhysics(),
-                  children: _formsRepot,
+                  children: _formsRepot!,
                 ),
-                index < 1.0 || (index == 4.0 && _formsRepot.length == 6)
+                index! < 1.0 || (index == 4.0 && _formsRepot!.length == 6)
                     ? Container()
-                    : index != _formsRepot.length.toDouble() - 1
+                    : index != _formsRepot!.length.toDouble() - 1
                         ? SafeArea(
                             child: Align(
                             alignment: Alignment.bottomCenter,
@@ -397,7 +397,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                 initialData: false,
                                 builder: (BuildContext ctxt,
                                     AsyncSnapshot<bool> snapshot) {
-                                  return snapshot.data
+                                  return snapshot.data!
                                       ? Container(
                                           width: double.infinity,
                                           height: 54,
@@ -406,8 +406,8 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                           child: Style.button(
                                               MyLocalizations.of(
                                                   context, 'continue_txt'), () {
-                                            double currentPage =
-                                                _pagesController.page;
+                                            double? currentPage =
+                                                _pagesController!.page;
 
                                             if (currentPage == 3.0 &&
                                                 addBiting) {
@@ -423,9 +423,9 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                                 _chooseTypeImage();
                                               } else {
                                                 setState(() {
-                                                  index = currentPage + 1;
+                                                  index = currentPage! + 1;
                                                 });
-                                                _pagesController
+                                                _pagesController!
                                                     .nextPage(
                                                         duration: Duration(
                                                             microseconds: 300),
@@ -450,7 +450,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                 }),
                           ))
                         : SafeArea(
-                            child: _formsRepot.length == 2
+                            child: _formsRepot!.length == 2
                                 ? Container(
                                     width: double.infinity,
                                     height: 54,
@@ -504,17 +504,17 @@ class _AdultReportPageState extends State<AdultReportPage> {
       Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'),
           MyLocalizations.of(context, 'editing_adult_info_type_txt'), () {
         Utils.deleteReport(widget.editReport);
-        widget.loadData();
+        widget.loadData!();
         Navigator.pop(context);
       }, context);
     } else {
       setState(() {
         _formsRepot = skip ? _skipRepotForms : _initialformsRepot;
-        index = _pagesController.page + 1;
+        index = _pagesController!.page! + 1;
       });
 
       if (skip) {
-        _pagesController
+        _pagesController!
             .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
             .then((value) => setValid(true));
       }
@@ -531,7 +531,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
             Utils.infoAdultCamera(context, getGalleryImages, gallery: true);
           },
           child: Text(
-            MyLocalizations.of(context, 'gallery'),
+            MyLocalizations.of(context, 'gallery')!,
             style: TextStyle(color: Colors.blue),
           ),
         ),
@@ -541,7 +541,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
             Utils.infoAdultCamera(context, getImage);
           },
           child: Text(
-            MyLocalizations.of(context, 'camara'),
+            MyLocalizations.of(context, 'camara')!,
             style: TextStyle(color: Colors.blue),
           ),
         ),
@@ -551,20 +551,20 @@ class _AdultReportPageState extends State<AdultReportPage> {
             setShowCamera(false);
             Utils.imagePath = [];
             int page = 2;
-            if (Utils.report.responses
-                .any((element) => element.answer_id == 61)) {
+            if (Utils.report!.responses!
+                .any((element) => element!.answer_id == 61)) {
               page = 1;
             }
             setState(() {
-              index = _pagesController.page + page;
+              index = _pagesController!.page! + page;
             });
-            _pagesController
+            _pagesController!
                 .animateToPage(page,
                     duration: Duration(microseconds: 300), curve: Curves.ease)
                 .then((value) => setValid(widget.editReport != null));
           },
           child: Text(
-            MyLocalizations.of(context, 'continue_without_photo'),
+            MyLocalizations.of(context, 'continue_without_photo')!,
             style: TextStyle(color: Colors.blue),
           ),
         ),
@@ -578,7 +578,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.all(20),
-            child: Text(MyLocalizations.of(context, 'camara'),
+            child: Text(MyLocalizations.of(context, 'camara')!,
                 style: TextStyle(color: Colors.blue, fontSize: 15)),
           ),
         ),
@@ -591,7 +591,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.all(20),
-            child: Text(MyLocalizations.of(context, 'gallery'),
+            child: Text(MyLocalizations.of(context, 'gallery')!,
                 style: TextStyle(color: Colors.blue, fontSize: 15)),
           ),
         ),
@@ -602,15 +602,15 @@ class _AdultReportPageState extends State<AdultReportPage> {
             setShowCamera(false);
             Utils.imagePath = [];
             int page = 2;
-            if (Utils.report.responses
-                .any((element) => element.answer_id == 61)) {
+            if (Utils.report!.responses!
+                .any((element) => element!.answer_id == 61)) {
               page = 1;
             }
 
             setState(() {
-              index = _pagesController.page + page;
+              index = _pagesController!.page! + page;
             });
-            _pagesController
+            _pagesController!
                 .animateToPage(page,
                     duration: Duration(microseconds: 300), curve: Curves.ease)
                 .then((value) => setValid(widget.editReport != null));
@@ -618,7 +618,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.all(20),
-            child: Text(MyLocalizations.of(context, 'continue_without_photo'),
+            child: Text(MyLocalizations.of(context, 'continue_without_photo')!,
                 style: TextStyle(color: Colors.blue, fontSize: 15)),
           ),
         ),
@@ -635,37 +635,35 @@ class _AdultReportPageState extends State<AdultReportPage> {
           title:
               '${MyLocalizations.of(context, 'bs_info_adult_title_optional')}:');
     } else {
-      _pagesController
+      _pagesController!
           .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
           .then((value) => setValid(widget.editReport != null));
     }
   }
 
   getGalleryImages() async {
-    final status = await Permission.storage.status;
+    var pickFiles = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+    );
 
-    if (status.isDenied || status.isPermanentlyDenied) {
-      await Permission.storage.request();
-    } else if (status.isGranted){
-      var pickFiles = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-      );
+    if (pickFiles != null &&
+        pickFiles.files != null &&
+        pickFiles.files.isNotEmpty) {
+      setShowCamera(false);
+      setState(() {
+        index = _pagesController!.page! + 1;
+      });
+      await _pagesController!
+          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
+          .then((value) => setValid(widget.editReport != null));
+    }
 
-      if (pickFiles != null && pickFiles.files != null && pickFiles.files.isNotEmpty) {
-        setShowCamera(false);
-        setState(() {
-          index = _pagesController.page + 1;
-        });
-        await _pagesController
-            .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-            .then((value) => setValid(widget.editReport != null));
-      }
-
-      if (pickFiles != null && pickFiles.files != null && pickFiles.files.isNotEmpty) {
-        pickFiles.files.forEach((image) {
-          Utils.saveImgPath(File(image.path));
-        });
-      }
+    if (pickFiles != null &&
+        pickFiles.files != null &&
+        pickFiles.files.isNotEmpty) {
+      pickFiles.files.forEach((image) {
+        Utils.saveImgPath(File(image.path!));
+      });
     }
   }
 
@@ -676,22 +674,19 @@ class _AdultReportPageState extends State<AdultReportPage> {
     }
 
     final _picker = ImagePicker();
-    var image = await _picker.getImage(
-      source: source,
-      maxHeight: 1024,
-      imageQuality: 60,
-    );
+    var image = await _picker.pickImage(
+        source: source, maxHeight: 1024, imageQuality: 60);
 
     if (image != null) {
       final File file = File(image.path);
       Utils.saveImgPath(file);
       setShowCamera(false);
 
-      _pagesController
+      await _pagesController!
           .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
           .then((value) => setValid(widget.editReport != null));
       setState(() {
-        index = _pagesController.page + 1;
+        index = _pagesController!.page! + 1;
       });
     }
   }
@@ -738,10 +733,10 @@ class _AdultReportPageState extends State<AdultReportPage> {
   }
 
   _onWillPop() {
-    if (Utils.report.responses.isNotEmpty) {
+    if (Utils.report!.responses!.isNotEmpty) {
       Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'),
           MyLocalizations.of(context, 'close_report_no_save_txt'), () {
-        if (Utils.reportsList != null && Utils.reportsList.isNotEmpty) {
+        if (Utils.reportsList != null && Utils.reportsList!.isNotEmpty) {
           Utils.deleteLastReport();
         } else {
           Utils.resetReport();

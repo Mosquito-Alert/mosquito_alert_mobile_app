@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class CampaignTutorialPage extends StatefulWidget {
-  bool fromReport;
+  bool? fromReport;
 
   CampaignTutorialPage({this.fromReport});
 
@@ -16,7 +15,7 @@ class CampaignTutorialPage extends StatefulWidget {
 class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
   List<Slide> slides = [];
 
-  Function goToTab;
+  Function? goToTab;
 
   @override
   void initState() {
@@ -33,7 +32,7 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_outlined),
           onPressed: () {
-          if (widget.fromReport != null && widget.fromReport) {
+          if (widget.fromReport != null && widget.fromReport!) {
             Navigator.popUntil(context, (route) => route.isFirst);
           } else {
             Navigator.pop(context);
@@ -79,7 +78,7 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
   }
   void onDonePress() {
     Navigator.pop(context);
-    if (widget.fromReport != null && widget.fromReport) {
+    if (widget.fromReport != null && widget.fromReport!) {
       Navigator.popUntil(context, (route) => route.isFirst);
     }
   }
@@ -118,13 +117,13 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
             children: <Widget>[
               GestureDetector(
                   child: Image.asset(
-                    currentSlide.pathImage,
+                    currentSlide.pathImage!,
                     width: MediaQuery.of(context).size.width ,
                     fit: BoxFit.cover,
                   )),
               Container(
                 child: Text(
-                  currentSlide.description,
+                  currentSlide.description!,
                   textAlign: TextAlign.center,
                   maxLines: 20,
                 ),

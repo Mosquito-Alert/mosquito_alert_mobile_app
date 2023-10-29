@@ -1,8 +1,8 @@
 class Campaign {
-  int id;
-  String postingAddress;
-  String startDate;
-  String endDate;
+  int? id;
+  String? postingAddress;
+  String? startDate;
+  String? endDate;
 
   Campaign({
     this.id,

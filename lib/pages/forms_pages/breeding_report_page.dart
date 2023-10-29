@@ -17,8 +17,8 @@ import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class BreedingReportPage extends StatefulWidget {
-  final Report editReport;
-  final Function loadData;
+  final Report? editReport;
+  final Function? loadData;
 
   BreedingReportPage({this.editReport, this.loadData});
 
@@ -27,8 +27,8 @@ class BreedingReportPage extends StatefulWidget {
 }
 
 class _BreedingReportPageState extends State<BreedingReportPage> {
-  PageController _pagesController;
-  List<Widget> _formsRepot, _initialFormsReport;
+  PageController? _pagesController;
+  late List<Widget> _formsRepot, _initialFormsReport;
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
   StreamController<bool> validStream = StreamController<bool>.broadcast();
   StreamController<double> percentStream =
@@ -71,8 +71,8 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
 
   bool showCamera = false;
   bool touched = false;
-  String otherReport;
-  Report toEditReport;
+  String? otherReport;
+  late Report toEditReport;
 
   double index = 1.0;
   double displayContinue = 2;
@@ -81,7 +81,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   void initState() {
     super.initState();
     if (widget.editReport != null) {
-      toEditReport = Report.fromJson(widget.editReport.toJson());
+      toEditReport = Report.fromJson(widget.editReport!.toJson());
       Utils.setEditReport(toEditReport);
     }
     _pagesController = PageController();
@@ -122,7 +122,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     }
   }
 
-  addOtherReport(String reportType) {
+  addOtherReport(String? reportType) {
     setState(() {
       otherReport = reportType;
     });
@@ -139,11 +139,11 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   }
 
   goNextPage() {
-    _pagesController
+    _pagesController!
         .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
         .then((value) => setValid(widget.editReport != null));
     setState(() {
-      index = _pagesController.page + 1;
+      index = _pagesController!.page! + 1;
     });
   }
 
@@ -180,12 +180,12 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       percentStream.add(0.8);
     });
     loadingStream.add(true);
-    bool res = await Utils.createReport();
+    bool? res = await Utils.createReport();
 
     if (widget.editReport != null) {
-      widget.loadData();
+      widget.loadData!();
     }
-    if (!res) {
+    if (!res!) {
       _showAlertKo();
     } else {
       _showAlertOk();
@@ -197,7 +197,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
 
   @override
   void dispose() {
-    _pagesController.dispose();
+    _pagesController!.dispose();
     super.dispose();
   }
 
@@ -217,19 +217,19 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
               leading: IconButton(
                 icon: Style.iconBack,
                 onPressed: () {
-                  double currentPage = _pagesController.page;
+                  double? currentPage = _pagesController!.page;
 
                   if (currentPage == 0.0) {
                     _onWillPop();
                   } else {
-                    _pagesController
+                    _pagesController!
                         .previousPage(
                             duration: Duration(microseconds: 300),
                             curve: Curves.ease)
                         .then((value) => addOtherReport(null));
                   }
                   setState(() {
-                    index = currentPage - 1;
+                    index = currentPage! - 1;
                   });
                 },
               ),
@@ -260,7 +260,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                                 initialData: false,
                                 builder: (BuildContext ctxt,
                                     AsyncSnapshot<bool> snapshot) {
-                                  return snapshot.data
+                                  return snapshot.data!
                                       ? Container(
                                           width: double.infinity,
                                           height: 54,
@@ -269,13 +269,13 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                                           child: Style.button(
                                               MyLocalizations.of(
                                                   context, 'continue_txt'), () {
-                                            double currentPage =
-                                                _pagesController.page;
+                                            double? currentPage =
+                                                _pagesController!.page;
 
                                             if (currentPage == 0.0) {
                                               _chooseTypeImage();
                                               setState(() {
-                                                index = currentPage + 1;
+                                                index = currentPage! + 1;
                                               });
                                             } else if (currentPage == 3.0 &&
                                                     otherReport == 'adult' ||
@@ -283,9 +283,9 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                                               navigateOtherReport();
                                             } else {
                                               setState(() {
-                                                index = currentPage + 1;
+                                                index = currentPage! + 1;
                                               });
-                                              _pagesController
+                                              _pagesController!
                                                   .nextPage(
                                                       duration: Duration(
                                                           microseconds: 300),
@@ -351,7 +351,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
             Utils.infoBreedingCamera(context, getGalleryImages, gallery: true);
           },
           child: Text(
-            MyLocalizations.of(context, 'gallery'),
+            MyLocalizations.of(context, 'gallery')!,
             style: TextStyle(color: Colors.blue),
           ),
         ),
@@ -361,7 +361,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
             Utils.infoBreedingCamera(context, getImage);
           },
           child: Text(
-            MyLocalizations.of(context, 'camara'),
+            MyLocalizations.of(context, 'camara')!,
             style: TextStyle(color: Colors.blue),
           ),
         ),
@@ -376,7 +376,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.all(20),
-            child: Text(MyLocalizations.of(context, 'camara'),
+            child: Text(MyLocalizations.of(context, 'camara')!,
                 style: TextStyle(color: Colors.blue, fontSize: 15)),
           ),
         ),
@@ -389,7 +389,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.all(20),
-            child: Text(MyLocalizations.of(context, 'gallery'),
+            child: Text(MyLocalizations.of(context, 'gallery')!,
                 style: TextStyle(color: Colors.blue, fontSize: 15)),
           ),
         ),
@@ -407,36 +407,34 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
         title: '${MyLocalizations.of(context, 'bs_info_adult_title')}:',
       );
     } else {
-      _pagesController
+      _pagesController!
           .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
           .then((value) => setValid(widget.editReport != null));
     }
   }
 
   getGalleryImages() async {
-    final status = await Permission.storage.status;
+    var pickFiles = await FilePicker.platform.pickFiles(type: FileType.image);
 
-    if (status.isDenied || status.isPermanentlyDenied) {
-      await Permission.storage.request();
-    } else if (status.isGranted){
-      var pickFiles = await FilePicker.platform.pickFiles(type: FileType.image);
+    if (pickFiles != null &&
+        pickFiles.files != null &&
+        pickFiles.files.isNotEmpty) {
+      setShowCamera(false);
+      await _pagesController!
+          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
+          .then((value) => setValid(widget.editReport != null));
+      setState(() {
+        index = _pagesController!.page! + 1;
+      });
+    }
 
-      if (pickFiles != null && pickFiles.files != null && pickFiles.files.isNotEmpty) {
-        setShowCamera(false);
-        await _pagesController
-            .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-            .then((value) => setValid(widget.editReport != null));
-        setState(() {
-          index = _pagesController.page + 1;
-        });
-      }
-
-      if (pickFiles != null && pickFiles.files != null && pickFiles.files.isNotEmpty) {
-        pickFiles.files.forEach((image) {
-          Utils.saveImgPath(File(image.path));
-        });
-      }
-    }    
+    if (pickFiles != null &&
+        pickFiles.files != null &&
+        pickFiles.files.isNotEmpty) {
+      pickFiles.files.forEach((image) {
+        Utils.saveImgPath(File(image.path!));
+      });
+    }      
   }
 
   Future getImage(source) async {
@@ -456,11 +454,11 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       final File file = File(image.path);
       Utils.saveImgPath(file);
       setShowCamera(false);
-      _pagesController
+      _pagesController!
           .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
           .then((value) => setValid(widget.editReport != null));
       setState(() {
-        index = _pagesController.page + 1;
+        index = _pagesController!.page! + 1;
       });
     }
   }
@@ -506,10 +504,10 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   }
 
   _onWillPop() {
-    if (Utils.report.responses.isNotEmpty) {
+    if (Utils.report!.responses!.isNotEmpty) {
       Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'),
           MyLocalizations.of(context, 'close_report_no_save_txt'), () {
-        if (Utils.reportsList != null && Utils.reportsList.isNotEmpty) {
+        if (Utils.reportsList != null && Utils.reportsList!.isNotEmpty) {
           Utils.deleteLastReport();
         } else {
           Utils.resetReport();

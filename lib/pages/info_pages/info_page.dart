@@ -7,7 +7,7 @@ import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class InfoPage extends StatefulWidget {
-  final String url;
+  final String? url;
   final bool localHtml;
 
   InfoPage(this.url, {this.localHtml = false});
@@ -17,7 +17,7 @@ class InfoPage extends StatefulWidget {
 }
 
 class _InfoPageState extends State<InfoPage> {
-  WebViewController _controller;
+  late WebViewController _controller;
   var title;
 
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
@@ -89,7 +89,7 @@ class _InfoPageState extends State<InfoPage> {
   }
 
   void _loadHtmlFromAssets() async {
-    var fileText = await rootBundle.loadString(widget.url);
+    var fileText = await rootBundle.loadString(widget.url!);
     await _controller.loadUrl(Uri.dataFromString(fileText,
             mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString());

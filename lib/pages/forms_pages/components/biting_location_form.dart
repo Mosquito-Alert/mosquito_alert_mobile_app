@@ -12,7 +12,7 @@ import 'package:flutter/gestures.dart';
 
 class BitingLocationForm extends StatefulWidget {
   final Function setValid;
-  final String displayQuestion;
+  final String? displayQuestion;
 
   BitingLocationForm(this.setValid, this.displayQuestion);
 
@@ -23,12 +23,12 @@ class BitingLocationForm extends StatefulWidget {
 enum LocationType { current, selected, missing }
 
 class _BitingLocationFormState extends State<BitingLocationForm> {
-  GoogleMapController controller;
+  late GoogleMapController controller;
   List<Marker> markers = [];
 
-  Position currentLocation;
+  Position? currentLocation;
 
-  Set<Circle> circles;
+  Set<Circle>? circles;
 
   StreamController<LocationType> streamType =
       StreamController<LocationType>.broadcast();
@@ -38,27 +38,27 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
     super.initState();
 
     if (Utils.report != null) {
-      switch (Utils.report.location_choice) {
+      switch (Utils.report!.location_choice) {
         case 'selected':
           streamType.add(LocationType.selected);
           markers.add(Marker(
               markerId: MarkerId('mk_${markers.length}'),
-              position: LatLng(Utils.report.selected_location_lat,
-                  Utils.report.selected_location_lon)));
+              position: LatLng(Utils.report!.selected_location_lat!,
+                  Utils.report!.selected_location_lon!)));
           currentLocation = Position(
-              latitude: Utils.report.selected_location_lat,
-              longitude: Utils.report.selected_location_lon);
+              latitude: Utils.report!.selected_location_lat!,
+              longitude: Utils.report!.selected_location_lon!);
           widget.setValid(true);
           break;
         case 'current':
           streamType.add(LocationType.current);
           markers.add(Marker(
               markerId: MarkerId('mk_${markers.length}'),
-              position: LatLng(Utils.report.current_location_lat,
-                  Utils.report.current_location_lon)));
+              position: LatLng(Utils.report!.current_location_lat!,
+                  Utils.report!.current_location_lon!)));
           currentLocation = Position(
-              latitude: Utils.report.current_location_lat,
-              longitude: Utils.report.current_location_lon);
+              latitude: Utils.report!.current_location_lat!,
+              longitude: Utils.report!.current_location_lon!);
           widget.setValid(true);
           break;
         default:
@@ -141,38 +141,38 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
       case LocationType.selected:
         currentMarkers = [];
         // get saved marker
-        if (Utils.report.selected_location_lat != null &&
-            Utils.report.selected_location_lon != null) {
+        if (Utils.report!.selected_location_lat != null &&
+            Utils.report!.selected_location_lon != null) {
           controller.moveCamera(
             CameraUpdate.newCameraPosition(
               CameraPosition(
-                  target: LatLng(Utils.report.selected_location_lat,
-                      Utils.report.selected_location_lon),
+                  target: LatLng(Utils.report!.selected_location_lat!,
+                      Utils.report!.selected_location_lon!),
                   zoom: 15.0),
             ),
           );
-          Utils.setSelectedLocation(Utils.report.selected_location_lat,
-              Utils.report.selected_location_lon);
+          Utils.setSelectedLocation(Utils.report!.selected_location_lat,
+              Utils.report!.selected_location_lon);
           currentMarkers.add(Marker(
             markerId: MarkerId('selected'),
-            position: LatLng(Utils.report.selected_location_lat,
-                Utils.report.selected_location_lon),
+            position: LatLng(Utils.report!.selected_location_lat!,
+                Utils.report!.selected_location_lon!),
           ));
           widget.setValid(true);
         }
         //get markers in responses
         try {
-          if (Utils.report.responses.any((r) => r.question_id == 5)) {
+          if (Utils.report!.responses!.any((r) => r!.question_id == 5)) {
             int i = 0;
-            Utils.report.responses.forEach((q) {
+            Utils.report!.responses!.forEach((q) {
               i++;
-              if (q.question_id == 5) {
+              if (q!.question_id == 5) {
 
                 print(q.answer_value);
 
-                var res = q.answer_value
-                    .substring(q.answer_value.indexOf('( ') + 2,
-                    q.answer_value.indexOf(')'))
+                var res = q.answer_value!
+                    .substring(q.answer_value!.indexOf('( ') + 2,
+                    q.answer_value!.indexOf(')'))
                     .split(', ');
                 currentMarkers.add(Marker(
                     markerId: MarkerId('mk_$i'),
@@ -220,8 +220,8 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                   margin: EdgeInsets.symmetric(vertical: 30),
                   child: StreamBuilder(
                     stream: streamType.stream,
-                    initialData: Utils.report.location_choice != null
-                        ? Utils.report.location_choice == 'selected'
+                    initialData: Utils.report!.location_choice != null
+                        ? Utils.report!.location_choice == 'selected'
                             ? LocationType.selected
                             : LocationType.current
                         : LocationType.current,
@@ -287,11 +287,11 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                                   },
                                   initialCameraPosition: CameraPosition(
                                     target: currentLocation != null
-                                        ? LatLng(currentLocation.latitude,
-                                            currentLocation.longitude)
+                                        ? LatLng(currentLocation!.latitude,
+                                            currentLocation!.longitude)
                                         : Utils.location != null
-                                            ? LatLng(Utils.location.latitude,
-                                                Utils.location.longitude)
+                                            ? LatLng(Utils.location!.latitude,
+                                                Utils.location!.longitude)
                                             : LatLng(
                                                 Utils.defaultLocation.latitude,
                                                 Utils
@@ -333,16 +333,16 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
   }
 
   resetLocations() {
-    Utils.report.selected_location_lat = null;
-    Utils.report.selected_location_lon = null;
-    Utils.report.current_location_lat = null;
-    Utils.report.current_location_lon = null;
+    Utils.report!.selected_location_lat = null;
+    Utils.report!.selected_location_lon = null;
+    Utils.report!.current_location_lat = null;
+    Utils.report!.current_location_lon = null;
 
-    if (Utils.report.type == 'bite') {
-      Utils.report.responses
-          .removeWhere((question) => question.question_id == 5);
+    if (Utils.report!.type == 'bite') {
+      Utils.report!.responses!
+          .removeWhere((question) => question!.question_id == 5);
     }
-    print(Utils.report.responses);
+    print(Utils.report!.responses);
 
     widget.setValid(false);
 

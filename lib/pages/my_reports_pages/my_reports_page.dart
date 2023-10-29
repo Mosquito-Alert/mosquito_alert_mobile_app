@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:material_segmented_control/material_segmented_control.dart';
@@ -26,32 +25,32 @@ import 'dart:ui' as ui;
 import 'components/reports_list_widget.dart';
 
 class MyReportsPage extends StatefulWidget {
-  MyReportsPage({Key key}) : super(key: key);
+  MyReportsPage({Key? key}) : super(key: key);
 
   @override
   _MyReportsPageState createState() => _MyReportsPageState();
 }
 
 class _MyReportsPageState extends State<MyReportsPage> {
-  Position location = Position(
+  Position? location = Position(
       latitude: Utils.defaultLocation.latitude,
       longitude: Utils.defaultLocation.longitude);
 
   //Map
-  ClusteringHelper clusteringHelper;
-  List<ReportAndGeohash> _listMarkers = List();
+  late ClusteringHelper clusteringHelper;
+  List<ReportAndGeohash> _listMarkers = [];
   Set<Marker> markers = Set();
-  BitmapDescriptor iconAdultYours;
-  BitmapDescriptor iconBitesYours;
-  BitmapDescriptor iconBreedingYours;
-  BitmapDescriptor iconAdultOthers;
+  BitmapDescriptor? iconAdultYours;
+  BitmapDescriptor? iconBitesYours;
+  BitmapDescriptor? iconBreedingYours;
+  BitmapDescriptor? iconAdultOthers;
 
   //My reports
   List<Report> _myData = [];
 
   //Data
-  Position _locationData;
-  double _zoomData;
+  Position? _locationData;
+  double? _zoomData;
 
   final _pagesController = PageController();
 
@@ -63,10 +62,10 @@ class _MyReportsPageState extends State<MyReportsPage> {
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
 
   int _currentIndex = 0;
-  Map<int, Widget> _children;
+  late Map<int, Widget> _children;
 
-  GoogleMapController mapController;
-  GoogleMapController miniMapController;
+  late GoogleMapController mapController;
+  GoogleMapController? miniMapController;
   List<Report> data = [];
 
   @override
@@ -104,7 +103,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
         targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
         .buffer
         .asUint8List();
   }
@@ -128,10 +127,10 @@ class _MyReportsPageState extends State<MyReportsPage> {
   Widget build(BuildContext context) {
     _children = {
       0: Container(
-        child: Text(MyLocalizations.of(context, 'map_txt')),
+        child: Text(MyLocalizations.of(context, 'map_txt')!),
       ),
       1: Container(
-        child: Text(MyLocalizations.of(context, 'list_txt')),
+        child: Text(MyLocalizations.of(context, 'list_txt')!),
       ),
     };
 
@@ -158,22 +157,16 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                 mapType: MapType.normal,
                                 mapToolbarEnabled: false,
                                 myLocationButtonEnabled: false,
-                                // minMaxZoomPreference:
-                                //     MinMaxZoomPreference(14, 20),
                                 onCameraMove: (newPosition) {
                                   location = Position(
                                       latitude: newPosition.target.latitude,
                                       longitude: newPosition.target.longitude);
-                                  /*clusteringHelper.onCameraMove(newPosition,
-                                      forceUpdate: false)*/
                                 },
-                                // onCameraIdle: () {
-                                //   _getData();
-                                // },
                                 initialCameraPosition: CameraPosition(
                                   target: location != null
                                       ? LatLng(
-                                          location.latitude, location.longitude)
+                                          location!.latitude,
+                                          location!.longitude)
                                       : Utils.defaultLocation,
                                   zoom: 12,
                                 ),
@@ -218,7 +211,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                           AsyncSnapshot<List<Report>> snapshot) {
                         return ReportsList(
                             snapshot.data != null
-                                ? snapshot.data.map((e) => e).toList()
+                                ? snapshot.data!.map((e) => e).toList()
                                 : [],
                             _reportBottomSheet);
                       },
@@ -276,7 +269,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                         selectedColor: Style.colorPrimary,
                         unselectedColor: Colors.white,
                         borderRadius: 5.0,
-                        onSegmentChosen: (index) {
+                        onSegmentChosen: (dynamic index) {
                           _onItemTapped(index);
                         },
                       ),
@@ -358,39 +351,30 @@ class _MyReportsPageState extends State<MyReportsPage> {
         });
   }
 
-  Future<Campaign> _checkCampaigns(int country) async {
+  Future<Campaign?> _checkCampaigns(int? country) async {
     List<Campaign> campaignsList = await ApiSingleton().getCampaigns(country);
     var now = DateTime.now();
     if (campaignsList.any((element) =>
-        DateTime.parse(element.startDate).isBefore(now) &&
-        DateTime.parse(element.endDate).isAfter(now))) {
+        DateTime.parse(element.startDate!).isBefore(now) &&
+        DateTime.parse(element.endDate!).isAfter(now))) {
       var activeCampaign = campaignsList.firstWhere((element) =>
-          DateTime.parse(element.startDate).isBefore(now) &&
-          DateTime.parse(element.endDate).isAfter(now));
+          DateTime.parse(element.startDate!).isBefore(now) &&
+          DateTime.parse(element.endDate!).isAfter(now));
       return activeCampaign;
     }
     return null;
   }
 
   _reportBottomSheet(Report report) async {
-    bool isMine = UserManager.profileUUIDs.any((id) => id == report.user);
-    Coordinates coord;
-    if (report.location_choice == 'current') {
-      coord =
-          Coordinates(report.current_location_lat, report.current_location_lon);
-    } else if (report.location_choice == 'selected') {
-      coord = Coordinates(
-          report.selected_location_lat, report.selected_location_lon);
-    }
-    Campaign campaign = await _checkCampaigns(report.country);
-    var address = await Geocoder.local.findAddressesFromCoordinates(coord);
+    bool? isMine = UserManager.profileUUIDs.any((id) => id == report.user);
+    Campaign? campaign = await _checkCampaigns(report.country);
     await CustomShowModalBottomSheet.customShowModalBottomSheet(
         context: context,
         dismissible: true,
         builder: (BuildContext bc) {
           return Container(
             constraints: BoxConstraints(
-              maxHeight: isMine
+              maxHeight: isMine!
                   ? MediaQuery.of(context).size.height * 0.85
                   : MediaQuery.of(context).size.height * 0.45,
               minHeight: isMine
@@ -440,9 +424,10 @@ class _MyReportsPageState extends State<MyReportsPage> {
                         height: 20,
                       ),
                       Style.titleMedium(
-                          MyLocalizations.of(context, 'report_of_the_day_txt') +
+                          MyLocalizations.of(
+                              context, 'report_of_the_day_txt')! +
                               DateFormat('dd-MM-yyyy')
-                                  .format(DateTime.parse(report.creation_time))
+                              .format(DateTime.parse(report.creation_time!))
                                   .toString()),
                       SizedBox(
                         height: 20,
@@ -450,6 +435,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                       report.type == 'adult' && campaign != null
                           ? Container(
                               padding: EdgeInsets.all(12),
+                              color: Colors.orange[50],
                               child: Column(
                                 children: [
                                   SizedBox(
@@ -534,7 +520,6 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                   ),
                                 ],
                               ),
-                              color: Colors.orange[50],
                             )
                           : Container(),
                       report.type == 'adult' && campaign != null
@@ -555,22 +540,22 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                 Style.body(
                                     report.location_choice == 'current'
                                         ? '(' +
-                                            report.current_location_lat
+                                            report.current_location_lat!
                                                 .toStringAsFixed(5) +
                                             ', ' +
-                                            report.current_location_lon
+                                            report.current_location_lon!
                                                 .toStringAsFixed(5) +
                                             ')'
                                         : '(' +
-                                            report.selected_location_lat
+                                            report.selected_location_lat!
                                                 .toStringAsFixed(5) +
                                             ', ' +
-                                            report.selected_location_lon
+                                            report.selected_location_lon!
                                                 .toStringAsFixed(5) +
                                             ')',
                                     fontSize: 12),
                                 Style.body(
-                                    ' ${MyLocalizations.of(context, "near_from_txt")} ${address[0].locality} (${address[0].subAdminArea})',
+                                    ' ${MyLocalizations.of(context, "near_from_txt")} ',
                                     fontSize: 12),
                               ],
                             ),
@@ -587,11 +572,11 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                     DateFormat('EEEE, dd MMMM yyyy',
                                             Utils.language.languageCode)
                                         .format(DateTime.parse(
-                                            report.creation_time))
+                                            report.creation_time!))
                                         .toString(),
                                     fontSize: 12),
                                 Style.body(
-                                    "${MyLocalizations.of(context, "at_time_txt")} ${DateFormat.Hms().format(DateTime.parse(report.creation_time))} ${MyLocalizations.of(context, 'hours')}",
+                                    "${MyLocalizations.of(context, "at_time_txt")} ${DateFormat.Hms().format(DateTime.parse(report.creation_time!))} ${MyLocalizations.of(context, 'hours')}",
                                     fontSize: 12),
                               ],
                             ),
@@ -628,7 +613,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                     ),
                                   ],
                                 ),
-                                report.photos.isNotEmpty
+                                report.photos!.isNotEmpty
                                     ? Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -648,7 +633,8 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                             child: ListView.builder(
                                                 scrollDirection:
                                                     Axis.horizontal,
-                                                itemCount: report.photos.length,
+                                                itemCount:
+                                                    report.photos!.length,
                                                 itemBuilder: (context, index) {
                                                   return Container(
                                                     margin: EdgeInsets.only(
@@ -658,9 +644,11 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                                           BorderRadius.circular(
                                                               15),
                                                       child: Image.network(
-                                                        ApiSingleton.baseUrl +
-                                                            report.photos[index]
-                                                                .photo,
+                                                        ApiSingleton
+                                                                .baseUrl +
+                                                            report
+                                                                .photos![index]
+                                                                .photo!,
                                                         height: 60,
                                                         width: 60,
                                                         fit: BoxFit.cover,
@@ -678,7 +666,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                 ListView.builder(
                                     shrinkWrap: true,
                                     physics: NeverScrollableScrollPhysics(),
-                                    itemCount: report.responses.length,
+                                    itemCount: report.responses!.length,
                                     itemBuilder: (context, index) {
                                       return Column(
                                         children: <Widget>[
@@ -690,27 +678,27 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: <Widget>[
-                                                report.responses[index]
+                                                report.responses![index]!
                                                             .question !=
                                                         null
                                                     ? Expanded(
                                                         flex: 3,
                                                         child: Style.titleMedium(
                                                             report
-                                                                    .responses[
-                                                                        index]
-                                                                    .question
+                                                                    .responses![
+                                                                        index]!
+                                                                    .question!
                                                                     .startsWith(
                                                                         'question')
                                                                 ? MyLocalizations.of(
                                                                     context,
                                                                     report
-                                                                        .responses[
-                                                                            index]
+                                                                        .responses![
+                                                                            index]!
                                                                         .question)
                                                                 : report
-                                                                    .responses[
-                                                                        index]
+                                                                    .responses![
+                                                                        index]!
                                                                     .question,
                                                             fontSize: 14),
                                                       )
@@ -718,27 +706,28 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                                 Expanded(
                                                   flex: 2,
                                                   child: Style.body(
-                                                      report.responses[index]
+                                                      report.responses![index]!
                                                                   .answer !=
                                                               'N/A'
                                                           ? report
-                                                                  .responses[
-                                                                      index]
-                                                                  .answer
+                                                                  .responses![
+                                                                      index]!
+                                                                  .answer!
                                                                   .startsWith(
                                                                       'question')
                                                               ? MyLocalizations.of(
                                                                   context,
                                                                   report
-                                                                      .responses[
-                                                                          index]
+                                                                      .responses![
+                                                                          index]!
                                                                       .answer)
                                                               : report
-                                                                  .responses[
-                                                                      index]
+                                                                  .responses![
+                                                                      index]!
                                                                   .answer
                                                           : report
-                                                              .responses[index]
+                                                              .responses![
+                                                                  index]!
                                                               .answer_value,
                                                       textAlign: TextAlign.end),
                                                 ),
@@ -773,43 +762,6 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                 ),
                                 Row(
                                   children: <Widget>[
-                                    // Expanded(
-                                    //     child: Style.noBgButton(
-                                    //         MyLocalizations.of(context, "edit"),
-                                    //         () {
-                                    //   Navigator.pop(context);
-                                    //   if (report.type == "bite") {
-                                    //     Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (context) =>
-                                    //               BitingReportPage(
-                                    //                 editReport: report,
-                                    //                 loadData: _updateReport,
-                                    //               )),
-                                    //     );
-                                    //   } else if (report.type == "adult") {
-                                    //     Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (context) =>
-                                    //               AdultReportPage(
-                                    //                 editReport: report,
-                                    //                 loadData: _updateReport,
-                                    //               )),
-                                    //     );
-                                    //   } else {
-                                    //     Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (context) =>
-                                    //               BreedingReportPage(
-                                    //                 editReport: report,
-                                    //                 loadData: _updateReport,
-                                    //               )),
-                                    //     );
-                                    //   }
-                                    // })),
                                     Expanded(
                                         child: Style.noBgButton(
                                             MyLocalizations.of(
@@ -845,40 +797,17 @@ class _MyReportsPageState extends State<MyReportsPage> {
   _getData({bool letReturn = true, bool fromMap = true}) async {
     try {
       loadingStream.add(true);
-      double distance;
-      // if (fromMap) {
-      //   double zoomLevel = await mapController.getZoomLevel();
-      //   if (_locationData != null && _zoomData != null) {
-      //     double distance = await Geolocator().distanceBetween(
-      //         _locationData.latitude,
-      //         _locationData.longitude,
-      //         location.latitude,
-      //         location.longitude);
-      //     if (distance < 750 && zoomLevel == _zoomData) {
-      //       if (letReturn) return;
-      //     }
-      //   }
+      double? distance;
 
-      //   _locationData = location;
-      //   _zoomData = await mapController.getZoomLevel();
-
-      //   LatLngBounds bounds = await mapController.getVisibleRegion();
-      //   distance = await Geolocator().distanceBetween(
-      //       bounds.northeast.latitude,
-      //       bounds.northeast.longitude,
-      //       bounds.southwest.latitude,
-      //       bounds.southwest.longitude);
-      // }
-
-      List<Report> list = await ApiSingleton().getReportsList(
-          location.latitude, location.longitude,
+      List<Report>? list = await ApiSingleton().getReportsList(
+          location!.latitude, location!.longitude,
           radius: (distance ?? 1000 / 2).round());
 
       if (list == null) {
         list = [];
       }
 
-      List<ReportAndGeohash> listMarkers = List();
+      List<ReportAndGeohash> listMarkers = [];
       for (int i = 0; i < list.length; i++) {
         if (list[i].location_choice != 'missing' &&
                 list[i].current_location_lat != null &&
@@ -890,10 +819,10 @@ class _MyReportsPageState extends State<MyReportsPage> {
           listMarkers.add(ReportAndGeohash(
               list[i],
               list[i].location_choice == 'current'
-                  ? LatLng(list[i].current_location_lat,
-                      list[i].current_location_lon)
-                  : LatLng(list[i].selected_location_lat,
-                      list[i].selected_location_lon),
+                  ? LatLng(list[i].current_location_lat!,
+                      list[i].current_location_lon!)
+                  : LatLng(list[i].selected_location_lat!,
+                      list[i].selected_location_lon!),
               i));
         }
       }
@@ -903,18 +832,15 @@ class _MyReportsPageState extends State<MyReportsPage> {
               UserManager.profileUUIDs.any((id) => id == element.user))
           .toList();
 
-      myData
-          .map((element) async => element.displayCity = await getCity(element))
-          .toList();
-
       dataStream.add(myData);
       _myData = myData;
       if (myData != null && myData.isNotEmpty) {
         var location = myData[0].location_choice == 'current'
             ? LatLng(
-                myData[0].current_location_lat, myData[0].current_location_lon)
-            : LatLng(myData[0].selected_location_lat,
-                myData[0].selected_location_lon);
+                myData[0].current_location_lat!,
+                myData[0].current_location_lon!)
+            : LatLng(myData[0].selected_location_lat!,
+                myData[0].selected_location_lon!);
         mapController.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(target: location, zoom: 15)));
       }
@@ -926,19 +852,6 @@ class _MyReportsPageState extends State<MyReportsPage> {
     } catch (e) {
       print(e);
     }
-  }
-
-  Future<String> getCity(report) async {
-    Coordinates coord;
-    if (report.location_choice == 'current') {
-      coord =
-          Coordinates(report.current_location_lat, report.current_location_lon);
-    } else if (report.location_choice == 'selected') {
-      coord = Coordinates(
-          report.selected_location_lat, report.selected_location_lon);
-    }
-    var address = await Geocoder.local.findAddressesFromCoordinates(coord);
-    return address[0].locality;
   }
 
   void _deleteReport(Report report) async {
@@ -963,41 +876,15 @@ class _MyReportsPageState extends State<MyReportsPage> {
     }
   }
 
-  _updateReport() async {
-    //refresh all markers because it has not get image object
-    await _getData(letReturn: false, fromMap: false);
-    /*
-    int index =
-        _myData.indexWhere((r) => r.report_id == Utils.report.report_id);
-    _myData[index] = Utils.report;
-
-    int indexMarker = _listMarkers
-        .indexWhere((r) => r.report.report_id == Utils.report.report_id);
-
-    _listMarkers[indexMarker] = (ReportAndGeohash(
-        Utils.report,
-        LatLng(
-            Utils.report.current_location_lat != null
-                ? Utils.report.current_location_lat
-                : Utils.report.selected_location_lat,
-            Utils.report.current_location_lon != null
-                ? Utils.report.current_location_lon
-                : Utils.report.selected_location_lon),
-        indexMarker));
-
-    clusteringHelper.updateData(_listMarkers);
-*/
-  }
-
   _getPosition(Report report) {
     var _target;
 
     if (report.location_choice == 'current') {
       _target =
-          LatLng(report.current_location_lat, report.current_location_lon);
+          LatLng(report.current_location_lat!, report.current_location_lon!);
     } else {
       _target =
-          LatLng(report.selected_location_lat, report.selected_location_lon);
+          LatLng(report.selected_location_lat!, report.selected_location_lon!);
     }
 
     return CameraPosition(
@@ -1013,16 +900,16 @@ class _MyReportsPageState extends State<MyReportsPage> {
       marker = Marker(
         markerId: MarkerId('currentMarker'),
         position: LatLng(
-          report.current_location_lat,
-          report.current_location_lon,
+          report.current_location_lat!,
+          report.current_location_lon!,
         ), /*icon: icon*/
       );
     } else {
       marker = Marker(
         markerId: MarkerId('selectedtMarker'),
         position: LatLng(
-          report.selected_location_lat,
-          report.selected_location_lon,
+          report.selected_location_lat!,
+          report.selected_location_lon!,
         ), /*icon: icon*/
       );
     }
@@ -1030,7 +917,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
     return <Marker>[marker].toSet();
   }
 
-  BitmapDescriptor setIconMarker(type, user) {
+  BitmapDescriptor? setIconMarker(type, user) {
     if (UserManager.profileUUIDs != null &&
         UserManager.profileUUIDs.any((id) => id == user)) {
       switch (type) {
@@ -1074,7 +961,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 color: Style.colorPrimary,
-                child: Style.titleMedium('ID: ' + report.report_id)),
+                child: Style.titleMedium('ID: ' + report.report_id!)),
             SizedBox(
               height: 20,
             ),

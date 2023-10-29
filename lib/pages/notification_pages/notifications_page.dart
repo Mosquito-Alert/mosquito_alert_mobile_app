@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:flutter_html/style.dart' as html_style;
 import 'package:intl/intl.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
@@ -16,9 +16,9 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../utils/UserManager.dart';
 
 class NotificationsPage extends StatefulWidget {
-  final String notificationId;
+  final String? notificationId;
 
-  const NotificationsPage({Key key, this.notificationId}) : super(key: key);
+  const NotificationsPage({Key? key, this.notificationId}) : super(key: key);
 
   @override
   _NotificationsPageState createState() => _NotificationsPageState();
@@ -36,7 +36,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   _getData() async {
-    List<MyNotification> response = await ApiSingleton().getNotifications();
+    List<MyNotification> response = await (ApiSingleton().getNotifications() as FutureOr<List<MyNotification>>);
 
     if (response != null) {
       setState(() {
@@ -49,7 +49,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   _checkOpenNotification() {
     try {
-      if (widget.notificationId != null && widget.notificationId.isNotEmpty) {
+      if (widget.notificationId != null && widget.notificationId!.isNotEmpty) {
         var notifId = widget.notificationId;
         for (var notif in notifications) {
           if (notifId == '${notif.id}') {
@@ -93,7 +93,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         itemBuilder: (ctx, index) {
                           return Opacity(
                             opacity:
-                                !notifications[index].acknowledged ? 1 : 0.5,
+                                !notifications[index].acknowledged! ? 1 : 0.5,
                             child: Card(
                               elevation: 2,
                               shape: RoundedRectangleBorder(
@@ -101,7 +101,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                               child: ListTile(
                                 contentPadding: EdgeInsets.all(12),
                                 onTap: () {
-                                  !notifications[index].acknowledged
+                                  !notifications[index].acknowledged!
                                       ? _updateNotification(
                                           notifications[index].id)
                                       : null;
@@ -148,7 +148,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     CustomShowModalBottomSheet.customShowModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
-          log(notification.expert_html);
+          log(notification.expert_html!);
           return SafeArea(
             bottom: false,
             child: Container(
@@ -178,24 +178,28 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       ),
                       Container(
                           child: html.Html(
-                        data: notification.expert_html
-                            .replaceAll("<p><a", "<a")
-                            .replaceAll("</a></p>", "</a>"),
-                        onLinkTap: (String url, html.RenderContext context,
+                        data: notification.expert_html!
+                            .replaceAll('<p><a', '<a')
+                            .replaceAll('</a></p>', '</a>'),
+                        onLinkTap: (String? url, html.RenderContext context,
                             Map<String, String> attributes, _) async {
-                          await launch(url, forceSafariVC: true);
+                          await launch(url!, forceSafariVC: true);
                         },
                         style: {
-                          "a": html.Style(
+                          'a': html.Style(
                               backgroundColor: Colors.transparent,
                               color: Colors.blueAccent,
                               padding: EdgeInsets.all(12),
-                              margin: EdgeInsets.all(12),
+                              margin: html_style.Margins(
+                                  bottom: html_style.Margin(12.0),
+                                  right: html_style.Margin(12.0),
+                                  top: html_style.Margin(12.0),
+                                  left: html_style.Margin(12.0)),
                               textDecoration: TextDecoration.underline,
                               textAlign: TextAlign.center,
                               fontSize: html.FontSize(16.0)),
                         },
-                        tagsList: html.Html.tags..addAll(["bird", "flutter"]),
+                        tagsList: html.Html.tags..addAll(['bird', 'flutter']),
                       )),
 
                       SizedBox(
@@ -203,7 +207,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       ),
                       Style.bodySmall(
                           DateFormat('dd-MM-yyyy hh:mm').format(
-                              DateTime.parse(notification.date_comment)),
+                              DateTime.parse(notification.date_comment!)),
                           color: Colors.grey)
                     ],
                   ),

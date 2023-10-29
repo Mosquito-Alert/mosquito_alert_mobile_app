@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class CustomCard extends StatelessWidget {
-  final String img, title;
-  final bool selected, disabled;
+  final String? img, title;
+  final bool? selected, disabled;
   CustomCard({this.img, this.title, this.selected, this.disabled});
 
   @override
@@ -30,7 +30,7 @@ class CustomCard extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 20.0, bottom: 10),
                           child: Image.asset(
-                            img,
+                            img!,
                             // height: 95,
                             // width: 95,
                             // fit: BoxFit.fitHeight,

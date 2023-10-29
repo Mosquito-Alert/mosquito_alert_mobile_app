@@ -1,5 +1,5 @@
 class ApiResponse {
-  String message;
+  String? message;
 
   ApiResponse({this.message});
 

@@ -1,13 +1,13 @@
 class MyNotification {
-  int id;
-  String report_id;
-  String user_id;
-  int expert_id;
-  String expert_html;
-  String expert_comment;
-  String date_comment;
-  bool acknowledged;
-  bool public;
+  int? id;
+  String? report_id;
+  String? user_id;
+  int? expert_id;
+  String? expert_html;
+  String? expert_comment;
+  String? date_comment;
+  bool? acknowledged;
+  bool? public;
   // NotificationContent notificationContent;
 
   MyNotification({

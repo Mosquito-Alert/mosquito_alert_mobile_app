@@ -1,9 +1,9 @@
 class Question {
-  int question_id;
-  String question;
-  int answer_id;
-  String answer;
-  String answer_value;
+  int? question_id;
+  String? question;
+  int? answer_id;
+  String? answer;
+  String? answer_value;
 
   Question(
       {this.question_id,

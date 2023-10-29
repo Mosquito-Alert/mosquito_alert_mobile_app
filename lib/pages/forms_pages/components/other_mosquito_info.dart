@@ -27,14 +27,14 @@ class OtherMosquitoInfo extends StatelessWidget {
                       style: TextStyle(color: Style.textColor, fontSize: 14)),
                   InkWell(
                     onTap: () async {
-                      final url = MyLocalizations.of(context, 'url_web');
+                      final url = MyLocalizations.of(context, 'url_web')!;
                       if (await canLaunch(url)) {
                         await launch(url);
                       } else {
                         throw 'Could not launch $url';
                       }
                     },
-                    child: Text(MyLocalizations.of(context, 'url_web'),
+                    child: Text(MyLocalizations.of(context, 'url_web')!,
                         style: TextStyle(
                             color: Style.textColor,
                             fontSize: 14,

@@ -7,7 +7,7 @@ class CouldSeeForm extends StatefulWidget {
   final Function addReport;
   final Map displayQuestion;
   final Function setValid;
-  final Function addOtherReport;
+  final Function? addOtherReport;
   final Function nextPage;
 
   CouldSeeForm(this.addReport, this.displayQuestion, this.setValid, this.nextPage,
@@ -17,7 +17,7 @@ class CouldSeeForm extends StatefulWidget {
 }
 
 class _CouldSeeFormState extends State<CouldSeeForm> {
-  String selected;
+  String? selected;
 
   @override
   void initState() {
@@ -49,9 +49,9 @@ class _CouldSeeFormState extends State<CouldSeeForm> {
                 // crossAxisSpacing: 10,
               ),
               itemBuilder: (context, index) {
-                String text =
+                String? text =
                     widget.displayQuestion['answers'][index]['text'];
-                int id = widget.displayQuestion['answers'][index]['id'];
+                int? id = widget.displayQuestion['answers'][index]['id'];
                 return Container(
                   padding: EdgeInsets.all(5),
                   child: GestureDetector(

@@ -22,7 +22,7 @@ class AddPhotoButton extends StatefulWidget {
 }
 
 class _AddPhotoButtonState extends State<AddPhotoButton> {
-  List<String> images = [];
+  List<String?> images = [];
 
   @override
   void initState() {
@@ -40,9 +40,9 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
   }
 
   _initImages() async {
-    if (Utils.imagePath != null && Utils.imagePath.isNotEmpty) {
-      Utils.imagePath.forEach((element) async {
-        if (element['id'] == Utils.report.version_UUID) {
+    if (Utils.imagePath != null && Utils.imagePath!.isNotEmpty) {
+      Utils.imagePath!.forEach((element) async {
+        if (element['id'] == Utils.report!.version_UUID) {
           if (element['image'].contains('http')) {
             File file = await urlToFile(element['image']);
             images.add(file.path);
@@ -140,7 +140,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
                                   child: Image.file(
-                                    File(images[index]),
+                                    File(images[index]!),
                                     fit: BoxFit.cover,
                                     height: 100,
                                     width: 100,
@@ -187,21 +187,21 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
           getGalleryImages();
         },
         child: Text(
-          MyLocalizations.of(context, 'gallery'),
+          MyLocalizations.of(context, 'gallery')!,
           style: TextStyle(color: Colors.blue),
         ),
       ),
       CupertinoActionSheetAction(
         onPressed: () {
-          if (Utils.report.type == 'adult') {
+          if (Utils.report!.type == 'adult') {
             Utils.infoAdultCamera(context, getImage);
-          } else if (Utils.report.type == 'site') {
+          } else if (Utils.report!.type == 'site') {
             Utils.infoBreedingCamera(context, getImage);
           }
           Navigator.pop(context);
         },
         child: Text(
-          MyLocalizations.of(context, 'camara'),
+          MyLocalizations.of(context, 'camara')!,
           style: TextStyle(color: Colors.blue),
         ),
       ),
@@ -218,9 +218,9 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
     List<Widget> listForAndroid = <Widget>[
       InkWell(
         onTap: () {
-          if (Utils.report.type == 'adult') {
+          if (Utils.report!.type == 'adult') {
             Utils.infoAdultCamera(context, getImage);
-          } else if (Utils.report.type == 'site') {
+          } else if (Utils.report!.type == 'site') {
             Utils.infoBreedingCamera(context, getImage);
           }
           Navigator.pop(context);
@@ -228,7 +228,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.all(20),
-          child: Text(MyLocalizations.of(context, 'camara'),
+          child: Text(MyLocalizations.of(context, 'camara')!,
               style: TextStyle(color: Colors.blue, fontSize: 15)),
         ),
       ),
@@ -241,7 +241,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.all(20),
-          child: Text(MyLocalizations.of(context, 'gallery'),
+          child: Text(MyLocalizations.of(context, 'gallery')!,
               style: TextStyle(color: Colors.blue, fontSize: 15)),
         ),
       ),
@@ -276,7 +276,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
     }, title: '${MyLocalizations.of(context, 'bs_info_adult_title')}:');
   }
 
-  _deleteImage(String img, int index) {
+  _deleteImage(String? img, int index) {
     if (widget.photoRequired && images.length == 1) {
       Utils.showAlert(MyLocalizations.of(context, 'app_name'),
           MyLocalizations.of(context, 'photo_required_alert'), context);
@@ -289,25 +289,23 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
   }
 
   getGalleryImages() async {
-    final status = await Permission.storage.status;
+    var newFiles = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+    );
+    List<String?> paths = [];
 
-    if (status.isDenied || status.isPermanentlyDenied) {
-      await Permission.storage.request();
-    } else if (status.isGranted){
-      var newFiles = await FilePicker.platform.pickFiles(      type: FileType.image,);
-      List<String> paths = [];
+    if (newFiles != null &&
+        newFiles.files != null &&
+        newFiles.files.isNotEmpty) {
+      newFiles.files.forEach((image) {
+        Utils.saveImgPath(File(image.path!));
+        paths.add(image.path);
+      });
 
-      if (newFiles != null && newFiles.files != null && newFiles.files.isNotEmpty) {
-        newFiles.files.forEach((image) {
-          Utils.saveImgPath(File(image.path));
-          paths.add(image.path);
-        });
-
-        setState(() {
-          images = [...images, ...paths];
-        });
-      }
-    }
+      setState(() {
+        images = [...images, ...paths];
+      });
+    }    
   }
 
   Future getImage(source) async {

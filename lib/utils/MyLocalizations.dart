@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 class MyLocalizations {
   Locale locale;
-  static Map<dynamic, dynamic> _localisedValues;
+  static Map<dynamic, dynamic>? _localisedValues;
 
   MyLocalizations(this.locale) {
     locale = locale;
@@ -21,14 +21,14 @@ class MyLocalizations {
     return appTranslations;
   }
 
-  String translate(key) {
-    return _localisedValues != null && _localisedValues[key] != null
-        ? _localisedValues[key]
+  String? translate(key) {
+    return _localisedValues != null && _localisedValues![key] != null
+        ? _localisedValues![key]
         : '';
   }
 
-  static String of(BuildContext context, String key) {
-    return Localizations.of<MyLocalizations>(context, MyLocalizations)
+  static String? of(BuildContext context, String? key) {
+    return Localizations.of<MyLocalizations>(context, MyLocalizations)!
         .translate(key);
   }
 }

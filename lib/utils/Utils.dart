@@ -29,20 +29,20 @@ import 'MyLocalizations.dart';
 
 class Utils {
   static Locale language = Locale('en', 'US');
-  static List<Map> imagePath;
+  static List<Map>? imagePath;
   static double maskCoordsValue = 0.025;
 
   //Manage Data
-  static Position location;
+  static Position? location;
   static LatLng defaultLocation = LatLng(41.3874, 2.1688);
-  static StreamController<int> userScoresController =
-      StreamController<int>.broadcast();
+  static StreamController<int?> userScoresController =
+      StreamController<int?>.broadcast();
 
   //REPORTS
-  static Report report;
-  static Session session;
-  static List<Report> reportsList;
-  static Report savedAdultReport;
+  static Report? report;
+  static Session? session;
+  static List<Report?>? reportsList;
+  static Report? savedAdultReport;
 
   // Initialized data flags
   static Map<String, dynamic> initializedCheckData = {
@@ -67,17 +67,17 @@ class Utils {
     if (imagePath == null) {
       imagePath = [];
     }
-    imagePath
-        .add({'image': img.path, 'id': report.version_UUID, 'imageFile': img});
+    imagePath!
+        .add({'image': img.path, 'id': report!.version_UUID, 'imageFile': img});
   }
 
-  static void deleteImage(String image) {
-    imagePath.removeWhere((element) => element['image'] == image);
+  static void deleteImage(String? image) {
+    imagePath!.removeWhere((element) => element['image'] == image);
   }
 
   static void closeSession() {
-    session.session_end_time = DateTime.now().toIso8601String();
-    ApiSingleton().closeSession(session);
+    session!.session_end_time = DateTime.now().toIso8601String();
+    ApiSingleton().closeSession(session!);
   }
 
   static Future<bool> createNewReport(
@@ -89,7 +89,7 @@ class Utils {
     if (session == null) {
       reportsList = [];
 
-      String userUUID = await UserManager.getUUID();
+      String? userUUID = await UserManager.getUUID();
 
       dynamic response = await ApiSingleton().getLastSession(userUUID);
       if (response is bool && !response) {
@@ -99,7 +99,7 @@ class Utils {
         print('response is of type ApiResponse, not a number.');
         return false;
       } else {
-        int sessionId = response + 1;
+        int? sessionId = response + 1;
 
         session = Session(
             session_ID: sessionId,
@@ -107,13 +107,12 @@ class Utils {
             session_start_time: DateTime.now().toIso8601String());
 
         print(language);
-
-        session.id = await ApiSingleton().createSession(session);
+        session!.id = await ApiSingleton().createSession(session!);
         // print("Session: ${jsonEncode(session.toJson())}");
       }
     }
 
-    if (session.id != null && language != null) {
+    if (session!.id != null && language != null) {
       var lang = await UserManager.getLanguage();
       var userUUID = await UserManager.getUUID();
       report = Report(
@@ -122,40 +121,40 @@ class Utils {
           version_number: 0,
           version_UUID: Uuid().v4(),
           user: userUUID,
-          session: session.id,
+          session: session!.id,
           responses: []);
 
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      report.package_name = packageInfo.packageName;
-      report.package_version = 32;
+      report!.package_name = packageInfo.packageName;
+      report!.package_version = 32;
 
       if (Platform.isAndroid) {
         var buildData = await DeviceInfoPlugin().androidInfo;
-        report.device_manufacturer = buildData.manufacturer;
-        report.device_model = buildData.model;
-        report.os = 'Android';
-        report.os_language = language.languageCode;
-        report.os_version = buildData.version.sdkInt.toString();
-        report.app_language = lang ?? language.languageCode;
+        report!.device_manufacturer = buildData.manufacturer;
+        report!.device_model = buildData.model;
+        report!.os = 'Android';
+        report!.os_language = language.languageCode;
+        report!.os_version = buildData.version.sdkInt.toString();
+        report!.app_language = lang ?? language.languageCode;
       } else if (Platform.isIOS) {
         var buildData = await DeviceInfoPlugin().iosInfo;
-        report.device_manufacturer = 'Apple';
-        report.device_model = buildData.model;
-        report.os = buildData.systemName;
-        report.os_language = language.languageCode;
-        report.os_version = buildData.systemVersion;
-        report.app_language = lang ?? language.languageCode;
+        report!.device_manufacturer = 'Apple';
+        report!.device_model = buildData.model;
+        report!.os = buildData.systemName;
+        report!.os_language = language.languageCode;
+        report!.os_version = buildData.systemVersion;
+        report!.app_language = lang ?? language.languageCode;
       }
 
       if (lat != null && lon != null) {
         if (locationType == 'selected') {
-          report.location_choice = 'selected';
-          report.selected_location_lat = lat;
-          report.selected_location_lon = lon;
+          report!.location_choice = 'selected';
+          report!.selected_location_lat = lat;
+          report!.selected_location_lon = lon;
         } else {
-          report.location_choice = 'current';
-          report.current_location_lat = lat;
-          report.current_location_lon = lon;
+          report!.location_choice = 'current';
+          report!.current_location_lat = lat;
+          report!.current_location_lon = lon;
         }
       }
       return true;
@@ -173,15 +172,14 @@ class Utils {
   static setEditReport(Report editReport) {
     resetReport();
     report = editReport;
-    report.version_number = report.version_number + 1;
-    report.version_UUID = Uuid().v4();
+    report!.version_number = report!.version_number! + 1;
+    report!.version_UUID = Uuid().v4();
 
-    if (editReport.photos != null || editReport.photos.isNotEmpty) {
+    if (editReport.photos != null || editReport.photos!.isNotEmpty) {
       imagePath = [];
-      editReport.photos.forEach((element) {
-        imagePath.add({
+      editReport.photos!.forEach((element) {
+        imagePath!.add({
           'image': '${ApiSingleton.baseUrl}/media/${element.photo}',
-          // 'image': 'https://webserver.mosquitoalert.com/media/${element.photo}',
           'id': editReport.version_UUID
         });
       });
@@ -189,63 +187,63 @@ class Utils {
   }
 
   static addOtherReport(String type) {
-    report.version_time = DateTime.now().toIso8601String();
-    report.creation_time = DateTime.now().toIso8601String();
-    report.phone_upload_time = DateTime.now().toIso8601String();
+    report!.version_time = DateTime.now().toIso8601String();
+    report!.creation_time = DateTime.now().toIso8601String();
+    report!.phone_upload_time = DateTime.now().toIso8601String();
 
-    reportsList.add(report);
+    reportsList!.add(report);
     report = null;
-    if (reportsList.last.location_choice == 'selected') {
+    if (reportsList!.last!.location_choice == 'selected') {
       createNewReport(type,
-          lat: reportsList.last.selected_location_lat,
-          lon: reportsList.last.selected_location_lon,
+          lat: reportsList!.last!.selected_location_lat,
+          lon: reportsList!.last!.selected_location_lon,
           locationType: 'selected');
     } else {
       createNewReport(type,
-          lat: reportsList.last.current_location_lat,
-          lon: reportsList.last.current_location_lon,
+          lat: reportsList!.last!.current_location_lat,
+          lon: reportsList!.last!.current_location_lon,
           locationType: 'current');
     }
   }
 
   static deleteLastReport() {
     report = null;
-    report = Report.fromJson(reportsList.last.toJson());
-    reportsList.removeLast();
+    report = Report.fromJson(reportsList!.last!.toJson());
+    reportsList!.removeLast();
     print('${jsonEncode(reportsList)}');
     // print(reportsList);
   }
 
   static setCurrentLocation(double latitude, double longitude) {
-    report.location_choice = 'current';
-    report.selected_location_lat = null;
-    report.selected_location_lon = null;
-    report.current_location_lat = latitude;
-    report.current_location_lon = longitude;
+    report!.location_choice = 'current';
+    report!.selected_location_lat = null;
+    report!.selected_location_lon = null;
+    report!.current_location_lat = latitude;
+    report!.current_location_lon = longitude;
   }
 
-  static setSelectedLocation(double lat, lon) {
-    report.location_choice = 'selected';
-    report.current_location_lat = null;
-    report.current_location_lon = null;
-    report.selected_location_lat = lat;
-    report.selected_location_lon = lon;
+  static setSelectedLocation(double? lat, lon) {
+    report!.location_choice = 'selected';
+    report!.current_location_lat = null;
+    report!.current_location_lon = null;
+    report!.selected_location_lat = lat;
+    report!.selected_location_lon = lon;
   }
 
-  static void addBiteResponse(String question, String answer,
+  static void addBiteResponse(String? question, String? answer,
       {question_id, answer_id, answer_value}) {
     if (report == null) {
       return;
     }
 
-    List<Question> _questions = report.responses;
+    List<Question?>? _questions = report!.responses;
 
     // add total bites
 
     if (question_id == 1) {
-      int currentIndex = _questions.indexWhere((question) =>
+      int currentIndex = _questions!.indexWhere((question) =>
           // question.question_id == question_id &&
-          question.question_id == question_id);
+          question!.question_id == question_id);
       if (currentIndex == -1) {
         _questions.add(Question(
           question: question.toString(),
@@ -255,15 +253,15 @@ class Utils {
           answer_value: '1',
         ));
       } else {
-        _questions[currentIndex].answer_value = answer_value.toString();
+        _questions[currentIndex]!.answer_value = answer_value.toString();
       }
     }
 
     //increase answer_value question 2
     if (question_id == 2) {
-      int currentIndex = _questions.indexWhere((question) =>
+      int currentIndex = _questions!.indexWhere((question) =>
           // question.question_id == question_id &&
-          question.answer_id == answer_id);
+          question!.answer_id == answer_id);
       if (currentIndex == -1) {
         _questions.add(Question(
           question: question.toString(),
@@ -273,25 +271,25 @@ class Utils {
           answer_value: '1',
         ));
       } else {
-        int value = int.parse(_questions[currentIndex].answer_value);
+        int value = int.parse(_questions[currentIndex]!.answer_value!);
         value = value + 1;
-        _questions[currentIndex].answer_value = value.toString();
+        _questions[currentIndex]!.answer_value = value.toString();
       }
     }
 
     //add other questions without answer_value
     if (question_id != 2 && question_id != 1) {
-      if (_questions.any((q) => q.answer_id == answer_id)) {
+      if (_questions!.any((q) => q!.answer_id == answer_id)) {
         // delete question from list
-        _questions.removeWhere((q) => q.answer_id == answer_id);
+        _questions.removeWhere((q) => q!.answer_id == answer_id);
       } else {
         if (_questions.any(
-            (q) => q.question_id == question_id && q.answer_id != answer_id)) {
+            (q) => q!.question_id == question_id && q.answer_id != answer_id)) {
           //modify question
           int index =
-              _questions.indexWhere((q) => q.question_id == question_id);
-          _questions[index].answer_id = answer_id;
-          _questions[index].answer = answer;
+              _questions.indexWhere((q) => q!.question_id == question_id);
+          _questions[index]!.answer_id = answer_id;
+          _questions[index]!.answer = answer;
         } else {
           _questions.add(Question(
             question: question.toString(),
@@ -304,29 +302,30 @@ class Utils {
     }
 
     if (answer_id == 131) {
-      _questions.removeWhere((q) => q.question_id == 3);
+      _questions!.removeWhere((q) => q!.question_id == 3);
     }
-    report.responses = _questions;
+    report!.responses = _questions;
   }
 
   static void resetBitingQuestion() {
-    List<Question> _questions = report.responses;
+    List<Question?> _questions = report!.responses!;
 
-    _questions.removeWhere((q) => q.question_id == 2);
+    _questions.removeWhere((q) => q!.question_id == 2);
 
-    report.responses = _questions;
+    report!.responses = _questions;
   }
 
   static void addAdultPartsResponse(answer, answerId, i) {
-    var _questions = report.responses;
+    var _questions = report!.responses!;
     int index =
-        _questions.indexWhere((q) => q.answer_id > i && q.answer_id < i + 10);
+        _questions
+        .indexWhere((q) => q!.answer_id! > i && q.answer_id! < i + 10);
     if (index != -1) {
-      if (_questions[index].answer_id == answerId) {
+      if (_questions[index]!.answer_id == answerId) {
         _questions.removeAt(index);
       } else {
-        _questions[index].answer_id = answerId;
-        _questions[index].answer = answer;
+        _questions[index]!.answer_id = answerId;
+        _questions[index]!.answer = answer;
       }
     } else {
       Question newQuestion = Question(
@@ -337,13 +336,13 @@ class Utils {
       );
       _questions.add(newQuestion);
     }
-    report.responses = _questions;
+    report!.responses = _questions;
   }
 
-  static void addResponse(Question question) {
-    int index = report.responses
-        .indexWhere((q) => q.question_id == question.question_id);
-    var _responses = report.responses;
+  static void addResponse(Question? question) {
+    int index = report!.responses!
+        .indexWhere((q) => q!.question_id == question!.question_id);
+    var _responses = report!.responses;
     if (_responses == null) {
       _responses = [];
     }
@@ -351,18 +350,18 @@ class Utils {
       _responses[index] = question;
     } else {
       _responses.add(question);
-      report.responses = _responses;
+      report!.responses = _responses;
     }
   }
 
   static void deleteResonse(id) {
-    report.responses.removeWhere((element) => element.question_id == id);
+    report!.responses!.removeWhere((element) => element!.question_id == id);
   }
 
-  static Future<bool> createReport() async {
-    if (report.version_number > 0) {
-      report.version_time = DateTime.now().toIso8601String();
-      var res = await ApiSingleton().createReport(report);
+  static Future<bool?> createReport() async {
+    if (report!.version_number! > 0) {
+      report!.version_time = DateTime.now().toIso8601String();
+      var res = await ApiSingleton().createReport(report!);
       if (res != null) {
         if (res.type == 'adult') {
           savedAdultReport = res;
@@ -372,19 +371,19 @@ class Utils {
         return false;
       }
     } else {
-      report.version_time = DateTime.now().toIso8601String();
-      report.creation_time = DateTime.now().toIso8601String();
-      report.phone_upload_time = DateTime.now().toIso8601String();
-      reportsList.add(report);
-      bool isCreated;
-      for (int i = 0; i < reportsList.length; i++) {
-        var res = await ApiSingleton().createReport(reportsList[i]);
-        if (res.type == 'adult') {
+      report!.version_time = DateTime.now().toIso8601String();
+      report!.creation_time = DateTime.now().toIso8601String();
+      report!.phone_upload_time = DateTime.now().toIso8601String();
+      reportsList!.add(report);
+      bool? isCreated;
+      for (int i = 0; i < reportsList!.length; i++) {
+        var res = await ApiSingleton().createReport(reportsList![i]!);
+        if (res?.type == 'adult') {
           savedAdultReport = res;
         }
         isCreated = res != null ? true : false;
         if (!isCreated) {
-          await saveLocalReport(reportsList[i]);
+          await saveLocalReport(reportsList![i]!);
         }
       }
 
@@ -396,7 +395,7 @@ class Utils {
   }
 
   static Future<void> saveLocalReport(Report report) async {
-    List<String> savedReports = await UserManager.getReportList();
+    List<String>? savedReports = await UserManager.getReportList();
     if (savedReports == null || savedReports.isEmpty) {
       savedReports = [];
     }
@@ -405,8 +404,9 @@ class Utils {
     await UserManager.setReportList(savedReports);
   }
 
-  static Future<void> saveLocalImage(String image, String version_UUID) async {
-    List<String> savedImages = await UserManager.getImageList();
+  static Future<void> saveLocalImage(
+      String? image, String? version_UUID) async {
+    List<String>? savedImages = await UserManager.getImageList();
     if (savedImages == null || savedImages.isEmpty) {
       savedImages = [];
     }
@@ -418,8 +418,8 @@ class Utils {
   }
 
   static void syncReports() async {
-    List savedReports = await UserManager.getReportList();
-    List savedImages = await UserManager.getImageList();
+    List? savedReports = await UserManager.getReportList();
+    List? savedImages = await UserManager.getImageList();
 
     await UserManager.setReportList(<String>[]);
     await UserManager.setImageList(<String>[]);
@@ -457,10 +457,10 @@ class Utils {
     SharedPreferences prefs;
     // if (userCreated["required"] && !userCreated["created"]) {
     final Map<String, bool> userCreated = initializedCheckData['userCreated'];
-    if (userCreated['required'] && !userCreated['created']) {
+    if (userCreated['required']! && !userCreated['created']!) {
       print('Utils (checkForUnfetchedData): Creating user...');
       prefs = await SharedPreferences.getInstance();
-      final String uuid = prefs.getString('uuid');
+      final String? uuid = prefs.getString('uuid');
       await ApiSingleton().createUser(uuid);
     } else {
       print(
@@ -469,7 +469,8 @@ class Utils {
 
     if (!initializedCheckData['userScores']) {
       print('Utils (checkForUnfetchedData): Fetching user scores...');
-      UserManager.userScore = await ApiSingleton().getUserScores();
+      UserManager.userScore =
+          await (ApiSingleton().getUserScores() as FutureOr<int?>);
     } else {
       print('Utils (checkForUnfetchedData): UserScores were already fetched');
     }
@@ -525,25 +526,25 @@ class Utils {
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
 
   //Alerts
-  static Future showAlert(String title, String text, BuildContext context,
+  static Future showAlert(String? title, String? text, BuildContext? context,
       {onPressed, barrierDismissible}) {
     if (Platform.isAndroid) {
       return showDialog(
-        context: context,
+        context: context!,
         barrierDismissible: barrierDismissible ?? true, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(title),
+            title: Text(title!),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text(text),
+                  Text(text!),
                 ],
               ),
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text(MyLocalizations.of(context, 'ok')),
+                child: Text(MyLocalizations.of(context, 'ok')!),
                 onPressed: () {
                   if (onPressed != null) {
                     onPressed();
@@ -558,11 +559,11 @@ class Utils {
       );
     } else {
       return showDialog(
-        context: context, //
+        context: context!, //
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
             title: Text(
-              title,
+              title!,
               style: TextStyle(letterSpacing: -0.3),
             ),
             content: Column(
@@ -571,7 +572,7 @@ class Utils {
                   height: 4,
                 ),
                 Text(
-                  text,
+                  text!,
                   style: TextStyle(height: 1.2),
                 )
               ],
@@ -579,7 +580,7 @@ class Utils {
             actions: <Widget>[
               CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'ok')),
+                child: Text(MyLocalizations.of(context, 'ok')!),
                 onPressed: () {
                   if (onPressed != null) {
                     onPressed();
@@ -595,7 +596,8 @@ class Utils {
     }
   }
 
-  static Future showCustomAlert(String title, Widget body, BuildContext context,
+  static Future showCustomAlert(
+      String? title, Widget body, BuildContext context,
       {onPressed, barrierDismissible}) {
     if (Platform.isAndroid) {
       return showDialog(
@@ -603,7 +605,7 @@ class Utils {
         barrierDismissible: barrierDismissible ?? true, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(title),
+            title: Text(title!),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -613,7 +615,7 @@ class Utils {
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text(MyLocalizations.of(context, 'ok')),
+                child: Text(MyLocalizations.of(context, 'ok')!),
                 onPressed: () {
                   if (onPressed != null) {
                     onPressed();
@@ -632,7 +634,7 @@ class Utils {
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
             title: Text(
-              title,
+              title!,
               style: TextStyle(letterSpacing: -0.3),
             ),
             content: Column(
@@ -646,7 +648,7 @@ class Utils {
             actions: <Widget>[
               CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'ok')),
+                child: Text(MyLocalizations.of(context, 'ok')!),
                 onPressed: () {
                   if (onPressed != null) {
                     onPressed();
@@ -663,8 +665,8 @@ class Utils {
   }
 
   static Future showAlertYesNo(
-    String title,
-    String text,
+    String? title,
+    String? text,
     onYesPressed,
     BuildContext context,
   ) {
@@ -673,24 +675,24 @@ class Utils {
         context: context, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(title),
+            title: Text(title!),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text(text),
+                  Text(text!),
                 ],
               ),
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text(MyLocalizations.of(context, 'yes')),
+                child: Text(MyLocalizations.of(context, 'yes')!),
                 onPressed: () {
                   Navigator.of(context).pop();
                   onYesPressed();
                 },
               ),
               FlatButton(
-                child: Text(MyLocalizations.of(context, 'no')),
+                child: Text(MyLocalizations.of(context, 'no')!),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -704,28 +706,28 @@ class Utils {
         context: context, //
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: Text(title),
+            title: Text(title!),
             content: Column(
               children: <Widget>[
                 SizedBox(
                   height: 4,
                 ),
                 Text(
-                  text,
+                  text!,
                 )
               ],
             ),
             actions: <Widget>[
               CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'yes')),
+                child: Text(MyLocalizations.of(context, 'yes')!),
                 onPressed: () {
                   onYesPressed();
                   Navigator.of(context).pop();
                 },
               ),
               CupertinoDialogAction(
-                child: Text(MyLocalizations.of(context, 'no')),
+                child: Text(MyLocalizations.of(context, 'no')!),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -737,7 +739,7 @@ class Utils {
     }
   }
 
-  static Future modalDetailTrackingforPlatform(List<Widget> list,
+  static Future? modalDetailTrackingforPlatform(List<Widget> list,
       TargetPlatform platform, BuildContext context, Function close,
       {title, cancelButton}) {
     if (platform == TargetPlatform.iOS) {
@@ -747,9 +749,9 @@ class Utils {
             return CupertinoActionSheet(
                 title: title != null ? Text(title) : null,
                 cancelButton: cancelButton ?? CupertinoActionSheetAction(
-                        onPressed: close,
+                      onPressed: close as void Function(),
                         child: Text(
-                          MyLocalizations.of(context, 'cancel'),
+                        MyLocalizations.of(context, 'cancel')!,
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
@@ -783,7 +785,7 @@ class Utils {
                   ),
                 ));
               },
-              onClosing: close,
+              onClosing: close as void Function(),
             );
           });
     }
@@ -801,7 +803,7 @@ class Utils {
                 style: TextStyle(color: Style.textColor, fontSize: 12)),
             InkWell(
               onTap: () async {
-                final url = MyLocalizations.of(context, 'url_politics');
+                final url = MyLocalizations.of(context, 'url_politics')!;
                 if (await canLaunch(url)) {
                   await launch(url);
                 } else {
@@ -809,7 +811,7 @@ class Utils {
                 }
               },
               child: Text(
-                  MyLocalizations.of(context, 'terms_and_conditions_txt2'),
+                  MyLocalizations.of(context, 'terms_and_conditions_txt2')!,
                   style: TextStyle(
                       color: Style.textColor,
                       fontSize: 12,
@@ -820,7 +822,7 @@ class Utils {
                 style: TextStyle(color: Style.textColor, fontSize: 12)),
             InkWell(
               onTap: () async {
-                final url = MyLocalizations.of(context, 'url_legal');
+                final url = MyLocalizations.of(context, 'url_legal')!;
                 if (await canLaunch(url)) {
                   await launch(url);
                 } else {
@@ -828,7 +830,7 @@ class Utils {
                 }
               },
               child: Text(
-                  MyLocalizations.of(context, 'terms_and_conditions_txt4'),
+                  MyLocalizations.of(context, 'terms_and_conditions_txt4')!,
                   style: TextStyle(
                       color: Style.textColor,
                       fontSize: 12,
@@ -841,7 +843,7 @@ class Utils {
     );
   }
 
-  static Widget loading(_isLoading, [Color indicatorColor]) {
+  static Widget loading(_isLoading, [Color? indicatorColor]) {
     return _isLoading == true
         ? IgnorePointer(
             child: Container(
@@ -1031,7 +1033,7 @@ class Utils {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              MyLocalizations.of(context, 'app_name'),
+              MyLocalizations.of(context, 'app_name')!,
             ),
             content: SingleChildScrollView(
               child: ListBody(children: <Widget>[
@@ -1059,7 +1061,7 @@ class Utils {
                       SizedBox(
                         width: 7,
                       ),
-                      Text(MyLocalizations.of(context, 'show_info'))
+                      Text(MyLocalizations.of(context, 'show_info')!)
                     ],
                   ),
                   onPressed: () {
@@ -1067,7 +1069,7 @@ class Utils {
                     onPressed(context);
                   }),
               FlatButton(
-                child: Text(MyLocalizations.of(context, 'no_show_info')),
+                child: Text(MyLocalizations.of(context, 'no_show_info')!),
                 onPressed: () {
                   Navigator.of(context).popUntil((r) => r.isFirst);
                   Utils.resetReport();
@@ -1083,7 +1085,7 @@ class Utils {
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
             title: Text(
-              MyLocalizations.of(context, 'app_name'),
+              MyLocalizations.of(context, 'app_name')!,
               style: TextStyle(letterSpacing: -0.3),
             ),
             content: Column(
@@ -1118,7 +1120,7 @@ class Utils {
                       SizedBox(
                         width: 7,
                       ),
-                      Text(MyLocalizations.of(context, 'show_info'))
+                      Text(MyLocalizations.of(context, 'show_info')!)
                     ],
                   ),
                   onPressed: () {
@@ -1127,7 +1129,7 @@ class Utils {
                   }),
               CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'no_show_info')),
+                child: Text(MyLocalizations.of(context, 'no_show_info')!),
                 onPressed: () {
                   Navigator.of(context).popUntil((r) => r.isFirst);
                   Utils.resetReport();
@@ -1143,7 +1145,7 @@ class Utils {
   static getLanguage() {
     if (ui.window != null && ui.window.locale != null) {
       String stringLanguange = ui.window.locale.languageCode;
-      String stringCountry = ui.window.locale.countryCode;
+      String? stringCountry = ui.window.locale.countryCode;
 
       if (stringLanguange == 'es' && stringCountry == 'ES' ||
           stringLanguange == 'ca' && stringCountry == 'ES' ||

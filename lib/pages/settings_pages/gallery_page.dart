@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
@@ -12,7 +11,7 @@ class GalleryPage extends StatefulWidget {
 class _GalleryPageState extends State<GalleryPage> {
   List<Slide> slides = [];
 
-  Function goToTab;
+  Function? goToTab;
 
   @override
   void initState() {
@@ -131,7 +130,7 @@ class _GalleryPageState extends State<GalleryPage> {
   }
 
   List<Widget> renderListCustomTabs() {
-    List<Widget> tabs = List();
+    List<Widget> tabs = [];
     for (int i = 0; i < slides.length; i++) {
       Slide currentSlide = slides[i];
       tabs.add(Container(
@@ -143,7 +142,7 @@ class _GalleryPageState extends State<GalleryPage> {
             children: <Widget>[
               GestureDetector(
                   child: Image.asset(
-                currentSlide.pathImage,
+                currentSlide.pathImage!,
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.55,
                 fit: BoxFit.contain,
@@ -158,7 +157,7 @@ class _GalleryPageState extends State<GalleryPage> {
               // ),
               Container(
                 child: Text(
-                  currentSlide.description,
+                  currentSlide.description!,
                   // style: currentSlide.styleDescription,
                   textAlign: TextAlign.center,
                   maxLines: 20,

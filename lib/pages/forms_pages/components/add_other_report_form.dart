@@ -23,8 +23,8 @@ class _AddOtherReportPageState extends State<AddOtherReportPage> {
   @override
   void initState() {
     super.initState();
-    if (Utils.report.note != null && Utils.report.note != '') {
-      _commentsController.text = Utils.report.note;
+    if (Utils.report!.note != null && Utils.report!.note != '') {
+      _commentsController.text = Utils.report!.note!;
     }
   }
 
@@ -47,7 +47,7 @@ class _AddOtherReportPageState extends State<AddOtherReportPage> {
                 builder: (context, AsyncSnapshot<double> snapshot) {
                   return LinearPercentIndicator(
                     lineHeight: 15.0,
-                    percent: snapshot.data,
+                    percent: snapshot.data!,
                     animateFromLastPercent: true,
                     animation: true,
                     backgroundColor: Colors.grey.withOpacity(0.3),
@@ -66,7 +66,7 @@ class _AddOtherReportPageState extends State<AddOtherReportPage> {
             Style.textField(MyLocalizations.of(context, 'comments_txt'),
                 _commentsController, context,
                 keyboardType: TextInputType.multiline, maxLines: 4, expands: false, handleChange: (text) {
-              Utils.report.note = text;
+              Utils.report!.note = text;
             }),
             Style.bottomOffset,
           ],

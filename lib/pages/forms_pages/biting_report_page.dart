@@ -15,8 +15,8 @@ import 'components/biting_form.dart';
 import 'components/biting_location_form.dart';
 
 class BitingReportPage extends StatefulWidget {
-  final Report editReport;
-  final Function loadData;
+  final Report? editReport;
+  final Function? loadData;
 
   BitingReportPage({this.editReport, this.loadData});
   @override
@@ -24,9 +24,9 @@ class BitingReportPage extends StatefulWidget {
 }
 
 class _BitingReportPageState extends State<BitingReportPage> {
-  PageController _pagesController;
-  List<Widget> _formsRepot;
-  String otherReport;
+  PageController? _pagesController;
+  late List<Widget> _formsRepot;
+  String? otherReport;
   bool seeButton = false;
   bool addMosquito = false;
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
@@ -83,13 +83,13 @@ class _BitingReportPageState extends State<BitingReportPage> {
       'question': {'id': 14, 'text': 'question_14'},
     },
   ];
-  Report toEditReport;
+  late Report toEditReport;
 
   @override
   void initState() {
     super.initState();
     if (widget.editReport != null) {
-      toEditReport = Report.fromJson(widget.editReport.toJson());
+      toEditReport = Report.fromJson(widget.editReport!.toJson());
       Utils.setEditReport(toEditReport);
     }
     _pagesController = PageController();
@@ -113,7 +113,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
     ];
   }
 
-  void addOtherReport(String reportType) {
+  void addOtherReport(String? reportType) {
     setState(() {
       otherReport = reportType;
     });
@@ -137,21 +137,21 @@ class _BitingReportPageState extends State<BitingReportPage> {
     var res = await Utils.createReport();
 
     if (widget.editReport != null) {
-      widget.loadData();
+      widget.loadData!();
     }
-    if (!res) {
+    if (!res!) {
       _showAlertKo();
     } else {
       if (Utils.savedAdultReport != null) {
         List<Campaign> campaingsList =
-            await ApiSingleton().getCampaigns(Utils.savedAdultReport.country);
+            await ApiSingleton().getCampaigns(Utils.savedAdultReport!.country);
         var now = DateTime.now();
         if (campaingsList.any((element) =>
-            DateTime.parse(element.startDate).isBefore(now) &&
-            DateTime.parse(element.endDate).isAfter(now))) {
+            DateTime.parse(element.startDate!).isBefore(now) &&
+            DateTime.parse(element.endDate!).isAfter(now))) {
           var activeCampaign = campaingsList.firstWhere((element) =>
-              DateTime.parse(element.startDate).isBefore(now) &&
-              DateTime.parse(element.endDate).isAfter(now));
+              DateTime.parse(element.startDate!).isBefore(now) &&
+              DateTime.parse(element.endDate!).isAfter(now));
           Utils.showAlertCampaign(
             context,
             activeCampaign,
@@ -180,7 +180,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
   }
 
   goNextPage() {
-    _pagesController
+    _pagesController!
         .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
         .then((value) {
       setState(() {
@@ -188,13 +188,13 @@ class _BitingReportPageState extends State<BitingReportPage> {
       });
     });
     setState(() {
-      index = _pagesController.page + 1;
+      index = _pagesController!.page! + 1;
     });
   }
 
   @override
   void dispose() {
-    _pagesController.dispose();
+    _pagesController!.dispose();
     super.dispose();
   }
 
@@ -214,7 +214,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
               leading: IconButton(
                 icon: Style.iconBack,
                 onPressed: () {
-                  var currentPage = _pagesController.page;
+                  var currentPage = _pagesController!.page;
 
                   if (currentPage == 0.0) {
                     // if (Utils.reportsList != null &&
@@ -226,19 +226,19 @@ class _BitingReportPageState extends State<BitingReportPage> {
                     // Utils.resetReport();
                     // }
                   } else if (currentPage == 1) {
-                    _pagesController
+                    _pagesController!
                         .previousPage(
                             duration: Duration(microseconds: 300),
                             curve: Curves.ease)
                         .then((value) {});
                   } else {
                     addOtherReport(null);
-                    _pagesController.previousPage(
+                    _pagesController!.previousPage(
                         duration: Duration(microseconds: 300),
                         curve: Curves.ease);
                   }
                   setState(() {
-                    index = currentPage - 1;
+                    index = currentPage! - 1;
                   });
                 },
               ),
@@ -266,7 +266,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
                                     initialData: false,
                                     builder: (BuildContext ctxt,
                                         AsyncSnapshot<bool> snapshot) {
-                                      return snapshot.data
+                                      return snapshot.data!
                                           ? Container(
                                               width: double.infinity,
                                               height: 54,
@@ -277,7 +277,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
                                                       context, 'continue_txt'),
                                                   () {
                                                 var currentPage =
-                                                    _pagesController.page;
+                                                    _pagesController!.page;
 
                                                 if (currentPage == 2 &&
                                                     addMosquito) {
@@ -290,9 +290,9 @@ class _BitingReportPageState extends State<BitingReportPage> {
                                                   );
                                                 } else {
                                                   setState(() {
-                                                    index = currentPage + 1;
+                                                    index = currentPage! + 1;
                                                   });
-                                                  _pagesController
+                                                  _pagesController!
                                                       .nextPage(
                                                           duration: Duration(
                                                               microseconds:
@@ -391,10 +391,10 @@ class _BitingReportPageState extends State<BitingReportPage> {
   }
 
   _onWillPop() {
-    if (Utils.report.responses.isNotEmpty) {
+    if (Utils.report!.responses!.isNotEmpty) {
       Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'),
           MyLocalizations.of(context, 'close_report_no_save_txt'), () {
-        if (Utils.reportsList != null && Utils.reportsList.isNotEmpty) {
+        if (Utils.reportsList != null && Utils.reportsList!.isNotEmpty) {
           Utils.deleteLastReport();
         } else {
           Utils.resetReport();
@@ -403,7 +403,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
         Navigator.pop(context);
       }, context);
     } else {
-      if (Utils.reportsList.isNotEmpty) {
+      if (Utils.reportsList!.isNotEmpty) {
         Utils.deleteLastReport();
       }
       Navigator.pop(context);

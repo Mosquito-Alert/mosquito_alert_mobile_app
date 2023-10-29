@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
@@ -59,30 +58,30 @@ class ReportsList extends StatelessWidget {
                             children: <Widget>[
                               Style.titleMedium(
                                   MyLocalizations.of(
-                                          context, 'report_of_the_day_txt') +
+                                          context, 'report_of_the_day_txt')! +
                                       DateFormat('dd-MM-yyyy')
                                           .format(DateTime.parse(
-                                              reports[index].creation_time))
+                                              reports[index].creation_time!))
                                           .toString(),
                                   fontSize: 14),
                               Style.body(
                                   '${MyLocalizations.of(context, "location_txt")} ${reports[index].displayCity ?? ''}'),
                               Style.body(
-                                  MyLocalizations.of(context, 'at_time_txt') +
+                                  MyLocalizations.of(context, 'at_time_txt')! +
                                       DateFormat.Hm()
                                           .format(DateTime.parse(
-                                              reports[index].creation_time))
+                                              reports[index].creation_time!))
                                           .toString(),
                                   color: Colors.grey),
                             ],
                           ),
                         ),
-                        reports[index].photos.isNotEmpty
+                        reports[index].photos!.isNotEmpty
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: Image.network(
                                   ApiSingleton.baseUrl +
-                                      reports[index].photos[0].photo,
+                                      reports[index].photos![0].photo!,
                                   width: 50,
                                   height: 50,
                                   fit: BoxFit.cover,
@@ -99,18 +98,5 @@ class ReportsList extends StatelessWidget {
             }),
       );
     }
-  }
-
-  getCity(report) async {
-    Coordinates coord;
-    if (report.location_choice == 'current') {
-      coord =
-          Coordinates(report.current_location_lat, report.current_location_lon);
-    } else if (report.location_choice == 'selected') {
-      coord = Coordinates(
-          report.selected_location_lat, report.selected_location_lon);
-    }
-    var address = await Geocoder.local.findAddressesFromCoordinates(coord);
-    return address[0].locality;
   }
 }

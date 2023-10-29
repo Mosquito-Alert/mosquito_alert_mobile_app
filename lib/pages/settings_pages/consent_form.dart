@@ -13,8 +13,8 @@ class ConsentForm extends StatefulWidget {
 }
 
 class _ConsentFormState extends State<ConsentForm> {
-  bool acceptConditions = false;
-  bool acceptPrivacy = false;
+  bool? acceptConditions = false;
+  bool? acceptPrivacy = false;
   StreamController<bool> buttonStream = StreamController<bool>.broadcast();
 
   @override
@@ -82,7 +82,7 @@ class _ConsentFormState extends State<ConsentForm> {
                             Checkbox(
                               value: acceptConditions,
                               onChanged: (newValue) {
-                                buttonStream.add(acceptPrivacy && newValue);
+                                buttonStream.add(acceptPrivacy! && newValue!);
                                 setState(() {
                                   acceptConditions = newValue;
                                 });
@@ -127,7 +127,7 @@ class _ConsentFormState extends State<ConsentForm> {
                             Checkbox(
                               value: acceptPrivacy,
                               onChanged: (newValue) {
-                                buttonStream.add(acceptConditions && newValue);
+                                buttonStream.add(acceptConditions! && newValue!);
                                 setState(() {
                                   acceptPrivacy = newValue;
                                 });
@@ -244,14 +244,14 @@ class _ConsentFormState extends State<ConsentForm> {
             ),
             StreamBuilder<Object>(
                 stream: buttonStream.stream,
-                initialData: acceptPrivacy && acceptConditions,
+                initialData: acceptPrivacy! && acceptConditions!,
                 builder: (context, snapshot) {
                   return Container(
                     margin: EdgeInsets.all(15),
                     width: double.infinity,
                     child: Style.button(
                         MyLocalizations.of(context, 'continue_txt'),
-                        snapshot.data
+                        snapshot.data as bool
                             ? () {
                                 Navigator.pushReplacement(
                                   context,

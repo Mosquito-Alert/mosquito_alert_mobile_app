@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
@@ -16,7 +15,7 @@ class TutorialPage extends StatefulWidget {
 class _TutorialPageState extends State<TutorialPage> {
   List<Slide> slides = [];
 
-  Function goToTab;
+  Function? goToTab;
 
   @override
   void initState() {
@@ -166,7 +165,7 @@ class _TutorialPageState extends State<TutorialPage> {
             children: <Widget>[
               GestureDetector(
                   child: Image.asset(
-                currentSlide.pathImage,
+                currentSlide.pathImage!,
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.55,
                 fit: BoxFit.contain,

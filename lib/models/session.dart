@@ -1,9 +1,9 @@
 class Session {
-  int id;
-  int session_ID;
-  String user;
-  String session_start_time;
-  String session_end_time;
+  int? id;
+  int? session_ID;
+  String? user;
+  String? session_start_time;
+  String? session_end_time;
 
   Session({
     this.id,

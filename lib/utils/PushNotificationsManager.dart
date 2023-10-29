@@ -58,8 +58,8 @@ class PushNotificationsManager {
   }
 
   static launchMessage(Map<String, dynamic> message) {
-    var title = '';
-    var msg = '';
+    String? title = '';
+    String? msg = '';
     var notifId = '';
 
     if (Platform.isIOS) {
@@ -103,13 +103,13 @@ class PushNotificationsManager {
       }
     }
 
-    if (title.isNotEmpty || msg.isNotEmpty) {
+    if (title!.isNotEmpty || msg!.isNotEmpty) {
       showOverlayNotification((context) {
         return MessageNotification(
           title: title,
           message: msg,
           onTap: () {
-            OverlaySupportEntry.of(context).dismiss();
+            OverlaySupportEntry.of(context)!.dismiss();
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -143,7 +143,7 @@ class PushNotificationsManager {
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Navigator.push(
-        navigatorKey.currentContext,
+        navigatorKey.currentContext!,
         MaterialPageRoute(
             builder: (context) => NotificationsPage(
                   notificationId: notifId,
@@ -188,13 +188,13 @@ class PushNotificationsManager {
     await subscribeToTopic(languageId);
   }
 
-  static Future<void> subscribeToTopic(String topic) async {
+  static Future<void> subscribeToTopic(String? topic) async {
     if (_initialized) {
       var userId = await UserManager.getUUID();
       if (userId != null && !_checkIfSubscribed(topic)) {
         var result = await ApiSingleton().subscribeToTopic(userId, topic);
         if (result != null && result) {
-          await _firebaseMessaging.subscribeToTopic(topic);
+          await _firebaseMessaging.subscribeToTopic(topic!);
         } else if (topic == 'global') {
           await _firebaseMessaging.subscribeToTopic('global');
         }
@@ -212,7 +212,7 @@ class PushNotificationsManager {
     }
   }
 
-  static Future<List<Topic>> getTopicsSubscribed() async {
+  static Future<List<Topic>?> getTopicsSubscribed() async {
     var userId = await UserManager.getUUID();
     if (userId != null) {
       var result = await ApiSingleton().getTopicsSubscribed(userId);
@@ -222,7 +222,7 @@ class PushNotificationsManager {
     }
   }
 
-  static bool _checkIfSubscribed(String topicCode) {
+  static bool _checkIfSubscribed(String? topicCode) {
     for (var topic in currentTopics) {
       if (topic.topicCode == topicCode) {
         return true;

@@ -31,11 +31,10 @@ class MainVC extends StatefulWidget {
 }
 
 class _MainVCState extends State<MainVC> {
-  String userName;
+  String? userName;
 
-  StreamController<String> nameStream =
-      StreamController<String>.broadcast();
-  String userUuid;
+  StreamController<String?> nameStream = StreamController<String?>.broadcast();
+  String? userUuid;
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
 
   @override
@@ -53,9 +52,10 @@ class _MainVCState extends State<MainVC> {
         'uqFb4yrdZCPFXsvXrJHBbJg5B5TqvSCYmxR7aPuN2uCcCKyu9FDVWettvbtNV9HKm';
     VersionControl.getInstance().packageLanguageCode = 'es';
     var check = await VersionControl.getInstance().checkVersion(context);
-    if (check) {
+    if (check != null && check) {
       _getData();
     }
+
   }
 
   _getData() async {
@@ -71,9 +71,9 @@ class _MainVCState extends State<MainVC> {
 
     await Utils.getLocation(context);
     if (UserManager.user != null) {
-      nameStream.add(UserManager.user.email);
+      nameStream.add(UserManager.user!.email);
       setState(() {
-        userName = UserManager.user.email;
+        userName = UserManager.user!.email;
       });
     }
 
@@ -85,7 +85,7 @@ class _MainVCState extends State<MainVC> {
   }
 
   _bgTracking() async {
-    bool trackingDisabled = await UserManager.getTracking();
+    bool? trackingDisabled = await UserManager.getTracking();
     if (trackingDisabled == null || !trackingDisabled) {
       // 1.  Listen to events (See docs for all 12 available events).
 
@@ -93,7 +93,7 @@ class _MainVCState extends State<MainVC> {
       bg.BackgroundGeolocation.onLocation(_onLocation);
 
       // 2.  Configure the plugin
-      bg.BackgroundGeolocation.ready(bg.Config(
+      await bg.BackgroundGeolocation.ready(bg.Config(
         desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
         distanceFilter: 0,
         stopOnTerminate: false,
@@ -108,7 +108,7 @@ class _MainVCState extends State<MainVC> {
         if (!state.enabled) {
           // 3.  Start the plugin.
           bg.BackgroundGeolocation.start().then((bg.State bgState) {
-            print('[start] success - ${bgState}');
+            print('[start] success - $bgState');
           });
         }
       });
@@ -223,11 +223,11 @@ class _MainVCState extends State<MainVC> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: <Widget>[
-                                                StreamBuilder<String>(
+                                                StreamBuilder<String?>(
                                                     stream: nameStream.stream,
                                                     initialData: userName,
                                                     builder: (context,
-                                                        AsyncSnapshot<String>
+                                                        AsyncSnapshot<String?>
                                                             snapshot) {
                                                       if (snapshot.hasData) {
                                                         print(snapshot.data);
@@ -270,7 +270,7 @@ class _MainVCState extends State<MainVC> {
                                                     'assets/img/points_box.png'),
                                               ),
                                             ),
-                                            child: StreamBuilder<int>(
+                                            child: StreamBuilder<int?>(
                                                 stream: Utils
                                                     .userScoresController
                                                     .stream,
@@ -738,14 +738,14 @@ class _MainVCState extends State<MainVC> {
     bool createReport = await Utils.createNewReport('bite');
     loadingStream.add(false);
     if (createReport) {
-      Navigator.push(
+      await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => BitingReportPage()),
       );
     } else {
       print('Bite report was not created');
       loadingStream.add(false);
-      Utils.showAlert(MyLocalizations.of(context, 'app_name'),
+      await Utils.showAlert(MyLocalizations.of(context, 'app_name'),
           MyLocalizations.of(context, 'server_down'), context);
     }
   }
@@ -754,14 +754,14 @@ class _MainVCState extends State<MainVC> {
     bool createReport = await Utils.createNewReport('adult');
     loadingStream.add(false);
     if (createReport) {
-      Navigator.push(
+      await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => AdultReportPage()),
       );
     } else {
       print('Adult report was not created');
       loadingStream.add(false);
-      Utils.showAlert(MyLocalizations.of(context, 'app_name'),
+      await Utils.showAlert(MyLocalizations.of(context, 'app_name'),
           MyLocalizations.of(context, 'server_down'), context);
     }
   }
@@ -770,14 +770,14 @@ class _MainVCState extends State<MainVC> {
     bool createReport = await Utils.createNewReport('site');
     loadingStream.add(false);
     if (createReport) {
-      Navigator.push(
+      await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => BreedingReportPage()),
       );
     } else {
       print('Site report was not created');
       loadingStream.add(false);
-      Utils.showAlert(MyLocalizations.of(context, 'app_name'),
+      await Utils.showAlert(MyLocalizations.of(context, 'app_name'),
           MyLocalizations.of(context, 'server_down'), context);
     }
   }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class CustomImageButton extends StatelessWidget {
-  final String img, title;
-  final bool selected, disabled;
+  final String? img, title;
+  final bool? selected, disabled;
   CustomImageButton({this.img, this.title, this.selected, this.disabled});
 
   @override
@@ -28,7 +28,7 @@ class CustomImageButton extends StatelessWidget {
                     ? Expanded(
                         flex: 3,
                         child: Image.asset(
-                          img,
+                          img!,
                           // height: 120,
                           // width: 120,
                           // fit: BoxFit.fitHeight,

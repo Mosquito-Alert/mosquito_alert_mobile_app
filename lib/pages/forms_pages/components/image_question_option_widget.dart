@@ -5,7 +5,7 @@ import 'package:mosquito_alert_app/utils/style.dart';
 class ImageQuestionOption extends StatelessWidget {
   final bool selected, disabled;
   final String title;
-  final String img;
+  final String? img;
 
   ImageQuestionOption(this.selected, this.title, this.img,
       {this.disabled = false});

@@ -6,7 +6,7 @@ class AggregatedPoints {
   final int index;
   final LatLng location;
   final int count;
-  String bitmabAssetName;
+  String? bitmabAssetName;
 
   AggregatedPoints(this.report, this.index, this.location, this.count) {
     bitmabAssetName = getBitmapDescriptor();

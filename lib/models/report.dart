@@ -3,35 +3,35 @@ import 'dart:developer';
 import 'package:mosquito_alert_app/models/question.dart';
 
 class Report {
-  String version_UUID;
-  int version_number;
-  String user;
-  String report_id;
-  String phone_upload_time;
-  String creation_time;
-  String version_time;
-  String type;
-  String location_choice;
-  double current_location_lon;
-  double current_location_lat;
-  double selected_location_lon;
-  double selected_location_lat;
-  String note;
-  String package_name;
-  int package_version;
-  int session;
-  List<Photo> photos;
-  List<Question> responses;
-  String device_manufacturer;
-  String device_model;
-  String os;
-  String os_version;
-  String os_language;
-  String app_language;
-  String displayCity;
-  int country;
-  String nuts3;
-  String nuts2;
+  String? version_UUID;
+  int? version_number;
+  String? user;
+  String? report_id;
+  String? phone_upload_time;
+  String? creation_time;
+  String? version_time;
+  String? type;
+  String? location_choice;
+  double? current_location_lon;
+  double? current_location_lat;
+  double? selected_location_lon;
+  double? selected_location_lat;
+  String? note;
+  String? package_name;
+  int? package_version;
+  int? session;
+  List<Photo>? photos;
+  List<Question?>? responses;
+  String? device_manufacturer;
+  String? device_model;
+  String? os;
+  String? os_version;
+  String? os_language;
+  String? app_language;
+  String? displayCity;
+  int? country;
+  String? nuts3;
+  String? nuts2;
 
   Report(
       {this.version_UUID,
@@ -87,14 +87,14 @@ class Report {
       photos = <Photo>[];
       json['photos'].forEach((p) {
         var ph = Photo.fromJson(p);
-        photos.add(ph);
+        photos!.add(ph);
       });
     }
 
     if (json['responses'] != null) {
       responses = <Question>[];
       json['responses'].forEach((q) {
-        responses.add(Question.fromJson(q));
+        responses!.add(Question.fromJson(q));
       });
     }
 
@@ -130,11 +130,11 @@ class Report {
     data['session'] = session;
 
     if (responses != null) {
-      data['responses'] = responses.map((r) => r.toJson()).toList();
+      data['responses'] = responses!.map((r) => r!.toJson()).toList();
     }
 
     if (photos != null) {
-      data['photos'] = photos.map((r) => r.toJson()).toList();
+      data['photos'] = photos!.map((r) => r.toJson()).toList();
     }
 
     data['device_manfacturer'] = device_manufacturer;
@@ -148,9 +148,9 @@ class Report {
 }
 
 class Photo {
-  int id;
-  String photo;
-  String uuid;
+  int? id;
+  String? photo;
+  String? uuid;
 
   Photo({
     this.id,

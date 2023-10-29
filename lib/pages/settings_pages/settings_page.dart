@@ -6,9 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:language_picker/language_picker.dart';
 
 import 'package:language_picker/languages.dart';
-import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page.dart';
-import 'package:mosquito_alert_app/pages/main/main_vc.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/settings_menu_widget.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/gallery_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/partners_page.dart';
@@ -24,7 +22,7 @@ import 'package:flutter_background_geolocation/flutter_background_geolocation.da
 import 'package:package_info/package_info.dart';
 
 class SettingsPage extends StatefulWidget {
-  final Function enableTracking;
+  final Function? enableTracking;
 
   SettingsPage({this.enableTracking});
 
@@ -33,8 +31,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool enableTracking = false;
-  String hashtag;
+  bool? enableTracking = false;
+  String? hashtag;
   var packageInfo;
 
   final languageCodes = [
@@ -63,7 +61,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Language('ro_RO', 'Romanian'),
   ];
 
-  String selectedLanguage;
+  String? selectedLanguage;
 
   @override
   void initState() {
@@ -109,7 +107,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
             FutureBuilder(
               future: UserManager.getUUID(),
-              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
                 print(snapshot.data);
                 return Row(
                   children: [
@@ -127,7 +125,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       onTap: () {
                         Clipboard.setData(ClipboardData(text: snapshot.data));
-                        key.currentState.showSnackBar(SnackBar(
+                        key.currentState!.showSnackBar(SnackBar(
                           content: Text('Copied to Clipboard'),
                         ));
                       },
@@ -139,35 +137,6 @@ class _SettingsPageState extends State<SettingsPage> {
             SizedBox(
               height: 12,
             ),
-            // UserManager.user != null
-            //     ? SettingsMenuWidget(MyLocalizations.of(context, "logout_txt"),
-            //         () {
-            //         Utils.showAlertYesNo(
-            //             MyLocalizations.of(context, "logout_txt"),
-            //             MyLocalizations.of(context, "logout_alert_txt"), () {
-            //           _signOut();
-            //         }, context);
-            //       })
-            //     : Column(
-            //         children: <Widget>[
-            //           SettingsMenuWidget(
-            //               MyLocalizations.of(
-            //                   context, "login_with_your_account_txt"), () {
-            //             Navigator.push(
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) => LoginMainPage()),
-            //             );
-            //           }),
-            //           Padding(
-            //             padding: const EdgeInsets.all(10.0),
-            //             child: Style.bodySmall(
-            //                 MyLocalizations.of(
-            //                     context, "use_your_acount_details_txt"),
-            //                 color: Colors.grey),
-            //           ),
-            //         ],
-            //       ),
             SizedBox(
               height: 10,
             ),
@@ -179,7 +148,7 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 10,
             ),
             SettingsMenuWidget(
-                enableTracking
+                enableTracking!
                     ? MyLocalizations.of(context, 'enable_background_tracking')
                     : MyLocalizations.of(
                         context, 'disable_background_tracking'), () {
@@ -258,17 +227,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 MaterialPageRoute(builder: (context) => PartnersPage()),
               );
             }),
-            /*SizedBox(
-                  height: 10,
-                ),
-                SettingsMenuWidget("countries_involved", () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            CountriesInvolvedPage()),
-                  );
-                }),*/
             SizedBox(
               height: 30,
             ),
@@ -351,7 +309,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 searchInputDecoration: InputDecoration(
                     hintText: MyLocalizations.of(context, 'search_txt')),
                 isSearchable: true,
-                title: Text(MyLocalizations.of(context, 'select_language_txt')),
+                title:
+                    Text(MyLocalizations.of(context, 'select_language_txt')!),
                 onValuePicked: (Language language) => setState(() {
                       var languageCodes = language.isoCode.split('_');
 
@@ -367,33 +326,23 @@ class _SettingsPageState extends State<SettingsPage> {
                 itemBuilder: (Language language) {
                   return Row(
                     children: <Widget>[
-                      Text(MyLocalizations.of(context, language.isoCode)),
+                      Text(MyLocalizations.of(context, language.isoCode)!),
                       // Text(language.name),
                     ],
                   );
                 })),
       );
 
-  _signOut() async {
-    await ApiSingleton().logout().then((res) {
-      UserManager.signOut();
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MainVC()));
-    }).catchError((e) {
-      print(e);
-    });
-  }
-
   _disableBgTracking() {
     Utils.showAlertYesNo(
         MyLocalizations.of(context, 'app_name'),
-        enableTracking
+        enableTracking!
             ? MyLocalizations.of(context, 'enable_tracking_question_text')
             : MyLocalizations.of(context, 'disable_tracking_question_text'),
         () async {
-      await UserManager.setTracking(!enableTracking);
-      if (enableTracking) {
-        widget.enableTracking();
+      await UserManager.setTracking(!enableTracking!);
+      if (enableTracking!) {
+        widget.enableTracking!();
       } else {
         bg.BackgroundGeolocation.stop();
         bg.BackgroundGeolocation.stopSchedule();
@@ -401,7 +350,7 @@ class _SettingsPageState extends State<SettingsPage> {
       }
 
       setState(() {
-        enableTracking = !enableTracking;
+        enableTracking = !enableTracking!;
       });
     }, context);
   }
@@ -426,7 +375,7 @@ class _SettingsPageState extends State<SettingsPage> {
           context: context,
           builder: (context) {
             return CupertinoAlertDialog(
-              title: Text(MyLocalizations.of(context, 'app_name')),
+              title: Text(MyLocalizations.of(context, 'app_name')!),
               content: Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Material(
@@ -435,7 +384,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(MyLocalizations.of(
-                          context, 'enable_auto_hashtag_text')),
+                          context, 'enable_auto_hashtag_text')!),
                       const SizedBox(
                         height: 20,
                       ),
@@ -469,13 +418,13 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: Text(MyLocalizations.of(context, 'cancel')),
+                  child: Text(MyLocalizations.of(context, 'cancel')!),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
                 TextButton(
-                  child: Text(MyLocalizations.of(context, 'save')),
+                  child: Text(MyLocalizations.of(context, 'save')!),
                   onPressed: () {
                     Navigator.of(context).pop(controller.text);
                   },
@@ -488,13 +437,13 @@ class _SettingsPageState extends State<SettingsPage> {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text(MyLocalizations.of(context, 'app_name')),
+              title: Text(MyLocalizations.of(context, 'app_name')!),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(MyLocalizations.of(
-                        context, 'enable_auto_hashtag_text')),
+                        context, 'enable_auto_hashtag_text')!),
                     const SizedBox(
                       height: 20,
                     ),
@@ -527,13 +476,13 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: Text(MyLocalizations.of(context, 'cancel')),
+                  child: Text(MyLocalizations.of(context, 'cancel')!),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
                 TextButton(
-                  child: Text(MyLocalizations.of(context, 'save')),
+                  child: Text(MyLocalizations.of(context, 'save')!),
                   onPressed: () {
                     Navigator.of(context).pop(controller.text);
                   },

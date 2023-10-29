@@ -1,8 +1,8 @@
 class Topic {
-  int id;
-  String user;
-  int topic;
-  String topicCode;
+  int? id;
+  String? user;
+  int? topic;
+  String? topicCode;
 
   Topic({this.id, this.user, this.topic, this.topicCode});
 

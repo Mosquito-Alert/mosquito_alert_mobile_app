@@ -21,7 +21,7 @@ class MosquitoPartsForm extends StatefulWidget {
 }
 
 class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
-  List<Question> questions = List();
+  List<Question?>? questions = [];
 
   @override
   void initState() {
@@ -29,9 +29,9 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
 
     widget.setValid(true);
     if (Utils.report != null) {
-      for (Question q in Utils.report.responses) {
-        if (q.question_id == widget.displayQuestion['question']['id']) {
-          questions.add(q);
+      for (Question? q in Utils.report!.responses!) {
+        if (q!.question_id == widget.displayQuestion['question']['id']) {
+          questions!.add(q);
         }
       }
     }
@@ -54,9 +54,9 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
               StreamBuilder(
                 stream: widget.showParts.stream,
                 initialData:
-                    Utils.report.responses.any((q) => q.answer_id == 61),
+                    Utils.report!.responses!.any((q) => q!.answer_id == 61),
                 builder: (context, AsyncSnapshot<bool> snapshot) {
-                  if (!snapshot.data) {
+                  if (!snapshot.data!) {
                     return Container();
                   }
                   return Column(
@@ -75,9 +75,9 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                             itemCount: 4,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
-                              int id = widget.displayQuestion['answers'][0]
+                              int? id = widget.displayQuestion['answers'][0]
                                   [index]['id'];
-                              String txt = widget.displayQuestion['answers'][0]
+                              String? txt = widget.displayQuestion['answers'][0]
                                   [index]['text'];
 
                               return GestureDetector(
@@ -88,11 +88,11 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                                   width: sizeWidth * 0.22,
                                   margin: EdgeInsets.only(right: 5),
                                   child: ImageQuestionOption(
-                                    questions.any((q) => q.answer_id == id),
+                                    questions!.any((q) => q!.answer_id == id),
                                     '',
                                     widget.displayQuestion['answers'][0][index]
                                         ['img'],
-                                    disabled: questions.length != null
+                                    disabled: questions!.length != null
                                         ? isDisabled(710, id)
                                         : false,
                                   ),
@@ -106,9 +106,9 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                             itemCount: 4,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
-                              int id = widget.displayQuestion['answers'][1]
+                              int? id = widget.displayQuestion['answers'][1]
                                   [index]['id'];
-                              String txt = widget.displayQuestion['answers'][1]
+                              String? txt = widget.displayQuestion['answers'][1]
                                   [index]['text'];
                               return GestureDetector(
                                 onTap: () {
@@ -118,11 +118,11 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                                   width: sizeWidth * 0.22,
                                   margin: EdgeInsets.only(right: 5),
                                   child: ImageQuestionOption(
-                                    questions.any((q) => q.answer_id == id),
+                                    questions!.any((q) => q!.answer_id == id),
                                     '',
                                     widget.displayQuestion['answers'][1][index]
                                         ['img'],
-                                    disabled: questions.length != null
+                                    disabled: questions!.length != null
                                         ? isDisabled(720, id)
                                         : false,
                                   ),
@@ -136,9 +136,9 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                             itemCount: 4,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
-                              int id = widget.displayQuestion['answers'][2]
+                              int? id = widget.displayQuestion['answers'][2]
                                   [index]['id'];
-                              String txt = widget.displayQuestion['answers'][2]
+                              String? txt = widget.displayQuestion['answers'][2]
                                   [index]['text'];
                               return GestureDetector(
                                 onTap: () {
@@ -148,11 +148,11 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
                                   width: sizeWidth * 0.22,
                                   margin: EdgeInsets.only(right: 5),
                                   child: ImageQuestionOption(
-                                    questions.any((q) => q.answer_id == id),
+                                    questions!.any((q) => q!.answer_id == id),
                                     '',
                                     widget.displayQuestion['answers'][2][index]
                                         ['img'],
-                                    disabled: questions.length != null
+                                    disabled: questions!.length != null
                                         ? isDisabled(730, id)
                                         : false,
                                   ),
@@ -182,15 +182,15 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
 
     widget.setValid(true);
     setState(() {
-      questions = Utils.report.responses;
+      questions = Utils.report!.responses;
     });
   }
 
-  bool isDisabled(int index, int aswerId) {
-    var group = questions
-        .where((q) => q.answer_id >= index && q.answer_id < index + 10)
+  bool isDisabled(int index, int? aswerId) {
+    var group = questions!
+        .where((q) => q!.answer_id! >= index && q.answer_id! < index + 10)
         .toList();
 
-    return group.any((q) => q.answer_id != aswerId);
+    return group.any((q) => q!.answer_id != aswerId);
   }
 }

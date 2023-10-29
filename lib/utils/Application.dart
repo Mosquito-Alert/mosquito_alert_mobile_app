@@ -41,7 +41,7 @@ class Application {
       });
 
   //function to be invoked when changing the language
-  LocaleChangeCallback onLocaleChanged;
+  late LocaleChangeCallback onLocaleChanged;
 }
 
 Application application = Application();

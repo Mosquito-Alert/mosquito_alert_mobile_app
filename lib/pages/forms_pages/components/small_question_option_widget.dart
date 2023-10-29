@@ -3,8 +3,8 @@ import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class SmallQuestionOption extends StatelessWidget {
-  final bool selected, disabled;
-  final String text;
+  final bool? selected, disabled;
+  final String? text;
   SmallQuestionOption(
     this.text, {
     this.selected,
@@ -13,9 +13,9 @@ class SmallQuestionOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return selected == null || !selected
+    return selected == null || !selected!
         ? Opacity(
-            opacity: disabled == null || !disabled ? 1.0 : 0.5,
+            opacity: disabled == null || !disabled! ? 1.0 : 0.5,
             child: Container(
               alignment: Alignment.center,
               // padding: EdgeInsets.all(20),

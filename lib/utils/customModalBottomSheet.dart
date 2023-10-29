@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 //OWN Full Modal Bottom Sheet class
 class CustomShowModalBottomSheet {
-  static Future<T> customShowModalBottomSheet<T>({
-    @required BuildContext context,
-    @required WidgetBuilder builder,
-    bool dismissible,
+  static Future<T?> customShowModalBottomSheet<T>({
+    required BuildContext context,
+    required WidgetBuilder builder,
+    bool? dismissible,
   }) {
     assert(context != null);
     assert(builder != null);
@@ -29,12 +29,12 @@ class _CullModalBottomSheetRoute<T> extends PopupRoute<T> {
     this.theme,
     this.barrierLabel,
     this.dismissible,
-    RouteSettings settings,
+    RouteSettings? settings,
   }) : super(settings: settings);
 
-  final WidgetBuilder builder;
-  final ThemeData theme;
-  final bool dismissible;
+  final WidgetBuilder? builder;
+  final ThemeData? theme;
+  final bool? dismissible;
 
   @override
   Duration get transitionDuration => Duration(milliseconds: 200);
@@ -43,19 +43,19 @@ class _CullModalBottomSheetRoute<T> extends PopupRoute<T> {
   bool get barrierDismissible => dismissible ?? true;
 
   @override
-  final String barrierLabel;
+  final String? barrierLabel;
 
   @override
   Color get barrierColor => Colors.black54;
 
-  AnimationController _animationController;
+  AnimationController? _animationController;
 
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null);
     _animationController =
-        BottomSheet.createAnimationController(navigator.overlay);
-    return _animationController;
+        BottomSheet.createAnimationController(navigator!.overlay!);
+    return _animationController!;
   }
 
   @override
@@ -68,15 +68,15 @@ class _CullModalBottomSheetRoute<T> extends PopupRoute<T> {
       removeTop: true,
       child: _CustomModalBottomSheet<T>(route: this),
     );
-    if (theme != null) bottomSheet = Theme(data: theme, child: bottomSheet);
+    if (theme != null) bottomSheet = Theme(data: theme!, child: bottomSheet);
     return bottomSheet;
   }
 }
 
 class _CustomModalBottomSheet<T> extends StatefulWidget {
-  const _CustomModalBottomSheet({Key key, this.route}) : super(key: key);
+  const _CustomModalBottomSheet({Key? key, this.route}) : super(key: key);
 
-  final _CullModalBottomSheetRoute<T> route;
+  final _CullModalBottomSheetRoute<T>? route;
 
   @override
   _CustomModalBottomSheetState<T> createState() =>
@@ -90,7 +90,7 @@ class _CustomModalBottomSheetState<T>
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final MaterialLocalizations localizations =
         MaterialLocalizations.of(context);
-    String routeLabel;
+    String? routeLabel;
     switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:
         routeLabel = '';
@@ -108,13 +108,13 @@ class _CustomModalBottomSheetState<T>
     return Theme(
       data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
       child: AnimatedBuilder(
-          animation: widget.route.animation,
-          builder: (BuildContext context, Widget child) {
+          animation: widget.route!.animation!,
+          builder: (BuildContext context, Widget? child) {
             // Disable the initial animation when accessible navigation is on so
             // that the semantics are added to the tree at the correct time.
             final double animationValue = mediaQuery.accessibleNavigation
                 ? 1.0
-                : widget.route.animation.value;
+                : widget.route!.animation!.value;
             return Semantics(
               scopesRoute: true,
               namesRoute: true,
@@ -124,9 +124,9 @@ class _CustomModalBottomSheetState<T>
                 child: CustomSingleChildLayout(
                   delegate: _CustomModalBottomSheetLayout(animationValue),
                   child: BottomSheet(
-                    animationController: widget.route._animationController,
+                    animationController: widget.route!._animationController,
                     onClosing: () => Navigator.pop(context),
-                    builder: widget.route.builder,
+                    builder: widget.route!.builder!,
                   ),
                 ),
               ),

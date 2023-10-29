@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class SettingsMenuWidget extends StatelessWidget {
-  final String text;
+  final String? text;
   final Function onTap;
 
   SettingsMenuWidget(this.text, this.onTap);

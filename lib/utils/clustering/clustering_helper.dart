@@ -14,10 +14,10 @@ import 'package:mosquito_alert_app/utils/style.dart';
 
 class ClusteringHelper {
   ClusteringHelper.forMemory({
-    @required this.list,
-    @required this.updateMarkers,
-    @required this.aggregationSetup,
-    @required this.onClick,
+    required this.list,
+    required this.updateMarkers,
+    required this.aggregationSetup,
+    required this.onClick,
     this.maxZoomForAggregatePoints = 12,
     this.bitmapAssetPathForSingleMarker,
   })  : assert(list != null),
@@ -27,34 +27,34 @@ class ClusteringHelper {
   final double maxZoomForAggregatePoints;
 
   //Name of table of the databasa SQLite where are stored the latitude, longitude and geoahash value
-  String dbTable;
+  String? dbTable;
 
   //Name of column where is stored the latitude
-  String dbLatColumn;
+  String? dbLatColumn;
 
   //Name of column where is stored the longitude
-  String dbLongColumn;
+  String? dbLongColumn;
 
   //Name of column where is stored the geohash value
-  String dbGeohashColumn;
+  String? dbGeohashColumn;
 
   //Custom bitmap: string of assets position
-  final String bitmapAssetPathForSingleMarker;
+  final String? bitmapAssetPathForSingleMarker;
 
   //Custom bitmap: string of assets position
   final AggregationSetup aggregationSetup;
 
   //Where clause for query db
-  String whereClause;
+  String? whereClause;
 
-  GoogleMapController mapController;
+  late GoogleMapController mapController;
 
   //Variable for save the last zoom
   double currentZoom = 15;
 
   //Function called when the map must show single point without aggregation
   // if null the class use the default function
-  Function showSinglePoint;
+  Function? showSinglePoint;
 
   //Function for update Markers on Google Map
   Function updateMarkers;
@@ -120,10 +120,10 @@ class ClusteringHelper {
     updateMap();
   }
 
-  BitmapDescriptor _iconAdultYours;
-  BitmapDescriptor _iconBitesYours;
-  BitmapDescriptor _iconBreedingYours;
-  BitmapDescriptor _iconAdultOthers;
+  BitmapDescriptor? _iconAdultYours;
+  BitmapDescriptor? _iconBitesYours;
+  BitmapDescriptor? _iconBreedingYours;
+  BitmapDescriptor? _iconAdultOthers;
 
   Future getDescriptors() async {
     if (_iconAdultYours != null &&
@@ -156,12 +156,12 @@ class ClusteringHelper {
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
         targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
         .buffer
         .asUint8List();
   }
 
-  BitmapDescriptor getIcon(Report report, selected) {
+  BitmapDescriptor? getIcon(Report report, selected) {
     if (UserManager.profileUUIDs != null &&
         UserManager.profileUUIDs.any((id) => id == report.user)) {
       switch (report.type) {
@@ -225,10 +225,10 @@ class ClusteringHelper {
         return latQuery && longQuery;
       }).toList();
 
-      aggregatedPoints = _retrieveAggregatedPoints(listBounds, List(), level);
+      aggregatedPoints = _retrieveAggregatedPoints(listBounds, [], level);
       return aggregatedPoints;
     } catch (e) {
-      return List<AggregatedPoints>();
+      return <AggregatedPoints>[];
     }
   }
 
@@ -266,7 +266,7 @@ class ClusteringHelper {
 
     for (var i = 0; i < aggregation.length; i++) {
       final a = aggregation[i];
-      BitmapDescriptor bitmapDescriptor;
+      BitmapDescriptor? bitmapDescriptor;
 
       if (a.count == 1) {
         bitmapDescriptor = getIcon(a.report, a.index == _selectedIndex);
@@ -278,7 +278,7 @@ class ClusteringHelper {
       final marker = Marker(
         markerId: MarkerId(a.getId()),
         position: a.location,
-        icon: bitmapDescriptor,
+        icon: bitmapDescriptor!,
         onTap: () {
           onClick(-1);
         },
@@ -296,7 +296,7 @@ class ClusteringHelper {
         return Marker(
           markerId: markerId,
           position: p.location,
-          icon: getIcon(p.report, p.index == _selectedIndex),
+          icon: getIcon(p.report, p.index == _selectedIndex)!,
           onTap: () {
             onClick(p.index);
           },
@@ -345,7 +345,8 @@ class ClusteringHelper {
     );
 
     final img = await pictureRecorder.endRecording().toImage(size, size);
-    final data = await img.toByteData(format: ui.ImageByteFormat.png);
+    final data = await (img.toByteData(format: ui.ImageByteFormat.png)
+        as FutureOr<ByteData>);
     return data.buffer.asUint8List();
   }
 }

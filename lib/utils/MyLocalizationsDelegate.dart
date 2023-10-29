@@ -5,7 +5,7 @@ import 'MyLocalizations.dart';
 import 'package:flutter/material.dart';
 
 class MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {
-  final Locale newLocale;
+  final Locale? newLocale;
 
   const MyLocalizationsDelegate({this.newLocale});
 
@@ -37,8 +37,8 @@ class MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {
 
   @override
   Future<MyLocalizations> load(Locale locale) async {
-    String lang = await UserManager.getLanguage();
-    String country = await UserManager.getLanguageCountry();
+    String? lang = await UserManager.getLanguage();
+    String? country = await UserManager.getLanguageCountry();
     Locale savedLocale = Utils.getLanguage();
     if (lang != null && country != null) {
       savedLocale = Locale(lang, country);

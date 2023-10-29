@@ -15,9 +15,9 @@ class PartnersPage extends StatefulWidget {
 }
 
 class _PartnersPageState extends State<PartnersPage> {
-  GoogleMapController controller;
+  GoogleMapController? controller;
 
-  List<Marker> markers = List();
+  List<Marker> markers = [];
   StreamController<List<Marker>> markersStram =
       StreamController<List<Marker>>.broadcast();
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
@@ -29,9 +29,10 @@ class _PartnersPageState extends State<PartnersPage> {
   }
 
   getInitialData() async {
-    List partners = await ApiSingleton().getPartners();
+    List partners =
+        await (ApiSingleton().getPartners() as FutureOr<List<dynamic>>);
 
-    for (Partner partner in partners) {
+    for (Partner partner in partners as Iterable<Partner>) {
       markers.add(Marker(
           markerId: MarkerId(partner.id.toString()),
           position: LatLng(partner.point['lat'], partner.point['long']),
@@ -82,7 +83,7 @@ class _PartnersPageState extends State<PartnersPage> {
                         target: LatLng(49.895268, 11.2773223),
                         zoom: 3.5,
                       ),
-                      markers: Set<Marker>.of(snapshot.data),
+                      markers: Set<Marker>.of(snapshot.data!),
                     );
                   },
                 ),

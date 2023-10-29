@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/api/api.dart';
@@ -11,13 +13,13 @@ import 'Application.dart';
 class UserManager {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  static User user;
+  static User? user;
   static var profileUUIDs;
-  static int userScore;
+  static int? userScore;
 
   static Future<bool> startFirstTime(context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool firstTime = prefs.getBool('firstTime');
+    bool? firstTime = prefs.getBool('firstTime');
 
     if (firstTime == null || !firstTime) {
       Navigator.of(context).push(
@@ -41,8 +43,8 @@ class UserManager {
       setLanguage(Utils.language.languageCode);
       setLanguageCountry(Utils.language.countryCode);
     } else {
-      String languageCode = await getLanguage();
-      String countryCode = await getLanguageCountry();
+      String? languageCode = await getLanguage();
+      String? countryCode = await getLanguageCountry();
       if (languageCode != null && countryCode != null) {
         Utils.language = Locale(languageCode, countryCode);
       } else {
@@ -116,7 +118,7 @@ class UserManager {
     prefs.setStringList('imagesList', imageList);
   }
 
-  static Future<void> setHashtag(String hashtag) async {
+  static Future<bool> setHashtag(String? hashtag) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (hashtag == null) {
       return prefs.remove('hashtag');
@@ -125,62 +127,62 @@ class UserManager {
   }
 
   //get
-  static Future<String> getUUID() async {
+  static Future<String?> getUUID() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.get('uuid');
+    return prefs.get('uuid') as FutureOr<String?>;
   }
 
-  static Future<String> getTrackingId() async {
+  static Future<String?> getTrackingId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.get('trackingUUID');
+    return prefs.get('trackingUUID') as FutureOr<String?>;
   }
 
-  static Future<String> getFirebaseId() async {
+  static Future<String?> getFirebaseId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('firebaseId');
   }
 
-  static Future<int> getUserScores() async {
+  static Future<int?> getUserScores() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt('userScores');
   }
 
-  static Future<bool> getTracking() async {
+  static Future<bool?> getTracking() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool('trackingDisabled');
   }
 
-  static Future<bool> getShowInfoAdult() async {
+  static Future<bool?> getShowInfoAdult() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool('infoCameraAdult');
   }
 
-  static Future<bool> getShowInfoBreeding() async {
+  static Future<bool?> getShowInfoBreeding() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool('infoCameraBreeding');
   }
 
-  static Future<String> getLanguage() async {
+  static Future<String?> getLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('language');
   }
 
-  static Future<String> getLanguageCountry() async {
+  static Future<String?> getLanguageCountry() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('languageCountry');
   }
 
-  static Future<List<String>> getReportList() async {
+  static Future<List<String>?> getReportList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getStringList('reportsList');
   }
 
-  static Future<List<String>> getImageList() async {
+  static Future<List<String>?> getImageList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getStringList('imagesList');
   }
 
-  static Future<String> getHashtag() async {
+  static Future<String?> getHashtag() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('hashtag');
   }

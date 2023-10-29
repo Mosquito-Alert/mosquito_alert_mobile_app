@@ -19,7 +19,7 @@ class BitingForm extends StatefulWidget {
 }
 
 class _BitingFormState extends State<BitingForm> {
-  List<Question> questions;
+  List<Question?>? questions;
   List<Map> displayQuestions = [];
   Map bodyQuestion = {};
   int bites = 0;
@@ -35,12 +35,12 @@ class _BitingFormState extends State<BitingForm> {
     questions = [];
 
     if (Utils.report != null) {
-      for (var q in Utils.report.responses) {
-        if (q.question_id == 1) {
-          bites = int.parse(q.answer_value);
+      for (var q in Utils.report!.responses!) {
+        if (q!.question_id == 1) {
+          bites = int.parse(q.answer_value!);
         }
-        if (q.question_id <= 4 || q.question_id == 5) {
-          questions.add(q);
+        if (q.question_id! <= 4 || q.question_id == 5) {
+          questions!.add(q);
         }
         if (q.answer_id == 52) {
           showDaytime = true;
@@ -96,7 +96,7 @@ class _BitingFormState extends State<BitingForm> {
                       removeBite();
 
                       setState(() {
-                        questions = Utils.report.responses;
+                        questions = Utils.report!.responses;
                       });
                       addToList(question[0]['question']['text'], '',
                           question_id: 1,
@@ -108,7 +108,7 @@ class _BitingFormState extends State<BitingForm> {
                       Utils.resetBitingQuestion();
                       setState(() {
                         valid = isValid;
-                        questions = Utils.report.responses;
+                        questions = Utils.report!.responses;
 
                       });
                     },
@@ -159,37 +159,43 @@ class _BitingFormState extends State<BitingForm> {
                           width: mediaQuery.width,
                         ),
                         Image.asset(
-                          questions.any((question) => question.answer_id == 25)
+                          questions!
+                                  .any((question) => question!.answer_id == 25)
                               ? 'assets/img/ic_left_leg_on.png'
                               : 'assets/img/ic_left_leg_off.png',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
-                          questions.any((question) => question.answer_id == 26)
+                          questions!
+                                  .any((question) => question!.answer_id == 26)
                               ? 'assets/img/ic_right_leg_on.png'
                               : 'assets/img/ic_right_leg_off.png',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
-                          questions.any((question) => question.answer_id == 22)
+                          questions!
+                                  .any((question) => question!.answer_id == 22)
                               ? 'assets/img/ic_left_hand_on.png'
                               : 'assets/img/ic_left_hand_off.png',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
-                          questions.any((question) => question.answer_id == 23)
+                          questions!
+                                  .any((question) => question!.answer_id == 23)
                               ? 'assets/img/ic_right_hand_on.png'
                               : 'assets/img/ic_right_hand_off.png',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
-                          questions.any((question) => question.answer_id == 21)
+                          questions!
+                                  .any((question) => question!.answer_id == 21)
                               ? 'assets/img/ic_head_on.png'
                               : 'assets/img/ic_head_off.png',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
-                          questions.any((question) => question.answer_id == 24)
+                          questions!
+                                  .any((question) => question!.answer_id == 24)
                               ? 'assets/img/ic_chest_on.png'
                               : 'assets/img/ic_chest_off.png',
                           width: mediaQuery.width,
@@ -197,48 +203,48 @@ class _BitingFormState extends State<BitingForm> {
                         Positioned(
                           top: mediaQuery.height * 0.05,
                           left: mediaQuery.width * 0.37,
-                          child: questions
-                                  .any((question) => question.answer_id == 21)
+                          child: questions!
+                                  .any((question) => question!.answer_id == 21)
                               ? Style.body(getIndexBody(21))
                               : Container(),
                         ),
                         Positioned(
                           top: mediaQuery.height * 0.18,
                           left: mediaQuery.width * 0.21,
-                          child: questions
-                                  .any((question) => question.answer_id == 23)
+                          child: questions!
+                                  .any((question) => question!.answer_id == 23)
                               ? Style.body(getIndexBody(23))
                               : Container(),
                         ),
                         Positioned(
                           top: mediaQuery.height * 0.18,
                           left: mediaQuery.width * 0.70,
-                          child: questions
-                                  .any((question) => question.answer_id == 22)
+                          child: questions!
+                                  .any((question) => question!.answer_id == 22)
                               ? Style.body(getIndexBody(22))
                               : Container(),
                         ),
                         Positioned(
                           top: mediaQuery.height * 0.23,
                           left: mediaQuery.width * 0.56,
-                          child: questions
-                                  .any((question) => question.answer_id == 24)
+                          child: questions!
+                                  .any((question) => question!.answer_id == 24)
                               ? Style.body(getIndexBody(24))
                               : Container(),
                         ),
                         Positioned(
                           top: mediaQuery.height * 0.37,
                           left: mediaQuery.width * 0.28,
-                          child: questions
-                                  .any((question) => question.answer_id == 26)
+                          child: questions!
+                                  .any((question) => question!.answer_id == 26)
                               ? Style.body(getIndexBody(26))
                               : Container(),
                         ),
                         Positioned(
                           top: mediaQuery.height * 0.37,
                           left: mediaQuery.width * 0.63,
-                          child: questions
-                                  .any((question) => question.answer_id == 25)
+                          child: questions!
+                                  .any((question) => question!.answer_id == 25)
                               ? Style.body(getIndexBody(25))
                               : Container(),
                         ),
@@ -384,7 +390,7 @@ class _BitingFormState extends State<BitingForm> {
                   Utils.resetBitingQuestion();
                   setState(() {
                     valid = isValid;
-                    questions = Utils.report.responses;
+                    questions = Utils.report!.responses;
 
                   });
                 }),
@@ -425,13 +431,13 @@ class _BitingFormState extends State<BitingForm> {
                               // crossAxisSpacing: 10,
                             ),
                             itemBuilder: (context, index) {
-                              String answerTxt =
+                              String? answerTxt =
                                   displayQuestions[i]['answers'][index]['text'];
-                              String questionTxt =
+                              String? questionTxt =
                                   displayQuestions[i]['question']['text'];
-                              int questionId =
+                              int? questionId =
                                   displayQuestions[i]['question']['id'];
-                              int answerId =
+                              int? answerId =
                                   displayQuestions[i]['answers'][index]['id'];
                               return Container(
                                 padding: EdgeInsets.all(5),
@@ -452,8 +458,8 @@ class _BitingFormState extends State<BitingForm> {
                                   },
                                   child: SmallQuestionOption(
                                     answerTxt,
-                                    selected: questions
-                                        .any((q) => q.answer_id == answerId),
+                                    selected: questions!
+                                        .any((q) => q!.answer_id == answerId),
                                   ),
                                 ),
                               );
@@ -489,18 +495,18 @@ class _BitingFormState extends State<BitingForm> {
   }
 
   bool _getDisabled(int answerId, int questionId) {
-    if (questions.isEmpty) {
+    if (questions!.isEmpty) {
       return false;
     }
 
-    int index = questions.indexWhere((q) => q.question_id == 1);
+    int index = questions!.indexWhere((q) => q!.question_id == 1);
     int totalAnswers =
-        index != -1 ? int.parse(questions[index].answer_value) : 0;
+        index != -1 ? int.parse(questions![index]!.answer_value!) : 0;
 
     int currentValues = 0;
 
-    questions.forEach((q) {
-      if (q.question_id == questionId) {
+    questions!.forEach((q) {
+      if (q!.question_id == questionId) {
         currentValues = currentValues + 1;
       }
     });
@@ -508,20 +514,20 @@ class _BitingFormState extends State<BitingForm> {
     return currentValues >= totalAnswers;
   }
 
-  String getIndexBody(int answer_id) {
-    int index = Utils.report.responses
-        .indexWhere((question) => question.answer_id == answer_id);
+  String? getIndexBody(int answer_id) {
+    int index = Utils.report!.responses!
+        .indexWhere((question) => question!.answer_id == answer_id);
 
     if (index != -1) {
-      return Utils.report.responses[index].answer_value;
+      return Utils.report!.responses![index]!.answer_value;
     }
   }
 
-  String getIndexAnswer(int answer_id) {
+  String? getIndexAnswer(int answer_id) {
     int index = 0;
 
-    questions.map((q) {
-      if (q.answer_id == answer_id) {
+    questions!.map((q) {
+      if (q!.answer_id == answer_id) {
         index = index + 1;
       }
     }).toList();
@@ -531,7 +537,7 @@ class _BitingFormState extends State<BitingForm> {
     }
   }
 
-  addToList(String question, String answer,
+  addToList(String? question, String? answer,
       {question_id, answer_id, answer_value}) {
     if ((question_id != 1 && int.parse(_textController.text) > 0) ||
         question_id == 1) {
@@ -544,7 +550,7 @@ class _BitingFormState extends State<BitingForm> {
       );
 
       setState(() {
-        questions = Utils.report.responses;
+        questions = Utils.report!.responses;
       });
       bool isValid = canContinue();
       setState(() {
@@ -555,28 +561,28 @@ class _BitingFormState extends State<BitingForm> {
 
   bool _validateAddBite() {
     int totalParts = 0;
-    questions.forEach((q) {
-      if (q.question_id == 2) {
-        totalParts = totalParts + int.parse(q.answer_value);
+    questions!.forEach((q) {
+      if (q!.question_id == 2) {
+        totalParts = totalParts + int.parse(q.answer_value!);
       }
     });
     return totalParts < bites;
   }
 
   bool canContinue() {
-    if (questions.length > 1 && questions.isNotEmpty) {
+    if (questions!.length > 1 && questions!.isNotEmpty) {
       bool totalBites = _validateAddBite();
       int totalQ3 = 0;
       int totalQ4 = 0;
       int totalQ5 = 0;
 
-      questions.forEach((q) {
-        if (q.question_id == 4) totalQ3++;
+      questions!.forEach((q) {
+        if (q!.question_id == 4) totalQ3++;
         if (q.question_id == 5) totalQ4++;
         if (q.question_id == 3) totalQ5++;
       });
 
-      if (questions.any((q) => q.answer_id == 52)) {
+      if (questions!.any((q) => q!.answer_id == 52)) {
         if (bites > 0 &&
             !totalBites &&
             totalQ3 == 1 &&
@@ -595,19 +601,19 @@ class _BitingFormState extends State<BitingForm> {
   }
 
   void removeBite() {
-    var bodyParts = Utils.report.responses
-        .where((element) => element.question_id == 2)
+    var bodyParts = Utils.report!.responses!
+        .where((element) => element!.question_id == 2)
         .toList();
     if (bodyParts != null) {
-      if (int.parse(bodyParts.last.answer_value) > 1) {
-        bodyParts.last.answer_value =
-            (int.parse(bodyParts.last.answer_value) - 1).toString();
+      if (int.parse(bodyParts.last!.answer_value!) > 1) {
+        bodyParts.last!.answer_value =
+            (int.parse(bodyParts.last!.answer_value!) - 1).toString();
       } else {
         bodyParts.removeLast();
       }
     }
 
-    Utils.report.responses =
-        [...Utils.report.responses, ...bodyParts].toSet().toList();
+    Utils.report!.responses =
+        [...?Utils.report!.responses, ...bodyParts].toSet().toList();
   }
 }

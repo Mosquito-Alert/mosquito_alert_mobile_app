@@ -18,7 +18,7 @@ class Style {
     color,
     maxLines,
     textAlign,
-    double fontSize,
+    double? fontSize,
         height,
   }) {
     return Text(
@@ -40,7 +40,7 @@ class Style {
     color,
     maxLines,
     textAlign,
-    double fontSize,
+    double? fontSize,
     height,
   }) {
     return Text(
@@ -62,7 +62,7 @@ class Style {
     color,
     maxLines,
     textAlign,
-    double fontSize,
+    double? fontSize,
     height,
   }) {
     return Text(
@@ -83,7 +83,7 @@ class Style {
     color,
     maxLines,
     textAlign,
-    double fontSize,
+    double? fontSize,
     height,
   }) {
     return Text(

@@ -33,11 +33,11 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
       question_id: widget.displayQuestion['question']['id'],
     );
     if (Utils.report != null) {
-      int index = Utils.report.responses.indexWhere(
-          (q) => q.question_id == widget.displayQuestion['question']['id']);
+      int index = Utils.report!.responses!.indexWhere(
+          (q) => q!.question_id == widget.displayQuestion['question']['id']);
       if (index != -1) {
-        question.answer = Utils.report.responses[index].answer;
-        question.answer_id = Utils.report.responses[index].answer_id;
+        question.answer = Utils.report!.responses![index]!.answer;
+        question.answer_id = Utils.report!.responses![index]!.answer_id;
         widget.setValid(true);
       }
     }
@@ -140,7 +140,7 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
     // widget.setValid(true);
 
     if (question.answer_id != 61) {
-      Utils.report.responses.removeWhere((element) => element.question_id == 7);
+      Utils.report!.responses!.removeWhere((element) => element!.question_id == 7);
     }
     Utils.addResponse(question);
   }
