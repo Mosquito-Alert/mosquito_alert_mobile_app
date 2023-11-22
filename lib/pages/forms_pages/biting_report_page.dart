@@ -145,7 +145,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
       if (Utils.savedAdultReport != null) {
         List<Campaign> campaingsList =
             await ApiSingleton().getCampaigns(Utils.savedAdultReport!.country);
-        var now = DateTime.now();
+        var now = DateTime.now().toUtc();
         if (campaingsList.any((element) =>
             DateTime.parse(element.startDate!).isBefore(now) &&
             DateTime.parse(element.endDate!).isAfter(now))) {

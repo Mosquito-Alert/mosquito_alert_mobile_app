@@ -76,7 +76,7 @@ class Utils {
   }
 
   static void closeSession() {
-    session!.session_end_time = DateTime.now().toIso8601String();
+    session!.session_end_time = DateTime.now().toUtc().toIso8601String();
     ApiSingleton().closeSession(session!);
   }
 
@@ -104,7 +104,7 @@ class Utils {
         session = Session(
             session_ID: sessionId,
             user: userUUID,
-            session_start_time: DateTime.now().toIso8601String());
+            session_start_time: DateTime.now().toUtc().toIso8601String());
 
         print(language);
         session!.id = await ApiSingleton().createSession(session!);
@@ -187,9 +187,9 @@ class Utils {
   }
 
   static addOtherReport(String type) {
-    report!.version_time = DateTime.now().toIso8601String();
-    report!.creation_time = DateTime.now().toIso8601String();
-    report!.phone_upload_time = DateTime.now().toIso8601String();
+    report!.version_time = DateTime.now().toUtc().toIso8601String();
+    report!.creation_time = DateTime.now().toUtc().toIso8601String();
+    report!.phone_upload_time = DateTime.now().toUtc().toIso8601String();
 
     reportsList!.add(report);
     report = null;
@@ -360,7 +360,7 @@ class Utils {
 
   static Future<bool?> createReport() async {
     if (report!.version_number! > 0) {
-      report!.version_time = DateTime.now().toIso8601String();
+      report!.version_time = DateTime.now().toUtc().toIso8601String();
       var res = await ApiSingleton().createReport(report!);
       if (res != null) {
         if (res.type == 'adult') {
@@ -371,9 +371,9 @@ class Utils {
         return false;
       }
     } else {
-      report!.version_time = DateTime.now().toIso8601String();
-      report!.creation_time = DateTime.now().toIso8601String();
-      report!.phone_upload_time = DateTime.now().toIso8601String();
+      report!.version_time = DateTime.now().toUtc().toIso8601String();
+      report!.creation_time = DateTime.now().toUtc().toIso8601String();
+      report!.phone_upload_time = DateTime.now().toUtc().toIso8601String();
       reportsList!.add(report);
       bool? isCreated;
       for (int i = 0; i < reportsList!.length; i++) {
@@ -492,7 +492,7 @@ class Utils {
 
   static Future<bool> deleteReport(r) async {
     Report deleteReport = r;
-    deleteReport.version_time = DateTime.now().toIso8601String();
+    deleteReport.version_time = DateTime.now().toUtc().toIso8601String();
     deleteReport.version_number = -1;
     deleteReport.version_UUID = Uuid().v4();
 

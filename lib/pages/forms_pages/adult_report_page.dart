@@ -262,7 +262,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
         if (Utils.savedAdultReport!.country != null) {
           List<Campaign> campaignsList =
               await (ApiSingleton().getCampaigns(Utils.savedAdultReport!.country) as FutureOr<List<Campaign>>);
-          var now = DateTime.now();
+          var now = DateTime.now().toUtc();
           if (campaignsList.any((element) =>
               DateTime.parse(element.startDate!).isBefore(now) &&
               DateTime.parse(element.endDate!).isAfter(now))) {

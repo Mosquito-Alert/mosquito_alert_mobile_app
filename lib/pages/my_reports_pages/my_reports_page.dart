@@ -353,7 +353,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
 
   Future<Campaign?> _checkCampaigns(int? country) async {
     List<Campaign> campaignsList = await ApiSingleton().getCampaigns(country);
-    var now = DateTime.now();
+    var now = DateTime.now().toUtc();
     if (campaignsList.any((element) =>
         DateTime.parse(element.startDate!).isBefore(now) &&
         DateTime.parse(element.endDate!).isAfter(now))) {

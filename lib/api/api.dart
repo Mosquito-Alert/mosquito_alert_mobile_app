@@ -522,7 +522,7 @@ class ApiSingleton {
         'masked_lat': lat,
         'masked_lon': lon,
         'power': power,
-        'phone_upload_time': DateTime.now().toIso8601String(),
+        'phone_upload_time': DateTime.now().toUtc().toIso8601String(),
       };
 
       final response = await http
