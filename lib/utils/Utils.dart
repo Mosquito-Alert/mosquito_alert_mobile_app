@@ -34,7 +34,7 @@ class Utils {
 
   //Manage Data
   static Position? location;
-  static LatLng defaultLocation = LatLng(41.3874, 2.1688);
+  static LatLng defaultLocation = LatLng(0, 0);
   static StreamController<int?> userScoresController =
       StreamController<int?>.broadcast();
 
