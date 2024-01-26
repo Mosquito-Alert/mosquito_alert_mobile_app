@@ -22,7 +22,7 @@ import 'package:path_provider/path_provider.dart';
 class ApiSingleton {
   static final _timeoutTimerInSeconds = 10;
 
-  static String devBASEURL = 'https://madev.creaf.cat';
+  static String devBASEURL = 'https://webdev.mosquitoalert.com';
   static String baseUrl = 'https://webserver.mosquitoalert.com';
   static String serverUrl = '$baseUrl/api';
 
