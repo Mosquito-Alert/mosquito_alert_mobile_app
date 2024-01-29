@@ -36,7 +36,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   _getData() async {
-    List<MyNotification> response = await (ApiSingleton().getNotifications() as FutureOr<List<MyNotification>>);
+    List<MyNotification> response = await ApiSingleton().getNotifications();
 
     if (response != null) {
       setState(() {
@@ -75,7 +75,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   MyLocalizations.of(context, 'notifications_title'),
                   fontSize: 16),
             ),
-            body: notifications.length == 0 || notifications.isEmpty
+            body: notifications.isEmpty
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -206,7 +206,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         height: 10,
                       ),
                       Style.bodySmall(
-                          DateFormat('dd-MM-yyyy hh:mm').format(
+                          DateFormat('dd-MM-yyyy HH:mm').format(
                               DateTime.parse(notification.date_comment!)),
                           color: Colors.grey)
                     ],
