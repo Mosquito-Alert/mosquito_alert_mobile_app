@@ -156,13 +156,6 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
           MaterialPageRoute(builder: (context) => BitingReportPage()),
         );
         break;
-      // case "site":
-      //   Utils.addOtherReport('site');
-      //   Navigator.push(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => BreedingReportPage()),
-      //   );
-      //   break;
       case 'adult':
         Utils.addOtherReport('adult');
         Navigator.push(
@@ -242,11 +235,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
               children: <Widget>[
                 PageView(
                   controller: _pagesController,
-                  // itemCount: _formsRepot.length,
                   physics: NeverScrollableScrollPhysics(),
-                  // itemBuilder: (BuildContext context, int index) {
-                  //   return _formsRepot[index];
-                  // }),
                   children: _formsRepot,
                 ),
                 index <= displayContinue
@@ -371,7 +360,6 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
           onTap: () {
             Navigator.pop(context);
             Utils.infoBreedingCamera(context, getImage);
-            // _showInfoImage();
           },
           child: Container(
             width: double.infinity,

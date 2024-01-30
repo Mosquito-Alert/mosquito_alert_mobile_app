@@ -168,7 +168,6 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
               SizedBox(
                 height: 15,
               ),
-              // Center(child: Style.noBgButton("No lo tengo claro", () {}))
               Style.bottomOffset,
             ],
           ),

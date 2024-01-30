@@ -87,8 +87,6 @@ class ReportsList extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ))
                             : Container(
-                                // child: Style.title(
-                                //     reports[index].version_number.toString()),
                                 ),
                       ],
                     ),

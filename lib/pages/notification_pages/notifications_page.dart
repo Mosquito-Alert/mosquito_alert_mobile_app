@@ -87,8 +87,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 : Container(
                     margin: EdgeInsets.all(12),
                     child: ListView.builder(
-                        // physics: NeverScrollableScrollPhysics(),
-                        // shrinkWrap: true,
                         itemCount: notifications.length,
                         itemBuilder: (ctx, index) {
                           return Opacity(
@@ -167,7 +165,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       SizedBox(
                         height: 15,

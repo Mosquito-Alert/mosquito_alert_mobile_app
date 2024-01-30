@@ -8,7 +8,6 @@ class MyNotification {
   String? date_comment;
   bool? acknowledged;
   bool? public;
-  // NotificationContent notificationContent;
 
   MyNotification({
     this.id,
@@ -17,7 +16,6 @@ class MyNotification {
     this.expert_id,
     this.date_comment,
     this.acknowledged,
-    // this.notificationContent,
   });
 
   MyNotification.fromJson(Map<dynamic, dynamic> json) {
@@ -30,7 +28,5 @@ class MyNotification {
     date_comment = json['date_comment'];
     acknowledged = json['acknowledged'];
     public = json['piblic'];
-    // notificationContent =
-    //     NotificationContent.fromJson(json['notificationContent']);
   }
 }

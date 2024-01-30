@@ -48,7 +48,6 @@ class _BitingFormState extends State<BitingForm> {
       }
     }
     var isValid = canContinue();
-    // widget.setValid(isValid);
     setState(() {
       valid = isValid;
     });
@@ -91,8 +90,6 @@ class _BitingFormState extends State<BitingForm> {
                           .where((q) => q['question']['id'] == 1)
                           .toList();
 
-                      // Utils.report.responses.removeLast();
-
                       removeBite();
 
                       setState(() {
@@ -104,7 +101,6 @@ class _BitingFormState extends State<BitingForm> {
                           answer_value: _textController.text);
 
                       var isValid = canContinue();
-                      // widget.setValid(isValid);
                       Utils.resetBitingQuestion();
                       setState(() {
                         valid = isValid;
@@ -140,7 +136,6 @@ class _BitingFormState extends State<BitingForm> {
                           answer_id: 11,
                           answer_value: _textController.text);
                       bool isValid = canContinue();
-                      // widget.setValid(isValid);
                       setState(() {
                         valid = isValid;
                       });
@@ -302,7 +297,6 @@ class _BitingFormState extends State<BitingForm> {
                                     }
                                   : null,
                               child: Container(
-                                // margin: EdgeInsets.only(top: 5),
                                 color: Colors.transparent,
                                 height: mediaQuery.height * 0.13,
                                 width: mediaQuery.width * 0.15,
@@ -419,7 +413,6 @@ class _BitingFormState extends State<BitingForm> {
                         height: 10,
                       ),
                       Container(
-                        // height: 450,
                         child: GridView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -428,7 +421,6 @@ class _BitingFormState extends State<BitingForm> {
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                               childAspectRatio: 5 / 2,
-                              // crossAxisSpacing: 10,
                             ),
                             itemBuilder: (context, index) {
                               String? answerTxt =
@@ -483,7 +475,6 @@ class _BitingFormState extends State<BitingForm> {
                           }
                         : null),
               ),
-              // Style.bottomOffset,
               SizedBox(
                 height: 10,
               ),

@@ -217,14 +217,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
                   var currentPage = _pagesController!.page;
 
                   if (currentPage == 0.0) {
-                    // if (Utils.reportsList != null &&
-                    //     Utils.reportsList.isNotEmpty &&
-                    //     widget.editReport == null) {
-                    //   Utils.deleteLastReport();
-                    // } else {
                     _onWillPop();
-                    // Utils.resetReport();
-                    // }
                   } else if (currentPage == 1) {
                     _pagesController!
                         .previousPage(

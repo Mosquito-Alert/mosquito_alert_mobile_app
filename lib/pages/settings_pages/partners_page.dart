@@ -69,7 +69,6 @@ class _PartnersPageState extends State<PartnersPage> {
           body: Column(
             children: [
               Expanded(
-                // flex: 3,
                 child: StreamBuilder<List<Marker>>(
                   stream: markersStram.stream,
                   initialData: [],

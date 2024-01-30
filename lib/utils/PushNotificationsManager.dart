@@ -50,7 +50,6 @@ class PushNotificationsManager {
       if (token != null) {
         await registerFCMToken(token);
         await getTopicsSubscribed();
-        // Utils.firebaseLoaded = true;
         Utils.initializedCheckData['firebase'] = true;
         _initialized = true;
       }

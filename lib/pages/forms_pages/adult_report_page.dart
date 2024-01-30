@@ -290,7 +290,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
         }
       }
 
-      // _showAlertOk();
       setState(() {
         percentStream.add(1.0);
       });
@@ -329,12 +328,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                     setState(() {
                       index = currentPage! - 1;
                     });
-                    // if (Utils.reportsList != null &&
-                    //     Utils.reportsList.isNotEmpty) {
-                    //   Utils.deleteLastReport();
-                    // } else {
                     _onWillPop();
-                    // }
                   } else {
                     if (currentPage == 2.0 &&
                         !Utils.report!.responses!

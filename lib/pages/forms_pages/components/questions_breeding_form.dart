@@ -50,7 +50,6 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
         children: [
           widget.bottomImage != null && widget.bottomImage.isNotEmpty
               ? Container(
-                  // margin: EdgeInsets.only(top: 20),
                   alignment: Alignment.bottomCenter,
                   child: Image.asset(
                     widget.bottomImage,
@@ -123,7 +122,6 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
                             if (widget.nextPage != null) {
                               widget.nextPage!();
                             }
-                            // widget.nextPage != null && widget.nextPage();
                           },
                           child: SmallQuestionOption(
                             text,
@@ -132,7 +130,6 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
                     );
                   },
                 ),
-                //Style.bottomOffset,
               ],
             ),
           ),

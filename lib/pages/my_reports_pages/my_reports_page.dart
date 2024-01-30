@@ -774,7 +774,6 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                           () {
                                         _deleteReport(report);
                                       }, context);
-                                      //
                                     }, textColor: Colors.red))
                                   ],
                                 ),

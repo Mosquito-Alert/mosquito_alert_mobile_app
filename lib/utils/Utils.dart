@@ -55,14 +55,6 @@ class Utils {
     'firebase': false, // Whether firebase got initialized
   };
 
-  // static bool userFetched = false;
-  // static bool userScoresFetched = false;
-  // static Map<String, dynamic> userCreated = {
-  //   "created": false,
-  //   "required": false
-  // };
-  // static bool firebaseLoaded = false;
-
   static void saveImgPath(File img) {
     if (imagePath == null) {
       imagePath = [];
@@ -242,7 +234,6 @@ class Utils {
 
     if (question_id == 1) {
       int currentIndex = _questions!.indexWhere((question) =>
-          // question.question_id == question_id &&
           question!.question_id == question_id);
       if (currentIndex == -1) {
         _questions.add(Question(
@@ -260,7 +251,6 @@ class Utils {
     //increase answer_value question 2
     if (question_id == 2) {
       int currentIndex = _questions!.indexWhere((question) =>
-          // question.question_id == question_id &&
           question!.answer_id == answer_id);
       if (currentIndex == -1) {
         _questions.add(Question(
@@ -388,8 +378,6 @@ class Utils {
       }
 
       closeSession();
-      // resetReport();
-      // imagePath = [];
       return isCreated;
     }
   }
@@ -930,7 +918,6 @@ class Utils {
                                   UserManager.setSowInfoAdult(true);
                                   Navigator.of(context).pop();
                                 },
-                                // textColor: Style.colorPrimary,
                               ),
                             ),
                           ],
@@ -960,7 +947,6 @@ class Utils {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               content: Container(
-                // height: double.infinity,
                 padding: EdgeInsets.fromLTRB(25, 25, 25, 10),
                 constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.35,

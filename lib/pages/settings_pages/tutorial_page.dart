@@ -77,13 +77,6 @@ class _TutorialPageState extends State<TutorialPage> {
         pathImage: 'assets/img/tutorial/Fig8.png',
       ),
     );
-    // slides.add(
-    //   new Slide(
-    //     title: MyLocalizations.of(context, "tutorial_title_09"),
-    //     description: MyLocalizations.of(context, "tutorial_info_09"),
-    //     pathImage: "assets/img/tutorial/Fig9.png",
-    //   ),
-    // );
     slides.add(
       Slide(
         title: MyLocalizations.of(context, 'tutorial_title_10'),
@@ -112,13 +105,6 @@ class _TutorialPageState extends State<TutorialPage> {
         pathImage: 'assets/img/tutorial/Fig13.png',
       ),
     );
-    // slides.add(
-    //   new Slide(
-    //     title: MyLocalizations.of(context, "tutorial_title_14"),
-    //     description: MyLocalizations.of(context, "tutorial_info_14"),
-    //     pathImage: "assets/img/tutorial/Fig14.png",
-    //   ),
-    // );
     slides.add(
       Slide(
         title: '',
@@ -173,19 +159,15 @@ class _TutorialPageState extends State<TutorialPage> {
               Container(
                 child: Style.titleMedium(
                   currentSlide.title,
-                  // style: currentSlide.styleTitle,
                   textAlign: TextAlign.center,
                   fontSize: 14,
                 ),
-                // margin: EdgeInsets.only(top: 20.0),
               ),
               Container(
                 child: Style.body(
                   currentSlide.description,
-                  // style: currentSlide.styleDescription,
                   textAlign: TextAlign.center,
                   maxLines: 20,
-                  // overflow: TextOverflow.ellipsis,
                 ),
                 margin: EdgeInsets.all(20.0),
               ),

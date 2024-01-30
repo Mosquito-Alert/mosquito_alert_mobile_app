@@ -46,7 +46,6 @@ class _CouldSeeFormState extends State<CouldSeeForm> {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 5 / 2,
-                // crossAxisSpacing: 10,
               ),
               itemBuilder: (context, index) {
                 String? text =
@@ -62,7 +61,6 @@ class _CouldSeeFormState extends State<CouldSeeForm> {
                         id == 82
                             ? widget.addReport(true)
                             : widget.addReport(false);
-                        // widget.setValid(true);
                         widget.nextPage();
                       },
                       child: SmallQuestionOption(

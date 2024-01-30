@@ -327,7 +327,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   return Row(
                     children: <Widget>[
                       Text(MyLocalizations.of(context, language.isoCode)!),
-                      // Text(language.name),
                     ],
                   );
                 })),

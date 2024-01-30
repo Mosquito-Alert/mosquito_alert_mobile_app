@@ -9,9 +9,7 @@ class ReportAndGeohash {
 
   late String geohash;
 
-  ReportAndGeohash(this.report, this.location, this.index) {
-    //geohash = Geohash.encode(location.latitude, location.longitude);
-  }
+  ReportAndGeohash(this.report, this.location, this.index);
 
   getId() {
     return location.latitude.toString() +
