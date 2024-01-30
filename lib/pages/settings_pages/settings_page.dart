@@ -61,8 +61,6 @@ class _SettingsPageState extends State<SettingsPage> {
     Language('ro_RO', 'Romanian'),
   ];
 
-  String? selectedLanguage;
-
   @override
   void initState() {
     super.initState();
@@ -303,7 +301,13 @@ class _SettingsPageState extends State<SettingsPage> {
         builder: (context) => Theme(
             data: Theme.of(context).copyWith(primaryColor: Style.colorPrimary),
             child: LanguagePickerDialog(
-                languages: languageCodes,
+                languages: languageCodes.map(
+                  (language) => Language(
+                    language.isoCode,
+                    MyLocalizations.of(context, language.isoCode) ?? language.name
+                  )).toList()..sort(
+                          (a, b) => a.name.compareTo(b.name)
+                        ),
                 titlePadding: EdgeInsets.all(8.0),
                 searchCursorColor: Style.colorPrimary,
                 searchInputDecoration: InputDecoration(
