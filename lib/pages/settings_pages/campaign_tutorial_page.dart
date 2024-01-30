@@ -59,7 +59,6 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
           goToTab = refFunc;
         },
         hideStatusBar: false,
-        onTabChangeCompleted: onTabChangeCompleted,
       ),
     );
   }
@@ -81,8 +80,6 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
     if (widget.fromReport != null && widget.fromReport!) {
       Navigator.popUntil(context, (route) => route.isFirst);
     }
-  }
-  void onTabChangeCompleted(int page) {
   }
   Widget renderNextBtn() {
     return Icon(

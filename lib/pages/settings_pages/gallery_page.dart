@@ -103,10 +103,6 @@ class _GalleryPageState extends State<GalleryPage> {
     Navigator.pop(context);
   }
 
-  void onTabChangeCompleted(index) {
-    // Index of current tab is focused
-  }
-
   Widget renderNextBtn() {
     return Icon(
       Icons.navigate_next,
@@ -205,9 +201,6 @@ class _GalleryPageState extends State<GalleryPage> {
 
         // Show or hide status bar
         hideStatusBar: false,
-
-        // On tab change completed
-        onTabChangeCompleted: onTabChangeCompleted,
       ),
     );
   }
