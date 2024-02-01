@@ -2,7 +2,7 @@
 //  versioncontrol.dart
 //
 //  Created by Alex Tarragó on 04/02/2020.
-//  Copyright © 2020 Dribba GmbH. All rights reserved.
+//  Copyright © 2020 Dribba GmbH.
 //
 
 import 'dart:async';
