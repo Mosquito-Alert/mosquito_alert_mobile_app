@@ -75,6 +75,7 @@ flutter:
     - assets/img/bottoms/
     - assets/language/
     - assets/html/
+    - assets/config/
 
   fonts:
     - family: Rubik

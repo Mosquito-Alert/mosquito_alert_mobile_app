@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/pages/main/main_vc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mosquito_alert_app/utils/Application.dart';
@@ -13,8 +13,10 @@ import 'package:overlay_support/overlay_support.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() async {
+void main({String env = 'prod'}) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await ApiSingleton.initialize(env);
+
   try {
     await Firebase.initializeApp();
   } catch (err) {
@@ -31,8 +33,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-
   late StreamSubscription<ConnectivityResult> subscription;
 
   MyLocalizationsDelegate _newLocaleDelegate = MyLocalizationsDelegate();
@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  dispose() {
+  void dispose() {
     super.dispose();
     subscription.cancel();
   }

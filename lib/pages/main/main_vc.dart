@@ -43,7 +43,7 @@ class _MainVCState extends State<MainVC> {
     loadingStream.add(true);
   }
 
-  initAuthStatus() async {
+  void initAuthStatus() async {
     if (Platform.isIOS) {
       await AppTrackingTransparency.requestTrackingAuthorization();
     }
@@ -57,7 +57,7 @@ class _MainVCState extends State<MainVC> {
 
   }
 
-  _getData() async {
+  void _getData() async {
     await UserManager.startFirstTime(context);
     userUuid = await UserManager.getUUID();
     UserManager.userScore = await ApiSingleton().getUserScores();
@@ -79,7 +79,7 @@ class _MainVCState extends State<MainVC> {
     loadingStream.add(false);
   }
 
-  _bgTracking() async {
+  void _bgTracking() async {
     bool? trackingDisabled = await UserManager.getTracking();
     if (trackingDisabled == null || !trackingDisabled) {
       // 1.  Listen to events (See docs for all 12 available events).
