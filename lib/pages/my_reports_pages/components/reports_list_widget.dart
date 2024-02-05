@@ -61,7 +61,7 @@ class ReportsList extends StatelessWidget {
                                           context, 'report_of_the_day_txt')! +
                                       DateFormat('dd-MM-yyyy')
                                           .format(DateTime.parse(
-                                              reports[index].creation_time!))
+                                              reports[index].creation_time!).toLocal())
                                           .toString(),
                                   fontSize: 14),
                               Style.body(
@@ -70,7 +70,7 @@ class ReportsList extends StatelessWidget {
                                   MyLocalizations.of(context, 'at_time_txt')! +
                                       DateFormat.Hm()
                                           .format(DateTime.parse(
-                                              reports[index].creation_time!))
+                                              reports[index].creation_time!).toLocal())
                                           .toString(),
                                   color: Colors.grey),
                             ],

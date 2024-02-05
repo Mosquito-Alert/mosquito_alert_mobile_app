@@ -204,7 +204,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       ),
                       Style.bodySmall(
                           DateFormat('dd-MM-yyyy HH:mm').format(
-                              DateTime.parse(notification.date_comment!)),
+                              DateTime.parse(notification.date_comment!).toLocal()),
                           color: Colors.grey)
                     ],
                   ),
