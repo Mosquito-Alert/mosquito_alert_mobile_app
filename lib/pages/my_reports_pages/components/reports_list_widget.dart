@@ -3,6 +3,7 @@ import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
+import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:intl/intl.dart';
 
@@ -57,22 +58,19 @@ class ReportsList extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Style.titleMedium(
-                                  MyLocalizations.of(
-                                          context, 'report_of_the_day_txt')! +
-                                      DateFormat('dd-MM-yyyy')
-                                          .format(DateTime.parse(
-                                              reports[index].creation_time!).toLocal())
-                                          .toString(),
+                                  Utils.getTranslatedReportType(context, reports[index].type),
                                   fontSize: 14),
                               Style.body(
-                                  '${MyLocalizations.of(context, "location_txt")} ${reports[index].displayCity ?? ''}'),
+                                  '${MyLocalizations.of(context, "location_txt")}: ${reports[index].displayCity ?? ''}'),
                               Style.body(
-                                  MyLocalizations.of(context, 'at_time_txt')! +
-                                      DateFormat.Hm()
-                                          .format(DateTime.parse(
-                                              reports[index].creation_time!).toLocal())
-                                          .toString(),
-                                  color: Colors.grey),
+                                MyLocalizations.of(context, 'at_time_txt')! +
+                                ' ' +
+                                DateFormat('dd-MM-yyyy HH:mm')
+                                  .format(DateTime.parse(
+                                      reports[index].creation_time!).toLocal())
+                                  .toString(),
+                                color: Colors.grey
+                              ),
                             ],
                           ),
                         ),

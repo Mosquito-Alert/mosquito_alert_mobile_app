@@ -1159,4 +1159,24 @@ class Utils {
       throw 'Could not launch';
     }
   }
+
+  static String getTranslatedReportType(BuildContext context, String? reportType){
+    var translationString;
+    switch (reportType) {
+      case 'adult':
+        translationString = 'single_mosquito';
+        break;
+      case 'bite':
+        translationString = 'single_bite';
+        break;
+      case 'site':
+        translationString = 'single_breeding_site';
+        break;
+      default:
+        print('Unhandled report type: $reportType');
+        return reportType ?? '';
+    }
+
+    return MyLocalizations.of(context, translationString) ?? reportType ?? '';
+  }
 }

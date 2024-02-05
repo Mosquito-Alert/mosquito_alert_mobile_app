@@ -322,5 +322,8 @@
     "gl_ES": "Galician",
     "eu_ES": "Basque",
     "sv_SE": "Swedish",
-    "bn_BD": "Bengali"
+    "bn_BD": "Bengali",
+    "single_bite": "Bite",
+    "single_mosquito": "Mosquito",
+    "single_breeding_site": "Breeding site"
 }
