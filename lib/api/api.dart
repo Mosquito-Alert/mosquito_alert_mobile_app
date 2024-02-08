@@ -36,7 +36,6 @@ class ApiSingleton {
 
   //Reports
   static const reports = '/reports/';
-  static const nearbyReports = '/nearby_reports_nod/';
 
   //Session
   static const sessions = '/sessions';
@@ -424,24 +423,13 @@ class ApiSingleton {
     }
   }
 
-  Future<List<Report>?> getReportsList(
-    lat,
-    lon, {
-    int? page,
-    List<Report>? allReports,
-    bool? show_hidden,
-    int? radius,
-    bool? show_verions,
-  }) async {
+  Future<List<Report>> getReportsList() async {
     try {
       var userUUID = await UserManager.getUUID();
 
-      final response = await http
-          .get(
+      final response = await http.get(
         Uri.parse(
-            '$serverUrl$nearbyReports?lat=$lat&lon=$lon&page=${page ?? '1'}&user=$userUUID&page_size=75&radius=${100}' +
-                (show_hidden == true ? '&show_hidden=1' : '') +
-                (show_verions == true ? '&show_versions=1' : '')),
+            '$serverUrl$reports?user=$userUUID'),
         headers: headers,
       )
           .timeout(
@@ -455,33 +443,18 @@ class ApiSingleton {
       if (response.statusCode != 200) {
         print(
             'Request: ${response.request.toString()} -> Response: ${response.body}');
-        return null;
+        return [];
       } else {
-        Map<String, dynamic> jsonAnswer = json.decode(response.body);
-        List<Report> list = [];
-        page = jsonAnswer['next'];
-
-        if (allReports == null) {
-          allReports = [];
-          UserManager.profileUUIDs = jsonAnswer['user_uuids'];
+        List<dynamic> jsonAnswer = json.decode(response.body);
+        var list = <Report>[];
+        for (var item in jsonAnswer) {
+          list.add(Report.fromJson(item));          
         }
-        for (var item in jsonAnswer['results']) {
-          if (UserManager.profileUUIDs.any((id) => id == item['user'])) {
-            list.add(Report.fromJson(item));
-          }
-        }
-        allReports.addAll(list);
-        //callback(list);
-        if (page == null) {
-          return allReports;
-        }
+        return list;
       }
-
-      return getReportsList(lat, lon,
-          page: page, allReports: allReports, radius: radius);
     } catch (e) {
       // print(e);
-      return null;
+      return [];
     }
   }
 

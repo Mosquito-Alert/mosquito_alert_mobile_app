@@ -72,7 +72,7 @@ class ClusteringHelper {
   //Call during the editing of CameraPosition
   //If you want updateMap during the zoom in/out set forceUpdate to true
   //this is NOT RECCOMENDED
-  onCameraMove(CameraPosition position, {forceUpdate = false}) {
+  void onCameraMove(CameraPosition position, {forceUpdate = false}) {
     currentZoom = position.zoom;
 
     if (currentZoom > maxZoomForAggregatePoints && aggregationChanged) {
@@ -89,7 +89,7 @@ class ClusteringHelper {
     updateMap();
   }
 
-  updateMap() {
+  void updateMap() {
     getDescriptors().then((_) {
       if (currentZoom < maxZoomForAggregatePoints) {
         aggregationChanged = true;
@@ -100,22 +100,22 @@ class ClusteringHelper {
     });
   }
 
-  updateData(List<ReportAndGeohash> newList) {
+  void updateData(List<ReportAndGeohash> newList) {
     list = newList;
     forceUpdateMap();
   }
 
-  forceUpdateMap() {
+  void forceUpdateMap() {
     getDescriptors().then((_) {
       updatePoints(currentZoom);
     });
   }
 
-  readyToProcessData() {
+  void readyToProcessData() {
     updateMap();
   }
 
-  setSelectedIndex(index) {
+  void setSelectedIndex(index) {
     _selectedIndex = index;
     updateMap();
   }

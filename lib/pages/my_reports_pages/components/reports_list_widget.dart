@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
-import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:intl/intl.dart';
@@ -15,9 +14,7 @@ class ReportsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (reports.isEmpty ||
-        !reports.any((report) =>
-            UserManager.profileUUIDs.any((id) => id == report.user))) {
+    if (reports.isEmpty) {
       return Center(
         child: Style.body(MyLocalizations.of(context, 'no_reports_yet_txt')),
       );
@@ -74,7 +71,7 @@ class ReportsList extends StatelessWidget {
                             ],
                           ),
                         ),
-                        reports[index].photos!.isNotEmpty
+                        reports[index].photos != null && reports[index].photos!.isNotEmpty
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: Image.network(

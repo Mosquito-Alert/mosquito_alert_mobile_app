@@ -11,7 +11,7 @@ class ReportAndGeohash {
 
   ReportAndGeohash(this.report, this.location, this.index);
 
-  getId() {
+  String getId() {
     return location.latitude.toString() +
         '_' +
         location.longitude.toString() +
