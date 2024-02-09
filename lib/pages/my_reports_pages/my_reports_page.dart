@@ -144,78 +144,78 @@ class _MyReportsPageState extends State<MyReportsPage> {
                   itemCount: 2,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
-                    if (index == 0.0) {
-                      return Stack(
-                        alignment: Alignment.bottomLeft,
-                        children: <Widget>[
-                          StreamBuilder<List<Report>>(
-                            stream: dataMarkersStream.stream,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<List<Report>> snapshot) {
-                              return GoogleMap(
-                                onMapCreated: _onMapCreated,
-                                mapType: MapType.normal,
-                                mapToolbarEnabled: false,
-                                myLocationButtonEnabled: false,
-                                onCameraMove: (newPosition) {
-                                  location = Position(
-                                      latitude: newPosition.target.latitude,
-                                      longitude: newPosition.target.longitude);
-                                },
-                                initialCameraPosition: CameraPosition(
-                                  target: location != null
-                                      ? LatLng(
-                                          location!.latitude,
-                                          location!.longitude)
-                                      : Utils.defaultLocation,
-                                  zoom: 12,
-                                ),
-                                markers: markers,
-                              );
-                            },
-                          ),
-                          SafeArea(
-                            child: Container(
-                                width: 50,
-                                height: 50,
-                                margin: EdgeInsets.only(left: 12, bottom: 12),
-                                child: RaisedButton(
-                                    onPressed: () {
-                                      _infoBottom(context);
-                                    },
-                                    elevation: 0,
-                                    highlightElevation: 0,
-                                    hoverElevation: 0,
-                                    highlightColor:
-                                        Style.colorPrimary.withOpacity(0.5),
-                                    padding: EdgeInsets.symmetric(vertical: 2),
-                                    color: Color(0xffffffff),
-                                    disabledColor:
-                                        Style.colorPrimary.withOpacity(0.3),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(3),
-                                        side: BorderSide(
-                                            color:
-                                                Colors.black.withOpacity(0.2),
-                                            width: 1.0)),
-                                    child: Icon(Icons.info_outline))),
-                          )
-                        ],
+                    if (index != 0.0) {
+                      return StreamBuilder<List<Report>>(
+                        stream: dataStream.stream,
+                        initialData: _myData,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<Report>> snapshot) {
+                          return ReportsList(
+                              snapshot.data != null
+                                  ? snapshot.data!.map((e) => e).toList()
+                                  : [],
+                              _reportBottomSheet);
+                        },
                       );
                     }
 
-                    return StreamBuilder<List<Report>>(
-                      stream: dataStream.stream,
-                      initialData: _myData,
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<Report>> snapshot) {
-                        return ReportsList(
-                            snapshot.data != null
-                                ? snapshot.data!.map((e) => e).toList()
-                                : [],
-                            _reportBottomSheet);
-                      },
-                    );
+                    return Stack(
+                      alignment: Alignment.bottomLeft,
+                      children: <Widget>[
+                        StreamBuilder<List<Report>>(
+                          stream: dataMarkersStream.stream,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<List<Report>> snapshot) {
+                            return GoogleMap(
+                              onMapCreated: _onMapCreated,
+                              mapType: MapType.normal,
+                              mapToolbarEnabled: false,
+                              myLocationButtonEnabled: false,
+                              onCameraMove: (newPosition) {
+                                location = Position(
+                                    latitude: newPosition.target.latitude,
+                                    longitude: newPosition.target.longitude);
+                              },
+                              initialCameraPosition: CameraPosition(
+                                target: location != null
+                                    ? LatLng(
+                                        location!.latitude,
+                                        location!.longitude)
+                                    : Utils.defaultLocation,
+                                zoom: 12,
+                              ),
+                              markers: markers,
+                            );
+                          },
+                        ),
+                        SafeArea(
+                          child: Container(
+                              width: 50,
+                              height: 50,
+                              margin: EdgeInsets.only(left: 12, bottom: 12),
+                              child: RaisedButton(
+                                  onPressed: () {
+                                    _infoBottom(context);
+                                  },
+                                  elevation: 0,
+                                  highlightElevation: 0,
+                                  hoverElevation: 0,
+                                  highlightColor:
+                                      Style.colorPrimary.withOpacity(0.5),
+                                  padding: EdgeInsets.symmetric(vertical: 2),
+                                  color: Color(0xffffffff),
+                                  disabledColor:
+                                      Style.colorPrimary.withOpacity(0.3),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(3),
+                                      side: BorderSide(
+                                          color:
+                                              Colors.black.withOpacity(0.2),
+                                          width: 1.0)),
+                                  child: Icon(Icons.info_outline))),
+                        )
+                      ],
+                    );                    
                   })),
 
           StreamBuilder<bool>(
