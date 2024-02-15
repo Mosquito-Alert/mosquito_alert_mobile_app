@@ -1,6 +1,6 @@
 name: mosquito_alert_app
 description: A new Flutter project.
-version: 2.1.0+1709
+version: 2.1.0+1710
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -18,7 +18,8 @@ dependencies:
   shared_preferences: ^2.1.1
   http: ^0.13.5
   random_string: ^2.3.1
-  geolocator: ^9.0.2
+  geolocator: ^10.1.1
+  geocoding: ^2.1.1
   dio: ^5.3.3
   image_picker: ^0.8.7+1
   firebase_auth: ^4.3.0
@@ -39,15 +40,11 @@ dependencies:
   permission_handler: ^11.0.1
   language_picker: ^0.4.3
   connectivity: ^3.0.6 #Discontinued
-  #connectivity_widget: ^0.1.7
   overlay_support: ^2.1.0
   app_tracking_transparency: ^2.0.4
 
   flutter_html: ^3.0.0-alpha.6
   webview_flutter: ^2.8.0
-
-dependency_overrides:
-  webview_flutter: ^2.0.4
 
 dev_dependencies:
   pedantic: ^1.11.1 #Discontinued

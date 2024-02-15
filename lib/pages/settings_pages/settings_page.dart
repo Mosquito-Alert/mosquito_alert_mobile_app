@@ -68,7 +68,7 @@ class _SettingsPageState extends State<SettingsPage> {
     getHashtag();
   }
 
-  getTracking() async {
+  void getTracking() async {
     enableTracking = await UserManager.getTracking();
     PackageInfo _packageInfo = await PackageInfo.fromPlatform();
     setState(() {
@@ -76,7 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
     });
   }
 
-  getHashtag() async {
+  void getHashtag() async {
     hashtag = await UserManager.getHashtag();
     setState(() {});
   }

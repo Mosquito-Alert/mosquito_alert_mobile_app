@@ -170,6 +170,10 @@ class UserManager {
     return prefs.getString('languageCountry');
   }
 
+  static Future<String?> getUserLocale() async {
+    return '${await UserManager.getLanguage()}_${await UserManager.getLanguageCountry()}';
+  }
+
   static Future<List<String>?> getReportList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getStringList('reportsList');

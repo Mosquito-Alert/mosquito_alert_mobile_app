@@ -179,7 +179,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
     }
   }
 
-  goNextPage() {
+  void goNextPage() {
     _pagesController!
         .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
         .then((value) {

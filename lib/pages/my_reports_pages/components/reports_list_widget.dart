@@ -58,7 +58,7 @@ class ReportsList extends StatelessWidget {
                                   Utils.getTranslatedReportType(context, reports[index].type),
                                   fontSize: 14),
                               Style.body(
-                                  '${MyLocalizations.of(context, "location_txt")}: ${reports[index].displayCity ?? ''}'),
+                                  '${MyLocalizations.of(context, "location_txt")}: ${reports[index].displayCity}'),
                               Style.body(
                                 MyLocalizations.of(context, 'at_time_txt')! +
                                 ' ' +

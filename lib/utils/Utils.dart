@@ -7,6 +7,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -33,7 +34,7 @@ class Utils {
   static double maskCoordsValue = 0.025;
 
   //Manage Data
-  static Position? location;
+  static LatLng? location;
   static LatLng defaultLocation = LatLng(0, 0);
   static StreamController<int?> userScoresController =
       StreamController<int?>.broadcast();
@@ -104,7 +105,7 @@ class Utils {
       }
     }
 
-    if (session!.id != null && language != null) {
+    if (session!.id != null) {
       var lang = await UserManager.getLanguage();
       var userUUID = await UserManager.getUUID();
       report = Report(
@@ -419,7 +420,7 @@ class Utils {
             : false;
 
         if (!isCreated) {
-          saveLocalReport(savedReport);
+          await saveLocalReport(savedReport);
         }
       }
     }
@@ -504,7 +505,8 @@ class Utils {
         await Geolocator.openLocationSettings();
       }, context);
     } else {
-      location = await Geolocator.getLastKnownPosition();
+      var pos = await Geolocator.getLastKnownPosition();
+      location = LatLng(pos!.latitude, pos.longitude);
     }
   }
 
@@ -1176,5 +1178,12 @@ class Utils {
     }
 
     return MyLocalizations.of(context, translationString) ?? reportType ?? '';
+  }
+    
+  static Future<String> getCityNameFromCoords(double lat, double lon) async {
+    var locale = await UserManager.getUserLocale();
+    var placemarks = await placemarkFromCoordinates(lat, lon, localeIdentifier: locale);
+    if (placemarks.isEmpty) { return ''; }
+    return placemarks.first.locality ?? '';
   }
 }

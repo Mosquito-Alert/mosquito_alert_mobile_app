@@ -168,7 +168,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     }
   }
 
-  _createReport() async {
+  void _createReport() async {
     setState(() {
       percentStream.add(0.8);
     });

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
 import 'package:flutter_svg/svg.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
@@ -111,9 +111,7 @@ class _MainVCState extends State<MainVC> {
   }
 
   void _onLocation(bg.Location location) {
-    Utils.location = Position(
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude);
+    Utils.location = LatLng(location.coords.latitude, location.coords.longitude);
 
     if ((location.coords.latitude).abs() <= 66.5) {
       double lat = (location.coords.latitude / Utils.maskCoordsValue).floor() *
