@@ -162,9 +162,7 @@ class ClusteringHelper {
   }
 
   BitmapDescriptor? getIcon(Report report, selected) {
-    if (UserManager.profileUUIDs != null &&
-        UserManager.profileUUIDs.any((id) => id == report.user)) {
-      switch (report.type) {
+     switch (report.type) {
         case 'adult':
           // return
           return _iconAdultYours;
@@ -176,11 +174,9 @@ class ClusteringHelper {
           return _iconBreedingYours;
           break;
         default:
+          return _iconAdultOthers;
           break;
       }
-    } else {
-      return _iconAdultOthers;
-    }
   }
 
   Future<List<AggregatedPoints>> getAggregatedPoints(double zoom) async {

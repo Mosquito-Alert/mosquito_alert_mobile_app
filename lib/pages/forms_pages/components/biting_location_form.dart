@@ -264,7 +264,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                                   myLocationButtonEnabled: false,
                                   zoomControlsEnabled: false,
                                   minMaxZoomPreference:
-                                      MinMaxZoomPreference(6, 18),
+                                      MinMaxZoomPreference(5, 18),
                                   mapToolbarEnabled: false,
                                   onTap: (LatLng pos) {
                                     if (snapshot.data ==
@@ -283,7 +283,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                                                 Utils.defaultLocation.latitude,
                                                 Utils
                                                     .defaultLocation.longitude),
-                                    zoom: 15.0,
+                                    zoom: 7.0,
                                   ),
                                   markers: markers.isNotEmpty
                                       ? Set.from(markers)

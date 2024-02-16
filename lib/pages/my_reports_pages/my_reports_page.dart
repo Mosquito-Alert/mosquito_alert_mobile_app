@@ -542,7 +542,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                             ')',
                                     fontSize: 12),
                                 Style.body(
-                                    ' ${MyLocalizations.of(context, "near_from_txt")} ${report.displayCity}',
+                                    ' ${MyLocalizations.of(context, "near_from_txt")}: ${report.displayCity}',
                                     fontSize: 12),
                               ],
                             ),
@@ -867,7 +867,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
 
   _getMarker(Report report) {
     var marker;
-    var icon = setIconMarker(report.type, report.user);
+    var icon = setIconMarker(report.type);
     if (report.location_choice == 'current') {
       marker = Marker(
         markerId: MarkerId('currentMarker'),
@@ -889,10 +889,8 @@ class _MyReportsPageState extends State<MyReportsPage> {
     return <Marker>[marker].toSet();
   }
 
-  BitmapDescriptor? setIconMarker(type, user) {
-    if (UserManager.profileUUIDs != null &&
-        UserManager.profileUUIDs.any((id) => id == user)) {
-      switch (type) {
+  BitmapDescriptor? setIconMarker(type) {
+     switch (type) {
         case 'adult':
           // return
           return iconAdultYours;
@@ -904,11 +902,9 @@ class _MyReportsPageState extends State<MyReportsPage> {
           return iconBreedingYours;
           break;
         default:
+          return iconAdultOthers;
           break;
       }
-    } else {
-      return iconAdultOthers;
-    }
   }
 
   _onItemTapped(index) {

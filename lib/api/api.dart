@@ -430,7 +430,7 @@ class ApiSingleton {
 
       final response = await http.get(
         Uri.parse(
-            '$serverUrl$reports?user=$userUUID'),
+            '$serverUrl$reports?user=$userUUID&is_deleted=false&is_last_version=true'),
         headers: headers,
       )
           .timeout(
