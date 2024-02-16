@@ -61,7 +61,7 @@ class ReportsList extends StatelessWidget {
                                   '${MyLocalizations.of(context, "location_txt")}: ${reports[index].displayCity}'),
                               Style.body(
                                 MyLocalizations.of(context, 'at_time_txt')! +
-                                ' ' +
+                                ': ' +
                                 DateFormat('dd-MM-yyyy HH:mm')
                                   .format(DateTime.parse(
                                       reports[index].creation_time!).toLocal())

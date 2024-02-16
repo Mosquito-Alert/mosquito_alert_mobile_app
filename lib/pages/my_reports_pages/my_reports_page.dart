@@ -455,7 +455,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                               Row(
                                                 children: [
                                                   Style.body(
-                                                      "${MyLocalizations.of(context, "you_can_send_report_id")}",
+                                                      "${MyLocalizations.of(context, "you_can_send_report_id")}: ",
                                                       fontSize: 14,
                                                       textAlign:
                                                           TextAlign.start),
@@ -482,7 +482,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                             children: [
                                               Style.body(
                                                   MyLocalizations.of(
-                                                      context, 'more_info'),
+                                                      context, 'more_info')! + ': ',
                                                   fontSize: 12,
                                                   textAlign: TextAlign.center),
                                               SizedBox(
@@ -522,7 +522,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                               children: <Widget>[
                                 Style.titleMedium(
                                     MyLocalizations.of(
-                                        context, 'registered_location_txt'),
+                                        context, 'registered_location_txt')! + ': ',
                                     fontSize: 14),
                                 Style.body(
                                     report.location_choice == 'current'
@@ -563,7 +563,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                         .toString(),
                                     fontSize: 12),
                                 Style.body(
-                                    "${MyLocalizations.of(context, "at_time_txt")} ${DateFormat.Hms().format(DateTime.parse(report.creation_time!).toLocal())} ${MyLocalizations.of(context, 'hours')}",
+                                    "${MyLocalizations.of(context, "at_time_txt")}: ${DateFormat.Hms().format(DateTime.parse(report.creation_time!).toLocal())} ${MyLocalizations.of(context, 'hours')}",
                                     fontSize: 12),
                               ],
                             ),
@@ -584,7 +584,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                 children: [
                                   Style.titleMedium(
                                       MyLocalizations.of(
-                                          context, 'identifier_small'),
+                                          context, 'identifier_small')! + ': ',
                                       fontSize: 14),
                                   SizedBox(
                                     height: 4,

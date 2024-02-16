@@ -14,21 +14,33 @@ class MyLocalizations {
   }
 
   static Future<void> _loadEnglishTranslations() async {
-    var jsonContent = await rootBundle.loadString('assets/language/en.json');
+    var jsonContent = await rootBundle.loadString('assets/language/en_US.json');
     _englishValues = json.decode(jsonContent);
   }
 
   static Future<MyLocalizations> loadTranslations(Locale locale) async {
     MyLocalizations appTranslations = MyLocalizations(locale);
-    String jsonContent = await rootBundle.loadString(locale.languageCode == 'zh'
-        ? 'assets/language/${locale.languageCode}_${locale.countryCode}.json'
-        : 'assets/language/${locale.languageCode}.json');
+    String jsonContent = await rootBundle.loadString(
+      'assets/language/${locale.languageCode}_${locale.countryCode}.json'
+    );
     _localisedValues = json.decode(jsonContent);
     return appTranslations;
   }
 
   String translate(String? key) {
-    return _localisedValues[key] ?? _englishValues[key] ?? '';
+    // Check if the key is null or empty
+    if (key == null || key.isEmpty) {
+      return '';
+    }
+
+    // Look for the localized value first, then fallback to English if not found
+    String? localizedValue = _localisedValues[key];
+    if (localizedValue != null && localizedValue.isNotEmpty) {
+      return localizedValue;
+    }
+
+    // If localized value is null, empty, or not found, fallback to English
+    return _englishValues[key] ?? '';
   }
 
   static String? of(BuildContext context, String? key) {
