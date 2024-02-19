@@ -255,7 +255,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
     });
     var res = await Utils.createReport();
 
-    if (res!=null && res) {
+    if (res!=null && !res) {
       _showAlertKo();
     } else {
       if (Utils.savedAdultReport != null) {

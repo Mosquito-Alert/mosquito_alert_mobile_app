@@ -40,10 +40,18 @@ class _MainVCState extends State<MainVC> {
   void initState() {
     super.initState();
     initAuthStatus();
-    loadingStream.add(true);
+  }
+
+  @override
+  void dispose() {
+    nameStream.close();
+    loadingStream.close();
+    super.dispose();
   }
 
   void initAuthStatus() async {
+    loadingStream.add(true);
+
     if (Platform.isIOS) {
       await AppTrackingTransparency.requestTrackingAuthorization();
     }
@@ -55,6 +63,7 @@ class _MainVCState extends State<MainVC> {
       _getData();
     }
 
+    loadingStream.add(false);
   }
 
   void _getData() async {
@@ -75,8 +84,6 @@ class _MainVCState extends State<MainVC> {
     if (Platform.isAndroid) {
       _bgTracking();
     }
-
-    loadingStream.add(false);
   }
 
   void _bgTracking() async {
@@ -111,7 +118,8 @@ class _MainVCState extends State<MainVC> {
   }
 
   void _onLocation(bg.Location location) {
-    Utils.location = LatLng(location.coords.latitude, location.coords.longitude);
+    Utils.location =
+        LatLng(location.coords.latitude, location.coords.longitude);
 
     if ((location.coords.latitude).abs() <= 66.5) {
       double lat = (location.coords.latitude / Utils.maskCoordsValue).floor() *
@@ -411,8 +419,7 @@ class _MainVCState extends State<MainVC> {
                   ),
                 );
               },
-            )
-            ),
+            )),
         Positioned.fill(
           child: StreamBuilder<bool>(
             stream: loadingStream.stream,
