@@ -457,7 +457,7 @@ class Utils {
     if (!initializedCheckData['userScores']) {
       print('Utils (checkForUnfetchedData): Fetching user scores...');
       UserManager.userScore =
-          await (ApiSingleton().getUserScores() as FutureOr<int?>);
+          await ApiSingleton().getUserScores();
     } else {
       print('Utils (checkForUnfetchedData): UserScores were already fetched');
     }

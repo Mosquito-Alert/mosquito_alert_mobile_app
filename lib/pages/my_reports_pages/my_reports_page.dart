@@ -12,7 +12,6 @@ import 'package:mosquito_alert_app/models/owcampaing.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
-import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/clustering/aggregation_setup.dart';
 import 'package:mosquito_alert_app/utils/clustering/clustering_helper.dart';
@@ -630,11 +629,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
                                                     BorderRadius.circular(
                                                         15),
                                                 child: Image.network(
-                                                  ApiSingleton
-                                                          .baseUrl +
-                                                      report
-                                                          .photos![index]
-                                                          .photo!,
+                                                  report.photos![index].photo!,
                                                   height: 60,
                                                   width: 60,
                                                   fit: BoxFit.cover,
