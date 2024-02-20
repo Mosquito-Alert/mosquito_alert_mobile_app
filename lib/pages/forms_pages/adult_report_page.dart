@@ -258,36 +258,38 @@ class _AdultReportPageState extends State<AdultReportPage> {
     if (res!=null && !res) {
       _showAlertKo();
     } else {
-      if (Utils.savedAdultReport != null) {
-        if (Utils.savedAdultReport!.country != null) {
-          List<Campaign> campaignsList =
-              await (ApiSingleton().getCampaigns(Utils.savedAdultReport!.country) as FutureOr<List<Campaign>>);
-          var now = DateTime.now().toUtc();
-          if (campaignsList.any((element) =>
+      if (Utils.savedAdultReport != null &&
+          Utils.savedAdultReport!.country != null) {
+        List<Campaign> campaignsList =
+            await (ApiSingleton().getCampaigns(Utils.savedAdultReport!.country)
+                as FutureOr<List<Campaign>>);
+        var now = DateTime.now().toUtc();
+        if (campaignsList.any((element) =>
+            DateTime.parse(element.startDate!).isBefore(now) &&
+            DateTime.parse(element.endDate!).isAfter(now))) {
+          var activeCampaign = campaignsList.firstWhere((element) =>
               DateTime.parse(element.startDate!).isBefore(now) &&
-              DateTime.parse(element.endDate!).isAfter(now))) {
-            var activeCampaign = campaignsList.firstWhere((element) =>
-                DateTime.parse(element.startDate!).isBefore(now) &&
-                DateTime.parse(element.endDate!).isAfter(now));
+              DateTime.parse(element.endDate!).isAfter(now));
 
-            Utils.showAlertCampaign(
-              context,
-              activeCampaign,
-              (ctx) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CampaignTutorialPage(
-                            fromReport: true,
-                          )),
-                );
-                Utils.resetReport();
-              },
-            );
-          } else {
-            _showAlertOk();
-          }
+          Utils.showAlertCampaign(
+            context,
+            activeCampaign,
+            (ctx) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CampaignTutorialPage(
+                          fromReport: true,
+                        )),
+              );
+              Utils.resetReport();
+            },
+          );
+        } else {
+          _showAlertOk();
         }
+      } else {
+        _showAlertOk();
       }
 
       setState(() {
