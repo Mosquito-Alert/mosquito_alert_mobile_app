@@ -85,7 +85,12 @@ class _MyReportsPageState extends State<MyReportsPage> {
         updateMarkers: updateMarkers,
         aggregationSetup: AggregationSetup(markerSize: 150),
         onClick: ((index) {
-          _reportBottomSheet(_listMarkers[index].report);
+          for (var i = 0; i < _listMarkers.length; i++) {
+            if (_listMarkers[i].index == index) {
+              _reportBottomSheet(_listMarkers[i].report);
+              break;
+            }
+          }
         }));
   }
 
