@@ -113,7 +113,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
     clusteringHelper.mapController = controller;
-    clusteringHelper.updateMap();
+    clusteringHelper.forceUpdateMap();
   }
 
   void _onMiniMapCreated(GoogleMapController controller) async {
