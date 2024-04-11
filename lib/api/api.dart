@@ -81,6 +81,7 @@ class ApiSingleton {
     final config = await AppConfig.forEnvironment(env: env);
     baseUrl = config.baseUrl;
     serverUrl = '$baseUrl/api';
+    await UserManager.setServerUrl(serverUrl);
   }
 
   static ApiSingleton getInstance() {
@@ -491,15 +492,18 @@ class ApiSingleton {
       var body = {
         'user_coverage_uuid': userIdFix,
         'fix_time': time,
-        'masked_lat': lat,
-        'masked_lon': lon,
+        'masked_lat': (lat / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue,
+        'masked_lon': (lon / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue,
         'power': power,
         'phone_upload_time': DateTime.now().toUtc().toIso8601String(),
       };
 
+      // A method called by a background job while the app is not active can't access the singleton values
+      // Then, we can use SharedPrefs as a persistent storage alternative
+      var serverUrlPrefs = await UserManager.getServerUrl();
       final response = await http
           .post(
-        Uri.parse('$serverUrl$fixes'),
+        Uri.parse('$serverUrlPrefs$fixes'),
         headers: headers,
         body: json.encode(body),
       )

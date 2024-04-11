@@ -4,10 +4,7 @@ import 'dart:io';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
-    as bg;
 import 'package:flutter_svg/svg.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
@@ -80,56 +77,6 @@ class _MainVCState extends State<MainVC> {
         userName = UserManager.user!.email;
       });
     }
-
-    if (Platform.isAndroid) {
-      _bgTracking();
-    }
-  }
-
-  void _bgTracking() async {
-    bool? trackingDisabled = await UserManager.getTracking();
-    if (trackingDisabled == null || !trackingDisabled) {
-      // 1.  Listen to events (See docs for all 12 available events).
-
-      // Fired whenever a location is recorded
-      bg.BackgroundGeolocation.onLocation(_onLocation);
-
-      // 2.  Configure the plugin
-      await bg.BackgroundGeolocation.ready(bg.Config(
-        desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
-        distanceFilter: 0,
-        stopOnTerminate: false,
-        startOnBoot: true,
-        debug: false,
-        disableElasticity: true,
-        allowIdenticalLocations: true,
-        // deferTime: 17280000, // 4.8h
-        locationUpdateInterval: 17280000, // 4.8h
-        // logLevel: bg.Config.LOG_LEVEL_VERBOSE,
-      )).then((bg.State state) {
-        if (!state.enabled) {
-          // 3.  Start the plugin.
-          bg.BackgroundGeolocation.start().then((bg.State bgState) {
-            print('[start] success - $bgState');
-          });
-        }
-      });
-    }
-  }
-
-  void _onLocation(bg.Location location) {
-    Utils.location =
-        LatLng(location.coords.latitude, location.coords.longitude);
-
-    if ((location.coords.latitude).abs() <= 66.5) {
-      double lat = (location.coords.latitude / Utils.maskCoordsValue).floor() *
-          Utils.maskCoordsValue;
-      double lon = (location.coords.longitude / Utils.maskCoordsValue).floor() *
-          Utils.maskCoordsValue;
-
-      ApiSingleton()
-          .sendFixes(lat, lon, location.timestamp, location.battery.level);
-    }
   }
 
   @override
@@ -149,7 +96,7 @@ class _MainVCState extends State<MainVC> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            SettingsPage(enableTracking: _bgTracking)),
+                            SettingsPage()),
                   );
                 },
               ),

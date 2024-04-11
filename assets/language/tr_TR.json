@@ -325,5 +325,7 @@
     "bn_BD": "Bengalli",
     "single_mosquito": "Sivrisinek",
     "single_breeding_site": "",
-    "single_bite": ""
+    "single_bite": "",
+    "background_tracking_title": "Konum takibini",
+    "background_tracking_subtitle": "Gözlemlerimin bilimsel değerini artırmak için konumumu anonim olarak paylaş. Daha fazla bilgiyi aşağıdaki 'Gizlilik Politikası' bölümünde bulabilirsiniz."
 }

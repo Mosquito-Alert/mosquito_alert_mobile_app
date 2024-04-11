@@ -672,14 +672,14 @@ class Utils {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(MyLocalizations.of(context, 'yes')!),
                 onPressed: () {
                   Navigator.of(context).pop();
                   onYesPressed();
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: Text(MyLocalizations.of(context, 'no')!),
                 onPressed: () {
                   Navigator.of(context).pop();

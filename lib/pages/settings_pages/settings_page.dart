@@ -17,21 +17,17 @@ import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
-    as bg;
 import 'package:package_info/package_info.dart';
 
 class SettingsPage extends StatefulWidget {
-  final Function? enableTracking;
-
-  SettingsPage({this.enableTracking});
+  SettingsPage();
 
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool? enableTracking = false;
+  late bool isBgTrackingEnabled;
   String? hashtag;
   var packageInfo;
 
@@ -64,13 +60,17 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    getTracking();
+    getPackageInfo();
+    initializeBgTracking();
     getHashtag();
   }
 
-  void getTracking() async {
-    enableTracking = await UserManager.getTracking();
-    PackageInfo _packageInfo = await PackageInfo.fromPlatform();
+  void initializeBgTracking() async {
+    isBgTrackingEnabled = await UserManager.getTracking();
+  }
+
+  void getPackageInfo() async {
+    var _packageInfo = await PackageInfo.fromPlatform();
     setState(() {
       packageInfo = _packageInfo;
     });
@@ -102,7 +102,6 @@ class _SettingsPageState extends State<SettingsPage> {
             SizedBox(
               height: 12,
             ),
-
             FutureBuilder(
               future: UserManager.getUUID(),
               builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
@@ -145,13 +144,33 @@ class _SettingsPageState extends State<SettingsPage> {
             SizedBox(
               height: 10,
             ),
-            SettingsMenuWidget(
-                enableTracking!
-                    ? MyLocalizations.of(context, 'enable_background_tracking')
-                    : MyLocalizations.of(
-                        context, 'disable_background_tracking'), () {
-              _disableBgTracking();
-            }),
+            Container(
+              padding: EdgeInsets.only(bottom: 12.0, top: 12.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.white,
+                border: Border.all(color: Colors.black.withOpacity(0.1))
+              ),
+              child: SwitchListTile(
+                title: Style.body(MyLocalizations.of(context, 'background_tracking_title') ?? ''),
+                subtitle: Padding(
+                  padding: EdgeInsets.only(top: 8.0), // Adjust the padding as needed
+                  child: Text(
+                    MyLocalizations.of(context, 'background_tracking_subtitle') ?? '',
+                    style: TextStyle(fontSize: 11),
+                  ),
+                ),
+                value: isBgTrackingEnabled,
+                activeColor: Colors.orange,
+                onChanged: (bool value) async {
+                  await UserManager.setTracking(value);
+                  var trackingStatus = await UserManager.getTracking();
+                  setState(() {
+                    isBgTrackingEnabled = trackingStatus;
+                  });
+                },
+              ),
+            ),
             SizedBox(
               height: 10,
             ),
@@ -335,28 +354,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   );
                 })),
       );
-
-  _disableBgTracking() {
-    Utils.showAlertYesNo(
-        MyLocalizations.of(context, 'app_name'),
-        enableTracking!
-            ? MyLocalizations.of(context, 'enable_tracking_question_text')
-            : MyLocalizations.of(context, 'disable_tracking_question_text'),
-        () async {
-      await UserManager.setTracking(!enableTracking!);
-      if (enableTracking!) {
-        widget.enableTracking!();
-      } else {
-        bg.BackgroundGeolocation.stop();
-        bg.BackgroundGeolocation.stopSchedule();
-        print('disable');
-      }
-
-      setState(() {
-        enableTracking = !enableTracking!;
-      });
-    }, context);
-  }
 
   _manageHashtag() async {
     if (hashtag != null) {

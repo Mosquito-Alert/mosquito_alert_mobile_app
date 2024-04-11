@@ -325,5 +325,7 @@
     "bn_BD": "Bengalí",
     "single_mosquito": "Mosquit",
     "single_breeding_site": "Lloc de cria",
-    "single_bite": "Picada"
+    "single_bite": "Picada",
+    "background_tracking_title": "Esforç de mostreig",
+    "background_tracking_subtitle": "Comparteix la meva ubicació de manera anònima per millorar el valor científic de les meves observacions. Més informació a la secció \"Política de privadesa\" a continuació."
 }

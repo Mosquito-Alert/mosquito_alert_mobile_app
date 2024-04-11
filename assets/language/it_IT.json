@@ -325,5 +325,7 @@
     "bn_BD": "Bengalese",
     "single_mosquito": "Zanzara",
     "single_breeding_site": "Sito di riproduzione",
-    "single_bite": "Puntura"
+    "single_bite": "Puntura",
+    "background_tracking_title": "Sforzo di campionamento",
+    "background_tracking_subtitle": "Condividi la mia posizione in modo anonimo per migliorare il valore scientifico delle mie osservazioni. Maggiori informazioni nella sezione 'Informativa sulla privacy' di seguito."
 }

@@ -1,5 +1,10 @@
 import 'dart:async';
 
+import 'package:battery_plus/battery_plus.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:mosquito_alert_app/utils/UserManager.dart';
+import 'package:workmanager/workmanager.dart';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +27,38 @@ void main({String env = 'prod'}) async {
   } catch (err) {
     print('$err');
   }
+
+  await Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: false
+  );
+
+  await Workmanager().registerPeriodicTask('backgroundTracking', 'backgroundTracking', frequency: Duration(hours: 4, minutes: 48));
+
   runApp(MyApp());
+}
+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    await Firebase.initializeApp();
+
+    switch (task) {
+      case 'backgroundTracking':
+        var permission = await Geolocator.checkPermission();
+        var isBgTrackingEnabled = await UserManager.getTracking();
+
+        if (permission == LocationPermission.always && isBgTrackingEnabled){
+          var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+          var battery = Battery();
+          await ApiSingleton().sendFixes(position.latitude,
+                                         position.longitude,
+                                         DateTime.now().toUtc().toIso8601String(),
+                                         await battery.batteryLevel);
+          break;
+        }
+    }
+    return Future.value(true);
+  });
 }
 
 class MyApp extends StatefulWidget {
