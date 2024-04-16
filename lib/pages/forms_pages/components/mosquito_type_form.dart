@@ -33,7 +33,7 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
       question_id: widget.displayQuestion['question']['id'],
     );
     if (Utils.report != null) {
-      int index = Utils.report!.responses!.indexWhere(
+      var index = Utils.report!.responses!.indexWhere(
           (q) => q!.question_id == widget.displayQuestion['question']['id']);
       if (index != -1) {
         question.answer = Utils.report!.responses![index]!.answer;
@@ -47,10 +47,8 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Stack(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            // margin: EdgeInsets.only(top: 20),
             alignment: Alignment.bottomCenter,
             child: Image.asset(
               'assets/img/bottoms/bottom_adult_1.png',
@@ -116,11 +114,6 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
                               ));
                         }),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  //   child: Divider(),
-                  // ),
-                  // AddPhotoButton(),
                 ],
               ),
             ),
@@ -137,7 +130,6 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
       question.answer = answer;
       question.answer_id = answerId;
     });
-    // widget.setValid(true);
 
     if (question.answer_id != 61) {
       Utils.report!.responses!.removeWhere((element) => element!.question_id == 7);

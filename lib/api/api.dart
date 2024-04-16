@@ -17,14 +17,14 @@ import 'package:mosquito_alert_app/models/topic.dart';
 import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
+import 'package:mosquito_alert_app/app_config.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ApiSingleton {
   static final _timeoutTimerInSeconds = 10;
 
-  static String devBASEURL = 'https://madev.creaf.cat';
-  static String baseUrl = 'https://webserver.mosquitoalert.com';
-  static String serverUrl = '$baseUrl/api';
+  static String baseUrl = '';
+  static String serverUrl = '';
 
   static String token = 'D4w29W49rMKC7L6vYQ3ua3rd6fQ12YZ6n70P';
 
@@ -36,7 +36,6 @@ class ApiSingleton {
 
   //Reports
   static const reports = '/reports/';
-  static const nearbyReports = '/nearby_reports_nod/';
 
   //Session
   static const sessions = '/sessions';
@@ -78,6 +77,12 @@ class ApiSingleton {
 
   ApiSingleton._internal();
 
+  static Future<void> initialize(String env) async {
+    final config = await AppConfig.forEnvironment(env: env);
+    baseUrl = config.baseUrl;
+    serverUrl = '$baseUrl/api';
+  }
+
   static ApiSingleton getInstance() {
     return ApiSingleton();
   }
@@ -116,7 +121,7 @@ class ApiSingleton {
   }
 
   Future<dynamic> createProfile(String? firebaseId) async {
-    String? userUUID = await UserManager.getUUID();
+    var userUUID = await UserManager.getUUID();
 
     try {
       final response = await http
@@ -147,7 +152,7 @@ class ApiSingleton {
 
   Future<dynamic> getUserScores() async {
     try {
-      String? userUUID = await UserManager.getUUID();
+      var userUUID = await UserManager.getUUID();
 
       final response = await http
           .get(
@@ -203,13 +208,13 @@ class ApiSingleton {
         return ApiResponse.fromJson(json.decode(response.body));
       } else {
         List<dynamic> jsonAnswer = json.decode(response.body);
-        List<Session> allSessions = [];
+        var allSessions = <Session>[];
 
         for (var item in jsonAnswer) {
           allSessions.add(Session.fromJson(item));
         }
 
-        if (allSessions.length == 0) {
+        if (allSessions.isEmpty) {
           return 0;
         }
 
@@ -296,8 +301,9 @@ class ApiSingleton {
       if (report.report_id != null && report.report_id!.isNotEmpty) {
         body.addAll({'report_id': report.report_id});
       }
-      if (report.phone_upload_time != null &&
-          report.phone_upload_time!.isNotEmpty) {
+      if (report.version_number != null && report.version_number == 0){
+        body.addAll({'phone_upload_time': DateTime.now().toUtc().toIso8601String()});
+      } else if (report.phone_upload_time != null && report.phone_upload_time!.isNotEmpty){
         body.addAll({'phone_upload_time': report.phone_upload_time});
       }
       if (report.creation_time != null && report.creation_time!.isNotEmpty) {
@@ -384,14 +390,6 @@ class ApiSingleton {
         return null;
       }
 
-      if (report.version_number! > 0) {
-        // var b = json.decode(response.body);
-        // print(b);
-        // var a = Report.fromJson(json.decode(response.body));
-        // print(a);
-        //Utils.report = Report.fromJson(json.decode(response.body));
-
-      }
       var jsonAnswer = json.decode(response.body);
       var newReport = Report.fromJson(jsonAnswer);
 
@@ -409,14 +407,14 @@ class ApiSingleton {
       Utils.imagePath!.forEach((img) async {
         if (img['id'] == report.version_UUID) {
           if (!img['image'].contains('http')) {
-            bool isSaved = await saveImage(img['image'], report.version_UUID);
+            var isSaved = await saveImage(img['image'], report.version_UUID);
             if (!isSaved) {
-              final Directory directory =
+              final directory =
                   await getApplicationDocumentsDirectory();
               File newImage = await img['imageFile']
                   .copy('${directory.path}/${report.version_UUID}.png');
 
-              Utils.saveLocalImage(newImage.path, report.version_UUID);
+              await Utils.saveLocalImage(newImage.path, report.version_UUID);
             } else {
               Utils.deleteImage(img['image']);
             }
@@ -426,24 +424,13 @@ class ApiSingleton {
     }
   }
 
-  Future<List<Report>?> getReportsList(
-    lat,
-    lon, {
-    int? page,
-    List<Report>? allReports,
-    bool? show_hidden,
-    int? radius,
-    bool? show_verions,
-  }) async {
+  Future<List<Report>> getReportsList() async {
     try {
       var userUUID = await UserManager.getUUID();
 
-      final response = await http
-          .get(
+      final response = await http.get(
         Uri.parse(
-            '$serverUrl$nearbyReports?lat=$lat&lon=$lon&page=${page ?? '1'}&user=$userUUID&page_size=75&radius=${100}' +
-                (show_hidden == true ? '&show_hidden=1' : '') +
-                (show_verions == true ? '&show_versions=1' : '')),
+            '$serverUrl$reports?user=$userUUID&is_deleted=false&is_last_version=true'),
         headers: headers,
       )
           .timeout(
@@ -457,46 +444,31 @@ class ApiSingleton {
       if (response.statusCode != 200) {
         print(
             'Request: ${response.request.toString()} -> Response: ${response.body}');
-        return null;
+        return [];
       } else {
-        Map<String, dynamic> jsonAnswer = json.decode(response.body);
-        List<Report> list = [];
-        page = jsonAnswer['next'];
-
-        if (allReports == null) {
-          allReports = [];
-          UserManager.profileUUIDs = jsonAnswer['user_uuids'];
+        List<dynamic> jsonAnswer = json.decode(response.body);
+        var list = <Report>[];
+        for (var item in jsonAnswer) {
+          list.add(Report.fromJson(item));          
         }
-        for (var item in jsonAnswer['results']) {
-          if (UserManager.profileUUIDs.any((id) => id == item['user'])) {
-            list.add(Report.fromJson(item));
-          }
-        }
-        allReports.addAll(list);
-        //callback(list);
-        if (page == null) {
-          return allReports;
-        }
+        return list;
       }
-
-      return getReportsList(lat, lon,
-          page: page, allReports: allReports, radius: radius);
     } catch (e) {
       // print(e);
-      return null;
+      return [];
     }
   }
 
   //Images
   Future<bool> saveImage(String image, String? versionUUID) async {
     try {
-      String? fileName = image != null ? image.split('/').last : null;
+      var fileName = image != null ? image.split('/').last : null;
       var dio = Dio();
 
       var img = await MultipartFile.fromFile(image,
           filename: fileName, contentType: MediaType('image', 'jpeg'));
 
-      FormData data = FormData.fromMap({'photo': img, 'report': versionUUID});
+      var data = FormData.fromMap({'photo': img, 'report': versionUUID});
 
       var response = await dio.post('$serverUrl$photos',
           data: data,
@@ -635,7 +607,7 @@ class ApiSingleton {
       }
 
       var list = json.decode(utf8.decode(response.bodyBytes)) as List;
-      List<MyNotification> data =
+      var data =
           list.map((i) => MyNotification.fromJson(i)).toList();
       return data;
     } catch (e) {
@@ -666,7 +638,7 @@ class ApiSingleton {
       Map<String, dynamic>? jsonAnswer = json.decode(response.body);
       return true;
     } catch (e) {
-      print('updateNotification, failed for ${e}');
+      print('updateNotification, failed for $e');
       return false;
     }
   }
@@ -677,7 +649,7 @@ class ApiSingleton {
       final response = await http
           .delete(
               Uri.parse(
-                  '$serverUrl$mark_notification_as_read?user=$userIdentifier&notif=${notificationId}'),
+                  '$serverUrl$mark_notification_as_read?user=$userIdentifier&notif=$notificationId'),
               headers: headers)
           .timeout(
         Duration(seconds: _timeoutTimerInSeconds),
@@ -692,7 +664,7 @@ class ApiSingleton {
       print('markNotificationAsRead failed');
       return false;
     } catch (e) {
-      print('markNotificationAsRead, failed for ${e}');
+      print('markNotificationAsRead, failed for $e');
       return false;
     }
   }
@@ -721,7 +693,7 @@ class ApiSingleton {
           'subscribeToTopic $topicIdentifier, failed (code ${response.statusCode})');
       return false;
     } catch (e) {
-      print('subscribeToTopic $topicIdentifier, failed for ${e}');
+      print('subscribeToTopic $topicIdentifier, failed for $e');
       return false;
     }
   }
@@ -747,7 +719,7 @@ class ApiSingleton {
       print('unsubscribeFromTopic, failed.');
       return false;
     } catch (e) {
-      print('unsubscribeFromTopic, failed for ${e}.');
+      print('unsubscribeFromTopic, failed for $e.');
       return false;
     }
   }
@@ -755,7 +727,7 @@ class ApiSingleton {
   Future<List<Topic>?> getTopicsSubscribed(String userIdentifier) async {
     try {
       final response = await http
-          .get(Uri.parse('$serverUrl$get_my_topics?user=${userIdentifier}'),
+          .get(Uri.parse('$serverUrl$get_my_topics?user=$userIdentifier'),
               headers: headers)
           .timeout(
         Duration(seconds: _timeoutTimerInSeconds),
@@ -776,7 +748,7 @@ class ApiSingleton {
       print('getTopicsSubscribed, failed.');
       return null;
     } catch (e) {
-      print('getTopicsSubscribed, failed for ${e}');
+      print('getTopicsSubscribed, failed for $e');
       return null;
     }
   }
@@ -803,7 +775,7 @@ class ApiSingleton {
       print('setFirebaseToken, failed');
       return false;
     } catch (e) {
-      print('setFirebaseToken, failed for ${e}');
+      print('setFirebaseToken, failed for $e');
       return false;
     }
   }

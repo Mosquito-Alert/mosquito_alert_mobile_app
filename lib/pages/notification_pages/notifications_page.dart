@@ -36,18 +36,16 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   _getData() async {
-    List<MyNotification> response = await (ApiSingleton().getNotifications() as FutureOr<List<MyNotification>>);
+    List<MyNotification> response = await ApiSingleton().getNotifications();
 
-    if (response != null) {
-      setState(() {
-        notifications = response;
-        _checkOpenNotification();
-      });
-    }
-    loadingStream.add(false);
+    setState(() {
+      notifications = response;
+      _checkOpenNotification();
+    });
+      loadingStream.add(false);
   }
 
-  _checkOpenNotification() {
+  void _checkOpenNotification() {
     try {
       if (widget.notificationId != null && widget.notificationId!.isNotEmpty) {
         var notifId = widget.notificationId;
@@ -75,7 +73,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                   MyLocalizations.of(context, 'notifications_title'),
                   fontSize: 16),
             ),
-            body: notifications.length == 0 || notifications.isEmpty
+            body: notifications.isEmpty
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -87,8 +85,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 : Container(
                     margin: EdgeInsets.all(12),
                     child: ListView.builder(
-                        // physics: NeverScrollableScrollPhysics(),
-                        // shrinkWrap: true,
                         itemCount: notifications.length,
                         itemBuilder: (ctx, index) {
                           return Opacity(
@@ -167,7 +163,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       SizedBox(
                         height: 15,
@@ -206,8 +201,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         height: 10,
                       ),
                       Style.bodySmall(
-                          DateFormat('dd-MM-yyyy hh:mm').format(
-                              DateTime.parse(notification.date_comment!)),
+                          DateFormat('dd-MM-yyyy HH:mm').format(
+                              DateTime.parse(notification.date_comment!).toLocal()),
                           color: Colors.grey)
                     ],
                   ),

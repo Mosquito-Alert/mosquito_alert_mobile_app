@@ -26,7 +26,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
   late GoogleMapController controller;
   List<Marker> markers = [];
 
-  Position? currentLocation;
+  LatLng? currentLocation;
 
   Set<Circle>? circles;
 
@@ -45,9 +45,8 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
               markerId: MarkerId('mk_${markers.length}'),
               position: LatLng(Utils.report!.selected_location_lat!,
                   Utils.report!.selected_location_lon!)));
-          currentLocation = Position(
-              latitude: Utils.report!.selected_location_lat!,
-              longitude: Utils.report!.selected_location_lon!);
+          currentLocation = LatLng(Utils.report!.selected_location_lat!,
+              Utils.report!.selected_location_lon!);
           widget.setValid(true);
           break;
         case 'current':
@@ -56,9 +55,8 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
               markerId: MarkerId('mk_${markers.length}'),
               position: LatLng(Utils.report!.current_location_lat!,
                   Utils.report!.current_location_lon!)));
-          currentLocation = Position(
-              latitude: Utils.report!.current_location_lat!,
-              longitude: Utils.report!.current_location_lon!);
+          currentLocation = LatLng(Utils.report!.current_location_lat!,
+              Utils.report!.current_location_lon!);
           widget.setValid(true);
           break;
         default:
@@ -70,15 +68,6 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
   }
 
   void _getCurrentLocation() async {
-    // if (Utils.location == null) {
-    //   await Utils.getLocation();
-    //   if (Utils.location != null && controller != null) {
-    //     controller.animateCamera(CameraUpdate.newLatLng(
-    //         LatLng(Utils.location.latitude, Utils.location.longitude)));
-    //   } else {
-    //     streamType.add(LocationType.selected);
-    //   }
-    // }
     updateType(LocationType.current, context: context);
   }
 
@@ -108,11 +97,11 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
         streamType.add(type);
 
         if (geolocationEnabled) {
-          Position currentPosition =
-              await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+          var currentPosition = await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.high);
           Utils.setCurrentLocation(
               currentPosition.latitude, currentPosition.longitude);
-          controller.moveCamera(
+          await controller.moveCamera(
             CameraUpdate.newCameraPosition(
               CameraPosition(
                   target: LatLng(
@@ -128,7 +117,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
           ];
           widget.setValid(true);
         } else {
-          Utils.showAlert(
+          await Utils.showAlert(
               MyLocalizations.of(context, 'location_not_active_title'),
               MyLocalizations.of(context, 'location_not_active_txt'),
               context, onPressed: () {
@@ -143,7 +132,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
         // get saved marker
         if (Utils.report!.selected_location_lat != null &&
             Utils.report!.selected_location_lon != null) {
-          controller.moveCamera(
+          await controller.moveCamera(
             CameraUpdate.newCameraPosition(
               CameraPosition(
                   target: LatLng(Utils.report!.selected_location_lat!,
@@ -163,21 +152,20 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
         //get markers in responses
         try {
           if (Utils.report!.responses!.any((r) => r!.question_id == 5)) {
-            int i = 0;
+            var i = 0;
             Utils.report!.responses!.forEach((q) {
               i++;
               if (q!.question_id == 5) {
-
                 print(q.answer_value);
 
                 var res = q.answer_value!
                     .substring(q.answer_value!.indexOf('( ') + 2,
-                    q.answer_value!.indexOf(')'))
+                        q.answer_value!.indexOf(')'))
                     .split(', ');
                 currentMarkers.add(Marker(
                     markerId: MarkerId('mk_$i'),
                     position:
-                    LatLng(double.parse(res[0]), double.parse(res[1]))));
+                        LatLng(double.parse(res[0]), double.parse(res[1]))));
               }
             });
           }
@@ -277,7 +265,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                                   myLocationButtonEnabled: false,
                                   zoomControlsEnabled: false,
                                   minMaxZoomPreference:
-                                      MinMaxZoomPreference(6, 18),
+                                      MinMaxZoomPreference(5, 18),
                                   mapToolbarEnabled: false,
                                   onTap: (LatLng pos) {
                                     if (snapshot.data ==
@@ -296,17 +284,18 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
                                                 Utils.defaultLocation.latitude,
                                                 Utils
                                                     .defaultLocation.longitude),
-                                    zoom: 15.0,
+                                    zoom: 7.0,
                                   ),
-                                  markers: markers != null && markers.isNotEmpty
-                                      ? Set.from(markers)
-                                      : Set(),
-                                  gestureRecognizers:
-                                      <Factory<OneSequenceGestureRecognizer>>[
+                                  markers: markers.isNotEmpty
+                                      ? Set.from(markers.cast<
+                                          Marker>()) // Cast elements to Marker
+                                      : <Marker>{},
+                                  gestureRecognizers: <Factory<
+                                      OneSequenceGestureRecognizer>>{
                                     Factory<OneSequenceGestureRecognizer>(
                                       () => EagerGestureRecognizer(),
                                     ),
-                                  ].toSet(),
+                                  },
                                 )),
                           ),
                           SizedBox(
@@ -332,7 +321,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
     );
   }
 
-  resetLocations() {
+  void resetLocations() {
     Utils.report!.selected_location_lat = null;
     Utils.report!.selected_location_lon = null;
     Utils.report!.current_location_lat = null;

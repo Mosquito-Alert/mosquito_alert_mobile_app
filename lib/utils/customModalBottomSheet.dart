@@ -8,8 +8,6 @@ class CustomShowModalBottomSheet {
     required WidgetBuilder builder,
     bool? dismissible,
   }) {
-    assert(context != null);
-    assert(builder != null);
     assert(debugCheckHasMaterialLocalizations(context));
     return Navigator.push(
         context,
@@ -87,8 +85,8 @@ class _CustomModalBottomSheetState<T>
     extends State<_CustomModalBottomSheet<T>> {
   @override
   Widget build(BuildContext context) {
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final MaterialLocalizations localizations =
+    final mediaQuery = MediaQuery.of(context);
+    final localizations =
         MaterialLocalizations.of(context);
     String? routeLabel;
     switch (defaultTargetPlatform) {
@@ -112,7 +110,7 @@ class _CustomModalBottomSheetState<T>
           builder: (BuildContext context, Widget? child) {
             // Disable the initial animation when accessible navigation is on so
             // that the semantics are added to the tree at the correct time.
-            final double animationValue = mediaQuery.accessibleNavigation
+            final animationValue = mediaQuery.accessibleNavigation
                 ? 1.0
                 : widget.route!.animation!.value;
             return Semantics(

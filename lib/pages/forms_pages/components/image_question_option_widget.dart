@@ -25,14 +25,12 @@ class ImageQuestionOption extends StatelessWidget {
               height: double.infinity,
               width: double.infinity,
               decoration: BoxDecoration(
-                // color: Colors.blue,
                 borderRadius: BorderRadius.circular(15),
                 image: DecorationImage(
                   image: AssetImage(img ?? ''),
                   fit: BoxFit.cover,
                 ),
               ),
-              // padding: EdgeInsets.all(5),
             ),
             Container(
               decoration: BoxDecoration(

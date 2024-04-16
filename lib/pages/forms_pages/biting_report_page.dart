@@ -152,7 +152,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
           var activeCampaign = campaingsList.firstWhere((element) =>
               DateTime.parse(element.startDate!).isBefore(now) &&
               DateTime.parse(element.endDate!).isAfter(now));
-          Utils.showAlertCampaign(
+          await Utils.showAlertCampaign(
             context,
             activeCampaign,
             (ctx) {
@@ -179,7 +179,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
     }
   }
 
-  goNextPage() {
+  void goNextPage() {
     _pagesController!
         .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
         .then((value) {
@@ -217,14 +217,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
                   var currentPage = _pagesController!.page;
 
                   if (currentPage == 0.0) {
-                    // if (Utils.reportsList != null &&
-                    //     Utils.reportsList.isNotEmpty &&
-                    //     widget.editReport == null) {
-                    //   Utils.deleteLastReport();
-                    // } else {
                     _onWillPop();
-                    // Utils.resetReport();
-                    // }
                   } else if (currentPage == 1) {
                     _pagesController!
                         .previousPage(

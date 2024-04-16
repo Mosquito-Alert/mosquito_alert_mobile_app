@@ -13,7 +13,6 @@ class CustomImageButton extends StatelessWidget {
       opacity: disabled == true ? 0.5 : 1,
       child: Container(
         height: size * 0.1,
-        // height: double.infinity,
         child: Card(
           color: selected == true ? Style.colorPrimary : Colors.white,
           shape:
@@ -29,9 +28,6 @@ class CustomImageButton extends StatelessWidget {
                         flex: 3,
                         child: Image.asset(
                           img!,
-                          // height: 120,
-                          // width: 120,
-                          // fit: BoxFit.fitHeight,
                         ),
                       )
                     : SizedBox(
@@ -43,9 +39,6 @@ class CustomImageButton extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 5),
                     child: Style.titleMedium(title,
                         textAlign: TextAlign.center, fontSize: 16
-                        // minFontSize: 14,
-                        // maxFontSize: 16,
-                        // style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                         ),
                   ),
                 ),

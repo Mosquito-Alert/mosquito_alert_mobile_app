@@ -18,22 +18,32 @@ class _PartnersPageState extends State<PartnersPage> {
   GoogleMapController? controller;
 
   List<Marker> markers = [];
-  StreamController<List<Marker>> markersStram =
+  StreamController<List<Marker>> markersStream =
       StreamController<List<Marker>>.broadcast();
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
 
   @override
   void initState() {
-    getInitialData();
     super.initState();
+    getInitialData();
+  }
+
+  @override
+  void dispose() {
+    markersStream.close();
+    loadingStream.close();
+    super.dispose();
   }
 
   getInitialData() async {
-    List partners =
-        await (ApiSingleton().getPartners() as FutureOr<List<dynamic>>);
+    // Set loading state to true initially
+    loadingStream.add(true);
 
-    for (Partner partner in partners as Iterable<Partner>) {
-      markers.add(Marker(
+    try {
+      List<Partner> partners = await ApiSingleton().getPartners();
+
+      for (var partner in partners) {
+        markers.add(Marker(
           markerId: MarkerId(partner.id.toString()),
           position: LatLng(partner.point['lat'], partner.point['long']),
           onTap: () {
@@ -44,11 +54,16 @@ class _PartnersPageState extends State<PartnersPage> {
                     builder: (context) => InfoPage(partner.pageUrl)),
               );
             }
-          }));
-    }
+          },
+        ));
+      }
 
-    loadingStream.add(false);
-    markersStram.add(markers);
+      markersStream.add(markers);
+    } catch (e) {
+      print(e);
+    } finally {
+      loadingStream.add(false);
+    }
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -69,9 +84,8 @@ class _PartnersPageState extends State<PartnersPage> {
           body: Column(
             children: [
               Expanded(
-                // flex: 3,
                 child: StreamBuilder<List<Marker>>(
-                  stream: markersStram.stream,
+                  stream: markersStream.stream,
                   initialData: [],
                   builder: (BuildContext context,
                       AsyncSnapshot<List<Marker>> snapshot) {

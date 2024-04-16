@@ -59,7 +59,6 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
           goToTab = refFunc;
         },
         hideStatusBar: false,
-        onTabChangeCompleted: onTabChangeCompleted,
       ),
     );
   }
@@ -67,7 +66,7 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
   // Slide Management
   List<Slide> initSlides() {
     slides.clear();
-    for (int idx = 0; idx < 9; idx ++) {
+    for (var idx = 0; idx < 9; idx ++) {
       slides.add(Slide(
           title: '',
           description: MyLocalizations.of(context, 'tutorial_send_module_00${idx+1}'),
@@ -81,8 +80,6 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
     if (widget.fromReport != null && widget.fromReport!) {
       Navigator.popUntil(context, (route) => route.isFirst);
     }
-  }
-  void onTabChangeCompleted(int page) {
   }
   Widget renderNextBtn() {
     return Icon(
@@ -122,12 +119,12 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
                     fit: BoxFit.cover,
                   )),
               Container(
+                margin: EdgeInsets.all(12.0),
                 child: Text(
                   currentSlide.description!,
                   textAlign: TextAlign.center,
                   maxLines: 20,
                 ),
-                margin: EdgeInsets.all(12.0),
               ),
             ],
           ),

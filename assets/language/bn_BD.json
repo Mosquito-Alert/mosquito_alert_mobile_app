@@ -16,7 +16,7 @@
     "url_legal": "https://webserver.mosquitoalert.com/bn/privacy/",
     "url_point_1": "https://webserver.mosquitoalert.com/bn/stats/user_ranking/1/",
     "url_consent_form": "https://webserver.mosquitoalert.com/bn/terms/",
-    "url_web": "http://www.mosquitoalert.com",
+    "url_web": "https://www.mosquitoalert.com",
     "url_scoring_1": "https://webserver.mosquitoalert.com/bn/scoring/",
     "url_about_us": "https://webserver.mosquitoalert.com/bn/about_us/",
     "url_about_project": "https://webserver.mosquitoalert.com/bn/project_about/",
@@ -55,7 +55,7 @@
     "found_breeding_place_question_txt": "জনসমাগম স্থান",
     "report_adults_txt": "মশা রিপোর্ট করুন",
     "report_us_adult_mosquitos_txt": "সম্ভবত এটি নির্ধারিত প্রজাতির",
-    "your_reports_txt": "আমার তথ্য",
+    "your_reports_txt": "আমার রিপোর্ট",
     "explore_your_reports_txt": "দেখুন অথবা সংশোধন করুন",
     "help_validating_other_photos_txt": "অন্যান্য অংশগ্রহণকারীদের থেকে প্রাপ্ত ছবি যাচাই করতে চান?",
     "we_need_help_txt": "আপনার সাহায্য প্রয়োজন! মসকিউটো অ্যালার্টের সাথে যুক্ত হোন।",
@@ -322,5 +322,8 @@
     "gl_ES": "গ্যালিসিয়ান",
     "eu_ES": "বাস্ক",
     "sv_SE": "সুইডিশ",
-    "bn_BD": "বাংলা"
+    "bn_BD": "বাংলা",
+    "single_mosquito": "মশা",
+    "single_breeding_site": "",
+    "single_bite": ""
 }

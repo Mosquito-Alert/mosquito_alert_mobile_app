@@ -27,7 +27,6 @@ class QuestionOption extends StatelessWidget {
                   img,
                   height: 40,
                   width: 40,
-                  // color: Colors.amber,
                 ),
               ),
               Center(
@@ -37,22 +36,6 @@ class QuestionOption extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 40),
-              // Container(
-              // child: ListTile(
-              //   leading: Image.asset(
-              //     img,
-              //     height: 40,
-              //     width: 40,
-              //     // color: Colors.amber,
-              //   ),
-              //   title: Style.body(
-              //     text,
-              //     color: selected ? Colors.white : Style.textColor,
-              //     textAlign: TextAlign.center,
-              //   ),
-              //   trailing: SizedBox(width: 40),
-              // ),
-              // ),
             ],
           ),
         ),

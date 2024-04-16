@@ -37,9 +37,9 @@ class MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {
 
   @override
   Future<MyLocalizations> load(Locale locale) async {
-    String? lang = await UserManager.getLanguage();
-    String? country = await UserManager.getLanguageCountry();
-    Locale savedLocale = Utils.getLanguage();
+    var lang = await UserManager.getLanguage();
+    var country = await UserManager.getLanguageCountry();
+    var savedLocale = Utils.getLanguage();
     if (lang != null && country != null) {
       savedLocale = Locale(lang, country);
     }

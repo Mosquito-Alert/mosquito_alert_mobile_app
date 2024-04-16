@@ -11,7 +11,6 @@ class CustomCard extends StatelessWidget {
     return Opacity(
       opacity: disabled == true ? 0.5 : 1,
       child: Container(
-        // height: double.infinity,
         child: Card(
           color: selected == true ? Style.colorPrimary : Colors.white,
           shape:
@@ -31,9 +30,6 @@ class CustomCard extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 20.0, bottom: 10),
                           child: Image.asset(
                             img!,
-                            // height: 95,
-                            // width: 95,
-                            // fit: BoxFit.fitHeight,
                           ),
                         ),
                       )
@@ -45,9 +41,6 @@ class CustomCard extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 5),
                     child: Style.titleMedium(title,
                         textAlign: TextAlign.center, fontSize: 16
-                        // minFontSize: 14,
-                        // maxFontSize: 16,
-                        // style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                         ),
                   ),
                 ),

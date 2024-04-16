@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
-import 'package:mosquito_alert_app/utils/UserManager.dart';
+import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:intl/intl.dart';
 
@@ -14,9 +13,11 @@ class ReportsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (reports.isEmpty ||
-        !reports.any((report) =>
-            UserManager.profileUUIDs.any((id) => id == report.user))) {
+    // Sort the reports by creation_time in descending order
+    reports.sort((a, b) => b.creation_time!
+        .compareTo(a.creation_time ?? '1970-01-01T00:00:00.000000Z'));
+
+    if (reports.isEmpty) {
       return Center(
         child: Style.body(MyLocalizations.of(context, 'no_reports_yet_txt')),
       );
@@ -57,39 +58,34 @@ class ReportsList extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Style.titleMedium(
-                                  MyLocalizations.of(
-                                          context, 'report_of_the_day_txt')! +
-                                      DateFormat('dd-MM-yyyy')
-                                          .format(DateTime.parse(
-                                              reports[index].creation_time!))
-                                          .toString(),
+                                  Utils.getTranslatedReportType(
+                                      context, reports[index].type),
                                   fontSize: 14),
                               Style.body(
-                                  '${MyLocalizations.of(context, "location_txt")} ${reports[index].displayCity ?? ''}'),
+                                  '${MyLocalizations.of(context, "location_txt")}: ${reports[index].displayCity}'),
                               Style.body(
                                   MyLocalizations.of(context, 'at_time_txt')! +
-                                      DateFormat.Hm()
+                                      ': ' +
+                                      DateFormat('dd-MM-yyyy HH:mm')
                                           .format(DateTime.parse(
-                                              reports[index].creation_time!))
+                                                  reports[index].creation_time!)
+                                              .toLocal())
                                           .toString(),
                                   color: Colors.grey),
                             ],
                           ),
                         ),
-                        reports[index].photos!.isNotEmpty
+                        reports[index].photos != null &&
+                                reports[index].photos!.isNotEmpty
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: Image.network(
-                                  ApiSingleton.baseUrl +
-                                      reports[index].photos![0].photo!,
+                                  reports[index].photos![0].photo!,
                                   width: 50,
                                   height: 50,
                                   fit: BoxFit.cover,
                                 ))
-                            : Container(
-                                // child: Style.title(
-                                //     reports[index].version_number.toString()),
-                                ),
+                            : Container(),
                       ],
                     ),
                   ),

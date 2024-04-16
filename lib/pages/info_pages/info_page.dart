@@ -30,49 +30,53 @@ class _InfoPageState extends State<InfoPage> {
           appBar: AppBar(
             backgroundColor: Colors.white,
             centerTitle: true,
-            title: title == null ? Image.asset(
-              'assets/img/ic_logo.png',
-              height: 45,
-            ) : Text(title),
+            title: title == null
+                ? Image.asset(
+                    'assets/img/ic_logo.png',
+                    height: 45,
+                  )
+                : Text(title),
           ),
-          body: SafeArea(child: Stack(
-            children: [
-              Builder(builder: (BuildContext context) {
-                return WebView(
-                  initialUrl: widget.localHtml ? 'about:blank' : widget.url,
-                  javascriptMode: JavascriptMode.unrestricted,
-                  onWebViewCreated: (WebViewController webViewController) {
-                    _controller = webViewController;
-                    widget.localHtml ? _loadHtmlFromAssets() : null;
-                  },
-                  javascriptChannels: <JavascriptChannel>[
-                    _toasterJavascriptChannel(context),
-                  ].toSet(),
-                  onPageFinished: (String url) {
-                    loadingStream.add(false);
-                  },
-                  onPageStarted: (String url) {
-                    loadingStream.add(true);
-                  },
-                  gestureNavigationEnabled: true,
-                );
-              }),
-              StreamBuilder<bool>(
-                  stream: loadingStream.stream,
-                  initialData: true,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<bool> snapLoading) {
-                    if (snapLoading.data == true) {
-                      return Container(
-                        child: Center(
-                          child: Utils.loading(true),
-                        ),
-                      );
-                    }
-                    return Container();
-                  }),
-            ],
-          ),),
+          body: SafeArea(
+            child: Stack(
+              children: [
+                Builder(builder: (BuildContext context) {
+                  return WebView(
+                    initialUrl: widget.localHtml ? 'about:blank' : widget.url,
+                    javascriptMode: JavascriptMode.unrestricted,
+                    onWebViewCreated: (WebViewController webViewController) {
+                      _controller = webViewController;
+                      widget.localHtml ? _loadHtmlFromAssets() : null;
+                    },
+                    javascriptChannels: <JavascriptChannel>{
+                      _toasterJavascriptChannel(context),
+                    },
+                    onPageFinished: (String url) {
+                      loadingStream.add(false);
+                    },
+                    onPageStarted: (String url) {
+                      loadingStream.add(true);
+                    },
+                    gestureNavigationEnabled: true,
+                  );
+                }),
+                StreamBuilder<bool>(
+                    stream: loadingStream.stream,
+                    initialData: true,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<bool> snapLoading) {
+                      if (snapLoading.data == true) {
+                        return Container(
+                          child: Center(
+                            child: Utils.loading(true),
+                          ),
+                        );
+                      }
+                      return Container();
+                    }),
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -82,7 +86,7 @@ class _InfoPageState extends State<InfoPage> {
     return JavascriptChannel(
         name: 'Toaster',
         onMessageReceived: (JavascriptMessage message) {
-          Scaffold.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(message.message)),
           );
         });

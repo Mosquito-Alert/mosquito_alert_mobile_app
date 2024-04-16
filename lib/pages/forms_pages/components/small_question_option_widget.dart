@@ -18,7 +18,6 @@ class SmallQuestionOption extends StatelessWidget {
             opacity: disabled == null || !disabled! ? 1.0 : 0.5,
             child: Container(
               alignment: Alignment.center,
-              // padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
@@ -34,7 +33,6 @@ class SmallQuestionOption extends StatelessWidget {
           )
         : Container(
             alignment: Alignment.center,
-            // padding: EdgeInsets.all(index != null ? 15 : 20),
             decoration: BoxDecoration(
               color: Style.colorPrimary,
               borderRadius: BorderRadius.circular(15),

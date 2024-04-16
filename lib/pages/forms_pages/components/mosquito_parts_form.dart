@@ -29,7 +29,7 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
 
     widget.setValid(true);
     if (Utils.report != null) {
-      for (Question? q in Utils.report!.responses!) {
+      for (var q in Utils.report!.responses!) {
         if (q!.question_id == widget.displayQuestion['question']['id']) {
           questions!.add(q);
         }
@@ -168,7 +168,6 @@ class _MosquitoPartsFormState extends State<MosquitoPartsForm> {
               SizedBox(
                 height: 15,
               ),
-              // Center(child: Style.noBgButton("No lo tengo claro", () {}))
               Style.bottomOffset,
             ],
           ),

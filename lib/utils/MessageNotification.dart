@@ -15,7 +15,9 @@ class MessageNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
+        padding: EdgeInsets.all(8),
         child: GestureDetector(
+          onTap: onTap,
           child: Material(
             color: Colors.white,
             borderRadius: BorderRadius.circular(4),
@@ -23,6 +25,11 @@ class MessageNotification extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(12),
               width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.background, width: 0.5)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,16 +63,9 @@ class MessageNotification extends StatelessWidget {
                   )
                 ],
               ),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: BorderRadius.circular(4),
-                  border: Border.all(
-                      color: Theme.of(context).backgroundColor, width: 0.5)),
             ),
           ),
-          onTap: onTap,
         ),
-        padding: EdgeInsets.all(8),
       ),
     );
   }

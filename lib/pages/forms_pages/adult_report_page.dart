@@ -255,42 +255,42 @@ class _AdultReportPageState extends State<AdultReportPage> {
     });
     var res = await Utils.createReport();
 
-    if (res!=null && res) {
+    if (res!=null && !res) {
       _showAlertKo();
     } else {
-      if (Utils.savedAdultReport != null) {
-        if (Utils.savedAdultReport!.country != null) {
-          List<Campaign> campaignsList =
-              await (ApiSingleton().getCampaigns(Utils.savedAdultReport!.country) as FutureOr<List<Campaign>>);
-          var now = DateTime.now().toUtc();
-          if (campaignsList.any((element) =>
+      if (Utils.savedAdultReport != null &&
+          Utils.savedAdultReport!.country != null) {
+        List<Campaign> campaignsList =
+            await ApiSingleton().getCampaigns(Utils.savedAdultReport!.country);
+        var now = DateTime.now().toUtc();
+        if (campaignsList.any((element) =>
+            DateTime.parse(element.startDate!).isBefore(now) &&
+            DateTime.parse(element.endDate!).isAfter(now))) {
+          var activeCampaign = campaignsList.firstWhere((element) =>
               DateTime.parse(element.startDate!).isBefore(now) &&
-              DateTime.parse(element.endDate!).isAfter(now))) {
-            var activeCampaign = campaignsList.firstWhere((element) =>
-                DateTime.parse(element.startDate!).isBefore(now) &&
-                DateTime.parse(element.endDate!).isAfter(now));
+              DateTime.parse(element.endDate!).isAfter(now));
 
-            Utils.showAlertCampaign(
-              context,
-              activeCampaign,
-              (ctx) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CampaignTutorialPage(
-                            fromReport: true,
-                          )),
-                );
-                Utils.resetReport();
-              },
-            );
-          } else {
-            _showAlertOk();
-          }
+          await Utils.showAlertCampaign(
+            context,
+            activeCampaign,
+            (ctx) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CampaignTutorialPage(
+                          fromReport: true,
+                        )),
+              );
+              Utils.resetReport();
+            },
+          );
+        } else {
+          _showAlertOk();
         }
+      } else {
+        _showAlertOk();
       }
 
-      // _showAlertOk();
       setState(() {
         percentStream.add(1.0);
       });
@@ -329,12 +329,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                     setState(() {
                       index = currentPage! - 1;
                     });
-                    // if (Utils.reportsList != null &&
-                    //     Utils.reportsList.isNotEmpty) {
-                    //   Utils.deleteLastReport();
-                    // } else {
                     _onWillPop();
-                    // }
                   } else {
                     if (currentPage == 2.0 &&
                         !Utils.report!.responses!
@@ -406,7 +401,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                           child: Style.button(
                                               MyLocalizations.of(
                                                   context, 'continue_txt'), () {
-                                            double? currentPage =
+                                            var currentPage =
                                                 _pagesController!.page;
 
                                             if (currentPage == 3.0 &&
@@ -524,7 +519,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
   _chooseTypeImage() {
     _skipReport(false);
     if (widget.editReport == null) {
-      List<Widget> listForiOS = <Widget>[
+      var listForiOS = <Widget>[
         CupertinoActionSheetAction(
           onPressed: () {
             Navigator.pop(context);
@@ -550,7 +545,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
             Navigator.pop(context);
             setShowCamera(false);
             Utils.imagePath = [];
-            int page = 2;
+            var page = 2;
             if (Utils.report!.responses!
                 .any((element) => element!.answer_id == 61)) {
               page = 1;
@@ -569,7 +564,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
           ),
         ),
       ];
-      List<Widget> listForAndroid = <Widget>[
+      var listForAndroid = <Widget>[
         InkWell(
           onTap: () {
             Navigator.pop(context);
@@ -601,7 +596,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
             Navigator.pop(context);
             setShowCamera(false);
             Utils.imagePath = [];
-            int page = 2;
+            var page = 2;
             if (Utils.report!.responses!
                 .any((element) => element!.answer_id == 61)) {
               page = 1;
@@ -647,7 +642,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
     );
 
     if (pickFiles != null &&
-        pickFiles.files != null &&
         pickFiles.files.isNotEmpty) {
       setShowCamera(false);
       setState(() {
@@ -659,7 +653,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
     }
 
     if (pickFiles != null &&
-        pickFiles.files != null &&
         pickFiles.files.isNotEmpty) {
       pickFiles.files.forEach((image) {
         Utils.saveImgPath(File(image.path!));
@@ -678,7 +671,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
         source: source, maxHeight: 1024, imageQuality: 60);
 
     if (image != null) {
-      final File file = File(image.path);
+      final file = File(image.path);
       Utils.saveImgPath(file);
       setShowCamera(false);
 

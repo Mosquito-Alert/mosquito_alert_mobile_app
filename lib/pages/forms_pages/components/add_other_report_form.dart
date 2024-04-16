@@ -18,7 +18,7 @@ class AddOtherReportPage extends StatefulWidget {
 }
 
 class _AddOtherReportPageState extends State<AddOtherReportPage> {
-  TextEditingController _commentsController = TextEditingController();
+  final TextEditingController _commentsController = TextEditingController();
 
   @override
   void initState() {
