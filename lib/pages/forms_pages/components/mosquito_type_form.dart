@@ -33,7 +33,7 @@ class _MosquitoTypeFormState extends State<MosquitoTypeForm> {
       question_id: widget.displayQuestion['question']['id'],
     );
     if (Utils.report != null) {
-      int index = Utils.report!.responses!.indexWhere(
+      var index = Utils.report!.responses!.indexWhere(
           (q) => q!.question_id == widget.displayQuestion['question']['id']);
       if (index != -1) {
         question.answer = Utils.report!.responses![index]!.answer;

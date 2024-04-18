@@ -160,12 +160,12 @@ class _TutorialPageState extends State<TutorialPage> {
                 ),
               ),
               Container(
+                margin: EdgeInsets.all(20.0),
                 child: Style.body(
                   currentSlide.description,
                   textAlign: TextAlign.center,
                   maxLines: 20,
                 ),
-                margin: EdgeInsets.all(20.0),
               ),
             ],
           ),

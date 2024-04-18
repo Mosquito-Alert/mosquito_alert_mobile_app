@@ -107,7 +107,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   }
 
   skipPage3(skip) {
-    List<Widget> list = List.from(_initialFormsReport);
+    var list = List<Widget>.from(_initialFormsReport);
     if (skip) {
       list.removeAt(2);
       setState(() {
@@ -151,14 +151,14 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     switch (otherReport) {
       case 'bite':
         Utils.addOtherReport('bite');
-        Navigator.push(
+        await Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => BitingReportPage()),
         );
         break;
       case 'adult':
         Utils.addOtherReport('adult');
-        Navigator.push(
+        await Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => AdultReportPage()),
         );
@@ -173,7 +173,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       percentStream.add(0.8);
     });
     loadingStream.add(true);
-    bool? res = await Utils.createReport();
+    var res = await Utils.createReport();
 
     if (widget.editReport != null) {
       widget.loadData!();
@@ -210,7 +210,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
               leading: IconButton(
                 icon: Style.iconBack,
                 onPressed: () {
-                  double? currentPage = _pagesController!.page;
+                  var currentPage = _pagesController!.page;
 
                   if (currentPage == 0.0) {
                     _onWillPop();
@@ -258,7 +258,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                                           child: Style.button(
                                               MyLocalizations.of(
                                                   context, 'continue_txt'), () {
-                                            double? currentPage =
+                                            var currentPage =
                                                 _pagesController!.page;
 
                                             if (currentPage == 0.0) {
@@ -333,7 +333,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
 
   _chooseTypeImage() {
     if (widget.editReport == null) {
-      List<Widget> listForiOS = <Widget>[
+      var listForiOS = <Widget>[
         CupertinoActionSheetAction(
           onPressed: () {
             Navigator.pop(context);
@@ -355,7 +355,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
           ),
         ),
       ];
-      List<Widget> listForAndroid = <Widget>[
+      var listForAndroid = <Widget>[
         InkWell(
           onTap: () {
             Navigator.pop(context);
@@ -405,7 +405,6 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     var pickFiles = await FilePicker.platform.pickFiles(type: FileType.image);
 
     if (pickFiles != null &&
-        pickFiles.files != null &&
         pickFiles.files.isNotEmpty) {
       setShowCamera(false);
       await _pagesController!
@@ -417,7 +416,6 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     }
 
     if (pickFiles != null &&
-        pickFiles.files != null &&
         pickFiles.files.isNotEmpty) {
       pickFiles.files.forEach((image) {
         Utils.saveImgPath(File(image.path!));
@@ -439,10 +437,10 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     );
 
     if (image != null) {
-      final File file = File(image.path);
+      final file = File(image.path);
       Utils.saveImgPath(file);
       setShowCamera(false);
-      _pagesController!
+      await _pagesController!
           .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
           .then((value) => setValid(widget.editReport != null));
       setState(() {

@@ -126,7 +126,7 @@ class Report {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['version_UUID'] = version_UUID;
     data['version_number'] = version_number;
     data['user'] = user;
@@ -181,7 +181,7 @@ class Photo {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['id'] = id;
     data['photo'] = photo;
     data['uuid'] = uuid;

@@ -84,13 +84,13 @@ class PushNotificationsManager {
       final notification_data = jsonDecode(message['notification']);
 
       try {
-        title = notification_data["title"];
+        title = notification_data['title'];
       } catch (e) {
         print(e);
       }
 
       try {
-        msg = notification_data["body"];
+        msg = notification_data['body'];
       } catch (e) {
         print(e);
       }
@@ -166,19 +166,17 @@ class PushNotificationsManager {
 
   static Future<void> subscribeToReportResult(Report report) async {
     try {
-      if (report != null) {
-        if (report.country != null) {
-          await subscribeToTopic('${report.country}');
-        }
-        if (report.nuts2 != null) {
-          await subscribeToTopic('${report.nuts2}');
-        }
-        if (report.nuts3 != null) {
-          await subscribeToTopic('${report.nuts3}');
-        }
+      if (report.country != null) {
+        await subscribeToTopic('${report.country}');
       }
-    } catch (e) {
-      print('Report subscription failed for reason: ${e}');
+      if (report.nuts2 != null) {
+        await subscribeToTopic('${report.nuts2}');
+      }
+      if (report.nuts3 != null) {
+        await subscribeToTopic('${report.nuts3}');
+      }
+        } catch (e) {
+      print('Report subscription failed for reason: $e');
     }
   }
 
@@ -192,7 +190,7 @@ class PushNotificationsManager {
       var userId = await UserManager.getUUID();
       if (userId != null && !_checkIfSubscribed(topic)) {
         var result = await ApiSingleton().subscribeToTopic(userId, topic);
-        if (result != null && result) {
+        if (result) {
           await _firebaseMessaging.subscribeToTopic(topic!);
         } else if (topic == 'global') {
           await _firebaseMessaging.subscribeToTopic('global');
@@ -205,7 +203,7 @@ class PushNotificationsManager {
     var userId = await UserManager.getUUID();
     if (userId != null && _checkIfSubscribed(topic)) {
       var result = await ApiSingleton().unsubscribeFromTopic(userId, topic);
-      if (result != null && result) {
+      if (result) {
         await _firebaseMessaging.unsubscribeFromTopic(topic);
       }
     }
@@ -219,6 +217,7 @@ class PushNotificationsManager {
         currentTopics = result;
       }
     }
+    return null;
   }
 
   static bool _checkIfSubscribed(String? topicCode) {

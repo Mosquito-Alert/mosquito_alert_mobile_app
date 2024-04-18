@@ -7,8 +7,6 @@ import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
-import '../../../utils/Utils.dart';
-
 class BitingForm extends StatefulWidget {
   final List<Map> displayQuestions;
   final Function setValid, nextPage;
@@ -83,7 +81,6 @@ class _BitingFormState extends State<BitingForm> {
                   Style.button(
                     '-',
                     () {
-
                       bites = max(bites - 1, 0);
                       _textController.text = bites.toString();
                       var question = widget.displayQuestions
@@ -105,7 +102,6 @@ class _BitingFormState extends State<BitingForm> {
                       setState(() {
                         valid = isValid;
                         questions = Utils.report!.responses;
-
                       });
                     },
                   ),
@@ -135,7 +131,7 @@ class _BitingFormState extends State<BitingForm> {
                           question_id: 1,
                           answer_id: 11,
                           answer_value: _textController.text);
-                      bool isValid = canContinue();
+                      var isValid = canContinue();
                       setState(() {
                         valid = isValid;
                       });
@@ -385,7 +381,6 @@ class _BitingFormState extends State<BitingForm> {
                   setState(() {
                     valid = isValid;
                     questions = Utils.report!.responses;
-
                   });
                 }),
               ),
@@ -490,11 +485,11 @@ class _BitingFormState extends State<BitingForm> {
       return false;
     }
 
-    int index = questions!.indexWhere((q) => q!.question_id == 1);
-    int totalAnswers =
+    var index = questions!.indexWhere((q) => q!.question_id == 1);
+    var totalAnswers =
         index != -1 ? int.parse(questions![index]!.answer_value!) : 0;
 
-    int currentValues = 0;
+    var currentValues = 0;
 
     questions!.forEach((q) {
       if (q!.question_id == questionId) {
@@ -506,16 +501,17 @@ class _BitingFormState extends State<BitingForm> {
   }
 
   String? getIndexBody(int answer_id) {
-    int index = Utils.report!.responses!
+    var index = Utils.report!.responses!
         .indexWhere((question) => question!.answer_id == answer_id);
 
     if (index != -1) {
       return Utils.report!.responses![index]!.answer_value;
     }
+    return null;
   }
 
   String? getIndexAnswer(int answer_id) {
-    int index = 0;
+    var index = 0;
 
     questions!.map((q) {
       if (q!.answer_id == answer_id) {
@@ -526,6 +522,7 @@ class _BitingFormState extends State<BitingForm> {
     if (index > 0) {
       return index.toString();
     }
+    return null;
   }
 
   addToList(String? question, String? answer,
@@ -543,7 +540,7 @@ class _BitingFormState extends State<BitingForm> {
       setState(() {
         questions = Utils.report!.responses;
       });
-      bool isValid = canContinue();
+      var isValid = canContinue();
       setState(() {
         valid = isValid;
       });
@@ -551,7 +548,7 @@ class _BitingFormState extends State<BitingForm> {
   }
 
   bool _validateAddBite() {
-    int totalParts = 0;
+    var totalParts = 0;
     questions!.forEach((q) {
       if (q!.question_id == 2) {
         totalParts = totalParts + int.parse(q.answer_value!);
@@ -562,10 +559,10 @@ class _BitingFormState extends State<BitingForm> {
 
   bool canContinue() {
     if (questions!.length > 1 && questions!.isNotEmpty) {
-      bool totalBites = _validateAddBite();
-      int totalQ3 = 0;
-      int totalQ4 = 0;
-      int totalQ5 = 0;
+      var totalBites = _validateAddBite();
+      var totalQ3 = 0;
+      var totalQ4 = 0;
+      var totalQ5 = 0;
 
       questions!.forEach((q) {
         if (q!.question_id == 4) totalQ3++;
@@ -595,16 +592,16 @@ class _BitingFormState extends State<BitingForm> {
     var bodyParts = Utils.report!.responses!
         .where((element) => element!.question_id == 2)
         .toList();
-    if (bodyParts != null) {
-      if (int.parse(bodyParts.last!.answer_value!) > 1) {
-        bodyParts.last!.answer_value =
-            (int.parse(bodyParts.last!.answer_value!) - 1).toString();
-      } else {
-        bodyParts.removeLast();
-      }
+    if (int.parse(bodyParts.last!.answer_value!) > 1) {
+      bodyParts.last!.answer_value =
+          (int.parse(bodyParts.last!.answer_value!) - 1).toString();
+    } else {
+      bodyParts.removeLast();
     }
 
-    Utils.report!.responses =
-        [...?Utils.report!.responses, ...bodyParts].toSet().toList();
+    Utils.report!.responses = <dynamic>{
+      ...?Utils.report!.responses,
+      ...bodyParts
+    }.cast<Question?>().toList();
   }
 }

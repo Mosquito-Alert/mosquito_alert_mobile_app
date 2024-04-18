@@ -38,16 +38,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
   _getData() async {
     List<MyNotification> response = await ApiSingleton().getNotifications();
 
-    if (response != null) {
-      setState(() {
-        notifications = response;
-        _checkOpenNotification();
-      });
-    }
-    loadingStream.add(false);
+    setState(() {
+      notifications = response;
+      _checkOpenNotification();
+    });
+      loadingStream.add(false);
   }
 
-  _checkOpenNotification() {
+  void _checkOpenNotification() {
     try {
       if (widget.notificationId != null && widget.notificationId!.isNotEmpty) {
         var notifId = widget.notificationId;

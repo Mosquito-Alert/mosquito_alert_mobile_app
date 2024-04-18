@@ -39,7 +39,7 @@ class AggregatedPoints {
     return bitmapDescriptor;
   }
 
-  getId() {
+  String getId() {
     return location.latitude.toString() +
         '_' +
         location.longitude.toString() +

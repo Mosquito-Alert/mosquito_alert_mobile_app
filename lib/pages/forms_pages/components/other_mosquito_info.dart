@@ -4,7 +4,7 @@ import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OtherMosquitoInfo extends StatelessWidget {
-  get language => null;
+  Null get language => null;
 
   @override
   Widget build(BuildContext context) {

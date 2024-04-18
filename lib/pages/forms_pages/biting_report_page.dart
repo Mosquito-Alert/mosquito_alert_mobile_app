@@ -152,7 +152,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
           var activeCampaign = campaingsList.firstWhere((element) =>
               DateTime.parse(element.startDate!).isBefore(now) &&
               DateTime.parse(element.endDate!).isAfter(now));
-          Utils.showAlertCampaign(
+          await Utils.showAlertCampaign(
             context,
             activeCampaign,
             (ctx) {

@@ -42,7 +42,7 @@ class _PartnersPageState extends State<PartnersPage> {
     try {
       List<Partner> partners = await ApiSingleton().getPartners();
 
-      for (Partner partner in partners) {
+      for (var partner in partners) {
         markers.add(Marker(
           markerId: MarkerId(partner.id.toString()),
           position: LatLng(partner.point['lat'], partner.point['long']),

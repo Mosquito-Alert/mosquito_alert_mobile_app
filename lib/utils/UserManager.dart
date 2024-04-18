@@ -19,31 +19,31 @@ class UserManager {
   static int? userScore;
 
   static Future<bool> startFirstTime(context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? firstTime = prefs.getBool('firstTime');
+    var prefs = await SharedPreferences.getInstance();
+    var firstTime = prefs.getBool('firstTime');
 
     if (firstTime == null || !firstTime) {
-      Navigator.of(context).push(
+      await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => ConsentForm(),
         ),
       );
 
-      prefs.setBool('firstTime', true);
+      await prefs.setBool('firstTime', true);
       var uuid = Uuid().v4();
       var trackingUuid = Uuid().v4();
-      prefs.setString('uuid', uuid);
-      prefs.setString('trackingUUID', trackingUuid);
-      prefs.setBool('trackingEnabled', true);
+      await prefs.setString('uuid', uuid);
+      await prefs.setString('trackingUUID', trackingUuid);
+      await prefs.setBool('trackingEnabled', true);
 
       Utils.initializedCheckData['userCreated']['required'] = true;
 
       await ApiSingleton().createUser(uuid);
-      setLanguage(Utils.language.languageCode);
-      setLanguageCountry(Utils.language.countryCode);
+      await setLanguage(Utils.language.languageCode);
+      await setLanguageCountry(Utils.language.countryCode);
     } else {
-      String? languageCode = await getLanguage();
-      String? countryCode = await getLanguageCountry();
+      var languageCode = await getLanguage();
+      var countryCode = await getLanguageCountry();
       if (languageCode != null && countryCode != null) {
         Utils.language = Locale(languageCode, countryCode);
       } else {
@@ -52,14 +52,14 @@ class UserManager {
     }
 
     application.onLocaleChanged(Utils.language);
-    fetchUser();
+    await fetchUser();
     userScore = await ApiSingleton().getUserScores();
     await setUserScores(userScore);
 
     return true;
   }
 
-  static fetchUser() async {
+  static Future<User?>? fetchUser() async {
     user = _auth
         .currentUser;
 
@@ -73,13 +73,13 @@ class UserManager {
 
   //set
   static Future<void> setFrirebaseId(id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('firebaseId', id);
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setString('firebaseId', id);
   }
 
   static Future<void> setUserScores(scores) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('userScores', scores);
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('userScores', scores);
   }
 
   static Future<void> setTracking(bool new_value) async {
@@ -102,37 +102,37 @@ class UserManager {
   }
 
   static Future<void> setSowInfoAdult(show) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('infoCameraAdult', show);
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('infoCameraAdult', show);
   }
 
   static Future<void> setSowInfoBreeding(show) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('infoCameraBreeding', show);
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('infoCameraBreeding', show);
   }
 
   static Future<void> setLanguage(language) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('language', language);
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setString('language', language);
   }
 
   static Future<void> setLanguageCountry(lngCountry) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('languageCountry', lngCountry);
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setString('languageCountry', lngCountry);
   }
 
   static Future<void> setReportList(reportList) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('reportsList', reportList);
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('reportsList', reportList);
   }
 
   static Future<void> setImageList(imageList) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setStringList('imagesList', imageList);
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('imagesList', imageList);
   }
 
   static Future<bool> setHashtag(String? hashtag) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     if (hashtag == null) {
       return prefs.remove('hashtag');
     }
@@ -146,7 +146,7 @@ class UserManager {
 
   //get
   static Future<String?> getUUID() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     return prefs.get('uuid') as FutureOr<String?>;
   }
 
@@ -156,12 +156,12 @@ class UserManager {
   }
 
   static Future<String?> getFirebaseId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     return prefs.getString('firebaseId');
   }
 
   static Future<int?> getUserScores() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     return prefs.getInt('userScores');
   }
 
@@ -171,22 +171,22 @@ class UserManager {
   }
 
   static Future<bool?> getShowInfoAdult() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     return prefs.getBool('infoCameraAdult');
   }
 
   static Future<bool?> getShowInfoBreeding() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     return prefs.getBool('infoCameraBreeding');
   }
 
   static Future<String?> getLanguage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     return prefs.getString('language');
   }
 
   static Future<String?> getLanguageCountry() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     return prefs.getString('languageCountry');
   }
 
@@ -195,17 +195,17 @@ class UserManager {
   }
 
   static Future<List<String>?> getReportList() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     return prefs.getStringList('reportsList');
   }
 
   static Future<List<String>?> getImageList() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     return prefs.getStringList('imagesList');
   }
 
   static Future<String?> getHashtag() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     return prefs.getString('hashtag');
   }
 
@@ -215,9 +215,9 @@ class UserManager {
   }
 
   static signOut() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('userName');
-    prefs.remove('firebaseId');
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('userName');
+    await prefs.remove('firebaseId');
     user = null;
   }
 }

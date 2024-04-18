@@ -22,7 +22,7 @@ class Session {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['id'] = id;
     data['session_ID'] = session_ID;
     data['user'] = user;

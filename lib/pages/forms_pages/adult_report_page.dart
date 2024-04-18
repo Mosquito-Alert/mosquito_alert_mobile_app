@@ -270,7 +270,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
               DateTime.parse(element.startDate!).isBefore(now) &&
               DateTime.parse(element.endDate!).isAfter(now));
 
-          Utils.showAlertCampaign(
+          await Utils.showAlertCampaign(
             context,
             activeCampaign,
             (ctx) {
@@ -401,7 +401,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                                           child: Style.button(
                                               MyLocalizations.of(
                                                   context, 'continue_txt'), () {
-                                            double? currentPage =
+                                            var currentPage =
                                                 _pagesController!.page;
 
                                             if (currentPage == 3.0 &&
@@ -519,7 +519,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
   _chooseTypeImage() {
     _skipReport(false);
     if (widget.editReport == null) {
-      List<Widget> listForiOS = <Widget>[
+      var listForiOS = <Widget>[
         CupertinoActionSheetAction(
           onPressed: () {
             Navigator.pop(context);
@@ -545,7 +545,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
             Navigator.pop(context);
             setShowCamera(false);
             Utils.imagePath = [];
-            int page = 2;
+            var page = 2;
             if (Utils.report!.responses!
                 .any((element) => element!.answer_id == 61)) {
               page = 1;
@@ -564,7 +564,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
           ),
         ),
       ];
-      List<Widget> listForAndroid = <Widget>[
+      var listForAndroid = <Widget>[
         InkWell(
           onTap: () {
             Navigator.pop(context);
@@ -596,7 +596,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
             Navigator.pop(context);
             setShowCamera(false);
             Utils.imagePath = [];
-            int page = 2;
+            var page = 2;
             if (Utils.report!.responses!
                 .any((element) => element!.answer_id == 61)) {
               page = 1;
@@ -642,7 +642,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
     );
 
     if (pickFiles != null &&
-        pickFiles.files != null &&
         pickFiles.files.isNotEmpty) {
       setShowCamera(false);
       setState(() {
@@ -654,7 +653,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
     }
 
     if (pickFiles != null &&
-        pickFiles.files != null &&
         pickFiles.files.isNotEmpty) {
       pickFiles.files.forEach((image) {
         Utils.saveImgPath(File(image.path!));
@@ -673,7 +671,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
         source: source, maxHeight: 1024, imageQuality: 60);
 
     if (image != null) {
-      final File file = File(image.path);
+      final file = File(image.path);
       Utils.saveImgPath(file);
       setShowCamera(false);
 

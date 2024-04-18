@@ -386,7 +386,7 @@ class _MainVCState extends State<MainVC> {
   }
 
   _createBiteReport() async {
-    bool createReport = await Utils.createNewReport('bite');
+    var createReport = await Utils.createNewReport('bite');
     loadingStream.add(false);
     if (createReport) {
       await Navigator.push(
@@ -402,7 +402,7 @@ class _MainVCState extends State<MainVC> {
   }
 
   _createAdultReport() async {
-    bool createReport = await Utils.createNewReport('adult');
+    var createReport = await Utils.createNewReport('adult');
     loadingStream.add(false);
     if (createReport) {
       await Navigator.push(
@@ -418,7 +418,7 @@ class _MainVCState extends State<MainVC> {
   }
 
   _createSiteReport() async {
-    bool createReport = await Utils.createNewReport('site');
+    var createReport = await Utils.createNewReport('site');
     loadingStream.add(false);
     if (createReport) {
       await Navigator.push(

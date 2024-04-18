@@ -25,7 +25,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
-import '../models/question.dart';
 import 'MyLocalizations.dart';
 
 class Utils {
@@ -57,9 +56,7 @@ class Utils {
   };
 
   static void saveImgPath(File img) {
-    if (imagePath == null) {
-      imagePath = [];
-    }
+    imagePath ??= [];
     imagePath!
         .add({'image': img.path, 'id': report!.version_UUID, 'imageFile': img});
   }
@@ -82,13 +79,13 @@ class Utils {
     if (session == null) {
       reportsList = [];
 
-      String? userUUID = await UserManager.getUUID();
+      var userUUID = await UserManager.getUUID();
 
       dynamic response = await ApiSingleton().getLastSession(userUUID);
       if (response is bool && !response) {
         print('Unable to get last session.');
         return false;
-      } else if(response is ApiResponse){
+      } else if (response is ApiResponse) {
         print('response is of type ApiResponse, not a number.');
         return false;
       } else {
@@ -117,7 +114,7 @@ class Utils {
           session: session!.id,
           responses: []);
 
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      var packageInfo = await PackageInfo.fromPlatform();
       report!.package_name = packageInfo.packageName;
       report!.package_version = 33;
 
@@ -228,13 +225,13 @@ class Utils {
       return;
     }
 
-    List<Question?>? _questions = report!.responses;
+    var _questions = report!.responses;
 
     // add total bites
 
     if (question_id == 1) {
-      int currentIndex = _questions!.indexWhere((question) =>
-          question!.question_id == question_id);
+      var currentIndex = _questions!
+          .indexWhere((question) => question!.question_id == question_id);
       if (currentIndex == -1) {
         _questions.add(Question(
           question: question.toString(),
@@ -250,8 +247,8 @@ class Utils {
 
     //increase answer_value question 2
     if (question_id == 2) {
-      int currentIndex = _questions!.indexWhere((question) =>
-          question!.answer_id == answer_id);
+      var currentIndex = _questions!
+          .indexWhere((question) => question!.answer_id == answer_id);
       if (currentIndex == -1) {
         _questions.add(Question(
           question: question.toString(),
@@ -261,7 +258,7 @@ class Utils {
           answer_value: '1',
         ));
       } else {
-        int value = int.parse(_questions[currentIndex]!.answer_value!);
+        var value = int.parse(_questions[currentIndex]!.answer_value!);
         value = value + 1;
         _questions[currentIndex]!.answer_value = value.toString();
       }
@@ -276,7 +273,7 @@ class Utils {
         if (_questions.any(
             (q) => q!.question_id == question_id && q.answer_id != answer_id)) {
           //modify question
-          int index =
+          var index =
               _questions.indexWhere((q) => q!.question_id == question_id);
           _questions[index]!.answer_id = answer_id;
           _questions[index]!.answer = answer;
@@ -298,7 +295,7 @@ class Utils {
   }
 
   static void resetBitingQuestion() {
-    List<Question?> _questions = report!.responses!;
+    var _questions = report!.responses!;
 
     _questions.removeWhere((q) => q!.question_id == 2);
 
@@ -307,8 +304,7 @@ class Utils {
 
   static void addAdultPartsResponse(answer, answerId, i) {
     var _questions = report!.responses!;
-    int index =
-        _questions
+    var index = _questions
         .indexWhere((q) => q!.answer_id! > i && q.answer_id! < i + 10);
     if (index != -1) {
       if (_questions[index]!.answer_id == answerId) {
@@ -318,7 +314,7 @@ class Utils {
         _questions[index]!.answer = answer;
       }
     } else {
-      Question newQuestion = Question(
+      var newQuestion = Question(
         question: 'question_7',
         answer: answer,
         question_id: 7,
@@ -330,12 +326,10 @@ class Utils {
   }
 
   static void addResponse(Question? question) {
-    int index = report!.responses!
+    var index = report!.responses!
         .indexWhere((q) => q!.question_id == question!.question_id);
     var _responses = report!.responses;
-    if (_responses == null) {
-      _responses = [];
-    }
+    _responses ??= [];
     if (index != -1) {
       _responses[index] = question;
     } else {
@@ -365,7 +359,7 @@ class Utils {
       report!.creation_time = DateTime.now().toUtc().toIso8601String();
       reportsList!.add(report);
       bool? isCreated;
-      for (int i = 0; i < reportsList!.length; i++) {
+      for (var i = 0; i < reportsList!.length; i++) {
         var res = await ApiSingleton().createReport(reportsList![i]!);
         if (res?.type == 'adult') {
           savedAdultReport = res;
@@ -382,23 +376,23 @@ class Utils {
   }
 
   static Future<void> saveLocalReport(Report report) async {
-    List<String>? savedReports = await UserManager.getReportList();
+    var savedReports = await UserManager.getReportList();
     if (savedReports == null || savedReports.isEmpty) {
       savedReports = [];
     }
-    String reportString = json.encode(report.toJson());
+    var reportString = json.encode(report.toJson());
     savedReports.add(reportString);
     await UserManager.setReportList(savedReports);
   }
 
   static Future<void> saveLocalImage(
       String? image, String? version_UUID) async {
-    List<String>? savedImages = await UserManager.getImageList();
+    var savedImages = await UserManager.getImageList();
     if (savedImages == null || savedImages.isEmpty) {
       savedImages = [];
     }
 
-    String imageString =
+    var imageString =
         json.encode({'image': image, 'verison_UUID': version_UUID});
     savedImages.add(imageString);
     await UserManager.setImageList(savedImages);
@@ -413,8 +407,8 @@ class Utils {
 
     if (savedReports != null && savedReports.isNotEmpty) {
       bool isCreated;
-      for (int i = 0; i < savedReports.length; i++) {
-        Report savedReport = Report.fromJson(json.decode(savedReports[i]));
+      for (var i = 0; i < savedReports.length; i++) {
+        var savedReport = Report.fromJson(json.decode(savedReports[i]));
         isCreated = await ApiSingleton().createReport(savedReport) != null
             ? true
             : false;
@@ -427,12 +421,12 @@ class Utils {
 
     if (savedImages != null && savedImages.isNotEmpty) {
       bool isCreated;
-      for (int i = 0; i < savedImages.length; i++) {
+      for (var i = 0; i < savedImages.length; i++) {
         Map image = json.decode(savedImages[i]);
         isCreated = await ApiSingleton()
             .saveImage(image['image'], image['verison_UUID']);
         if (!isCreated) {
-          saveLocalImage(image['image'], image['verison_UUID']);
+          await saveLocalImage(image['image'], image['verison_UUID']);
         } else {
           await File(image['image']).delete();
         }
@@ -447,7 +441,7 @@ class Utils {
     if (userCreated['required']! && !userCreated['created']!) {
       print('Utils (checkForUnfetchedData): Creating user...');
       prefs = await SharedPreferences.getInstance();
-      final String? uuid = prefs.getString('uuid');
+      final uuid = prefs.getString('uuid');
       await ApiSingleton().createUser(uuid);
     } else {
       print(
@@ -456,8 +450,7 @@ class Utils {
 
     if (!initializedCheckData['userScores']) {
       print('Utils (checkForUnfetchedData): Fetching user scores...');
-      UserManager.userScore =
-          await ApiSingleton().getUserScores();
+      UserManager.userScore = await ApiSingleton().getUserScores();
     } else {
       print('Utils (checkForUnfetchedData): UserScores were already fetched');
     }
@@ -483,7 +476,7 @@ class Utils {
     deleteReport.version_number = -1;
     deleteReport.version_UUID = Uuid().v4();
 
-    bool res =
+    var res =
         await ApiSingleton().createReport(deleteReport) != null ? true : false;
     return res;
   }
@@ -531,7 +524,8 @@ class Utils {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
+                //Changed from FlatButton
                 child: Text(MyLocalizations.of(context, 'ok')!),
                 onPressed: () {
                   if (onPressed != null) {
@@ -602,7 +596,8 @@ class Utils {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
+                //Changed from FlatButton
                 child: Text(MyLocalizations.of(context, 'ok')!),
                 onPressed: () {
                   if (onPressed != null) {
@@ -736,13 +731,14 @@ class Utils {
           builder: (context) {
             return CupertinoActionSheet(
                 title: title != null ? Text(title) : null,
-                cancelButton: cancelButton ?? CupertinoActionSheetAction(
+                cancelButton: cancelButton ??
+                    CupertinoActionSheetAction(
                       onPressed: close as void Function(),
-                        child: Text(
+                      child: Text(
                         MyLocalizations.of(context, 'cancel')!,
-                          style: TextStyle(color: Colors.red),
-                        ),
+                        style: TextStyle(color: Colors.red),
                       ),
+                    ),
                 actions: list);
           });
     } else if (platform == TargetPlatform.android) {
@@ -777,6 +773,7 @@ class Utils {
             );
           });
     }
+    return null;
   }
 
   static Widget authBottomInfo(BuildContext context) {
@@ -846,7 +843,8 @@ class Utils {
         : Container();
   }
 
-  static infoAdultCamera(context, getImage, {bool gallery = false}) async {
+  static Future<Future> infoAdultCamera(context, getImage,
+      {bool gallery = false}) async {
     var showInfo = await UserManager.getShowInfoAdult();
     if (showInfo == null || !showInfo) {
       return showDialog(
@@ -932,9 +930,14 @@ class Utils {
     } else {
       !gallery ? getImage(ImageSource.camera) : getImage();
     }
+
+    // Add a return statement at the end
+    return throw StateError(
+        'infoAdultCamera function completed without returning a Future value.');
   }
 
-  static infoBreedingCamera(context, getImage, {bool gallery = false}) async {
+  static Future<Future> infoBreedingCamera(context, getImage,
+      {bool gallery = false}) async {
     var showInfo = await UserManager.getShowInfoBreeding();
 
     if (showInfo == null || !showInfo) {
@@ -1009,9 +1012,13 @@ class Utils {
     } else {
       !gallery ? getImage(ImageSource.camera) : getImage();
     }
+
+    //Throws a StateError if the function completes without returning a Future value.
+    throw StateError(
+        'infoBreedingCamera function completed without returning a Future value.');
   }
 
-  static showAlertCampaign(ctx, activeCampaign, onPressed) {
+  static Future showAlertCampaign(ctx, activeCampaign, onPressed) {
     if (Platform.isAndroid) {
       return showDialog(
         context: ctx,
@@ -1036,7 +1043,8 @@ class Utils {
               ]),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
+                  //Changed from FlatButton
                   child: Row(
                     children: [
                       SvgPicture.asset(
@@ -1054,7 +1062,8 @@ class Utils {
                     Navigator.pop(context);
                     onPressed(context);
                   }),
-              FlatButton(
+              TextButton(
+                //Changed from FlatButton
                 child: Text(MyLocalizations.of(context, 'no_show_info')!),
                 onPressed: () {
                   Navigator.of(context).popUntil((r) => r.isFirst);
@@ -1128,10 +1137,10 @@ class Utils {
     }
   }
 
-  static getLanguage() {
-    if (ui.window != null && ui.window.locale != null) {
-      String stringLanguange = ui.window.locale.languageCode;
-      String? stringCountry = ui.window.locale.countryCode;
+  static ui.Locale getLanguage() {
+    if (ui.window.locale != null) {
+      var stringLanguange = ui.window.locale.languageCode;
+      var stringCountry = ui.window.locale.countryCode;
 
       if (stringLanguange == 'es' && stringCountry == 'ES' ||
           stringLanguange == 'ca' && stringCountry == 'ES' ||

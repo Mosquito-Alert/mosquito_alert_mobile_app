@@ -80,10 +80,10 @@ class VersionControl {
 
       final response = await http
           .post(Uri.parse('https://dribbot.drib.ba/api/public/v1/app/check'),
-          headers: headers,
-          body: json.encode({
-            'appKey': packageApiKey,
-          }))
+              headers: headers,
+              body: json.encode({
+                'appKey': packageApiKey,
+              }))
           .timeout(const Duration(seconds: 3));
 
       if (response.statusCode == 418) {
@@ -94,11 +94,11 @@ class VersionControl {
       }
 
       var result =
-      VersionData.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+          VersionData.fromJson(json.decode(utf8.decode(response.bodyBytes)));
       if (result == null) {
         return true;
       }
-      Version? v = processData(result);
+      var v = processData(result);
 
       if (v == null) {
         return true;
@@ -115,13 +115,13 @@ class VersionControl {
     CurrentVersionConfig? versionConfig;
 
     if (Platform.isIOS) {
-      for (CurrentVersionConfig v in data._currentVersionConfig!) {
+      for (var v in data._currentVersionConfig!) {
         if (v._platform == 'ios') {
           versionConfig = v;
         }
       }
     } else {
-      for (CurrentVersionConfig v in data._currentVersionConfig!) {
+      for (var v in data._currentVersionConfig!) {
         if (v._platform == 'android') {
           versionConfig = v;
         }
@@ -175,12 +175,12 @@ class VersionControl {
   Future<bool?> compare(Version version) async {
     var packageInfo = await PackageInfo.fromPlatform();
 
-    int currentVersion = int.parse(packageInfo.buildNumber);
+    var currentVersion = int.parse(packageInfo.buildNumber);
     if (currentVersion == null) {
       return true;
     }
 
-    int storeVersion = version.version!;
+    var storeVersion = version.version!;
     if (storeVersion > currentVersion &&
         version.comparisonMode != ComparisonMode.none) {
       return await (showAlertWith(
@@ -216,7 +216,8 @@ class VersionControl {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
+                //Changed from FlatButton
                 child: Text(okButtonTitle!),
                 onPressed: () async {
                   if (updateMode == ComparisonMode.soft) {
@@ -224,17 +225,18 @@ class VersionControl {
                     Navigator.of(context).pop(true);
                   } else {
                     await _launchURL(actionURL!);
-                    SystemNavigator.pop();
+                    await SystemNavigator.pop();
                   }
                 },
               ),
               updateMode == ComparisonMode.soft
-                  ? FlatButton(
+                  ? TextButton(
+                      //Changed from FlatButton
                       child: Text(cancelButtonTitle!),
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-              )
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                    )
                   : Container()
             ],
           );
@@ -243,71 +245,71 @@ class VersionControl {
     } else {
       return updateMode == ComparisonMode.soft
           ? showDialog(
-        barrierDismissible: false,
-        context: packageContext, //
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
+              barrierDismissible: false,
+              context: packageContext, //
+              builder: (BuildContext context) {
+                return CupertinoAlertDialog(
                   title: Text(title!),
-            content: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 4,
-                ),
-                Text(
+                  content: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
                         message!,
-                )
-              ],
-            ),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                isDefaultAction: true,
+                      )
+                    ],
+                  ),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      isDefaultAction: true,
                       child: Text(okButtonTitle!),
-                onPressed: () {
+                      onPressed: () {
                         _launchURL(actionURL!);
-                  Navigator.of(context).pop(true);
-                },
-              ),
-              CupertinoDialogAction(
-                isDefaultAction: true,
+                        Navigator.of(context).pop(true);
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      isDefaultAction: true,
                       child: Text(cancelButtonTitle!),
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-              )
-            ],
-          );
-        },
-      )
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                    )
+                  ],
+                );
+              },
+            )
           : showDialog(
-        barrierDismissible: false,
-        context: packageContext, //
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
+              barrierDismissible: false,
+              context: packageContext, //
+              builder: (BuildContext context) {
+                return CupertinoAlertDialog(
                   title: Text(title!),
-            content: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 4,
-                ),
-                Text(
+                  content: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
                         message!,
-                )
-              ],
-            ),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                isDefaultAction: true,
+                      )
+                    ],
+                  ),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      isDefaultAction: true,
                       child: Text(okButtonTitle!),
-                onPressed: () async {
+                      onPressed: () async {
                         await _launchURL(actionURL!);
-                  await Future.delayed(const Duration(seconds: 1), () {});
-                  exit(0);
-                },
-              ),
-            ],
-          );
-        },
-      );
+                        await Future.delayed(const Duration(seconds: 1), () {});
+                        exit(0);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
     }
   }
 
@@ -383,7 +385,7 @@ class VersionData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['id'] = _id;
     data['name'] = _name;
     if (_currentVersionConfig != null) {
@@ -470,8 +472,7 @@ class CurrentVersionConfig {
 
   CurrentVersionConfig.fromJson(Map<String, dynamic> json) {
     _title = json['title'] != null ? Title.fromJson(json['title']) : null;
-    _message =
-    json['message'] != null ? Title.fromJson(json['message']) : null;
+    _message = json['message'] != null ? Title.fromJson(json['message']) : null;
     _platform = json['platform'];
     _buildVersion = json['buildVersion'];
     _okButtonTitle = json['okButtonTitle'] != null
@@ -486,7 +487,7 @@ class CurrentVersionConfig {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final data = <String, dynamic>{};
     if (_title != null) {
       data['title'] = _title!.toJson();
     }
@@ -538,7 +539,7 @@ class Title {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final data = <String, dynamic>{};
     data['en'] = _en;
     data['es'] = _es;
     data['cat'] = _cat;

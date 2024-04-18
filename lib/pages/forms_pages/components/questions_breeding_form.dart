@@ -33,7 +33,7 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
       question_id: widget.displayQuestion['question']['id'],
     );
     if (Utils.report != null) {
-      int index = Utils.report!.responses!.indexWhere(
+      var index = Utils.report!.responses!.indexWhere(
           (q) => q!.question_id == widget.displayQuestion['question']['id']);
       if (index != -1) {
         question!.answer = Utils.report!.responses![index]!.answer;
@@ -48,7 +48,7 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
     return SafeArea(
       child: Stack(
         children: [
-          widget.bottomImage != null && widget.bottomImage.isNotEmpty
+          widget.bottomImage.isNotEmpty
               ? Container(
                   alignment: Alignment.bottomCenter,
                   child: Image.asset(

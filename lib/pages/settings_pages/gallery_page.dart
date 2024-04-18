@@ -126,9 +126,9 @@ class _GalleryPageState extends State<GalleryPage> {
   }
 
   List<Widget> renderListCustomTabs() {
-    List<Widget> tabs = [];
-    for (int i = 0; i < slides.length; i++) {
-      Slide currentSlide = slides[i];
+    var tabs = <Widget>[];
+    for (var i = 0; i < slides.length; i++) {
+      var currentSlide = slides[i];
       tabs.add(Container(
         width: double.infinity,
         height: double.infinity,
@@ -144,12 +144,12 @@ class _GalleryPageState extends State<GalleryPage> {
                 fit: BoxFit.contain,
               )),
               Container(
+                margin: EdgeInsets.all(20.0),
                 child: Text(
                   currentSlide.description!,
                   textAlign: TextAlign.center,
                   maxLines: 20,
                 ),
-                margin: EdgeInsets.all(20.0),
               ),
             ],
           ),

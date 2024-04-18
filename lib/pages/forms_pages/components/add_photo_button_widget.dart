@@ -43,7 +43,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
       Utils.imagePath!.forEach((element) async {
         if (element['id'] == Utils.report!.version_UUID) {
           if (element['image'].contains('http')) {
-            File file = await urlToFile(element['image']);
+            var file = await urlToFile(element['image']);
             images.add(file.path);
             element['image'] = file.path;
           } else {
@@ -59,13 +59,13 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
     // generate random number.
     var rng = Random();
     // get temporary directory of device.
-    Directory tempDir = await getTemporaryDirectory();
+    var tempDir = await getTemporaryDirectory();
     // get temporary path from temporary directory.
-    String tempPath = tempDir.path;
+    var tempPath = tempDir.path;
     // create a new file in temporary path with random file name.
-    File file = File('$tempPath' + (rng.nextInt(100)).toString() + '.png');
+    var file = File('$tempPath' + (rng.nextInt(100)).toString() + '.png');
     // call http.get method and pass imageUrl into it to get response.
-    http.Response response = await http.get(Uri.parse(imageUrl));
+    var response = await http.get(Uri.parse(imageUrl));
     // write bodyBytes received in response to file.
     await file.writeAsBytes(response.bodyBytes);
     // now return the file which is created with random name in
@@ -75,7 +75,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
 
   @override
   Widget build(BuildContext context) {
-    return images == null || images.isEmpty
+    return images.isEmpty
         ? GestureDetector(
             onTap: () {
               _chooseTypeImage();
@@ -179,7 +179,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
   }
 
   _chooseTypeImage() {
-    List<Widget> listForiOS = <Widget>[
+    var listForiOS = <Widget>[
       CupertinoActionSheetAction(
         onPressed: () {
           Navigator.pop(context);
@@ -205,7 +205,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
         ),
       ),
     ];
-    List<Widget> listForAndroid = <Widget>[
+    var listForAndroid = <Widget>[
       InkWell(
         onTap: () {
           if (Utils.report!.type == 'adult') {
@@ -263,10 +263,9 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
     var newFiles = await FilePicker.platform.pickFiles(
       type: FileType.image,
     );
-    List<String?> paths = [];
+    var paths = <String?>[];
 
     if (newFiles != null &&
-        newFiles.files != null &&
         newFiles.files.isNotEmpty) {
       newFiles.files.forEach((image) {
         Utils.saveImgPath(File(image.path!));
@@ -289,7 +288,7 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
     var image = await _picker.getImage(
         source: source, maxHeight: 1024, imageQuality: 60);
     if (image != null) {
-      final File file = File(image.path);
+      final file = File(image.path);
       Utils.saveImgPath(file);
       setState(() {
         images.add(image.path);

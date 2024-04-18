@@ -316,44 +316,44 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _openLanguagePickerDialog() => showDialog(
-        context: context,
-        builder: (context) => Theme(
-            data: Theme.of(context).copyWith(primaryColor: Style.colorPrimary),
-            child: LanguagePickerDialog(
-                languages: languageCodes.map(
-                  (language) => Language(
-                    language.isoCode,
-                    MyLocalizations.of(context, language.isoCode) ?? language.name
-                  )).toList()..sort(
-                          (a, b) => a.name.compareTo(b.name)
-                        ),
-                titlePadding: EdgeInsets.all(8.0),
-                searchCursorColor: Style.colorPrimary,
-                searchInputDecoration: InputDecoration(
-                    hintText: MyLocalizations.of(context, 'search_txt')),
-                isSearchable: true,
-                title:
-                    Text(MyLocalizations.of(context, 'select_language_txt')!),
-                onValuePicked: (Language language) => setState(() {
-                      var languageCodes = language.isoCode.split('_');
+    context: context,
+    builder: (context) => Theme(
+      data: Theme.of(context).copyWith(primaryColor: Style.colorPrimary),
+      child: LanguagePickerDialog(
+        languages: languageCodes.map(
+          (language) => Language(
+            language.isoCode,
+            MyLocalizations.of(context, language.isoCode) ?? language.name
+          )).toList()..sort(
+                  (a, b) => a.name.compareTo(b.name)
+                ),
+        titlePadding: EdgeInsets.all(8.0),
+        searchCursorColor: Style.colorPrimary,
+        searchInputDecoration: InputDecoration(
+            hintText: MyLocalizations.of(context, 'search_txt')),
+        isSearchable: true,
+        title:
+            Text(MyLocalizations.of(context, 'select_language_txt')!),
+        onValuePicked: (Language language) => setState(() {
+              var languageCodes = language.isoCode.split('_');
 
-                      Utils.language =
-                          Locale(languageCodes[0], languageCodes[1]);
-                      UserManager.setLanguage(languageCodes[0]);
-                      UserManager.setLanguageCountry(languageCodes[1]);
-                      application.onLocaleChanged(
-                          Locale(languageCodes[0], languageCodes[1]));
-                      PushNotificationsManager.subscribeToTopic(
-                          languageCodes[0]);
-                    }),
-                itemBuilder: (Language language) {
-                  return Row(
-                    children: <Widget>[
-                      Text(MyLocalizations.of(context, language.isoCode)!),
-                    ],
-                  );
-                })),
-      );
+              Utils.language =
+                  Locale(languageCodes[0], languageCodes[1]);
+              UserManager.setLanguage(languageCodes[0]);
+              UserManager.setLanguageCountry(languageCodes[1]);
+              application.onLocaleChanged(
+                  Locale(languageCodes[0], languageCodes[1]));
+              PushNotificationsManager.subscribeToTopic(
+                  languageCodes[0]);
+            }),
+        itemBuilder: (Language language) {
+          return Row(
+            children: <Widget>[
+              Text(MyLocalizations.of(context, language.isoCode)!),
+            ],
+          );
+        })),
+  );
 
   _manageHashtag() async {
     if (hashtag != null) {
