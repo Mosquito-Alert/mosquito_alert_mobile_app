@@ -121,10 +121,23 @@ class _SettingsPageState extends State<SettingsPage> {
                         size: 18,
                       ),
                       onTap: () {
-                        Clipboard.setData(ClipboardData(text: snapshot.data));
-                        key.currentState!.showSnackBar(SnackBar(
-                          content: Text('Copied to Clipboard'),
-                        ));
+                        final String? data = snapshot.data;
+                        if (data != null) {
+                          Clipboard.setData(ClipboardData(text: data));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Copied to Clipboard'),
+                            ),
+                          );
+                        } else {
+                          // Display an error message for troubleshooting
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  'Error: Unable to copy to clipboard. Data is null.'),
+                            ),
+                          );
+                        }
                       },
                     )
                   ],
