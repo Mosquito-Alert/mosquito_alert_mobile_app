@@ -56,7 +56,7 @@ class PushNotificationsManager {
     }
   }
 
-  static launchMessage(Map<String, dynamic> message) {
+  static void launchMessage(Map<String, dynamic> message) {
     String? title = '';
     String? msg = '';
     var notifId = '';
@@ -123,18 +123,18 @@ class PushNotificationsManager {
     }
   }
 
-  static openMessageScreen(Map<String, dynamic> message) {
+  static void openMessageScreen(Map<String, dynamic> message) {
     var notifId = '';
 
     if (Platform.isIOS) {
       try {
-        notifId = "${jsonDecode(message['notification_id'])}";
+        notifId = "${jsonDecode(message['id'])}";
       } catch (e) {
         print(e);
       }
     } else {
       try {
-        notifId = "${message['data']['notification_id']}";
+        notifId = "${message['id']}";
       } catch (e) {
         print(e);
       }
