@@ -17,10 +17,38 @@ class InfoPage extends StatefulWidget {
 }
 
 class _InfoPageState extends State<InfoPage> {
-  late WebViewController _controller;
   var title;
 
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
+
+  late WebViewController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (String url) {
+            loadingStream.add(true);
+          },
+          onPageFinished: (String url) {
+            loadingStream.add(false);
+          },
+          onWebResourceError: (WebResourceError error) {
+            print(error);
+          },
+        ),
+      );
+
+      if (widget.localHtml) {
+        _loadHtmlFromAssets();
+      } else {
+        _controller.loadRequest(Uri.parse(widget.url ?? 'https://www.mosquitoalert.com/'));
+      }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,23 +69,8 @@ class _InfoPageState extends State<InfoPage> {
             child: Stack(
               children: [
                 Builder(builder: (BuildContext context) {
-                  return WebView(
-                    initialUrl: widget.localHtml ? 'about:blank' : widget.url,
-                    javascriptMode: JavascriptMode.unrestricted,
-                    onWebViewCreated: (WebViewController webViewController) {
-                      _controller = webViewController;
-                      widget.localHtml ? _loadHtmlFromAssets() : null;
-                    },
-                    javascriptChannels: <JavascriptChannel>{
-                      _toasterJavascriptChannel(context),
-                    },
-                    onPageFinished: (String url) {
-                      loadingStream.add(false);
-                    },
-                    onPageStarted: (String url) {
-                      loadingStream.add(true);
-                    },
-                    gestureNavigationEnabled: true,
+                  return WebViewWidget(
+                    controller: _controller,
                   );
                 }),
                 StreamBuilder<bool>(
@@ -82,20 +95,20 @@ class _InfoPageState extends State<InfoPage> {
     );
   }
 
-  JavascriptChannel _toasterJavascriptChannel(BuildContext context) {
-    return JavascriptChannel(
-        name: 'Toaster',
-        onMessageReceived: (JavascriptMessage message) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message.message)),
-          );
-        });
-  }
-
   void _loadHtmlFromAssets() async {
+    loadingStream.add(true);
     var fileText = await rootBundle.loadString(widget.url!);
-    await _controller.loadUrl(Uri.dataFromString(fileText,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    try {
+      await _controller.loadRequest(
+        Uri.dataFromString(
+          fileText,
+          mimeType: 'text/html',
+          encoding: Encoding.getByName('utf-8')
+        )
+      );
+    } catch (e) {
+      print('Error loading local HTML: $e');
+    }
+    loadingStream.add(false);
   }
 }

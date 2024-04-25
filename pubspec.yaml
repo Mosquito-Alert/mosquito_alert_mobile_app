@@ -44,7 +44,7 @@ dependencies:
   app_tracking_transparency: ^2.0.4
 
   flutter_html: ^3.0.0-alpha.6
-  webview_flutter: ^2.8.0
+  webview_flutter: ^4.5.0
 
 dev_dependencies:
   pedantic: ^1.11.1 #Discontinued
