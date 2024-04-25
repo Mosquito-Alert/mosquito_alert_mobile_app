@@ -35,7 +35,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     _getData();
   }
 
-  _getData() async {
+  void _getData() async {
     List<MyNotification> response = await ApiSingleton().getNotifications();
 
     setState(() {

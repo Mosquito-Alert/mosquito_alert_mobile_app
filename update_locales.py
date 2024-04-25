@@ -5,6 +5,17 @@ import requests
 # Only language over that percentage of translation will be downloaded.
 MIN_PROGRESS_PERCENTAGE = 80
 
+# This list ensures certain languages are always included, even if their translation percentage
+# is below the MIN_PROGRESS_PERCENTAGE.
+# NOTE: fallback=auto will be used. Be sure to configure a custom fallback in localise.biz in
+#       case the fallback language is different than the source language.
+FORCE_LANGUAGES = ['es_UY']
+
+# Use fallback=auto for the following languages.
+# See: https://localise.biz/help/formats/exporting#fallback
+#      https://localise.biz/info/notices/20240212
+AUTO_FALLBACK = FORCE_LANGUAGES + ['eu_ES', 'ca_ES', 'gl_ES']
+
 def update_locales(api_key: str, path: Path, format: str) -> None:
 
     if not path.exists():
@@ -19,14 +30,21 @@ def update_locales(api_key: str, path: Path, format: str) -> None:
     for locale in locales:
         num_translated = locale['progress']['translated']
         num_untranslated = locale['progress']['untranslated']
-        if 100 * num_translated / (num_translated + num_untranslated) <= MIN_PROGRESS_PERCENTAGE:
-            continue
 
         locale_code = locale['code'].replace("-", "_")
+
+        is_poorly_translated = 100 * num_translated / (num_translated + num_untranslated) <= MIN_PROGRESS_PERCENTAGE
+        if is_poorly_translated and locale_code not in FORCE_LANGUAGES:
+            continue
+
         file_name = f"{locale_code}.{format}"
         file_path = path / file_name
 
-        response = session.get(f'https://localise.biz/api/export/locale/{file_name}')
+        params = {}
+        if locale_code in AUTO_FALLBACK:
+            params['fallback'] = 'auto'
+
+        response = session.get(f'https://localise.biz/api/export/locale/{file_name}', params=params)
 
         if response.status_code == 200:
             with open(file_path, 'wb') as f:

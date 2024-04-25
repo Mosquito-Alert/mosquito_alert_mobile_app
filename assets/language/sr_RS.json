@@ -238,7 +238,7 @@
     "question_16": "Gde se nalazi razvojno stanište?",
     "question_4_answer_43": "Napolju",
     "question_4_answer_44": "Ne znam",
-    "es_ES": "španski",
+    "es_ES": "Španski",
     "ca_ES": "katalonski",
     "en_US": "engleski",
     "search_txt": "Pretraga...",
@@ -327,5 +327,6 @@
     "single_breeding_site": "",
     "single_bite": "",
     "background_tracking_title": "Мониторинг у позадини",
-    "background_tracking_subtitle": "Поделите моју локацију анонимно да побољшам научну вредност мојих запажања. Више информација у одељку „Политика приватности“ испод."
+    "background_tracking_subtitle": "Поделите моју локацију анонимно да побољшам научну вредност мојих запажања. Више информација у одељку „Политика приватности“ испод.",
+    "es_UY": "Španski (Urugvaj)"
 }
