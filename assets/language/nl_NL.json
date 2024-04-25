@@ -325,5 +325,8 @@
     "bn_BD": "Bengalees",
     "single_mosquito": "Mug",
     "single_breeding_site": "",
-    "single_bite": ""
+    "single_bite": "",
+    "background_tracking_title": "Achtergrond volgen",
+    "background_tracking_subtitle": "Deel mijn locatie anoniem om de wetenschappelijke waarde van mijn observaties te verbeteren. Meer informatie vindt u in het gedeelte 'Privacybeleid' hieronder.",
+    "es_UY": "Spaans (Uruguay)"
 }

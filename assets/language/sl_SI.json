@@ -325,5 +325,8 @@
     "bn_BD": "Bengalščina",
     "single_mosquito": "komar",
     "single_breeding_site": "",
-    "single_bite": ""
+    "single_bite": "",
+    "background_tracking_title": "Sledenje v ozadju",
+    "background_tracking_subtitle": "Anonimno deli mojo lokacijo, da izboljšam znanstveno vrednost svojih opazovanj. Več informacij v spodnjem razdelku »Politika zasebnosti«.",
+    "es_UY": "Španščina (Urugvaj)"
 }

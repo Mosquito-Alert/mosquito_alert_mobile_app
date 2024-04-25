@@ -325,5 +325,8 @@
     "bn_BD": "Bengal",
     "single_mosquito": "Mushkonjë",
     "single_breeding_site": "Vend-rritje",
-    "single_bite": "Pickim"
+    "single_bite": "Pickim",
+    "background_tracking_title": "Gjurmimi i sfondit",
+    "background_tracking_subtitle": "Ndani në mënyrë anonime vendndodhjen time për të përmirësuar vlerën shkencore të vëzhgimeve të mia. Më shumë informacion në opsionin \"Politika e privatësisë\" më poshtë.",
+    "es_UY": "Spanjisht (Uruguai)"
 }

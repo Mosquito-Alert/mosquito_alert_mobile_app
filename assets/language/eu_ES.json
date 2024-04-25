@@ -324,6 +324,9 @@
     "sv_SE": "Suediera",
     "bn_BD": "Bengalera",
     "single_mosquito": "Eltxoa",
-    "single_breeding_site": "",
-    "single_bite": ""
+    "single_breeding_site": "Lugar de cría",
+    "single_bite": "Picadura",
+    "background_tracking_title": "Laginketa-esfortzua",
+    "background_tracking_subtitle": "Partekatu nire kokapena modu anonimoan nire behaketen balio zientifikoa hobetzeko. Informazio gehiago beheko 'Pribatutasun politika' atalean.",
+    "es_UY": "Gaztelania (Uruguai)"
 }
