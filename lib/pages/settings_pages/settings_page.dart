@@ -27,7 +27,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  late bool isBgTrackingEnabled;
+  bool isBgTrackingEnabled = false;
   String? hashtag;
   var packageInfo;
 
