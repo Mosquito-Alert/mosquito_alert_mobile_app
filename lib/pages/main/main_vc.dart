@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mosquito_alert_app/api/api.dart';
+import 'package:mosquito_alert_app/models/notification.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/breeding_report_page.dart';
@@ -32,11 +34,13 @@ class _MainVCState extends State<MainVC> {
   StreamController<String?> nameStream = StreamController<String?>.broadcast();
   String? userUuid;
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
+  int unreadNotifications = 0;
 
   @override
   void initState() {
     super.initState();
     initAuthStatus();
+    _getNotificationCount();
   }
 
   @override
@@ -79,6 +83,18 @@ class _MainVCState extends State<MainVC> {
     }
   }
 
+  void _getNotificationCount() async {
+    List<MyNotification> notifications = await ApiSingleton().getNotifications();
+    var unacknowledgedCount = notifications.where((notification) => notification.acknowledged == false).length;
+    updateNotificationCount(unacknowledgedCount);
+  }
+
+  void updateNotificationCount(int newCount) {
+    setState(() {
+      unreadNotifications = newCount;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -118,15 +134,20 @@ class _MainVCState extends State<MainVC> {
                     );
                   },
                 ),
-                IconButton(
-                  icon: Icon(Icons.notifications),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => NotificationsPage()),
-                    );
-                  },
+                badges.Badge(
+                  position: badges.BadgePosition.topEnd(top: 2, end: 2),
+                  showBadge: unreadNotifications > 0,
+                  badgeContent: Text('$unreadNotifications', style: TextStyle(color: Colors.white)),
+                  child: IconButton(
+                    padding: EdgeInsets.only(top: 6),
+                    icon: Icon(Icons.notifications, size: 32, ), 
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NotificationsPage(onNotificationUpdate: updateNotificationCount)),
+                      );
+                    },
+                  )
                 )
               ],
             ),

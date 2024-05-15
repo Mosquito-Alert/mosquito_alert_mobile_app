@@ -615,7 +615,7 @@ class ApiSingleton {
           list.map((i) => MyNotification.fromJson(i)).toList();
       return data;
     } catch (e) {
-      return false;
+      return [];
     }
   }
 

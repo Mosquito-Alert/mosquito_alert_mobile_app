@@ -17,8 +17,9 @@ import '../../utils/UserManager.dart';
 
 class NotificationsPage extends StatefulWidget {
   final String? notificationId;
+  final Function(int)? onNotificationUpdate;
 
-  const NotificationsPage({Key? key, this.notificationId}) : super(key: key);
+  const NotificationsPage({Key? key, this.notificationId, this.onNotificationUpdate}) : super(key: key);
 
   @override
   _NotificationsPageState createState() => _NotificationsPageState();
@@ -32,10 +33,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
   void initState() {
     super.initState();
     loadingStream.add(true);
-    _getData();
+    _getData().then((_) {
+      _updateUnreadNotificationCount();
+    });
   }
 
-  void _getData() async {
+  Future<void> _getData() async {
     List<MyNotification> response = await ApiSingleton().getNotifications();
 
     setState(() {
@@ -213,7 +216,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
         });
   }
 
-  _updateNotification(id) async {
+  Future<void> _updateNotification(id) async {
     var userId = await UserManager.getUUID();
     var res = await ApiSingleton().markNotificationAsRead(userId, id);
 
@@ -222,6 +225,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
       setState(() {
         notifications[index].acknowledged = true;
       });
+      _updateUnreadNotificationCount();
+    } 
+  }
+
+  void _updateUnreadNotificationCount(){
+    var unacknowledgedCount = notifications.where((notification) => notification.acknowledged == false).length;
+    if(widget.onNotificationUpdate != null) {
+      widget.onNotificationUpdate!(unacknowledgedCount);
     }
   }
 }
