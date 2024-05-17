@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:battery_plus/battery_plus.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:mosquito_alert_app/utils/UserManager.dart';
+import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'package:connectivity/connectivity.dart';
@@ -33,7 +31,18 @@ void main({String env = 'prod'}) async {
     isInDebugMode: false
   );
 
-  await Workmanager().registerPeriodicTask('backgroundTracking', 'backgroundTracking', frequency: Duration(hours: 4, minutes: 48));
+  // Start background tracking at midnight to ensure 5 random samples per day
+  var now = DateTime.now().toLocal();
+  var nextMidnight = DateTime(now.year, now.month, now.day + 1);
+  var timeUntilMidnight = nextMidnight.difference(now);
+
+  await Workmanager().registerPeriodicTask(
+    'scheduleDailyTasks',
+    'scheduleDailyTasks',
+    tag: 'scheduleDailyTasks',
+    frequency: Duration(days: 1),
+    initialDelay: timeUntilMidnight,
+  );
 
   runApp(MyApp());
 }
@@ -43,19 +52,12 @@ void callbackDispatcher() {
     await Firebase.initializeApp();
 
     switch (task) {
-      case 'backgroundTracking':
-        var permission = await Geolocator.checkPermission();
-        var isBgTrackingEnabled = await UserManager.getTracking();
-
-        if (permission == LocationPermission.always && isBgTrackingEnabled){
-          var position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-          var battery = Battery();
-          await ApiSingleton().sendFixes(position.latitude,
-                                         position.longitude,
-                                         DateTime.now().toUtc().toIso8601String(),
-                                         await battery.batteryLevel);
-          break;
-        }
+      case 'trackingTask':
+        await BackgroundTracking.trackingTask();
+        break;
+      case 'scheduleDailyTasks':
+        await BackgroundTracking.scheduleMultipleTrackingTask(5);
+        break;
     }
     return Future.value(true);
   });

@@ -18,6 +18,7 @@ import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:package_info/package_info.dart';
+import 'package:workmanager/workmanager.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage();
@@ -182,6 +183,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   setState(() {
                     isBgTrackingEnabled = trackingStatus;
                   });
+                  if (!isBgTrackingEnabled){
+                    await Workmanager().cancelByTag('trackingTask');
+                  }
                 },
               ),
             ),

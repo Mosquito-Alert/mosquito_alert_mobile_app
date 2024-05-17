@@ -34,7 +34,6 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def transistorsoftKey = properties.getProperty('transistorsoft.Key')
 def googlemapsKey = properties.getProperty('googlemaps.Key')
 
 android {
@@ -60,7 +59,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders = [
-            transistorsoftKey: transistorsoftKey, 
             googlemapsKey: googlemapsKey
             ]
     }

@@ -166,7 +166,7 @@ class UserManager {
   }
 
   static Future<bool> getTracking() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     return prefs.getBool('trackingEnabled') ?? false;
   }
 
