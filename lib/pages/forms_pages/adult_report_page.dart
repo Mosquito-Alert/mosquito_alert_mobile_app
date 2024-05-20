@@ -540,29 +540,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
             style: TextStyle(color: Colors.blue),
           ),
         ),
-        CupertinoActionSheetAction(
-          onPressed: () {
-            Navigator.pop(context);
-            setShowCamera(false);
-            Utils.imagePath = [];
-            var page = 2;
-            if (Utils.report!.responses!
-                .any((element) => element!.answer_id == 61)) {
-              page = 1;
-            }
-            setState(() {
-              index = _pagesController!.page! + page;
-            });
-            _pagesController!
-                .animateToPage(page,
-                    duration: Duration(microseconds: 300), curve: Curves.ease)
-                .then((value) => setValid(widget.editReport != null));
-          },
-          child: Text(
-            MyLocalizations.of(context, 'continue_without_photo')!,
-            style: TextStyle(color: Colors.blue),
-          ),
-        ),
       ];
       var listForAndroid = <Widget>[
         InkWell(
@@ -591,32 +568,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
           ),
         ),
         Divider(height: 1.0),
-        InkWell(
-          onTap: () {
-            Navigator.pop(context);
-            setShowCamera(false);
-            Utils.imagePath = [];
-            var page = 2;
-            if (Utils.report!.responses!
-                .any((element) => element!.answer_id == 61)) {
-              page = 1;
-            }
-
-            setState(() {
-              index = _pagesController!.page! + page;
-            });
-            _pagesController!
-                .animateToPage(page,
-                    duration: Duration(microseconds: 300), curve: Curves.ease)
-                .then((value) => setValid(widget.editReport != null));
-          },
-          child: Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(20),
-            child: Text(MyLocalizations.of(context, 'continue_without_photo')!,
-                style: TextStyle(color: Colors.blue, fontSize: 15)),
-          ),
-        ),
       ];
 
       Utils.modalDetailTrackingforPlatform(
@@ -627,8 +578,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
           context, () {
         Navigator.pop(context);
       },
-          title:
-              '${MyLocalizations.of(context, 'bs_info_adult_title_optional')}:');
+        title: '${MyLocalizations.of(context, 'photo_required_alert')}:');
     } else {
       _pagesController!
           .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
