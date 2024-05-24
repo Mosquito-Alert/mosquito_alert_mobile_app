@@ -195,15 +195,15 @@ class Utils {
     }
   }
 
-  static void deleteLastReport() {
+  static Future<void> deleteLastReport() async {
     report = null;
-    report = Report.fromJson(reportsList!.last!.toJson());
+    report = await Report.fromJsonAsync(reportsList!.last!.toJson());
     reportsList!.removeLast();
     print('${jsonEncode(reportsList)}');
     // print(reportsList);
   }
 
-  static setCurrentLocation(double latitude, double longitude) {
+  static void setCurrentLocation(double latitude, double longitude) {
     report!.location_choice = 'current';
     report!.selected_location_lat = null;
     report!.selected_location_lon = null;
@@ -211,7 +211,7 @@ class Utils {
     report!.current_location_lon = longitude;
   }
 
-  static setSelectedLocation(double? lat, lon) {
+  static void setSelectedLocation(double? lat, lon) {
     report!.location_choice = 'selected';
     report!.current_location_lat = null;
     report!.current_location_lon = null;
@@ -408,7 +408,7 @@ class Utils {
     if (savedReports != null && savedReports.isNotEmpty) {
       bool isCreated;
       for (var i = 0; i < savedReports.length; i++) {
-        var savedReport = Report.fromJson(json.decode(savedReports[i]));
+        var savedReport = await Report.fromJsonAsync(json.decode(savedReports[i]));
         isCreated = await ApiSingleton().createReport(savedReport) != null
             ? true
             : false;
@@ -1186,13 +1186,13 @@ class Utils {
         return reportType ?? '';
     }
 
-    return MyLocalizations.of(context, translationString) ?? reportType ?? '';
+    return MyLocalizations.of(context, translationString);
   }
     
-  static Future<String> getCityNameFromCoords(double lat, double lon) async {
+  static Future<String?> getCityNameFromCoords(double lat, double lon) async {
     var locale = await UserManager.getUserLocale();
     var placemarks = await placemarkFromCoordinates(lat, lon, localeIdentifier: locale);
-    if (placemarks.isEmpty) { return ''; }
-    return placemarks.first.locality ?? '';
+    if (placemarks.isEmpty) { return null; }
+    return placemarks.first.locality;
   }
 }

@@ -325,8 +325,14 @@
     "bn_BD": "Бенгалац",
     "single_mosquito": "Москуито",
     "single_breeding_site": "",
-    "single_bite": "",
+    "single_bite": "ујед комарца",
     "background_tracking_title": "Мониторинг у позадини",
     "background_tracking_subtitle": "Поделите моју локацију анонимно да побољшам научну вредност мојих запажања. Више информација у одељку „Политика приватности“ испод.",
-    "es_UY": "Španski (Urugvaj)"
+    "es_UY": "Španski (Urugvaj)",
+    "NSCameraUsageDescription": "Снимим и делим фотографије да бих пружио визуелне доказе у вашим извештајима.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Дозволите приступ локацији за анонимно гео-праћење у позадини ниске резолуције како бисте побољшали научну вредност ваших запажања.",
+    "NSLocationWhenInUseUsageDescription": "Користим ГПС за прецизно означавање локације у вашим извештајима.",
+    "NSPhotoLibraryAddUsageDescription": "сачувам фотографије снимљене апликацијом у галерију вашег уређаја.",
+    "NSPhotoLibraryUsageDescription": "Приступ вашој галерији фотографија да приложите постојеће слике вашим извештајима.",
+    "plural_bite": "ујед комарца"
 }

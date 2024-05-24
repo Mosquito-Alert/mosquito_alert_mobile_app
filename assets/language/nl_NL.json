@@ -325,8 +325,14 @@
     "bn_BD": "Bengalees",
     "single_mosquito": "Mug",
     "single_breeding_site": "",
-    "single_bite": "",
+    "single_bite": "Muggenbeet",
     "background_tracking_title": "Achtergrond volgen",
     "background_tracking_subtitle": "Deel mijn locatie anoniem om de wetenschappelijke waarde van mijn observaties te verbeteren. Meer informatie vindt u in het gedeelte 'Privacybeleid' hieronder.",
-    "es_UY": "Spaans (Uruguay)"
+    "es_UY": "Spaans (Uruguay)",
+    "NSCameraUsageDescription": "Foto's vastleggen en delen om visueel bewijs te leveren in je rapporten.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Locatietoegang toestaan voor anonieme en lage-resolutie achtergrond geo-tracking om de wetenschappelijke waarde van je waarnemingen te verbeteren.",
+    "NSLocationWhenInUseUsageDescription": "GPS gebruiken voor nauwkeurige locatietags in je rapporten.",
+    "NSPhotoLibraryAddUsageDescription": "Foto's die met de app zijn gemaakt op te slaan in de galerij van je apparaat.",
+    "NSPhotoLibraryUsageDescription": "Toegang tot je fotogalerij om bestaande afbeeldingen aan je rapporten toe te voegen.",
+    "plural_bite": "Muggenbeten"
 }

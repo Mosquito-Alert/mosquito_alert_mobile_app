@@ -325,8 +325,14 @@
     "bn_BD": "Bengali",
     "single_mosquito": "Mosquito",
     "single_breeding_site": "Criadouro",
-    "single_bite": "Picada",
+    "single_bite": "Picada de mosquito",
     "background_tracking_title": "Esforço de amostragem",
     "background_tracking_subtitle": "Compartilhe minha localização anonimamente para melhorar o valor científico de minhas observações. Mais informações na seção 'Política de Privacidade' abaixo.",
-    "es_UY": "Espanhol (Uruguai)"
+    "es_UY": "Espanhol (Uruguai)",
+    "NSCameraUsageDescription": "Capturar e partilhar fotografias para fornecer provas visuais nos suas observações.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Permitir o acesso à localização para o rastreio geográfico de fundo anónimo e de baixa resolução para melhorar o valor científico das suas observações.",
+    "NSLocationWhenInUseUsageDescription": "Utilizar o GPS para marcar a localização exacta nos suas observações.",
+    "NSPhotoLibraryAddUsageDescription": "Guardar fotografias tiradas com a aplicação na galeria do seu dispositivo.",
+    "NSPhotoLibraryUsageDescription": "Aceder à sua galeria de fotografias para anexar imagens existentes aos suas observações.",
+    "plural_bite": "Picada de mosquito"
 }

@@ -325,8 +325,14 @@
     "bn_BD": "Bengalesch",
     "single_mosquito": "Moustique",
     "single_breeding_site": "",
-    "single_bite": "",
+    "single_bite": "Moustiquenbitt",
     "background_tracking_title": "Hannergrond Tracking",
     "background_tracking_subtitle": "Deelt meng Positioun anonym fir de wëssenschaftleche Wäert vu menge Beobachtungen ze verbesseren. Méi Informatioun an der 'Privatsphär Politik' Sektioun hei ënnen.",
-    "es_UY": "Spuenesch (Uruguay)"
+    "es_UY": "Spuenesch (Uruguay)",
+    "NSCameraUsageDescription": "Fotoen opzehuelen an ze deelen fir visuell Beweiser an Äre Berichter ze bidden.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Erlaabt Locationzougang fir anonym an niddereg Opléisung Hannergrond Geo-Tracking fir de wëssenschaftleche Wäert vun Ären Observatiounen ze verbesseren.",
+    "NSLocationWhenInUseUsageDescription": "GPS ze benotzen fir präzis Location Tagging an Äre Berichter.",
+    "NSPhotoLibraryAddUsageDescription": "Fotoen, déi mat der App gemaach goufen, an d'Galerie vun Ärem Apparat ze späicheren.",
+    "NSPhotoLibraryUsageDescription": "Zougang zu Ärer Fotogalerie fir existent Biller op Är Berichter ze befestigen.",
+    "plural_bite": "Moustiquenbissen"
 }

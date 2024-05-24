@@ -325,8 +325,14 @@
     "bn_BD": "বাংলা",
     "single_mosquito": "মশা",
     "single_breeding_site": "",
-    "single_bite": "",
+    "single_bite": "কামড়",
     "background_tracking_title": "ব্যাকগ্রাউন্ড ট্র্যাকিং",
     "background_tracking_subtitle": "আমার পর্যবেক্ষণের বৈজ্ঞানিক মান উন্নত করতে বেনামে আমার অবস্থান শেয়ার করুন। নীচের 'গোপনীয়তা নীতি' বিভাগে আরও তথ্য।",
-    "es_UY": "স্প্যানিশ (উরুগুয়ে)"
+    "es_UY": "স্প্যানিশ (উরুগুয়ে)",
+    "NSCameraUsageDescription": "আপনার রিপোর্টে ভিজ্যুয়াল প্রমাণ দিতে ফটো ক্যাপচার এবং শেয়ার করুন।",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "আপনার পর্যবেক্ষণের বৈজ্ঞানিক মান উন্নত করতে বেনামী এবং কম-রেজোলিউশনের পটভূমি জিও-ট্র্যাকিংয়ের জন্য অবস্থান অ্যাক্সেসের অনুমতি দিন।",
+    "NSLocationWhenInUseUsageDescription": "আপনার রিপোর্টে সুনির্দিষ্ট অবস্থান ট্যাগ করার জন্য GPS ব্যবহার করুন।",
+    "NSPhotoLibraryAddUsageDescription": "অ্যাপ দিয়ে তোলা ফটোগুলি আপনার ডিভাইসের গ্যালারিতে সেভ করুন।",
+    "NSPhotoLibraryUsageDescription": "আপনার রিপোর্টে বিদ্যমান ছবি সংযুক্ত করতে আপনার ফটো গ্যালারি অ্যাক্সেস করুন।",
+    "plural_bite": "কামড়"
 }

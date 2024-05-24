@@ -325,8 +325,14 @@
     "bn_BD": "Bengáli",
     "single_mosquito": "Szúnyog",
     "single_breeding_site": "",
-    "single_bite": "",
+    "single_bite": "szúnyogcsípés",
     "background_tracking_title": "Háttérkövetést",
     "background_tracking_subtitle": "Megfigyeléseim tudományos értékének növelése érdekében névtelenül ossza meg tartózkodási helyemet. További információ az alábbi „Adatvédelmi szabályzat” részben.",
-    "es_UY": "Spanyol (Uruguay)"
+    "es_UY": "Spanyol (Uruguay)",
+    "NSCameraUsageDescription": "Fényképek rögzítése és megosztása a jelentések vizuális bizonyítékaként.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "A helymeghatározáshoz való hozzáférés lehetővé tétele anonim és alacsony felbontású háttér-földkövetéshez, hogy javítsa megfigyelései tudományos értékét.",
+    "NSLocationWhenInUseUsageDescription": "GPS használata a pontos helymegjelöléshez a jelentésekben.",
+    "NSPhotoLibraryAddUsageDescription": "Az alkalmazással készített fényképek mentése a készülék galériájába.",
+    "NSPhotoLibraryUsageDescription": "Hozzáférés a fotógalériához, hogy meglévő képeket csatolhasson a jelentésekhez.",
+    "plural_bite": "szúnyogcsípés"
 }

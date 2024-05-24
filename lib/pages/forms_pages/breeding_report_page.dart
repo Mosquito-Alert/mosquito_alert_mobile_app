@@ -77,13 +77,17 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   double index = 1.0;
   double displayContinue = 2;
 
+  void _initializeReport() async {
+    if (widget.editReport != null) {
+      toEditReport = await Report.fromJsonAsync(widget.editReport!.toJson());
+      Utils.setEditReport(toEditReport);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    if (widget.editReport != null) {
-      toEditReport = Report.fromJson(widget.editReport!.toJson());
-      Utils.setEditReport(toEditReport);
-    }
+    _initializeReport();
     _pagesController = PageController();
 
     _formsRepot = [

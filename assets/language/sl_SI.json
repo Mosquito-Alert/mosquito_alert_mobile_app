@@ -325,8 +325,14 @@
     "bn_BD": "Bengalščina",
     "single_mosquito": "komar",
     "single_breeding_site": "",
-    "single_bite": "",
+    "single_bite": "ugriz komarja",
     "background_tracking_title": "Sledenje v ozadju",
     "background_tracking_subtitle": "Anonimno deli mojo lokacijo, da izboljšam znanstveno vrednost svojih opazovanj. Več informacij v spodnjem razdelku »Politika zasebnosti«.",
-    "es_UY": "Španščina (Urugvaj)"
+    "es_UY": "Španščina (Urugvaj)",
+    "NSCameraUsageDescription": "Zajemanje in deljenje fotografij za zagotavljanje vizualnih dokazov v vaših poročilih.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Omogočiti dostop do lokacije za anonimno in nizkoresolucijsko zemljepisno sledenje v ozadju, da izboljšate znanstveno vrednost svojih opazovanj.",
+    "NSLocationWhenInUseUsageDescription": "Uporabljati GPS za natančno označevanje lokacije v poročilih.",
+    "NSPhotoLibraryAddUsageDescription": "Shranjevanje fotografij, posnetih z aplikacijo, v galerijo naprave.",
+    "NSPhotoLibraryUsageDescription": "Dostopajte do svoje galerije fotografij in priložite obstoječe slike svojim poročilom.",
+    "plural_bite": "ugriz komarja"
 }

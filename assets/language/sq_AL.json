@@ -328,5 +328,11 @@
     "single_bite": "Pickim",
     "background_tracking_title": "Gjurmimi i sfondit",
     "background_tracking_subtitle": "Ndani në mënyrë anonime vendndodhjen time për të përmirësuar vlerën shkencore të vëzhgimeve të mia. Më shumë informacion në opsionin \"Politika e privatësisë\" më poshtë.",
-    "es_UY": "Spanjisht (Uruguai)"
+    "es_UY": "Spanjisht (Uruguai)",
+    "NSCameraUsageDescription": "Të regjistroj dhe të ndaj fotografi për të siguruar prova vizuale në raportet tuaja.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Të lejojë aksesin e vendndodhjes për gjeo-ndjekjen e sfondit anonim dhe me rezolucion të ulët për të përmirësuar vlerën shkencore të vëzhgimeve tuaja.",
+    "NSLocationWhenInUseUsageDescription": "Të përdor GPS për etiketim të saktë të vendndodhjes në raportet tuaja.",
+    "NSPhotoLibraryAddUsageDescription": "Të ruaj fotot e marra me aplikacionin në galerinë e pajisjes suaj.",
+    "NSPhotoLibraryUsageDescription": "Të hyjë në galerinë tuaj të fotografive për të bashkëngjitur imazhet ekzistuese në raportet tuaja.",
+    "plural_bite": "Kafshime"
 }

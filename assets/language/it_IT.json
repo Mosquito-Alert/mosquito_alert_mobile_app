@@ -328,5 +328,11 @@
     "single_bite": "Puntura",
     "background_tracking_title": "Sforzo di campionamento",
     "background_tracking_subtitle": "Condividi la mia posizione in modo anonimo per migliorare il valore scientifico delle mie osservazioni. Maggiori informazioni nella sezione 'Informativa sulla privacy' di seguito.",
-    "es_UY": "Spagnolo (Uruguay)"
+    "es_UY": "Spagnolo (Uruguay)",
+    "NSCameraUsageDescription": "Catturare e condividere foto per fornire prove visive nei segnalazioni.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Consentire l'accesso alla posizione per il geo-tracking anonimo e a bassa risoluzione dello sfondo per migliorare il valore scientifico delle osservazioni.",
+    "NSLocationWhenInUseUsageDescription": "Usare il GPS per etichettare con precisione la posizione nei segnalazioni.",
+    "NSPhotoLibraryAddUsageDescription": "Salvare le foto scattate con l'applicazione nella galleria del dispositivo.",
+    "NSPhotoLibraryUsageDescription": "Accedere alla galleria fotografica per allegare le immagini esistenti ai segnalazioni.",
+    "plural_bite": "Puntura"
 }

@@ -328,5 +328,11 @@
     "single_bite": "Picadura",
     "background_tracking_title": "Esforzo de mostraxe",
     "background_tracking_subtitle": "Comparte a miña localización de forma anónima para mellorar o valor científico das miñas observacións. Máis información na sección \"Política de privacidade\" a continuación.",
-    "es_UY": "Español (Uruguai)"
+    "es_UY": "Español (Uruguai)",
+    "NSCameraUsageDescription": "Capturar e compartir fotos para proporcionar probas visuais nos teus informes.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Permitir o acceso á localización para o xeoseguimento anónimo e de baixa resolución en segundo plano para mellorar o valor científico das túas observacións.",
+    "NSLocationWhenInUseUsageDescription": "Usar o GPS para marcar a localización precisa nos teus informes.",
+    "NSPhotoLibraryAddUsageDescription": "Gardar fotos feitas coa aplicación na galería do teu dispositivo.",
+    "NSPhotoLibraryUsageDescription": "Acceder á túa galería de fotos para anexar imaxes existentes aos teus informes.",
+    "plural_bite": "Picaduras"
 }

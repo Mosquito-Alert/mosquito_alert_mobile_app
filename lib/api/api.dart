@@ -392,7 +392,7 @@ class ApiSingleton {
       }
 
       var jsonAnswer = json.decode(response.body);
-      var newReport = Report.fromJson(jsonAnswer);
+      var newReport = await Report.fromJsonAsync(jsonAnswer);
 
       await PushNotificationsManager.subscribeToReportResult(newReport);
 
@@ -450,7 +450,7 @@ class ApiSingleton {
         List<dynamic> jsonAnswer = json.decode(response.body);
         var list = <Report>[];
         for (var item in jsonAnswer) {
-          list.add(Report.fromJson(item));          
+          list.add(await Report.fromJsonAsync(item));          
         }
         return list;
       }
