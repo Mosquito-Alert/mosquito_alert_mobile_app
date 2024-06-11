@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "Të përdor GPS për etiketim të saktë të vendndodhjes në raportet tuaja.",
     "NSPhotoLibraryAddUsageDescription": "Të ruaj fotot e marra me aplikacionin në galerinë e pajisjes suaj.",
     "NSPhotoLibraryUsageDescription": "Të hyjë në galerinë tuaj të fotografive për të bashkëngjitur imazhet ekzistuese në raportet tuaja.",
-    "plural_bite": "Kafshime"
+    "plural_bite": "Kafshime",
+    "non_identified_specie": "Lloje e paidentifikuar"
 }

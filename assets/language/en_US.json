@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "Use GPS for precise location tagging in your reports.",
     "NSPhotoLibraryAddUsageDescription": "Save photos taken with the app to your device's gallery.",
     "NSPhotoLibraryUsageDescription": "Access your photo gallery to attach existing images to your reports.",
-    "plural_bite": "Bites"
+    "plural_bite": "Bites",
+    "non_identified_specie": "Non identified specie"
 }

@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "да използвам GPS за точно маркиране на местоположението в отчетите си.",
     "NSPhotoLibraryAddUsageDescription": "да запазвам снимки, направени с приложението, в галерията на устройството си.",
     "NSPhotoLibraryUsageDescription": "Достъп до вашата фотогалерия, за да прикача съществуващи изображения към вашите отчети.",
-    "plural_bite": "ухапвания"
+    "plural_bite": "ухапвания",
+    "non_identified_specie": "Неидентифициран вид"
 }

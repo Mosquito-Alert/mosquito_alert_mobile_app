@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "Utiliser le GPS pour marquer des lieux précis dans vos signalements.",
     "NSPhotoLibraryAddUsageDescription": "Enregistrer les photos prises avec l'application dans la galerie de votre appareil.",
     "NSPhotoLibraryUsageDescription": "Accéder à votre galerie de photos pour joindre des images existantes à vos signalements.",
-    "plural_bite": "Piqûres"
+    "plural_bite": "Piqûres",
+    "non_identified_specie": "Espèce non identifiée"
 }

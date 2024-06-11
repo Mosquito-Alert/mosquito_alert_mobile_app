@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "Använda GPS för exakt platsmärkning i dina rapporter.",
     "NSPhotoLibraryAddUsageDescription": "Spara foton som tagits med appen i enhetens galleri.",
     "NSPhotoLibraryUsageDescription": "Få tillgång till ditt fotogalleri för att bifoga befintliga bilder till dina rapporter.",
-    "plural_bite": "myggbett"
+    "plural_bite": "myggbett",
+    "non_identified_specie": "Ej identifierad art"
 }

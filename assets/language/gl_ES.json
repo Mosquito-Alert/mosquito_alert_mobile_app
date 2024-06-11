@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "Usar o GPS para marcar a localización precisa nos teus informes.",
     "NSPhotoLibraryAddUsageDescription": "Gardar fotos feitas coa aplicación na galería do teu dispositivo.",
     "NSPhotoLibraryUsageDescription": "Acceder á túa galería de fotos para anexar imaxes existentes aos teus informes.",
-    "plural_bite": "Picaduras"
+    "plural_bite": "Picaduras",
+    "non_identified_specie": "Especie non identificada"
 }

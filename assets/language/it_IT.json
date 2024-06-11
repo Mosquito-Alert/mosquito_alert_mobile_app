@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "Usare il GPS per etichettare con precisione la posizione nei segnalazioni.",
     "NSPhotoLibraryAddUsageDescription": "Salvare le foto scattate con l'applicazione nella galleria del dispositivo.",
     "NSPhotoLibraryUsageDescription": "Accedere alla galleria fotografica per allegare le immagini esistenti ai segnalazioni.",
-    "plural_bite": "Puntura"
+    "plural_bite": "Puntura",
+    "non_identified_specie": "Specie non identificata"
 }

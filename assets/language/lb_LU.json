@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "GPS ze benotzen fir präzis Location Tagging an Äre Berichter.",
     "NSPhotoLibraryAddUsageDescription": "Fotoen, déi mat der App gemaach goufen, an d'Galerie vun Ärem Apparat ze späicheren.",
     "NSPhotoLibraryUsageDescription": "Zougang zu Ärer Fotogalerie fir existent Biller op Är Berichter ze befestigen.",
-    "plural_bite": "Moustiquenbissen"
+    "plural_bite": "Moustiquenbissen",
+    "non_identified_specie": "Net identifizéiert Spezies"
 }

@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "Uporabljati GPS za natančno označevanje lokacije v poročilih.",
     "NSPhotoLibraryAddUsageDescription": "Shranjevanje fotografij, posnetih z aplikacijo, v galerijo naprave.",
     "NSPhotoLibraryUsageDescription": "Dostopajte do svoje galerije fotografij in priložite obstoječe slike svojim poročilom.",
-    "plural_bite": "ugriz komarja"
+    "plural_bite": "ugriz komarja",
+    "non_identified_specie": "Neidentificirana vrsta"
 }

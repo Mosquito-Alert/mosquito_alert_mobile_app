@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "Χρήση GPS για ακριβή επισήμανση της τοποθεσίας στις αναφορές σας.",
     "NSPhotoLibraryAddUsageDescription": "Αποθήκευση φωτογραφιών που τραβήχτηκαν με την εφαρμογή στη γκαλερί της συσκευής σας.",
     "NSPhotoLibraryUsageDescription": "Πρόσβαση στη συλλογή φωτογραφιών σας για να επισυνάψετε υπάρχουσες εικόνες στις αναφορές σας.",
-    "plural_bite": "τσίμπημα κουνουπιών"
+    "plural_bite": "τσίμπημα κουνουπιών",
+    "non_identified_specie": "Μη αναγνωρισμένο είδος"
 }

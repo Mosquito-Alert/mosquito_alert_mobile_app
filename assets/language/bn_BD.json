@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "আপনার রিপোর্টে সুনির্দিষ্ট অবস্থান ট্যাগ করার জন্য GPS ব্যবহার করুন।",
     "NSPhotoLibraryAddUsageDescription": "অ্যাপ দিয়ে তোলা ফটোগুলি আপনার ডিভাইসের গ্যালারিতে সেভ করুন।",
     "NSPhotoLibraryUsageDescription": "আপনার রিপোর্টে বিদ্যমান ছবি সংযুক্ত করতে আপনার ফটো গ্যালারি অ্যাক্সেস করুন।",
-    "plural_bite": "কামড়"
+    "plural_bite": "কামড়",
+    "non_identified_specie": "অ-শনাক্ত প্রজাতি"
 }

@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "Utilizați GPS pentru a marca cu precizie locația în rapoartele dvs.",
     "NSPhotoLibraryAddUsageDescription": "Să salvați fotografiile realizate cu aplicația în galeria dispozitivului dumneavoastră.",
     "NSPhotoLibraryUsageDescription": "Să accesez galeria dvs. foto pentru a atașa imagini existente la rapoarte.",
-    "plural_bite": "mușcături de țânțar"
+    "plural_bite": "mușcături de țânțar",
+    "non_identified_specie": "Specie neidentificată"
 }

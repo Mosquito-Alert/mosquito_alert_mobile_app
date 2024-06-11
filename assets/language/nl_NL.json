@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "GPS gebruiken voor nauwkeurige locatietags in je rapporten.",
     "NSPhotoLibraryAddUsageDescription": "Foto's die met de app zijn gemaakt op te slaan in de galerij van je apparaat.",
     "NSPhotoLibraryUsageDescription": "Toegang tot je fotogalerij om bestaande afbeeldingen aan je rapporten toe te voegen.",
-    "plural_bite": "Muggenbeten"
+    "plural_bite": "Muggenbeten",
+    "non_identified_specie": "Niet geïdentificeerde soort"
 }

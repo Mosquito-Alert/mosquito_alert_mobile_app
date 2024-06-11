@@ -40,11 +40,11 @@ class _MyReportsListState extends State<ReportsList> {
           (element) => element!.question == 'question_6');
 
         if (response_question_6 == null){
-          return 'Non identified';
+          return MyLocalizations.of(context, 'non_identified_specie');
         }
 
         if (response_question_6.answer == 'question_6_answer_64'){
-          return 'Non identified';
+          return MyLocalizations.of(context, 'non_identified_specie');
         }
 
         var translated_answer = MyLocalizations.of(context, response_question_6.answer);

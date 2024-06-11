@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "Raporlarınızda hassas konum etiketlemesi için GPS kullanın.",
     "NSPhotoLibraryAddUsageDescription": "Uygulama ile çekilen fotoğrafları cihazınızın galerisine kaydedin.",
     "NSPhotoLibraryUsageDescription": "Mevcut görüntüleri raporlarınıza eklemek için fotoğraf galerinize erişin.",
-    "plural_bite": "sivrisinek ısırığı"
+    "plural_bite": "sivrisinek ısırığı",
+    "non_identified_specie": "Tanımlanamayan tür"
 }

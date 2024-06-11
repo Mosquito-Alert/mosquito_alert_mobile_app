@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "Користим ГПС за прецизно означавање локације у вашим извештајима.",
     "NSPhotoLibraryAddUsageDescription": "сачувам фотографије снимљене апликацијом у галерију вашег уређаја.",
     "NSPhotoLibraryUsageDescription": "Приступ вашој галерији фотографија да приложите постојеће слике вашим извештајима.",
-    "plural_bite": "ујед комарца"
+    "plural_bite": "ујед комарца",
+    "non_identified_specie": "Неидентификована врста"
 }

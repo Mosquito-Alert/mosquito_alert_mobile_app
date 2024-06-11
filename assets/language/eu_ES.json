@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "GPSa erabiltzea zure txostenetan kokapen zehatza etiketatzeko.",
     "NSPhotoLibraryAddUsageDescription": "Aplikazioarekin ateratako argazkiak zure gailuaren galerian gordetzeko.",
     "NSPhotoLibraryUsageDescription": "Sartu zure argazki galeria zure txostenetan dauden irudiak eransteko.",
-    "plural_bite": "eltxo ziztada"
+    "plural_bite": "eltxo ziztada",
+    "non_identified_specie": "Identifikatu gabeko espeziea"
 }

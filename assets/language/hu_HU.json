@@ -334,5 +334,6 @@
     "NSLocationWhenInUseUsageDescription": "GPS használata a pontos helymegjelöléshez a jelentésekben.",
     "NSPhotoLibraryAddUsageDescription": "Az alkalmazással készített fényképek mentése a készülék galériájába.",
     "NSPhotoLibraryUsageDescription": "Hozzáférés a fotógalériához, hogy meglévő képeket csatolhasson a jelentésekhez.",
-    "plural_bite": "szúnyogcsípés"
+    "plural_bite": "szúnyogcsípés",
+    "non_identified_specie": "Nem azonosított faj"
 }
