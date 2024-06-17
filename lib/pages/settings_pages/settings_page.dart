@@ -2,15 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:language_picker/language_picker.dart';
 
 import 'package:language_picker/languages.dart';
-import 'package:mosquito_alert_app/pages/info_pages/info_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/settings_menu_widget.dart';
-import 'package:mosquito_alert_app/pages/settings_pages/gallery_page.dart';
-import 'package:mosquito_alert_app/pages/settings_pages/partners_page.dart';
-import 'package:mosquito_alert_app/pages/settings_pages/tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/Application.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
@@ -89,65 +84,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Scaffold(
       key: key,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Style.title(MyLocalizations.of(context, 'settings_title'),
-            fontSize: 16),
-      ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(15),
           child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-                  Widget>[
-            SizedBox(
-              height: 12,
-            ),
-            FutureBuilder(
-              future: UserManager.getUUID(),
-              builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-                return Row(
-                  children: [
-                    Style.body('ID'),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Expanded(
-                        child: Style.bodySmall(snapshot.data,
-                            color: Colors.black.withOpacity(0.7))),
-                    GestureDetector(
-                      child: Icon(
-                        Icons.copy_rounded,
-                        size: 18,
-                      ),
-                      onTap: () {
-                        final String? data = snapshot.data;
-                        if (data != null) {
-                          Clipboard.setData(ClipboardData(text: data));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Copied to Clipboard'),
-                            ),
-                          );
-                        } else {
-                          // Display an error message for troubleshooting
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  'Error: Unable to copy to clipboard. Data is null.'),
-                            ),
-                          );
-                        }
-                      },
-                    )
-                  ],
-                );
-              },
-            ),
-            SizedBox(
-              height: 12,
-            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
             SizedBox(
               height: 10,
             ),
@@ -166,11 +109,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 border: Border.all(color: Colors.black.withOpacity(0.1))
               ),
               child: SwitchListTile(
-                title: Style.body(MyLocalizations.of(context, 'background_tracking_title') ?? ''),
+                title: Style.body(MyLocalizations.of(context, 'background_tracking_title')),
                 subtitle: Padding(
-                  padding: EdgeInsets.only(top: 8.0), // Adjust the padding as needed
+                  padding: EdgeInsets.only(top: 8.0),
                   child: Text(
-                    MyLocalizations.of(context, 'background_tracking_subtitle') ?? '',
+                    MyLocalizations.of(context, 'background_tracking_subtitle'),
                     style: TextStyle(fontSize: 11),
                   ),
                 ),
@@ -200,129 +143,6 @@ class _SettingsPageState extends State<SettingsPage> {
             SizedBox(
               height: 35,
             ),
-            SettingsMenuWidget(
-                MyLocalizations.of(context, 'mosquitos_gallery_txt'), () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => GalleryPage()),
-              );
-            }),
-            SizedBox(
-              height: 10,
-            ),
-            SettingsMenuWidget(MyLocalizations.of(context, 'tutorial_txt'), () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TutorialPage(true)),
-              );
-            }),
-            SizedBox(
-              height: 10,
-            ),
-            SettingsMenuWidget(MyLocalizations.of(context, 'info_scores_txt'),
-                () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        InfoPage(MyLocalizations.of(context, 'url_scoring_1'))),
-              );
-            }),
-            SizedBox(
-              height: 10,
-            ),
-            SettingsMenuWidget(
-                MyLocalizations.of(context, 'about_the_project_txt'), () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => InfoPage(
-                        MyLocalizations.of(context, 'url_about_project'))),
-              );
-            }),
-            SizedBox(
-              height: 10,
-            ),
-            SettingsMenuWidget(MyLocalizations.of(context, 'coordination_txt'),
-                () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        InfoPage(MyLocalizations.of(context, 'url_about_us'))),
-              );
-            }),
-            SizedBox(
-              height: 10,
-            ),
-            SettingsMenuWidget(MyLocalizations.of(context, 'partners_txt'), () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PartnersPage()),
-              );
-            }),
-            SizedBox(
-              height: 30,
-            ),
-            SettingsMenuWidget(MyLocalizations.of(context, 'terms_of_use_txt'),
-                () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => InfoPage(
-                          MyLocalizations.of(context, 'terms_link'),
-                          localHtml: true,
-                        )),
-              );
-            }),
-            SizedBox(
-              height: 10,
-            ),
-            SettingsMenuWidget(MyLocalizations.of(context, 'privacy_txt'), () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => InfoPage(
-                          MyLocalizations.of(context, 'privacy_link'),
-                          localHtml: true,
-                        )),
-              );
-            }),
-            SizedBox(
-              height: 10,
-            ),
-            SettingsMenuWidget(MyLocalizations.of(context, 'license_txt'), () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => InfoPage(
-                          MyLocalizations.of(context, 'lisence_link'),
-                          localHtml: true,
-                        )),
-              );
-            }),
-            SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              height: 60,
-            ),
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Style.title(MyLocalizations.of(context, 'app_name'),
-                      fontSize: 8, textAlign: TextAlign.center),
-                  Style.bodySmall(
-                      packageInfo != null
-                          ? '${packageInfo.version} (build ${packageInfo.buildNumber})'
-                          : '',
-                      fontSize: 8,
-                      textAlign: TextAlign.center),
-                ],
-              ),
-            ),
             SizedBox(
               height: 60,
             ),
@@ -340,7 +160,7 @@ class _SettingsPageState extends State<SettingsPage> {
         languages: languageCodes.map(
           (language) => Language(
             language.isoCode,
-            MyLocalizations.of(context, language.isoCode) ?? language.name
+            MyLocalizations.of(context, language.isoCode)
           )).toList()..sort(
                   (a, b) => a.name.compareTo(b.name)
                 ),
@@ -499,7 +319,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                 ),
                 TextButton(
-                  child: Text(MyLocalizations.of(context, 'save')!),
+                  child: Text(MyLocalizations.of(context, 'save')),
                   onPressed: () {
                     Navigator.of(context).pop(controller.text);
                   },
