@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:mosquito_alert_app/pages/info_pages/info_page.dart';
+import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -109,7 +109,7 @@ class _ConsentFormState extends State<ConsentForm> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        InfoPage(
+                                                        InfoPageInWebview(
                                                           MyLocalizations.of(
                                                               context,
                                                               'terms_link'),
@@ -154,7 +154,7 @@ class _ConsentFormState extends State<ConsentForm> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      InfoPage(
+                                                      InfoPageInWebview(
                                                         MyLocalizations.of(
                                                             context,
                                                             'privacy_link'),
@@ -190,7 +190,7 @@ class _ConsentFormState extends State<ConsentForm> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => InfoPage(
+                                            builder: (context) => InfoPageInWebview(
                                                   MyLocalizations.of(
                                                       context, 'url_about_us'),
                                                   localHtml: false,
@@ -222,7 +222,7 @@ class _ConsentFormState extends State<ConsentForm> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => InfoPage(
+                                            builder: (context) => InfoPageInWebview(
                                                   MyLocalizations.of(
                                                       context, 'lisence_link'),
                                                   localHtml: true,

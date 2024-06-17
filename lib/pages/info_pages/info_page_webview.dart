@@ -6,17 +6,17 @@ import 'package:flutter/services.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class InfoPage extends StatefulWidget {
+class InfoPageInWebview extends StatefulWidget {
   final String? url;
   final bool localHtml;
 
-  InfoPage(this.url, {this.localHtml = false});
+  InfoPageInWebview(this.url, {this.localHtml = false});
 
   @override
-  _InfoPageState createState() => _InfoPageState();
+  _InfoPageInWebviewState createState() => _InfoPageInWebviewState();
 }
 
-class _InfoPageState extends State<InfoPage> {
+class _InfoPageInWebviewState extends State<InfoPageInWebview> {
   var title;
 
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();

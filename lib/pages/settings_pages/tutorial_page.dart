@@ -178,20 +178,6 @@ class _TutorialPageState extends State<TutorialPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Style.title(MyLocalizations.of(context, 'tutorial_txt'),
-            fontSize: 16),
-        leading: widget.goBack
-            ? IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              )
-            : Container(),
-      ),
       body: IntroSlider(
         slides: initSlides(),
         showSkipBtn: false,
