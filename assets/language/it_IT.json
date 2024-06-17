@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Salvare le foto scattate con l'applicazione nella galleria del dispositivo.",
     "NSPhotoLibraryUsageDescription": "Accedere alla galleria fotografica per allegare le immagini esistenti ai segnalazioni.",
     "plural_bite": "Puntura",
-    "non_identified_specie": "Specie non identificata"
+    "non_identified_specie": "Specie non identificata",
+    "home_tab": "Home",
+    "copied_to_clipboard_success": "Copiato negli appunti.",
+    "copied_to_clipboard_error": "Errore: impossibile copiare negli appunti. I dati sono nulli.",
+    "public_map_tab": "Mappa pubblica",
+    "guide_tab": "Guida",
+    "info_tab": "Informazioni"
 }

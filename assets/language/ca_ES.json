@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Desar les fotos fetes amb l'aplicació a la galeria del dispositiu.",
     "NSPhotoLibraryUsageDescription": "Accedir a la teva galeria de fotos per adjuntar imatges existents als teus informes.",
     "plural_bite": "Picades",
-    "non_identified_specie": "Espècie no identificada"
+    "non_identified_specie": "Espècie no identificada",
+    "home_tab": "Inici",
+    "copied_to_clipboard_success": "S'ha copiat al porta-retalls.",
+    "copied_to_clipboard_error": "Error: no es pot copiar al porta-retalls. Les dades són nul·les.",
+    "public_map_tab": "Mapa públic",
+    "guide_tab": "Guia",
+    "info_tab": "Informació"
 }

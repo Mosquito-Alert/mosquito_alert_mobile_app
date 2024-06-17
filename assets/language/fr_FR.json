@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Enregistrer les photos prises avec l'application dans la galerie de votre appareil.",
     "NSPhotoLibraryUsageDescription": "Accéder à votre galerie de photos pour joindre des images existantes à vos signalements.",
     "plural_bite": "Piqûres",
-    "non_identified_specie": "Espèce non identifiée"
+    "non_identified_specie": "Espèce non identifiée",
+    "home_tab": "Accueil",
+    "copied_to_clipboard_success": "Copié dans le presse-papier.",
+    "copied_to_clipboard_error": "Erreur : Impossible de copier dans le presse-papiers. Les données sont nulles.",
+    "public_map_tab": "Carte publique",
+    "guide_tab": "Guide",
+    "info_tab": "Info"
 }

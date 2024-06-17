@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Të ruaj fotot e marra me aplikacionin në galerinë e pajisjes suaj.",
     "NSPhotoLibraryUsageDescription": "Të hyjë në galerinë tuaj të fotografive për të bashkëngjitur imazhet ekzistuese në raportet tuaja.",
     "plural_bite": "Kafshime",
-    "non_identified_specie": "Lloje e paidentifikuar"
+    "non_identified_specie": "Lloje e paidentifikuar",
+    "home_tab": "Home",
+    "copied_to_clipboard_success": "Kopjuar në kujtesën e fragmenteve.",
+    "copied_to_clipboard_error": "Gabim: Nuk mund të kopjohet në kujtesën e fragmenteve. Të dhënat janë nule.",
+    "public_map_tab": "Hartë publike",
+    "guide_tab": "Udhëzues",
+    "info_tab": "Info"
 }

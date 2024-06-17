@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Să salvați fotografiile realizate cu aplicația în galeria dispozitivului dumneavoastră.",
     "NSPhotoLibraryUsageDescription": "Să accesez galeria dvs. foto pentru a atașa imagini existente la rapoarte.",
     "plural_bite": "mușcături de țânțar",
-    "non_identified_specie": "Specie neidentificată"
+    "non_identified_specie": "Specie neidentificată",
+    "home_tab": "Acasă",
+    "copied_to_clipboard_success": "Copiat în clipboard.",
+    "copied_to_clipboard_error": "Eroare: nu se poate copia în clipboard. Datele sunt nule.",
+    "public_map_tab": "Hartă publică",
+    "guide_tab": "Ghid",
+    "info_tab": "Informații"
 }

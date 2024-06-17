@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Shranjevanje fotografij, posnetih z aplikacijo, v galerijo naprave.",
     "NSPhotoLibraryUsageDescription": "Dostopajte do svoje galerije fotografij in priložite obstoječe slike svojim poročilom.",
     "plural_bite": "ugriz komarja",
-    "non_identified_specie": "Neidentificirana vrsta"
+    "non_identified_specie": "Neidentificirana vrsta",
+    "home_tab": "Domov",
+    "copied_to_clipboard_success": "Kopirano v odložišče.",
+    "copied_to_clipboard_error": "Napaka: ni mogoče kopirati v odložišče. Podatki so nični.",
+    "public_map_tab": "Javni zemljevid",
+    "guide_tab": "Vodnik",
+    "info_tab": "Informacije"
 }

@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Guardar fotografias tiradas com a aplicação na galeria do seu dispositivo.",
     "NSPhotoLibraryUsageDescription": "Aceder à sua galeria de fotografias para anexar imagens existentes aos suas observações.",
     "plural_bite": "Picada de mosquito",
-    "non_identified_specie": "Espécie não identificada"
+    "non_identified_specie": "Espécie não identificada",
+    "home_tab": "Home",
+    "copied_to_clipboard_success": "Copiado para a área de transferência.",
+    "copied_to_clipboard_error": "Erro: não é possível copiar para a área de transferência. Os dados são nulos.",
+    "public_map_tab": "Mapa público",
+    "guide_tab": "Guia",
+    "info_tab": "Info"
 }

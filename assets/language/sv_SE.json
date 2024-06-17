@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Spara foton som tagits med appen i enhetens galleri.",
     "NSPhotoLibraryUsageDescription": "Få tillgång till ditt fotogalleri för att bifoga befintliga bilder till dina rapporter.",
     "plural_bite": "myggbett",
-    "non_identified_specie": "Ej identifierad art"
+    "non_identified_specie": "Ej identifierad art",
+    "home_tab": "Hem",
+    "copied_to_clipboard_success": "Kopierade till urklipp.",
+    "copied_to_clipboard_error": "Fel: Det gick inte att kopiera till urklipp. Data är null.",
+    "public_map_tab": "Offentlig karta",
+    "guide_tab": "Guide",
+    "info_tab": "Info"
 }

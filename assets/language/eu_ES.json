@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Aplikazioarekin ateratako argazkiak zure gailuaren galerian gordetzeko.",
     "NSPhotoLibraryUsageDescription": "Sartu zure argazki galeria zure txostenetan dauden irudiak eransteko.",
     "plural_bite": "eltxo ziztada",
-    "non_identified_specie": "Identifikatu gabeko espeziea"
+    "non_identified_specie": "Identifikatu gabeko espeziea",
+    "home_tab": "Hasiera",
+    "copied_to_clipboard_success": "Arbelean kopiatu da.",
+    "copied_to_clipboard_error": "Errorea: ezin da kopiatu arbelean. Datuak nuluak dira.",
+    "public_map_tab": "Mapa publikoa",
+    "guide_tab": "Gida",
+    "info_tab": "Informazioa"
 }

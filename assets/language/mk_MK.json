@@ -327,5 +327,11 @@
     "single_breeding_site": "Едно хранилиште",
     "single_bite": " хранење",
     "es_UY": "шпански (Уругвај)",
-    "non_identified_specie": "Неидентификуван вид"
+    "non_identified_specie": "Неидентификуван вид",
+    "home_tab": "Дома",
+    "copied_to_clipboard_success": "Копирано во таблата со исечоци.",
+    "copied_to_clipboard_error": "Грешка: не може да се копира во таблата со исечоци. Податоците се нула.",
+    "public_map_tab": "Јавна карта",
+    "guide_tab": "Водич",
+    "info_tab": "Инфо"
 }

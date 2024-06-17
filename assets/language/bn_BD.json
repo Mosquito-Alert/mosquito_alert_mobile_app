@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "অ্যাপ দিয়ে তোলা ফটোগুলি আপনার ডিভাইসের গ্যালারিতে সেভ করুন।",
     "NSPhotoLibraryUsageDescription": "আপনার রিপোর্টে বিদ্যমান ছবি সংযুক্ত করতে আপনার ফটো গ্যালারি অ্যাক্সেস করুন।",
     "plural_bite": "কামড়",
-    "non_identified_specie": "অ-শনাক্ত প্রজাতি"
+    "non_identified_specie": "অ-শনাক্ত প্রজাতি",
+    "home_tab": "হোম",
+    "copied_to_clipboard_success": "ক্লিপবোর্ডে কপি করা হয়েছে।",
+    "copied_to_clipboard_error": "ত্রুটি: ক্লিপবোর্ডে অনুলিপি করতে অক্ষম৷ ডেটা শূন্য।",
+    "public_map_tab": "পাবলিক ম্যাপ",
+    "guide_tab": "গাইড",
+    "info_tab": "তথ্য"
 }

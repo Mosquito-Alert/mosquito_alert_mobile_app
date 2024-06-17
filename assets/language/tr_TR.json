@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Uygulama ile çekilen fotoğrafları cihazınızın galerisine kaydedin.",
     "NSPhotoLibraryUsageDescription": "Mevcut görüntüleri raporlarınıza eklemek için fotoğraf galerinize erişin.",
     "plural_bite": "sivrisinek ısırığı",
-    "non_identified_specie": "Tanımlanamayan tür"
+    "non_identified_specie": "Tanımlanamayan tür",
+    "home_tab": "Ana Sayfa",
+    "copied_to_clipboard_success": "Panoya kopyalandı.",
+    "copied_to_clipboard_error": "Hata: Panoya kopyalanamıyor. Veriler boş.",
+    "public_map_tab": "Genel harita",
+    "guide_tab": "Kılavuz",
+    "info_tab": "Bilgi"
 }

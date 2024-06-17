@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "сачувам фотографије снимљене апликацијом у галерију вашег уређаја.",
     "NSPhotoLibraryUsageDescription": "Приступ вашој галерији фотографија да приложите постојеће слике вашим извештајима.",
     "plural_bite": "ујед комарца",
-    "non_identified_specie": "Неидентификована врста"
+    "non_identified_specie": "Неидентификована врста",
+    "home_tab": "Хоме",
+    "copied_to_clipboard_success": "Копирано у међуспремник.",
+    "copied_to_clipboard_error": "Грешка: није могуће копирати у међуспремник. Подаци су нулти.",
+    "public_map_tab": "Јавна мапа",
+    "guide_tab": "Водич",
+    "info_tab": "Инфо"
 }

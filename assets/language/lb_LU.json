@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Fotoen, déi mat der App gemaach goufen, an d'Galerie vun Ärem Apparat ze späicheren.",
     "NSPhotoLibraryUsageDescription": "Zougang zu Ärer Fotogalerie fir existent Biller op Är Berichter ze befestigen.",
     "plural_bite": "Moustiquenbissen",
-    "non_identified_specie": "Net identifizéiert Spezies"
+    "non_identified_specie": "Net identifizéiert Spezies",
+    "home_tab": "Home",
+    "copied_to_clipboard_success": "Kopéiert op Clipboard.",
+    "copied_to_clipboard_error": "Feeler: Kann net op de Clipboard kopéieren. Daten sinn null.",
+    "public_map_tab": "Public map",
+    "guide_tab": "Guide",
+    "info_tab": "Info"
 }

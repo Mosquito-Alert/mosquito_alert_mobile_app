@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Foto's die met de app zijn gemaakt op te slaan in de galerij van je apparaat.",
     "NSPhotoLibraryUsageDescription": "Toegang tot je fotogalerij om bestaande afbeeldingen aan je rapporten toe te voegen.",
     "plural_bite": "Muggenbeten",
-    "non_identified_specie": "Niet geïdentificeerde soort"
+    "non_identified_specie": "Niet geïdentificeerde soort",
+    "home_tab": "Home",
+    "copied_to_clipboard_success": "Gekopieerd naar het klembord.",
+    "copied_to_clipboard_error": "Fout: kan niet naar het klembord kopiëren. Gegevens zijn nul.",
+    "public_map_tab": "Openbare kaart",
+    "guide_tab": "Gids",
+    "info_tab": "Info"
 }

@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Mit der App aufgenommene Fotos in der Galerie Ihres Geräts zu speichern.",
     "NSPhotoLibraryUsageDescription": "Zugriff auf Ihre Fotogalerie, um vorhandene Bilder an Ihre Berichte anzuhängen.\n",
     "plural_bite": "Mückenstiche",
-    "non_identified_specie": "Nicht identifizierte Art"
+    "non_identified_specie": "Nicht identifizierte Art",
+    "home_tab": "Home",
+    "copied_to_clipboard_success": "In die Zwischenablage kopiert.",
+    "copied_to_clipboard_error": "Fehler: Kann nicht in die Zwischenablage kopiert werden. Daten sind null.",
+    "public_map_tab": "Öffentliche Karte",
+    "guide_tab": "Guide",
+    "info_tab": "Info"
 }

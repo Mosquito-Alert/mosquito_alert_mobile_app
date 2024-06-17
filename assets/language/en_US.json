@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Save photos taken with the app to your device's gallery.",
     "NSPhotoLibraryUsageDescription": "Access your photo gallery to attach existing images to your reports.",
     "plural_bite": "Bites",
-    "non_identified_specie": "Non identified specie"
+    "non_identified_specie": "Non identified specie",
+    "home_tab": "Home",
+    "copied_to_clipboard_success": "Copied to clipboard.",
+    "copied_to_clipboard_error": "Error: Unable to copy to clipboard. Data is null.",
+    "public_map_tab": "Public map",
+    "guide_tab": "Guide",
+    "info_tab": "Info"
 }

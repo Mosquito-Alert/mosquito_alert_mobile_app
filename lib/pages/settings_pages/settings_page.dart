@@ -107,7 +107,6 @@ class _SettingsPageState extends State<SettingsPage> {
             FutureBuilder(
               future: UserManager.getUUID(),
               builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-                print(snapshot.data);
                 return Row(
                   children: [
                     Style.body('ID'),

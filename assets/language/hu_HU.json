@@ -335,5 +335,11 @@
     "NSPhotoLibraryAddUsageDescription": "Az alkalmazással készített fényképek mentése a készülék galériájába.",
     "NSPhotoLibraryUsageDescription": "Hozzáférés a fotógalériához, hogy meglévő képeket csatolhasson a jelentésekhez.",
     "plural_bite": "szúnyogcsípés",
-    "non_identified_specie": "Nem azonosított faj"
+    "non_identified_specie": "Nem azonosított faj",
+    "home_tab": "Kezdőlap",
+    "copied_to_clipboard_success": "Vágólapra másolva.",
+    "copied_to_clipboard_error": "Hiba: Nem lehet másolni a vágólapra. Az adatok nullák.",
+    "public_map_tab": "Nyilvános térképre",
+    "guide_tab": "Útmutató",
+    "info_tab": "Információ"
 }
