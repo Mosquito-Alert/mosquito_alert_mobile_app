@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Gabim: Nuk mund të kopjohet në kujtesën e fragmenteve. Të dhënat janë nule.",
     "public_map_tab": "Hartë publike",
     "guide_tab": "Udhëzues",
-    "info_tab": "Info"
+    "info_tab": "Info",
+    "what_to_do_txt_1": "A keni vënë re ndonjë aktivitet të mushkonjave? Shpërndajeni tani!",
+    "what_to_do_txt_2": "Çfarë aktiviteti kundër mushkonjave keni parë?",
+    "what_to_do_txt_3": "Çfarë keni parë sot?",
+    "what_to_do_txt_4": "A keni ndonjë shenjë të mushkonjave aty pranë? Është koha juaj!",
+    "what_to_do_txt_5": "Shikimet e mushkonjave? Le ta kapim!"
 }

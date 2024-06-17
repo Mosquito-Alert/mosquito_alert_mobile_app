@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Errorea: ezin da kopiatu arbelean. Datuak nuluak dira.",
     "public_map_tab": "Mapa publikoa",
     "guide_tab": "Gida",
-    "info_tab": "Informazioa"
+    "info_tab": "Informazioa",
+    "what_to_do_txt_1": "Eltxoen jarduerarik nabaritu al duzu? Partekatu orain!",
+    "what_to_do_txt_2": "Zein eltxoren jarduera ikusi duzu?",
+    "what_to_do_txt_3": "Zer ikusi duzu gaur?",
+    "what_to_do_txt_4": "Inguruan eltxoen zantzurik? Zure ordua da!",
+    "what_to_do_txt_5": "Eltxoak ikustea? Harrapa dezagun!"
 }

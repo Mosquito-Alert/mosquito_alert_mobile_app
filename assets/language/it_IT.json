@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Errore: impossibile copiare negli appunti. I dati sono nulli.",
     "public_map_tab": "Mappa pubblica",
     "guide_tab": "Guida",
-    "info_tab": "Informazioni"
+    "info_tab": "Informazioni",
+    "what_to_do_txt_1": "Avete notato qualche attività di zanzare? Condividetelo ora!",
+    "what_to_do_txt_2": "Quale attività di zanzare avete notato?",
+    "what_to_do_txt_3": "Cosa avete visto oggi?",
+    "what_to_do_txt_4": "Ci sono segni di zanzare nelle vicinanze? È il vostro momento!",
+    "what_to_do_txt_5": "Avvistamenti di zanzare? Catturiamole!"
 }

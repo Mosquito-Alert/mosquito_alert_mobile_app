@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Hata: Panoya kopyalanamıyor. Veriler boş.",
     "public_map_tab": "Genel harita",
     "guide_tab": "Kılavuz",
-    "info_tab": "Bilgi"
+    "info_tab": "Bilgi",
+    "what_to_do_txt_1": "Siz herhangi bir sivrisinek aktivitesi fark ettiniz mi? Şimdi paylaşın!",
+    "what_to_do_txt_2": "Hangi sivrisinek aktivitesini gördünüz?",
+    "what_to_do_txt_3": "Bugün ne gördünüz?",
+    "what_to_do_txt_4": "Yakınlarda sivrisinek belirtisi var mı? Sıra sizde!",
+    "what_to_do_txt_5": "Sivrisinek mi gördünüz? Hadi yakalayalım!"
 }

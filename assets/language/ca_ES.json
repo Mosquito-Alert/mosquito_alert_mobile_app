@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Error: no es pot copiar al porta-retalls. Les dades són nul·les.",
     "public_map_tab": "Mapa públic",
     "guide_tab": "Guia",
-    "info_tab": "Informació"
+    "info_tab": "Informació",
+    "what_to_do_txt_1": "Has notat alguna activitat de mosquits? Comparteix-la ara!",
+    "what_to_do_txt_2": "Quina activitat dels mosquits has detectat?",
+    "what_to_do_txt_3": "Què has vist avui?",
+    "what_to_do_txt_4": "Algun signe de mosquits a prop? És el teu moment!",
+    "what_to_do_txt_5": "Presència de mosquits? Som-hi!"
 }

@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Fout: kan niet naar het klembord kopiëren. Gegevens zijn nul.",
     "public_map_tab": "Openbare kaart",
     "guide_tab": "Gids",
-    "info_tab": "Info"
+    "info_tab": "Info",
+    "what_to_do_txt_1": "Heb jij muggenactiviteit opgemerkt? Deel het nu!",
+    "what_to_do_txt_2": "Welke muggenactiviteit heb je gezien?",
+    "what_to_do_txt_3": "Wat heb je vandaag gezien?",
+    "what_to_do_txt_4": "Een teken van muggen in de buurt? Het is jouw tijd!",
+    "what_to_do_txt_5": "Muggen gezien? Laten we ze vangen!"
 }

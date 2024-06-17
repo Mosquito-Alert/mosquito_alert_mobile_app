@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Fel: Det gick inte att kopiera till urklipp. Data är null.",
     "public_map_tab": "Offentlig karta",
     "guide_tab": "Guide",
-    "info_tab": "Info"
+    "info_tab": "Info",
+    "what_to_do_txt_1": "Har du märkt någon myggaktivitet? Dela med dig av det nu!",
+    "what_to_do_txt_2": "Vilken myggaktivitet har du sett?",
+    "what_to_do_txt_3": "Vad har du sett idag?",
+    "what_to_do_txt_4": "Finns det tecken på myggor i närheten? Nu är det din tur!",
+    "what_to_do_txt_5": "Myggobservationer? Låt oss fånga den!"
 }

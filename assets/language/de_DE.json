@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Fehler: Kann nicht in die Zwischenablage kopiert werden. Daten sind null.",
     "public_map_tab": "Öffentliche Karte",
     "guide_tab": "Guide",
-    "info_tab": "Info"
+    "info_tab": "Info",
+    "what_to_do_txt_1": "Haben Sie eine Mückenaktivität bemerkt? Teilen Sie es jetzt mit!",
+    "what_to_do_txt_2": "Welche Mückenaktivität haben Sie beobachtet?",
+    "what_to_do_txt_3": "Was haben Sie heute gesehen?",
+    "what_to_do_txt_4": "Irgendwelche Anzeichen von Stechmücken in der Nähe? Jetzt sind Sie dran!",
+    "what_to_do_txt_5": "Eine Mücke gesichtet? Dann fangen wir sie ein!"
 }

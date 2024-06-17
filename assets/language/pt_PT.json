@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Erro: não é possível copiar para a área de transferência. Os dados são nulos.",
     "public_map_tab": "Mapa público",
     "guide_tab": "Guia",
-    "info_tab": "Info"
+    "info_tab": "Info",
+    "what_to_do_txt_1": "Reparou em alguma atividade de mosquitos? Partilhe-o agora!",
+    "what_to_do_txt_2": "Que atividade de mosquitos detectou?",
+    "what_to_do_txt_3": "O que é que viu hoje?",
+    "what_to_do_txt_4": "Algum sinal de mosquitos por perto? É a vossa vez!",
+    "what_to_do_txt_5": "Avistamento de mosquitos? Vamos apanhá-lo!"
 }

@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Napaka: ni mogoče kopirati v odložišče. Podatki so nični.",
     "public_map_tab": "Javni zemljevid",
     "guide_tab": "Vodnik",
-    "info_tab": "Informacije"
+    "info_tab": "Informacije",
+    "what_to_do_txt_1": "Ste opazili aktivnost komarjev? Delite zdaj!",
+    "what_to_do_txt_2": "Kakšno aktivnost komarjev ste opazili?",
+    "what_to_do_txt_3": "Kaj ste videli danes?",
+    "what_to_do_txt_4": "Je v bližini kakšen znak komarjev? Vaš čas je!",
+    "what_to_do_txt_5": "Opazovanje komarjev? Ujemimo ga!"
 }

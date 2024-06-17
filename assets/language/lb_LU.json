@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Feeler: Kann net op de Clipboard kopéieren. Daten sinn null.",
     "public_map_tab": "Public map",
     "guide_tab": "Guide",
-    "info_tab": "Info"
+    "info_tab": "Info",
+    "what_to_do_txt_1": "Hutt Dir eng Moustique Aktivitéit gemierkt? Deelt et elo!",
+    "what_to_do_txt_2": "Wéi eng Moustique Aktivitéit hutt Dir gesinn?",
+    "what_to_do_txt_3": "Wat hutt Dir haut gesinn?",
+    "what_to_do_txt_4": "All Zeeche vu Moustiquen an der Géigend? Et ass Är Zäit!",
+    "what_to_do_txt_5": "Moustiquen gesinn? Loosst eis et fänken!"
 }

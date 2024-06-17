@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Hiba: Nem lehet másolni a vágólapra. Az adatok nullák.",
     "public_map_tab": "Nyilvános térképre",
     "guide_tab": "Útmutató",
-    "info_tab": "Információ"
+    "info_tab": "Információ",
+    "what_to_do_txt_1": "Ti észrevettetek szúnyogtevékenységet? Oszd meg most!",
+    "what_to_do_txt_2": "Milyen szúnyogtevékenységet észleltetek?",
+    "what_to_do_txt_3": "Mit láttál ma?",
+    "what_to_do_txt_4": "Szúnyogok jelei a közelben? Itt az idő!",
+    "what_to_do_txt_5": "Szúnyog észlelések? Kapjuk el!"
 }

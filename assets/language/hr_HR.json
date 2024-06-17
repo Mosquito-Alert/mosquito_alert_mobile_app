@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Pogreška: Nije moguće kopirati u međuspremnik. Podaci su nulti.",
     "public_map_tab": "Javna karta",
     "guide_tab": "Vodič",
-    "info_tab": "Informacije"
+    "info_tab": "Informacije",
+    "what_to_do_txt_1": "Jeste li primijetili aktivnost komaraca? Podijelite sada!",
+    "what_to_do_txt_2": "Koju aktivnost komaraca ste uočili?",
+    "what_to_do_txt_3": "Što ste vidjeli danas?",
+    "what_to_do_txt_4": "Ima li komaraca u blizini? Vaše je vrijeme!",
+    "what_to_do_txt_5": "Opažanja komaraca? Uhvatimo ga!"
 }

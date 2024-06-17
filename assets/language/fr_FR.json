@@ -341,5 +341,10 @@
     "copied_to_clipboard_error": "Erreur : Impossible de copier dans le presse-papiers. Les données sont nulles.",
     "public_map_tab": "Carte publique",
     "guide_tab": "Guide",
-    "info_tab": "Info"
+    "info_tab": "Info",
+    "what_to_do_txt_1": "Avez-vous remarqué une activité de moustiques? Partagez-le maintenant!",
+    "what_to_do_txt_2": "Quelle est l'activité des moustiques que vous avez observée?",
+    "what_to_do_txt_3": "Qu'avez-vous vu aujourd'hui?",
+    "what_to_do_txt_4": "Des signes de présence de moustiques dans les environs? C'est à vous de jouer!",
+    "what_to_do_txt_5": "Vous avez vu des moustiques ? Attrapons-le!"
 }
