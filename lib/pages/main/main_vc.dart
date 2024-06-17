@@ -40,7 +40,6 @@ class _MainVCState extends State<MainVC> {
   void initState() {
     super.initState();
     _getNotificationCount();
-    _getData();
     getPackageInfo();
     initAuthStatus();
   }
@@ -69,8 +68,7 @@ class _MainVCState extends State<MainVC> {
     });
   }
 
-    void initAuthStatus() async {
-
+  void initAuthStatus() async {
     if (Platform.isIOS) {
       await AppTrackingTransparency.requestTrackingAuthorization();
     }
@@ -97,7 +95,7 @@ class _MainVCState extends State<MainVC> {
     MyReportsPage(),
     PublicMap(),
     TutorialPage(true),
-    SettingsPage(),  // TODO: Create new settings page
+    SettingsPage(),
     InfoPage(),
   ];
 

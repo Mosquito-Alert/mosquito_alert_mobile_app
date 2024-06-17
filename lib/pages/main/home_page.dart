@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
@@ -11,7 +9,6 @@ import 'package:mosquito_alert_app/pages/main/components/custom_card_widget.dart
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
-import 'package:mosquito_alert_app/utils/version_control.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,7 +21,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    initAuthStatus();
   }
 
   @override
@@ -32,21 +28,6 @@ class _HomePageState extends State<HomePage> {
     loadingStream.close();
     super.dispose();
   }
-
-  void initAuthStatus() async {
-    loadingStream.add(true);
-
-    if (Platform.isIOS) {
-      await AppTrackingTransparency.requestTrackingAuthorization();
-    }
-    VersionControl.getInstance().packageApiKey =
-        'uqFb4yrdZCPFXsvXrJHBbJg5B5TqvSCYmxR7aPuN2uCcCKyu9FDVWettvbtNV9HKm';
-    VersionControl.getInstance().packageLanguageCode = 'es';
-    await VersionControl.getInstance().checkVersion(context);
-
-    loadingStream.add(false);
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +112,7 @@ class _HomePageState extends State<HomePage> {
         Positioned.fill(
           child: StreamBuilder<bool>(
             stream: loadingStream.stream,
-            initialData: true,
+            initialData: false,
             builder: (BuildContext ctxt, AsyncSnapshot<bool> snapshot) {
               if (snapshot.hasData == false || snapshot.data == false) {
                 return Container();
