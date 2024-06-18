@@ -248,20 +248,20 @@ class _MainVCState extends State<MainVC> {
               'ID: ',
               style: TextStyle(
                 color: Colors.black.withOpacity(0.7),
-                fontSize: 9,
+                fontSize: 8,
               ),
             ),
             Text(
               snapshot.data ?? '',
               style: TextStyle(
                 color: Colors.grey,
-                fontSize: 9,
+                fontSize: 8,
               ),
             ),
             GestureDetector(
               child: Icon(
                 Icons.copy_rounded,
-                size: 14,
+                size: 12,
               ),
               onTap: () {
                 final data = snapshot.data;
