@@ -162,12 +162,6 @@ class _GalleryPageState extends State<GalleryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Style.title(MyLocalizations.of(context, 'mosquitos_gallery_txt'),
-            fontSize: 16),
-      ),
       body: IntroSlider(
         // List slides
         slides: initSlides(),
