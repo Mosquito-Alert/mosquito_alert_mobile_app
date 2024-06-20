@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                                     )                                      
                                   ]
                                 ),
-                                SizedBox(height: 25),
+                                SizedBox(height: 50),
                                 CustomCard(
                                   text: 'single_mosquito',
                                   image_path: 'assets/img/ic_mosquito_report.png',
