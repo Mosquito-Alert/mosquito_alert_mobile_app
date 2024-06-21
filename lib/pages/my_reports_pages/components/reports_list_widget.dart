@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -97,12 +98,15 @@ class _MyReportsListState extends State<ReportsList> {
                     decoration: BoxDecoration(
                       color: Colors.amberAccent,
                       borderRadius: BorderRadius.circular(10),
-                      image: reports[index].photos != null && reports[index].photos!.isNotEmpty
-                        ? DecorationImage(
-                            image: NetworkImage(reports[index].photos![0].photo ?? ''),
-                            fit: BoxFit.cover,
-                          )
-                        : null,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: CachedNetworkImage(
+                        imageUrl: reports[index].photos![0].photo ?? '',
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
                     ),
                   ),
                 title: Text(getTitle(context, reports[index])),
