@@ -7,7 +7,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/api/api.dart';
-import 'package:mosquito_alert_app/pages/main/main_vc.dart';
+import 'package:mosquito_alert_app/pages/main/drawer_and_header.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mosquito_alert_app/utils/Application.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizationsDelegate.dart';
