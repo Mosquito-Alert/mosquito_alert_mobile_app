@@ -138,97 +138,99 @@ class _MainVCState extends State<MainVC> {
         child: _widgetOptions[_selectedIndex],
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
-            DrawerHeader(
-              child: Row(
-                children: <Widget>[
-                  // User score
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => InfoPageInWebview("${MyLocalizations.of(context, 'url_point_1')}$userUuid")),
-                      );
-                    },
-                    child: Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/img/points_box.png'),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  DrawerHeader(
+                    child: Row(
+                      children: <Widget>[
+                        // User score
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => InfoPageInWebview("${MyLocalizations.of(context, 'url_point_1')}$userUuid")),
+                            );
+                          },
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/img/points_box.png'),
+                              ),
+                            ),
+                            child: StreamBuilder<int?>(
+                              stream: Utils.userScoresController.stream,
+                              initialData: UserManager.userScore,
+                              builder: (context, snapshot) {
+                                return Center(
+                                  child: AutoSizeText(
+                                    snapshot.data != null && snapshot.hasData
+                                      ? snapshot.data.toString()
+                                      : '',
+                                    maxLines: 1,
+                                    maxFontSize: 26,
+                                    minFontSize: 16,
+                                    style: TextStyle(
+                                      color: Color(0xFF4B3D04),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 24),
+                                  )
+                                );
+                              }
+                            ),
+                          ),
                         ),
-                      ),
-                      child: StreamBuilder<int?>(
-                        stream: Utils.userScoresController.stream,
-                        initialData: UserManager.userScore,
-                        builder: (context, snapshot) {
-                          return Center(
-                            child: AutoSizeText(
-                              snapshot.data != null && snapshot.hasData
-                                ? snapshot.data.toString()
-                                : '',
-                              maxLines: 1,
-                              maxFontSize: 26,
-                              minFontSize: 16,
-                              style: TextStyle(
-                                color: Color(0xFF4B3D04),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 24),
-                            )
-                          );
-                        }
-                      ),
-                    ),
-                  ),
 
-                  SizedBox(width: 12),
+                        SizedBox(width: 12),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 50.0, bottom: 10.0),
-                        child: Text(
-                          MyLocalizations.of(context, 'welcome_text'),
-                          style: TextStyle(fontSize: 22),
-                        ),
-                      ),
-                      _uuidWithClipboard(),
-                    ],
-                  )
-                ],
-              )
-            ),
-            _buildCustomTile(0, Icons.home, 'home_tab', context),
-            _buildCustomTile(1, Icons.file_copy, 'your_reports_txt', context),
-            _buildCustomTile(2, Icons.map, 'public_map_tab', context),
-            _buildCustomTile(3, Icons.biotech, 'guide_tab', context),
-            _buildCustomTile(4, Icons.settings, 'settings_title', context),
-            _buildCustomTile(5, Icons.info, 'info_tab', context),
-            SizedBox(
-              height: 60,
-            ),
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(packageInfo != null
-                    ? 'version ${packageInfo.version} (build ${packageInfo.buildNumber})'
-                    : '',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 8.0
-                    ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 50.0, bottom: 10.0),
+                              child: Text(
+                                MyLocalizations.of(context, 'welcome_text'),
+                                style: TextStyle(fontSize: 22),
+                              ),
+                            ),
+                            _uuidWithClipboard(),
+                          ],
+                        )
+                      ],
+                    )
                   ),
+                  _buildCustomTile(0, Icons.home, 'home_tab', context),
+                  _buildCustomTile(1, Icons.file_copy, 'your_reports_txt', context),
+                  _buildCustomTile(2, Icons.map, 'public_map_tab', context),
+                  _buildCustomTile(3, Icons.biotech, 'guide_tab', context),
+                  _buildCustomTile(4, Icons.settings, 'settings_title', context),
+                  _buildCustomTile(5, Icons.info, 'info_tab', context),
                 ],
               ),
             ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Text(
+                  packageInfo != null
+                    ? 'version ${packageInfo.version} (build ${packageInfo.buildNumber})'
+                    : '',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 8.0,                  
+                  ),
+                ),
+              ),
+            ),
           ],
-        ),
+        )        
       ),
     );
   }
