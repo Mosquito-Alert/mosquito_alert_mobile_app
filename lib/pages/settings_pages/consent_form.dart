@@ -250,17 +250,12 @@ class _ConsentFormState extends State<ConsentForm> {
                     margin: EdgeInsets.all(15),
                     width: double.infinity,
                     child: Style.button(
-                        MyLocalizations.of(context, 'continue_txt'),
-                        snapshot.data as bool
-                            ? () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          TutorialPage(false)),
-                                );
-                              }
-                            : null),
+                      MyLocalizations.of(context, 'continue_txt'),
+                      snapshot.data as bool
+                      ? () {
+                        Navigator.pop(context);
+                      }
+                      : null),
                   );
                 })
           ],
