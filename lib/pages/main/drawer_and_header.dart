@@ -19,9 +19,7 @@ import 'package:mosquito_alert_app/pages/settings_pages/settings_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
-import 'package:mosquito_alert_app/utils/version_control.dart';
 import 'package:package_info/package_info.dart';
-
 
 
 class MainVC extends StatefulWidget {
@@ -73,13 +71,8 @@ class _MainVCState extends State<MainVC> {
     if (Platform.isIOS) {
       await AppTrackingTransparency.requestTrackingAuthorization();
     }
-    VersionControl.getInstance().packageApiKey =
-        'uqFb4yrdZCPFXsvXrJHBbJg5B5TqvSCYmxR7aPuN2uCcCKyu9FDVWettvbtNV9HKm';
-    VersionControl.getInstance().packageLanguageCode = 'es';
-    var check = await VersionControl.getInstance().checkVersion(context);
-    if (check != null && check) {
-      await _getData();
-    }
+
+    await _getData();
   }
 
   Future<void> _getData() async {
