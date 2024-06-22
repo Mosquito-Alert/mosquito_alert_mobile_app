@@ -137,6 +137,54 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  camera:
+    dependency: transitive
+    description:
+      name: camera
+      sha256: "9499cbc2e51d8eb0beadc158b288380037618ce4e30c9acbc4fae1ac3ecb5797"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.5+9"
+  camera_android:
+    dependency: transitive
+    description:
+      name: camera_android
+      sha256: b350ac087f111467e705b2b76cc1322f7f5bdc122aa83b4b243b0872f390d229
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.9+2"
+  camera_avfoundation:
+    dependency: transitive
+    description:
+      name: camera_avfoundation
+      sha256: "608b56b0880722f703871329c4d7d4c2f379c8e2936940851df7fc041abc6f51"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.13+10"
+  camera_camera:
+    dependency: "direct main"
+    description:
+      name: camera_camera
+      sha256: fd2cffd6a015f588a5fef7e829ad8dff0789ccba0e9faea980d184a13b91e818
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  camera_platform_interface:
+    dependency: transitive
+    description:
+      name: camera_platform_interface
+      sha256: fdb8b7a40c3564ce2967273445707d58cbff91bc2fa129e8de80af8cc501e793
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.7.1"
+  camera_web:
+    dependency: transitive
+    description:
+      name: camera_web
+      sha256: "9e9aba2fbab77ce2472924196ff8ac4dd8f9126c4f9a3096171cd1d870d6b26c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.3"
   characters:
     dependency: transitive
     description:
@@ -443,6 +491,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.14"
+  flutter_sliding_up_panel:
+    dependency: "direct main"
+    description:
+      name: flutter_sliding_up_panel
+      sha256: "94f928973d83e146bbc52051e2d9f2a7ed7a5c9e7f04b54d835fff2e41d6cb99"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -469,6 +525,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.5+3"
+  font_awesome_flutter:
+    dependency: transitive
+    description:
+      name: font_awesome_flutter
+      sha256: "275ff26905134bcb59417cf60ad979136f1f8257f2f449914b2c3e05bbb4cd6f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.7.0"
   fwfh_text_style:
     dependency: transitive
     description:
@@ -901,6 +965,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
+  photo_gallery:
+    dependency: "direct main"
+    description:
+      name: photo_gallery
+      sha256: "2beaab9577f393c1711045ffdb5732234d3fecd10aa16e5c19a58ee9139905a4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
   photo_view:
     dependency: "direct main"
     description:
@@ -1291,5 +1363,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=3.1.0-185.0.dev <4.0.0"
-  flutter: ">=3.10.0"
+  dart: ">=3.1.0 <4.0.0"
+  flutter: ">=3.13.0"
