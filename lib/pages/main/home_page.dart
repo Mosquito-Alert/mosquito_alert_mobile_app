@@ -144,8 +144,6 @@ class _HomePageState extends State<HomePage> {
     } else {
       print('Bite report was not created');
       loadingStream.add(false);
-      await Utils.showAlert(MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'server_down'), context);
     }
   }
 
@@ -160,8 +158,6 @@ class _HomePageState extends State<HomePage> {
     } else {
       print('Adult report was not created');
       loadingStream.add(false);
-      await Utils.showAlert(MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'server_down'), context);
     }
   }
 
@@ -176,8 +172,6 @@ class _HomePageState extends State<HomePage> {
     } else {
       print('Site report was not created');
       loadingStream.add(false);
-      await Utils.showAlert(MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'server_down'), context);
     }
   }
 }
