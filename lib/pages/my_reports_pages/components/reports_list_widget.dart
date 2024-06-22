@@ -37,22 +37,7 @@ class _MyReportsListState extends State<ReportsList> {
   String getTitle(BuildContext context, Report report){
     switch(report.type) {
       case 'adult':
-        var response_question_6 = report.responses?.firstWhere(
-          (element) => element!.question == 'question_6');
-
-        if (response_question_6 == null){
-          return MyLocalizations.of(context, 'non_identified_specie');
-        }
-
-        if (response_question_6.answer == 'question_6_answer_64'){
-          return MyLocalizations.of(context, 'non_identified_specie');
-        }
-
-        var translated_answer = MyLocalizations.of(context, response_question_6.answer);
-        if (translated_answer == ''){
-          response_question_6.answer;
-        }
-        return translated_answer;
+        return MyLocalizations.of(context, 'single_mosquito');
       case 'bite':
         var response_question_1 = report.responses?.firstWhere(
           (element) => element!.question == 'question_1');
