@@ -50,7 +50,7 @@ dependencies:
   cached_network_image: ^3.3.1
   camera_camera: ^3.0.0
   flutter_sliding_up_panel: ^2.1.1
-  photo_gallery: ^2.2.1
+  photo_gallery: ^1.1.1
 
 dev_dependencies:
   pedantic: ^1.11.1 #Discontinued

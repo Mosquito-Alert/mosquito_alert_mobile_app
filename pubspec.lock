@@ -969,10 +969,10 @@ packages:
     dependency: "direct main"
     description:
       name: photo_gallery
-      sha256: "2beaab9577f393c1711045ffdb5732234d3fecd10aa16e5c19a58ee9139905a4"
+      sha256: f8daca29042710ba2836a0666f0d18b320e286b5843dcd68d6f1980a2de0c8b2
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1"
+    version: "1.2.2"
   photo_view:
     dependency: "direct main"
     description:
