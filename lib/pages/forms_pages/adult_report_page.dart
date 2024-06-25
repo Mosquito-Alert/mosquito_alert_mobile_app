@@ -8,7 +8,6 @@ import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_other_report_form.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_photo_button_widget.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/could_see_form.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/components/other_mosquito_info.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/questions_breeding_form.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
@@ -31,7 +30,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
   PageController? _pagesController;
   List<Widget>? _formsRepot;
   List<Widget>? _initialformsRepot;
-  List<Widget>? _skipRepotForms;
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
   StreamController<bool> validStream = StreamController<bool>.broadcast();
   StreamController<bool> skipParts = StreamController<bool>.broadcast();
@@ -87,21 +85,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
     ];
 
     _formsRepot = _initialformsRepot;
-
-    _skipRepotForms = [
-      OtherMosquitoInfo(),
-    ];
-
-    /*if (widget.editReport != null ||
-        Utils.reportsList!.isNotEmpty && Utils.reportsList!.length == 1) {
-      _formsRepot!.removeAt(4);
-    }*/
   }
-
-  /*void setSkip3(skip) {
-    print(skip);
-    skipParts.add(skip);
-  }*/
 
   void setShowCamera(data) {
     setState(() {
