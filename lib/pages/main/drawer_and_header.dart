@@ -86,11 +86,11 @@ class _MainVCState extends State<MainVC> {
     await Utils.getLocation(context);
   }
 
-  static final List<Widget> _widgetOptions = <Widget>[
+  late final List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     MyReportsPage(),
     PublicMap(),
-    GalleryPage(),
+    GalleryPage(goBackToHomepage: _onItemTapped),
     SettingsPage(),
     InfoPage(),
   ];
