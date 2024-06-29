@@ -85,21 +85,23 @@ class Utils {
       if (response is bool && !response) {
         print('Unable to get last session.');
         return false;
-      } else if (response is ApiResponse) {
+      }
+
+      if (response is ApiResponse) {
         print('response is of type ApiResponse, not a number.');
         return false;
-      } else {
-        int? sessionId = response + 1;
-
-        session = Session(
-            session_ID: sessionId,
-            user: userUUID,
-            session_start_time: DateTime.now().toUtc().toIso8601String());
-
-        print(language);
-        session!.id = await ApiSingleton().createSession(session!);
-        // print("Session: ${jsonEncode(session.toJson())}");
       }
+
+      int? sessionId = response + 1;
+
+      session = Session(
+          session_ID: sessionId,
+          user: userUUID,
+          session_start_time: DateTime.now().toUtc().toIso8601String());
+
+      print(language);
+      session!.id = await ApiSingleton().createSession(session!);
+      // print("Session: ${jsonEncode(session.toJson())}");
     }
 
     if (session!.id != null) {
