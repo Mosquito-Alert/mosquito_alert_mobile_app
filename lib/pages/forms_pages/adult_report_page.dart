@@ -59,6 +59,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
   bool showCamera = false;
   String? otherReport;
   late Report toEditReport;
+  bool _atLeastOnePhotoAttached = false;
 
   void _initializeReport() async {
     if (widget.editReport != null) {
@@ -74,7 +75,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
     _pagesController = PageController();
     index = 0.0;
     _initialformsRepot = [
-      AddPhotoButton(true, true, 'adult'),
+      AddPhotoButton(true, true, 'adult', _checkAtLeastOnePhotoAttached),
       BitingLocationForm(
           setValid, displayQuestions.elementAt(0)['question']['text']),
       QuestionsBreedingForm(
@@ -257,8 +258,8 @@ class _AdultReportPageState extends State<AdultReportPage> {
                   physics: NeverScrollableScrollPhysics(),
                   children: _formsRepot!,
                 ),
-                      index! < 1.0
-                  ? continueButton()
+                index! < 1.0
+                  ? continueButton(index)
                   : index != _formsRepot!.length.toDouble() - 1
                     ? SafeArea(
                       child: Align(
@@ -268,7 +269,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                         initialData: false,
                         builder: (BuildContext ctxt, AsyncSnapshot<bool> snapshot) {
                           return snapshot.data!
-                            ? continueButton()
+                            ? continueButton(index)
                             : Container(
                                 width: double.infinity,
                                 height: 54,
@@ -308,8 +309,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                             },
                           ),
                         ),
-                      ),
-                        
+                      ),                        
               ],
             ),
           ),
@@ -330,7 +330,19 @@ class _AdultReportPageState extends State<AdultReportPage> {
     );
   }
 
-  Widget continueButton(){
+  void _checkAtLeastOnePhotoAttached(){
+    setState(() {
+      _atLeastOnePhotoAttached = true;
+    });
+  }
+
+  Widget continueButton(double? index){
+    if (index == null || index == 0.0){
+      if (!_atLeastOnePhotoAttached){
+        return Container();
+      }
+    }
+
     return Container(
       width: double.infinity,
       height: 54,

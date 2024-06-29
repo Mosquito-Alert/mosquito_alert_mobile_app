@@ -14,8 +14,9 @@ class AddPhotoButton extends StatefulWidget {
   final bool isEditing;
   final bool photoRequired;
   final String type;
+  final Function _atLeastOnePhotoAttached;
 
-  AddPhotoButton(this.isEditing, this.photoRequired, this.type);
+  AddPhotoButton(this.isEditing, this.photoRequired, this.type, this._atLeastOnePhotoAttached);
 
   @override
   _AddPhotoButtonState createState() => _AddPhotoButtonState();
@@ -186,5 +187,6 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
     setState(() {
       images.add(file.path);
     });
+    widget._atLeastOnePhotoAttached();
   }
 }
