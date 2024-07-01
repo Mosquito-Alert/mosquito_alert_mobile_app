@@ -346,5 +346,7 @@
     "what_to_do_txt_2": "Vilken myggaktivitet har du sett?",
     "what_to_do_txt_3": "Vad har du sett idag?",
     "what_to_do_txt_4": "Finns det tecken på myggor i närheten? Nu är det din tur!",
-    "what_to_do_txt_5": "Myggobservationer? Låt oss fånga den!"
+    "what_to_do_txt_5": "Myggobservationer? Låt oss fånga den!",
+    "mailing_mosquito_samples": "Om att skicka faktiska myggprover",
+    "ensure_single_mosquito_photos": "Skicka endast in bilder på samma mygga och se till att individen framträder ensam på varje bild."
 }

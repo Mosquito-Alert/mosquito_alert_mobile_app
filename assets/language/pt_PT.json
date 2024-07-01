@@ -346,5 +346,7 @@
     "what_to_do_txt_2": "Que atividade de mosquitos detectou?",
     "what_to_do_txt_3": "O que é que viu hoje?",
     "what_to_do_txt_4": "Algum sinal de mosquitos por perto? É a vossa vez!",
-    "what_to_do_txt_5": "Avistamento de mosquitos? Vamos apanhá-lo!"
+    "what_to_do_txt_5": "Avistamento de mosquitos? Vamos apanhá-lo!",
+    "mailing_mosquito_samples": "Sobre o envio de amostras reais de mosquitos",
+    "ensure_single_mosquito_photos": "Apresentar apenas imagens do mesmo mosquito, assegurando que o indivíduo aparece sozinho em cada fotografia."
 }

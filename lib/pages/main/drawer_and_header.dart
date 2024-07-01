@@ -6,7 +6,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
@@ -14,7 +13,6 @@ import 'package:mosquito_alert_app/pages/main/home_page.dart';
 import 'package:mosquito_alert_app/pages/map/public_map.dart';
 import 'package:mosquito_alert_app/pages/my_reports_pages/my_reports_page.dart';
 import 'package:mosquito_alert_app/pages/notification_pages/notifications_page.dart';
-import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/gallery_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/info_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/settings_page.dart';
@@ -118,19 +116,6 @@ class _MainVCState extends State<MainVC> {
           height: 40,
         ),
         actions: <Widget>[
-          IconButton(
-            icon: SvgPicture.asset(
-              'assets/img/sendmodule/ic_adn.svg',
-              height: 26,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CampaignTutorialPage()),
-              );
-            },
-          ),
           badges.Badge(
             position: badges.BadgePosition.topEnd(top: 4, end: 4),
             showBadge: unreadNotifications > 0,

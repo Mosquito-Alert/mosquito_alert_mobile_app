@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
+import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/settings_menu_widget.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/partners_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
@@ -73,6 +75,15 @@ class _InfoPageState extends State<InfoPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => PartnersPage()),
+              );
+            }),
+            SizedBox(
+              height: 10,
+            ),
+            SettingsMenuWidget(MyLocalizations.of(context, 'mailing_mosquito_samples'), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CampaignTutorialPage()),
               );
             }),
             SizedBox(

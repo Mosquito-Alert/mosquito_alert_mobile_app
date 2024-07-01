@@ -346,5 +346,7 @@
     "what_to_do_txt_2": "Quelle est l'activité des moustiques que vous avez observée?",
     "what_to_do_txt_3": "Qu'avez-vous vu aujourd'hui?",
     "what_to_do_txt_4": "Des signes de présence de moustiques dans les environs? C'est à vous de jouer!",
-    "what_to_do_txt_5": "Vous avez vu des moustiques ? Attrapons-le!"
+    "what_to_do_txt_5": "Vous avez vu des moustiques ? Attrapons-le!",
+    "mailing_mosquito_samples": "À propos de l'envoi d'échantillons de moustiques réels",
+    "ensure_single_mosquito_photos": "Ne soumettez que des images du même moustique, en veillant à ce que l'individu apparaisse seul sur chaque photo."
 }

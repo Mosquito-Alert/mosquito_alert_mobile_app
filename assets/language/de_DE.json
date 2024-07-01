@@ -346,5 +346,7 @@
     "what_to_do_txt_2": "Welche Mückenaktivität haben Sie beobachtet?",
     "what_to_do_txt_3": "Was haben Sie heute gesehen?",
     "what_to_do_txt_4": "Irgendwelche Anzeichen von Stechmücken in der Nähe? Jetzt sind Sie dran!",
-    "what_to_do_txt_5": "Eine Mücke gesichtet? Dann fangen wir sie ein!"
+    "what_to_do_txt_5": "Eine Mücke gesichtet? Dann fangen wir sie ein!",
+    "mailing_mosquito_samples": "Über den Versand tatsächlicher Mückenproben",
+    "ensure_single_mosquito_photos": "Reichen Sie nur Bilder derselben Mücke ein und achten Sie darauf, dass das Individuum auf jedem Foto allein erscheint."
 }
