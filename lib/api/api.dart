@@ -38,7 +38,7 @@ class ApiSingleton {
   static const reports = '/reports/';
 
   //Session
-  static const sessions = '/sessions';
+  static const sessions = '/sessions/';
   static const sessionUpdate = '/session_update/';
 
   //Images
@@ -230,7 +230,7 @@ class ApiSingleton {
   Future<dynamic> createSession(Session session) async {
     try {
       final response = await http
-          .post(Uri.parse('$serverUrl$sessions/'),
+          .post(Uri.parse('$serverUrl$sessions'),
               headers: headers,
               body: json.encode(
                 session.toJson(),
