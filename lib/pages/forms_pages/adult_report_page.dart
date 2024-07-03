@@ -75,7 +75,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
     _pagesController = PageController();
     index = 0.0;
     _initialformsRepot = [
-      AddPhotoButton(true, true, _checkAtLeastOnePhotoAttached),
+      AddPhotoButton(true, true, _checkAtLeastOnePhotoAttached, 'ensure_single_mosquito_photos'),
       BitingLocationForm(
           setValid, displayQuestions.elementAt(0)['question']['text']),
       QuestionsBreedingForm(

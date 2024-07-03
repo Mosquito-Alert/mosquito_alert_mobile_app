@@ -94,7 +94,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
         true,
         goNextPage,
         'assets/img/bottoms/breeding_1.png'),
-      AddPhotoButton(true, true, _checkAtLeastOnePhotoAttached),
+      AddPhotoButton(true, true, _checkAtLeastOnePhotoAttached, null),
       QuestionsBreedingForm(
         displayQuestions.elementAt(1),
         setValid,
