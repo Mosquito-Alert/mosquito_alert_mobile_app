@@ -348,5 +348,6 @@
     "what_to_do_txt_4": "Any sign of mosquitoes nearby? It's your time!",
     "what_to_do_txt_5": "Mosquito sightings? Let's catch it!",
     "mailing_mosquito_samples": "About mailing actual mosquito samples",
-    "ensure_single_mosquito_photos": "Only submit images of the same mosquito, ensuring the individual appears alone in each photo."
+    "ensure_single_mosquito_photos": "Only submit images of the same mosquito, ensuring the individual appears alone in each photo.",
+    "one_mosquito_reminder_badge": "Only one mosquito"
 }

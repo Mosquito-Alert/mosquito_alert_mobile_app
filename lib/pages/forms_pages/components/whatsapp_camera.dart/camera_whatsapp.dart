@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sliding_up_panel/flutter_sliding_up_panel.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/whatsapp_camera.dart/view_image.dart';
+import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 import 'package:file_picker/file_picker.dart';
@@ -128,6 +129,7 @@ class WhatsappCamera extends StatefulWidget {
   ///```
   ///
   final bool multiple;
+  final String? infoBadgeTextKey;
 
   /// how use:
   ///```dart
@@ -139,7 +141,7 @@ class WhatsappCamera extends StatefulWidget {
   ///
   ///```
   ///
-  const WhatsappCamera({key, this.multiple = true});
+  const WhatsappCamera({key, this.multiple = true, this.infoBadgeTextKey = ''});
 
   @override
   State<WhatsappCamera> createState() => _WhatsappCameraState();
@@ -194,6 +196,28 @@ class _WhatsappCameraState extends State<WhatsappCamera>
                 controller.captureImage(file);
                 Navigator.pop(context, controller.selectedImages);
               },
+            ),
+          ),
+          Visibility(
+            visible: widget.infoBadgeTextKey != null,
+            child:Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 70),
+                child: Container(
+                  width: 0.5 * MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.orange.shade300,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    heightFactor: 1.5,
+                    child: Text(
+                      MyLocalizations.of(context, widget.infoBadgeTextKey),
+                      style: TextStyle(color: Colors.white)),
+                  )
+                ),
+              ),
             ),
           ),
           Padding(

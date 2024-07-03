@@ -15,8 +15,9 @@ class AddPhotoButton extends StatefulWidget {
   final bool photoRequired;
   final Function _atLeastOnePhotoAttached;
   final String? subtitleKey;
+  final String? infoBadgeTextKey;
 
-  AddPhotoButton(this.isEditing, this.photoRequired, this._atLeastOnePhotoAttached, this.subtitleKey);
+  AddPhotoButton(this.isEditing, this.photoRequired, this._atLeastOnePhotoAttached, this.subtitleKey, this.infoBadgeTextKey);
 
   @override
   _AddPhotoButtonState createState() => _AddPhotoButtonState();
@@ -178,9 +179,13 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
 
   Future<void> getImageWhatsapp() async{
     var files = await Navigator.push(
-     context,
-     MaterialPageRoute(
-       builder: (context) => const WhatsappCamera(multiple: false,)),
+      context,
+      MaterialPageRoute(
+        builder: (context) => WhatsappCamera(
+          multiple: false,
+          infoBadgeTextKey: widget.infoBadgeTextKey,
+        )
+      ),
     );
 
     if(files == null){
