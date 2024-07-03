@@ -45,7 +45,7 @@ class _WhatsAppCameraController extends ChangeNotifier {
 
   _timer() {
     Timer.periodic(const Duration(seconds: 2), (t) async {
-      Permission.camera.isGranted.then((value) {
+      await Permission.camera.isGranted.then((value) {
         if (value) {
           getPhotosToGallery();
           t.cancel();
@@ -250,7 +250,7 @@ class _WhatsappCameraState extends State<WhatsappCamera>
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () async {
-                                    controller
+                                    await controller
                                         .selectImage(controller.images[index])
                                         .then((value) {
                                       Navigator.pop(
@@ -282,7 +282,8 @@ class _WhatsappCameraState extends State<WhatsappCamera>
                           ),
                         ],
                       );
-                    }),
+                    }
+                  ),
               ),
             ),
           ),
@@ -489,7 +490,7 @@ class _ImageItem extends StatelessWidget {
               color: Colors.white,
               icon: const Icon(Icons.zoom_out_map_outlined),
               onPressed: () async {
-                image.getFile().then((value) {
+                await image.getFile().then((value) {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) {
                       return Hero(
