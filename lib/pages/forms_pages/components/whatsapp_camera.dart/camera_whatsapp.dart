@@ -206,7 +206,17 @@ class _WhatsappCameraState extends State<WhatsappCamera>
                   onPressed: (() => Navigator.pop(context)),
                   icon: const Icon(Icons.close),
                 ),
-                IconButton(
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 32, right: 64),
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.black.withOpacity(0.6),
+                child: IconButton(
                   color: Colors.white,
                   onPressed: () async {
                     await controller.openGallery().then((value) {
@@ -217,7 +227,7 @@ class _WhatsappCameraState extends State<WhatsappCamera>
                   },
                   icon: const Icon(Icons.image),
                 ),
-              ],
+              ),
             ),
           ),
           Positioned(
