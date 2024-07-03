@@ -5,6 +5,7 @@ import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_other_report_form.dart';
+import 'package:mosquito_alert_app/pages/forms_pages/components/add_photo_button_widget.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/biting_location_form.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/questions_breeding_form.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
@@ -70,7 +71,8 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   late Report toEditReport;
 
   double index = 1.0;
-  double displayContinue = 2;
+  double displayContinue = 1.0;
+  bool _atLeastOnePhotoAttached = false;
 
   void _initializeReport() async {
     if (widget.editReport != null) {
@@ -86,8 +88,13 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     _pagesController = PageController();
 
     _formsRepot = [
-      QuestionsBreedingForm(displayQuestions.elementAt(0), setValid, true,
-          _chooseTypeImage, 'assets/img/bottoms/breeding_1.png'),
+      QuestionsBreedingForm(
+        displayQuestions.elementAt(0),
+        setValid,
+        true,
+        goNextPage,
+        'assets/img/bottoms/breeding_1.png'),
+      AddPhotoButton(true, true, _checkAtLeastOnePhotoAttached),
       QuestionsBreedingForm(
         displayQuestions.elementAt(1),
         setValid,
@@ -108,17 +115,23 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   void skipPage3(skip) {
     var list = List<Widget>.from(_initialFormsReport);
     if (skip) {
-      list.removeAt(2);
+      list.removeAt(3);
       setState(() {
         _formsRepot = list;
-        displayContinue = 1.0;
+        displayContinue = 2.0;
       });
     } else {
       setState(() {
         _formsRepot = List.from(_initialFormsReport);
-        displayContinue = 2.0;
+        displayContinue = 3.0;
       });
     }
+  }
+
+  void _checkAtLeastOnePhotoAttached(){
+    setState(() {
+      _atLeastOnePhotoAttached = true;
+    });
   }
 
   void addOtherReport(String? reportType) {
@@ -238,7 +251,17 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                   children: _formsRepot,
                 ),
                 index <= displayContinue
-                    ? Container()
+                  ? index == 1 && _atLeastOnePhotoAttached ?
+                    Container(
+                      width: double.infinity,
+                      height: 54,
+                      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                      child: Style.button(
+                        MyLocalizations.of(context, 'continue_txt'), () {
+                          goNextPage();
+                        }
+                      )
+                    ) : Container()
                     : index != _formsRepot.length.toDouble() - 1
                         ? SafeArea(
                             child: Align(
@@ -246,43 +269,29 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                             child: StreamBuilder<bool>(
                                 stream: validStream.stream,
                                 initialData: false,
-                                builder: (BuildContext ctxt,
-                                    AsyncSnapshot<bool> snapshot) {
+                                builder: (BuildContext ctxt, AsyncSnapshot<bool> snapshot) {
                                   return snapshot.data!
                                       ? Container(
                                           width: double.infinity,
                                           height: 54,
                                           margin: EdgeInsets.symmetric(
-                                              vertical: 6, horizontal: 12),
+                                            vertical: 6,
+                                            horizontal: 12),
                                           child: Style.button(
-                                              MyLocalizations.of(
-                                                  context, 'continue_txt'), () {
-                                            var currentPage =
-                                                _pagesController!.page;
+                                            MyLocalizations.of(context, 'continue_txt'), () {
+                                              var currentPage =_pagesController!.page;
 
-                                            if (currentPage == 0.0) {
-                                              _chooseTypeImage();
-                                              setState(() {
-                                                index = currentPage! + 1;
-                                              });
-                                            } else if (currentPage == 3.0 &&
-                                                    otherReport == 'adult' ||
-                                                otherReport == 'bite') {
-                                              navigateOtherReport();
-                                            } else {
-                                              setState(() {
-                                                index = currentPage! + 1;
-                                              });
-                                              _pagesController!
-                                                  .nextPage(
-                                                      duration: Duration(
-                                                          microseconds: 300),
-                                                      curve: Curves.ease)
-                                                  .then((value) => setValid(
-                                                      widget.editReport !=
-                                                          null));
+                                              if (currentPage == 0.0) {
+                                                goNextPage();
+                                              } else if (currentPage == 4.0) {
+                                                if (otherReport == 'adult' || otherReport == 'bite') {
+                                                  navigateOtherReport();
+                                                }
+                                              } else {
+                                                goNextPage();
+                                              }
                                             }
-                                          }),
+                                          ),
                                         )
                                       : Container(
                                           width: double.infinity,
@@ -328,12 +337,6 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
         ],
       ),
     );
-  }
-
-  void _chooseTypeImage() {
-    _pagesController!
-        .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-        .then((value) => setValid(widget.editReport != null));
   }
 
   void _showAlertOk() {

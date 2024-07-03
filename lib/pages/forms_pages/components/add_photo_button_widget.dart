@@ -13,10 +13,9 @@ import 'package:permission_handler/permission_handler.dart';
 class AddPhotoButton extends StatefulWidget {
   final bool isEditing;
   final bool photoRequired;
-  final String type;
   final Function _atLeastOnePhotoAttached;
 
-  AddPhotoButton(this.isEditing, this.photoRequired, this.type, this._atLeastOnePhotoAttached);
+  AddPhotoButton(this.isEditing, this.photoRequired, this._atLeastOnePhotoAttached);
 
   @override
   _AddPhotoButtonState createState() => _AddPhotoButtonState();
@@ -76,10 +75,8 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
 
   @override
   Widget build(BuildContext context) {
-    EdgeInsetsGeometry margin = widget.type == 'adult' ? EdgeInsets.all(15) : EdgeInsets.only(bottom: 15);
-
     return Container(
-      margin: margin,
+      margin: EdgeInsets.all(15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -161,7 +158,6 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
       ),
     );
   }
-
 
   void _deleteImage(String? img, int index) {
     if (widget.photoRequired && images.length == 1) {
