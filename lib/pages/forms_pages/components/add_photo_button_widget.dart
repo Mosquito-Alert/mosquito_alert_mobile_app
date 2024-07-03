@@ -172,11 +172,15 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
   }
 
   Future<void> getImageWhatsapp() async{
-    List<File> files = await Navigator.push(
+    List<File>? files = await Navigator.push(
      context,
      MaterialPageRoute(
        builder: (context) => const WhatsappCamera(multiple: false,)),
     );
+
+    if(files == null){
+      return;
+    }
 
     var file = files[0];
     Utils.saveImgPath(file);
