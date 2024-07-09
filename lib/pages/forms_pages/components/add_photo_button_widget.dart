@@ -30,7 +30,14 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
   void initState() {
     _permissionsPath();
     super.initState();
-    _initImages();
+    initializePhotos();
+  }
+
+  Future<void> initializePhotos() async {
+    await _initImages();
+    if (images.isEmpty){
+      await getImageWhatsapp();
+    }    
   }
 
   Future<void> _permissionsPath() async {
