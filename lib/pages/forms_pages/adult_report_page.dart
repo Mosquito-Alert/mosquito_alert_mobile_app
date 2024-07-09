@@ -259,7 +259,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
                   children: _formsRepot!,
                 ),
                 index! < 1.0
-                  ? continueButton(index)
+                  ? continueButtonPhotos()
                   : index != _formsRepot!.length.toDouble() - 1
                     ? SafeArea(
                       child: Align(
@@ -336,13 +336,24 @@ class _AdultReportPageState extends State<AdultReportPage> {
     });
   }
 
-  Widget continueButton(double? index){
-    if (index == null || index == 0.0){
-      if (!_atLeastOnePhotoAttached){
-        return Container();
-      }
+  Widget continueButtonPhotos(){
+    if(!_atLeastOnePhotoAttached){
+      return Container();
     }
 
+    return Container(
+      width: double.infinity,
+      height: 54,
+      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+      child: Style.button(
+        MyLocalizations.of(context, 'continue_txt'), () {
+          goNextPage();
+        }
+      )
+    );
+  }
+
+  Widget continueButton(double? index){
     return Container(
       width: double.infinity,
       height: 54,
