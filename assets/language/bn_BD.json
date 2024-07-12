@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "মশা দেখা? এটা ধরা যাক!",
     "mailing_mosquito_samples": "প্রকৃত মশার নমুনা মেইলিং সম্পর্কে",
     "ensure_single_mosquito_photos": "শুধুমাত্র একই মশার ছবি জমা দিন, নিশ্চিত করুন যে প্রতিটি ফটোতে ব্যক্তিটি একা দেখা যাচ্ছে।",
-    "one_mosquito_reminder_badge": "শুধু একটি মশা"
+    "one_mosquito_reminder_badge": "শুধু একটি মশা",
+    "auto_tagging_settings_title": "অটো-ট্যাগিং",
+    "auto_tagging_settings_placeholder": "ট্যাগ লিখুন..."
 }

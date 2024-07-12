@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Eine Mücke gesichtet? Dann fangen wir sie ein!",
     "mailing_mosquito_samples": "Über den Versand tatsächlicher Mückenproben",
     "ensure_single_mosquito_photos": "Reichen Sie nur Bilder derselben Mücke ein und achten Sie darauf, dass das Individuum auf jedem Foto allein erscheint.",
-    "one_mosquito_reminder_badge": "Nur eine Mücke"
+    "one_mosquito_reminder_badge": "Nur eine Mücke",
+    "auto_tagging_settings_title": "Auto-Tagging",
+    "auto_tagging_settings_placeholder": "Tag eingeben..."
 }

@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Avistamentos de mosquitos? Imos collelo!",
     "mailing_mosquito_samples": "Sobre o envío de mostras de mosquitos reais",
     "ensure_single_mosquito_photos": "Envía só imaxes do mesmo mosquito, asegurando que o individuo aparece só en cada foto.",
-    "one_mosquito_reminder_badge": "Só un mosquito"
+    "one_mosquito_reminder_badge": "Só un mosquito",
+    "auto_tagging_settings_title": "Etiquetado automático",
+    "auto_tagging_settings_placeholder": "Introduce a etiqueta..."
 }

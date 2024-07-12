@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Avvistamenti di zanzare? Catturiamole!",
     "mailing_mosquito_samples": "Informazioni sull'invio di campioni di zanzare reali",
     "ensure_single_mosquito_photos": "Inviate solo immagini della stessa zanzara, assicurandovi che l'individuo appaia da solo in ogni foto.",
-    "one_mosquito_reminder_badge": "Solo una zanzara"
+    "one_mosquito_reminder_badge": "Solo una zanzara",
+    "auto_tagging_settings_title": "Auto-tagging",
+    "auto_tagging_settings_placeholder": "Inserire il tag..."
 }

@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Myggobservationer? Låt oss fånga den!",
     "mailing_mosquito_samples": "Om att skicka faktiska myggprover",
     "ensure_single_mosquito_photos": "Skicka endast in bilder på samma mygga och se till att individen framträder ensam på varje bild.",
-    "one_mosquito_reminder_badge": "Bara en mygga"
+    "one_mosquito_reminder_badge": "Bara en mygga",
+    "auto_tagging_settings_title": "Automatisk taggning",
+    "auto_tagging_settings_placeholder": "Ange tagg..."
 }

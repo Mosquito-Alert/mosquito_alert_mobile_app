@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Muggen gezien? Laten we ze vangen!",
     "mailing_mosquito_samples": "Over het opsturen van muggenmonsters",
     "ensure_single_mosquito_photos": "Stuur alleen foto's van dezelfde mug in en zorg ervoor dat het individu alleen op de foto staat.",
-    "one_mosquito_reminder_badge": "Slechts één mug"
+    "one_mosquito_reminder_badge": "Slechts één mug",
+    "auto_tagging_settings_title": "Automatisch taggen",
+    "auto_tagging_settings_placeholder": "Tag invoeren..."
 }

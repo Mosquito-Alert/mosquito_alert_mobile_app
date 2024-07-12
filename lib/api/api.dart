@@ -361,11 +361,12 @@ class ApiSingleton {
         body.addAll({'app_language': report.app_language});
       }
 
-      var hashtag = await UserManager.getHashtag();
+      var hashtag = await UserManager.getHashtags();
       if ((report.note != null && report.note != '') || hashtag != null) {
+        var combinedHashtags = hashtag?.map((tag) => '#$tag').join(' ');
         body.addAll({
           'note':
-              '${report.note != null && report.note != "" ? report.note : ''}${report.note != null && report.note != "" && hashtag != null ? ' ' : ''}${hashtag != null ? '$hashtag' : ''}'
+              '${report.note != null && report.note != "" ? report.note : ''}${report.note != null && report.note != "" && combinedHashtags != null ? ' ' : ''}${combinedHashtags != null ? '$combinedHashtags' : ''}'
         });
       }
 

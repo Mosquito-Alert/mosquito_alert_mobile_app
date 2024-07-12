@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Παρατηρήσεις κουνουπιών; Ας το πιάσουμε!",
     "mailing_mosquito_samples": "Σχετικά με την αποστολή πραγματικών δειγμάτων κουνουπιών",
     "ensure_single_mosquito_photos": "Υποβάλετε μόνο εικόνες του ίδιου κουνουπιού, διασφαλίζοντας ότι το άτομο εμφανίζεται μόνο του σε κάθε φωτογραφία.",
-    "one_mosquito_reminder_badge": "Μόνο ένα κουνούπι"
+    "one_mosquito_reminder_badge": "Μόνο ένα κουνούπι",
+    "auto_tagging_settings_title": "Αυτόματη επισήμανση",
+    "auto_tagging_settings_placeholder": "Εισάγετε ετικέτα..."
 }

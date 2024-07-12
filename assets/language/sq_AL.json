@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Shikimet e mushkonjave? Le ta kapim!",
     "mailing_mosquito_samples": "Rreth dërgimit të mostrave aktuale të mushkonjave",
     "ensure_single_mosquito_photos": "Paraqisni vetëm imazhe të së njëjtës mushkonjë, duke u siguruar që individi të shfaqet i vetëm në secilën foto.",
-    "one_mosquito_reminder_badge": "Vetëm një mushkonjë"
+    "one_mosquito_reminder_badge": "Vetëm një mushkonjë",
+    "auto_tagging_settings_title": "Etiketimi automatik",
+    "auto_tagging_settings_placeholder": "Fut etiketën..."
 }

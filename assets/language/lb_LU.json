@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Moustiquen gesinn? Loosst eis et fänken!",
     "mailing_mosquito_samples": "Iwwer d'Mailing vun aktuellen Moustiqueproben",
     "ensure_single_mosquito_photos": "Gitt nëmme Biller vun der selwechter Moustique of, sou datt den Individuum eleng an all Foto erschéngt.",
-    "one_mosquito_reminder_badge": "Nëmmen eng Moustique"
+    "one_mosquito_reminder_badge": "Nëmmen eng Moustique",
+    "auto_tagging_settings_title": "Auto-Tagging",
+    "auto_tagging_settings_placeholder": "Enter tag..."
 }

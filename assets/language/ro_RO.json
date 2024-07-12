@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Țânțari? Să-l prindem!",
     "mailing_mosquito_samples": "Despre trimiterea prin poștă a eșantioanelor reale de țânțari",
     "ensure_single_mosquito_photos": "Trimiteți numai imagini ale aceluiași țânțar, asigurându-vă că individul apare singur în fiecare fotografie.",
-    "one_mosquito_reminder_badge": "Un singur țânțar"
+    "one_mosquito_reminder_badge": "Un singur țânțar",
+    "auto_tagging_settings_title": "Etichetare automată",
+    "auto_tagging_settings_placeholder": "Introduceți eticheta..."
 }

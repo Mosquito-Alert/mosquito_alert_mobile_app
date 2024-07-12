@@ -51,6 +51,7 @@ dependencies:
   camera_camera: ^3.0.0
   flutter_sliding_up_panel: ^2.1.1
   photo_gallery: ^1.1.1
+  textfield_tags: ^3.0.1
 
 dev_dependencies:
   pedantic: ^1.11.1 #Discontinued
@@ -58,6 +59,7 @@ dev_dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  test: ^1.24.3
 
 flutter_icons:
   image_path_android: "assets/img/ic_launcher.png"

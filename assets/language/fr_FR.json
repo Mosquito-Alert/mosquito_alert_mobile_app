@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Vous avez vu des moustiques ? Attrapons-le!",
     "mailing_mosquito_samples": "À propos de l'envoi d'échantillons de moustiques réels",
     "ensure_single_mosquito_photos": "Ne soumettez que des images du même moustique, en veillant à ce que l'individu apparaisse seul sur chaque photo.",
-    "one_mosquito_reminder_badge": "Un seul moustique"
+    "one_mosquito_reminder_badge": "Un seul moustique",
+    "auto_tagging_settings_title": "Marquage automatique",
+    "auto_tagging_settings_placeholder": "Saisir une étiquette..."
 }

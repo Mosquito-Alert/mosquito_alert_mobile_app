@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Sivrisinek mi gördünüz? Hadi yakalayalım!",
     "mailing_mosquito_samples": "Gerçek sivrisinek örneklerinin postalanması hakkında",
     "ensure_single_mosquito_photos": "Yalnızca aynı sivrisineğin fotoğraflarını gönderin ve bireyin her fotoğrafta tek başına görünmesini sağlayın.",
-    "one_mosquito_reminder_badge": "Yalnızca bir sivrisinek"
+    "one_mosquito_reminder_badge": "Yalnızca bir sivrisinek",
+    "auto_tagging_settings_title": "Otomatik etiketleme",
+    "auto_tagging_settings_placeholder": "Etiketi girin..."
 }

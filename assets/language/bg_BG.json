@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Наблюдения на комари? Да го хванем!",
     "mailing_mosquito_samples": "Относно изпращането на действителни проби от комари",
     "ensure_single_mosquito_photos": "Изпращайте само снимки на един и същи комар, като се уверите, че лицето изглежда самостоятелно на всяка снимка.",
-    "one_mosquito_reminder_badge": "Само един комар"
+    "one_mosquito_reminder_badge": "Само един комар",
+    "auto_tagging_settings_title": "Автоматично маркиране",
+    "auto_tagging_settings_placeholder": "Въведете етикет..."
 }

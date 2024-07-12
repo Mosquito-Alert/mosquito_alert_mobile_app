@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Opazovanje komarjev? Ujemimo ga!",
     "mailing_mosquito_samples": "O pošiljanju dejanskih vzorcev komarjev",
     "ensure_single_mosquito_photos": "Pošljite samo slike istega komarja in zagotovite, da je posameznik na vsaki fotografiji sam.",
-    "one_mosquito_reminder_badge": "Samo en komar"
+    "one_mosquito_reminder_badge": "Samo en komar",
+    "auto_tagging_settings_title": "Samodejno označevanje",
+    "auto_tagging_settings_placeholder": "Vnesite oznako..."
 }

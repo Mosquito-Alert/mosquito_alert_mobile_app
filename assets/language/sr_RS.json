@@ -349,5 +349,7 @@
     "what_to_do_txt_5": "Видети комарце? Хајде да га ухватимо!",
     "mailing_mosquito_samples": "О слању стварних узорака комараца",
     "ensure_single_mosquito_photos": "Пошаљите само слике истог комарца, осигуравајући да се појединац појављује сам на свакој фотографији.",
-    "one_mosquito_reminder_badge": "Само један комарац"
+    "one_mosquito_reminder_badge": "Само један комарац",
+    "auto_tagging_settings_title": "Аутоматско означавање",
+    "auto_tagging_settings_placeholder": "Унесите ознаку..."
 }
