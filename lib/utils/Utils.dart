@@ -528,7 +528,7 @@ class Utils {
             actions: <Widget>[
               TextButton(
                 //Changed from FlatButton
-                child: Text(MyLocalizations.of(context, 'ok')!),
+                child: Text(MyLocalizations.of(context, 'ok')),
                 onPressed: () {
                   if (onPressed != null) {
                     onPressed();
@@ -564,7 +564,7 @@ class Utils {
             actions: <Widget>[
               CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'ok')!),
+                child: Text(MyLocalizations.of(context, 'ok')),
                 onPressed: () {
                   if (onPressed != null) {
                     onPressed();
@@ -600,7 +600,7 @@ class Utils {
             actions: <Widget>[
               TextButton(
                 //Changed from FlatButton
-                child: Text(MyLocalizations.of(context, 'ok')!),
+                child: Text(MyLocalizations.of(context, 'ok')),
                 onPressed: () {
                   if (onPressed != null) {
                     onPressed();
@@ -633,7 +633,7 @@ class Utils {
             actions: <Widget>[
               CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'ok')!),
+                child: Text(MyLocalizations.of(context, 'ok')),
                 onPressed: () {
                   if (onPressed != null) {
                     onPressed();
@@ -670,14 +670,14 @@ class Utils {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text(MyLocalizations.of(context, 'yes')!),
+                child: Text(MyLocalizations.of(context, 'yes')),
                 onPressed: () {
                   Navigator.of(context).pop();
                   onYesPressed();
                 },
               ),
               TextButton(
-                child: Text(MyLocalizations.of(context, 'no')!),
+                child: Text(MyLocalizations.of(context, 'no')),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -705,14 +705,14 @@ class Utils {
             actions: <Widget>[
               CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'yes')!),
+                child: Text(MyLocalizations.of(context, 'yes')),
                 onPressed: () {
                   onYesPressed();
                   Navigator.of(context).pop();
                 },
               ),
               CupertinoDialogAction(
-                child: Text(MyLocalizations.of(context, 'no')!),
+                child: Text(MyLocalizations.of(context, 'no')),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -737,7 +737,7 @@ class Utils {
                     CupertinoActionSheetAction(
                       onPressed: close as void Function(),
                       child: Text(
-                        MyLocalizations.of(context, 'cancel')!,
+                        MyLocalizations.of(context, 'cancel'),
                         style: TextStyle(color: Colors.red),
                       ),
                     ),
@@ -790,7 +790,7 @@ class Utils {
                 style: TextStyle(color: Style.textColor, fontSize: 12)),
             InkWell(
               onTap: () async {
-                final url = MyLocalizations.of(context, 'url_politics')!;
+                final url = MyLocalizations.of(context, 'url_politics');
                 if (await canLaunch(url)) {
                   await launch(url);
                 } else {
@@ -798,7 +798,7 @@ class Utils {
                 }
               },
               child: Text(
-                  MyLocalizations.of(context, 'terms_and_conditions_txt2')!,
+                  MyLocalizations.of(context, 'terms_and_conditions_txt2'),
                   style: TextStyle(
                       color: Style.textColor,
                       fontSize: 12,
@@ -809,7 +809,7 @@ class Utils {
                 style: TextStyle(color: Style.textColor, fontSize: 12)),
             InkWell(
               onTap: () async {
-                final url = MyLocalizations.of(context, 'url_legal')!;
+                final url = MyLocalizations.of(context, 'url_legal');
                 if (await canLaunch(url)) {
                   await launch(url);
                 } else {
@@ -817,7 +817,7 @@ class Utils {
                 }
               },
               child: Text(
-                  MyLocalizations.of(context, 'terms_and_conditions_txt4')!,
+                  MyLocalizations.of(context, 'terms_and_conditions_txt4'),
                   style: TextStyle(
                       color: Style.textColor,
                       fontSize: 12,
@@ -1028,7 +1028,7 @@ class Utils {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              MyLocalizations.of(context, 'app_name')!,
+              MyLocalizations.of(context, 'app_name'),
             ),
             content: SingleChildScrollView(
               child: ListBody(children: <Widget>[
@@ -1057,7 +1057,7 @@ class Utils {
                       SizedBox(
                         width: 7,
                       ),
-                      Text(MyLocalizations.of(context, 'show_info')!)
+                      Text(MyLocalizations.of(context, 'show_info'))
                     ],
                   ),
                   onPressed: () {
@@ -1066,7 +1066,7 @@ class Utils {
                   }),
               TextButton(
                 //Changed from FlatButton
-                child: Text(MyLocalizations.of(context, 'no_show_info')!),
+                child: Text(MyLocalizations.of(context, 'no_show_info')),
                 onPressed: () {
                   Navigator.of(context).popUntil((r) => r.isFirst);
                   Utils.resetReport();
@@ -1082,7 +1082,7 @@ class Utils {
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
             title: Text(
-              MyLocalizations.of(context, 'app_name')!,
+              MyLocalizations.of(context, 'app_name'),
               style: TextStyle(letterSpacing: -0.3),
             ),
             content: Column(
@@ -1117,7 +1117,7 @@ class Utils {
                       SizedBox(
                         width: 7,
                       ),
-                      Text(MyLocalizations.of(context, 'show_info')!)
+                      Text(MyLocalizations.of(context, 'show_info'))
                     ],
                   ),
                   onPressed: () {
@@ -1126,7 +1126,7 @@ class Utils {
                   }),
               CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'no_show_info')!),
+                child: Text(MyLocalizations.of(context, 'no_show_info')),
                 onPressed: () {
                   Navigator.of(context).popUntil((r) => r.isFirst);
                   Utils.resetReport();

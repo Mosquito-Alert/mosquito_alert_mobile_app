@@ -480,26 +480,6 @@ class _BitingFormState extends State<BitingForm> {
     );
   }
 
-  bool _getDisabled(int answerId, int questionId) {
-    if (questions!.isEmpty) {
-      return false;
-    }
-
-    var index = questions!.indexWhere((q) => q!.question_id == 1);
-    var totalAnswers =
-        index != -1 ? int.parse(questions![index]!.answer_value!) : 0;
-
-    var currentValues = 0;
-
-    questions!.forEach((q) {
-      if (q!.question_id == questionId) {
-        currentValues = currentValues + 1;
-      }
-    });
-
-    return currentValues >= totalAnswers;
-  }
-
   String? getIndexBody(int answer_id) {
     var index = Utils.report!.responses!
         .indexWhere((question) => question!.answer_id == answer_id);
