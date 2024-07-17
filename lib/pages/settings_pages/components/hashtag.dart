@@ -122,8 +122,7 @@ class _StringMultilineTagsState extends State<StringMultilineTags> {
                                         child: const Icon(
                                           Icons.cancel,
                                           size: 14.0,
-                                          color: Color.fromARGB(
-                                              255, 233, 233, 233),
+                                          color: Colors.white,
                                         ),
                                         onTap: () {
                                           inputFieldValues.onTagRemoved(tag);
