@@ -355,6 +355,8 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
         } else {
           Navigator.of(context).popUntil((r) => r.isFirst);
         }
+
+        Utils.requestInAppReview();
       },
       barrierDismissible: false,
     );

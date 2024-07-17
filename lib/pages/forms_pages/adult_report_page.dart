@@ -405,6 +405,8 @@ class _AdultReportPageState extends State<AdultReportPage> {
           Navigator.of(context).popUntil((r) => r.isFirst);
           Utils.resetReport();
         }
+
+        Utils.requestInAppReview();
       },
       barrierDismissible: false,
     );

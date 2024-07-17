@@ -11,6 +11,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/question.dart';
 import 'package:mosquito_alert_app/models/report.dart';
@@ -1196,5 +1197,29 @@ class Utils {
     var placemarks = await placemarkFromCoordinates(lat, lon, localeIdentifier: locale);
     if (placemarks.isEmpty) { return null; }
     return placemarks.first.locality;
+  }
+
+  static void requestInAppReview() async {
+    var myReports = await ApiSingleton().getReportsList();
+    var numReports = myReports.length;
+
+    if (numReports < 3) { return; }
+
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final lastReportCount = await UserManager.getLastReportCount() ?? 0;
+    final lastReviewRequest = await UserManager.getLastReviewRequest() ?? 0;
+
+    var shouldRequestReview = (numReports == 3 || numReports == 4 || numReports >= lastReportCount + 3 || now - lastReviewRequest >= 14 * 24 * 60 * 60 * 1000);
+
+    if (!shouldRequestReview) { return; }
+
+    final inAppReview = InAppReview.instance;
+
+    if (await inAppReview.isAvailable()) {
+      await inAppReview.requestReview();
+
+      await UserManager.setLastReviewRequest(now);
+      await UserManager.setLastReportCount(numReports);
+    }
   }
 }

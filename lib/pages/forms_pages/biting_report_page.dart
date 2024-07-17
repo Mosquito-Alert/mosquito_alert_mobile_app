@@ -363,6 +363,8 @@ class _BitingReportPageState extends State<BitingReportPage> {
           Navigator.of(context).popUntil((r) => r.isFirst);
           Utils.resetReport();
         }
+
+        Utils.requestInAppReview();
       },
       barrierDismissible: false,
     );

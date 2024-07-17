@@ -144,6 +144,16 @@ class UserManager {
     await prefs.setString('serverUrl', serverUrl);
   }
 
+  static Future<void> setLastReviewRequest(int lastReviewRequest) async{
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('lastReviewRequest', lastReviewRequest);
+  }
+
+  static Future<void> setLastReportCount(int lastReportCount) async{
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('lastReportCount', lastReportCount);
+  }
+
   //get
   static Future<String?> getUUID() async {
     var prefs = await SharedPreferences.getInstance();
@@ -233,6 +243,16 @@ class UserManager {
   static Future<String> getServerUrl() async {
     var prefs = await SharedPreferences.getInstance();
     return prefs.getString('serverUrl') ?? '';
+  }
+
+  static Future<int?> getLastReviewRequest() async{
+    var prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('lastReviewRequest');
+  }
+
+  static Future<int?> getLastReportCount() async{
+    var prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('lastReportCount');
   }
 
   static signOut() async {
