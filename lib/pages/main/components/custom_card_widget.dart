@@ -12,9 +12,9 @@ class CustomCard extends StatelessWidget {
       elevation: 5.0,
       borderRadius: BorderRadius.circular(100),
       child: Container(
-        height: 80.0,
+        height: 70.0,
         decoration: BoxDecoration(
-          color: Color(int.parse(color, radix: 16)),
+          color: Colors.transparent,
           borderRadius: BorderRadius.circular(100),
         ),
         child: InkWell(
@@ -23,19 +23,21 @@ class CustomCard extends StatelessWidget {
           },
           child: Row(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 5.0),
-                child: Image.asset(image_path, width: 70, height: 70),
-              ),              
+              CircleAvatar(
+                radius: 35,
+                backgroundColor: Color(int.parse(color, radix: 16)),
+                child: ClipOval(
+                  child: Image.asset(image_path, fit: BoxFit.cover, width: 65, height: 65),
+                ),
+              ),
               SizedBox(width: 15),
               Expanded(
-                  child: Text(
-                    MyLocalizations.of(context, text),
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
+                child: Text(
+                  MyLocalizations.of(context, text),
+                  style: TextStyle(
+                    fontSize: 18,
                   ),
-               
+                ),
               ),
             ],
           ),

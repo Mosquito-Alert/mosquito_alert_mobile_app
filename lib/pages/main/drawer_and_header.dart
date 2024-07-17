@@ -10,7 +10,6 @@ import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
 import 'package:mosquito_alert_app/pages/main/home_page.dart';
-import 'package:mosquito_alert_app/pages/map/public_map.dart';
 import 'package:mosquito_alert_app/pages/my_reports_pages/my_reports_page.dart';
 import 'package:mosquito_alert_app/pages/notification_pages/notifications_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/gallery_page.dart';
@@ -93,7 +92,6 @@ class _MainVCState extends State<MainVC> {
   late final List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     MyReportsPage(),
-    PublicMap(),
     GalleryPage(goBackToHomepage: _onItemTapped),
     SettingsPage(),
     InfoPage(),
@@ -208,10 +206,9 @@ class _MainVCState extends State<MainVC> {
                   ),
                   _buildCustomTile(0, Icons.home, 'home_tab', context),
                   _buildCustomTile(1, Icons.file_copy, 'your_reports_txt', context),
-                  _buildCustomTile(2, Icons.map, 'public_map_tab', context),
-                  _buildCustomTile(3, Icons.biotech, 'guide_tab', context),
-                  _buildCustomTile(4, Icons.settings, 'settings_title', context),
-                  _buildCustomTile(5, Icons.info, 'info_tab', context),
+                  _buildCustomTile(2, Icons.biotech, 'guide_tab', context),
+                  _buildCustomTile(3, Icons.settings, 'settings_title', context),
+                  _buildCustomTile(4, Icons.info, 'info_tab', context),
                 ],
               ),
             ),

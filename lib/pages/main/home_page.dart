@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/breeding_report_page.dart';
 import 'package:mosquito_alert_app/pages/main/components/custom_card_widget.dart';
+import 'package:mosquito_alert_app/pages/map/public_map.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -76,27 +78,65 @@ class _HomePageState extends State<HomePage> {
                                     )                                      
                                   ]
                                 ),
-                                SizedBox(height: 50),
+                                SizedBox(height: 30),
                                 CustomCard(
                                   text: 'single_mosquito',
                                   image_path: 'assets/img/ic_mosquito_report.png',
                                   color: '40DFD458',
                                   reportFunction: _createAdultReport
                                 ),
-                                SizedBox(height: 15),
+                                SizedBox(height: 10),
                                 CustomCard(
                                   text: 'single_bite',
                                   image_path: 'assets/img/ic_bite_report.png',
                                   color: '40D28A73',
                                   reportFunction: _createBiteReport
                                 ),
-                                SizedBox(height: 15),
+                                SizedBox(height: 10),
                                 CustomCard(
                                   text: 'single_breeding_site',
                                   image_path: 'assets/img/ic_breeding_report.png',
                                   color: '407D9393',
                                   reportFunction: _createSiteReport
                                 ),
+                                SizedBox(height: 30),
+                                Material(
+                                  elevation: 5.0,
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Container(
+                                    height: 60.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => PublicMap()),
+                                        );
+                                      },
+                                      child: Row(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10.0),
+                                            child: SvgPicture.asset('assets/img/maps/public-map-icon.svg', width: 50,),
+                                          ),
+                                          SizedBox(width: 15),
+                                          Expanded(
+                                            child: Text(
+                                              MyLocalizations.of(context, 'public_map_tab'),
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.grey[600]
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),

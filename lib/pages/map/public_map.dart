@@ -38,6 +38,14 @@ class _PublicMapState extends State<PublicMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Image.asset(
+          'assets/img/ic_logo.png',
+          height: 40,
+        ),
+      ),
       body: SafeArea(
         child: Stack(
           children: [
