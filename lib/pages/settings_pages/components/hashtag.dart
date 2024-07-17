@@ -141,6 +141,8 @@ class _StringMultilineTagsState extends State<StringMultilineTags> {
                     ),
                     onChanged: inputFieldValues.onTagChanged,
                     onSubmitted: (String newTag){
+                      newTag = newTag.replaceAll('#', '');
+
                       if (!hashtags.contains(newTag)) {
                         inputFieldValues.onTagSubmitted(newTag);
                         hashtags.add(newTag);
