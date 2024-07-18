@@ -23,7 +23,8 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool isBgTrackingEnabled = false;
   var packageInfo;
-  int numTagsAdded = 0;
+  late int? numTagsAdded;
+  bool isLoading = true;
 
   final languageCodes = [
     Language('bg_BG', 'Bulgarian'),
@@ -75,6 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
     var hashtags = await UserManager.getHashtags();
     setState(() {
       numTagsAdded = hashtags?.length ?? 0;
+      isLoading = false;
     });
   }
 
@@ -93,7 +95,14 @@ class _SettingsPageState extends State<SettingsPage> {
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(15),
-          child:
+          child: isLoading ? 
+            Container(
+                height: MediaQuery.sizeOf(context).height * 0.8,
+                child: Center(
+                  child: CircularProgressIndicator()
+                ),
+            )            
+          :
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -150,13 +159,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   Expanded(
                     child: ExpansionTile(
+                      initiallyExpanded: numTagsAdded! > 0,
                       title: Row(
                         children: [
                             Text(
                               MyLocalizations.of(context, 'auto_tagging_settings_title'),
                             ),
                             Spacer(flex: 1),
-                          if (numTagsAdded > 0)
+                          if (numTagsAdded! > 0)
                             Container(
                               margin: EdgeInsets.only(left: 8.0),
                               padding: EdgeInsets.all(4.0),
