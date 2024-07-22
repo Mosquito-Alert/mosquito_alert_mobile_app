@@ -139,16 +139,15 @@ class _StringMultilineTagsState extends State<StringMultilineTags> {
                           ),
                         )
                     ),
-                    onChanged: inputFieldValues.onTagChanged,
-                    onSubmitted: (String newTag){
-                      newTag = newTag.replaceAll('#', '');
-
-                      if (!hashtags.contains(newTag)) {
-                        inputFieldValues.onTagSubmitted(newTag);
-                        hashtags.add(newTag);
-                        UserManager.setHashtags(hashtags);
-                        widget.updateTagsNum(hashtags.length);
+                    onChanged: (String change){
+                      if (change.endsWith(' ')){
+                        // Space was pressed                        
+                        addNewHashtag(change, inputFieldValues);
                       }
+                      inputFieldValues.onTagChanged(change);
+                    },
+                    onSubmitted: (String newTag){
+                      addNewHashtag(newTag, inputFieldValues);
                     }
                   ),
                 );
@@ -157,5 +156,16 @@ class _StringMultilineTagsState extends State<StringMultilineTags> {
         ],
       ),
     );
+  }
+
+  void addNewHashtag(String newTag, InputFieldValues<String> inputFieldValues){
+    newTag = newTag.replaceAll('#', '');
+
+    if (!hashtags.contains(newTag)) {
+      inputFieldValues.onTagSubmitted(newTag);
+      hashtags.add(newTag);
+      UserManager.setHashtags(hashtags);
+      widget.updateTagsNum(hashtags.length);
+    }
   }
 }
