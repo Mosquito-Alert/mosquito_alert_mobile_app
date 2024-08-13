@@ -230,8 +230,38 @@ class _MyReportsListState extends State<ReportsList> {
                     SizedBox(
                       height: 20,
                     ),
-                    Style.titleMedium(
-                      Utils.getTranslatedReportType(context, report.type)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          Utils.getTranslatedReportType(context, report.type),
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        PopupMenuButton<int>(
+                          icon: Icon(Icons.more_vert),
+                          onSelected: (value) {
+                            if (value == 1) {
+                              Utils.showAlertYesNo(
+                                MyLocalizations.of(context, 'delete_report_title'),
+                                MyLocalizations.of(context, 'delete_report_txt'), () {
+                                  _deleteReport(report);
+                                }, context);
+                            }
+                          },
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: 1,
+                              child: Row(
+                                children: [
+                                  Icon(Icons.delete, color: Colors.red),
+                                  Text(' ' + MyLocalizations.of(context, 'delete'), style: TextStyle(color: Colors.red)),
+                                ],
+                              )
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                     SizedBox(
                       height: 20,
                     ),
@@ -501,25 +531,6 @@ class _MyReportsListState extends State<ReportsList> {
                                 ],
                               )
                             : Container(),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                                child: Style.noBgButton(
-                                    MyLocalizations.of(context, 'delete'),
-                                    () {
-                              Utils.showAlertYesNo(
-                                  MyLocalizations.of(
-                                      context, 'delete_report_title'),
-                                  MyLocalizations.of(
-                                      context, 'delete_report_txt'), () {
-                                _deleteReport(report);
-                              }, context);
-                            }, textColor: Colors.red))
-                          ],
-                        ),
                         SizedBox(
                           height: 10,
                         ),
