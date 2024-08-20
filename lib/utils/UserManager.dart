@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/consent_form.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -33,7 +34,7 @@ class UserManager {
       var trackingUuid = Uuid().v4();
       await prefs.setString('uuid', uuid);
       await prefs.setString('trackingUUID', trackingUuid);
-      await prefs.setBool('trackingDisabled', false);
+      await prefs.setBool('trackingEnabled', true);
 
       Utils.initializedCheckData['userCreated']['required'] = true;
 
@@ -81,9 +82,23 @@ class UserManager {
     await prefs.setInt('userScores', scores);
   }
 
-  static Future<void> setTracking(enabled) async {
+  static Future<void> setTracking(bool new_value) async {
     var prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('trackingDisabled', enabled);
+
+    if (new_value == true){
+      print('enable bg tracking');
+      var status = await Permission.locationAlways.status;
+      if (!status.isGranted){
+        status = await Permission.locationAlways.request();
+      }
+
+      if (status.isGranted){
+        await prefs.setBool('trackingEnabled', true);
+      }
+    } else {
+        print('disable bg tracking');
+        await prefs.setBool('trackingEnabled', false);
+    }
   }
 
   static Future<void> setSowInfoAdult(show) async {
@@ -116,12 +131,27 @@ class UserManager {
     await prefs.setStringList('imagesList', imageList);
   }
 
-  static Future<bool> setHashtag(String? hashtag) async {
+  static Future<bool> setHashtags(List<String>? hashtags) async {
     var prefs = await SharedPreferences.getInstance();
-    if (hashtag == null) {
-      return prefs.remove('hashtag');
+    if (hashtags == null || hashtags.isEmpty) {
+      return prefs.remove('hashtags');
     }
-    return prefs.setString('hashtag', hashtag);
+    return prefs.setStringList('hashtags', hashtags);
+  }
+
+  static Future<void> setServerUrl(String serverUrl) async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setString('serverUrl', serverUrl);
+  }
+
+  static Future<void> setLastReviewRequest(int lastReviewRequest) async{
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('lastReviewRequest', lastReviewRequest);
+  }
+
+  static Future<void> setLastReportCount(int lastReportCount) async{
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('lastReportCount', lastReportCount);
   }
 
   //get
@@ -145,9 +175,9 @@ class UserManager {
     return prefs.getInt('userScores');
   }
 
-  static Future<bool?> getTracking() async {
+  static Future<bool> getTracking() async {
     var prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('trackingDisabled');
+    return prefs.getBool('trackingEnabled') ?? false;
   }
 
   static Future<bool?> getShowInfoAdult() async {
@@ -184,9 +214,45 @@ class UserManager {
     return prefs.getStringList('imagesList');
   }
 
-  static Future<String?> getHashtag() async {
+  static Future<void> migrateHashtagToHashtags() async {  
+    final prefs = await SharedPreferences.getInstance();  
+
+    // Check if the old variable exists  
+    if (!prefs.containsKey('hashtag')) { return; }
+
+    var oldHashtag = prefs.getString('hashtag');  
+
+    if (oldHashtag == null){ return; }
+
+    // Users were adding the hashtag manually to the strings
+    if (oldHashtag.startsWith('#')) {
+      oldHashtag = oldHashtag.substring(1);
+    }
+
+    await prefs.setStringList('hashtags', [oldHashtag]);
+    // Remove the old variable  
+    await prefs.remove('hashtag');  
+  }
+
+  static Future<List<String>?> getHashtags() async {
+    await UserManager.migrateHashtagToHashtags();
     var prefs = await SharedPreferences.getInstance();
-    return prefs.getString('hashtag');
+    return prefs.getStringList('hashtags');
+  }
+
+  static Future<String> getServerUrl() async {
+    var prefs = await SharedPreferences.getInstance();
+    return prefs.getString('serverUrl') ?? '';
+  }
+
+  static Future<int?> getLastReviewRequest() async{
+    var prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('lastReviewRequest');
+  }
+
+  static Future<int?> getLastReportCount() async{
+    var prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('lastReportCount');
   }
 
   static signOut() async {

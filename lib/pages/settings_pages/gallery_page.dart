@@ -4,14 +4,16 @@ import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class GalleryPage extends StatefulWidget {
+  final Function goBackToHomepage;
+
+  GalleryPage({required this.goBackToHomepage});
+
   @override
   _GalleryPageState createState() => _GalleryPageState();
 }
 
 class _GalleryPageState extends State<GalleryPage> {
   List<Slide> slides = [];
-
-  Function? goToTab;
 
   @override
   void initState() {
@@ -98,9 +100,8 @@ class _GalleryPageState extends State<GalleryPage> {
   }
 
   void onDonePress() {
-    // Back to the first tab
-    // this.goToTab(0);
-    Navigator.pop(context);
+    // Back to homepage
+    widget.goBackToHomepage(0);
   }
 
   Widget renderNextBtn() {
@@ -162,12 +163,6 @@ class _GalleryPageState extends State<GalleryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Style.title(MyLocalizations.of(context, 'mosquitos_gallery_txt'),
-            fontSize: 16),
-      ),
       body: IntroSlider(
         // List slides
         slides: initSlides(),
@@ -195,9 +190,6 @@ class _GalleryPageState extends State<GalleryPage> {
         // Tabs
         listCustomTabs: renderListCustomTabs(),
         backgroundColorAllSlides: Colors.white,
-        refFuncGoToTab: (refFunc) {
-          goToTab = refFunc;
-        },
 
         // Show or hide status bar
         hideStatusBar: false,

@@ -1,9 +1,9 @@
 name: mosquito_alert_app
 description: A new Flutter project.
-version: 2.2.0+1726
+version: 2.3.0+1732
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.15.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -15,26 +15,25 @@ dependencies:
   path_provider: ^2.0.15
   path: ^1.8.1
   uuid: ^4.1.0
-  shared_preferences: ^2.1.1
+  shared_preferences: ^2.2.3
   http: ^0.13.5
   random_string: ^2.3.1
   geolocator: ^10.1.1
   geocoding: ^2.1.1
   dio: ^5.3.3
-  image_picker: ^0.8.7+1
+  image_picker: ^1.0.8
   firebase_auth: ^4.3.1
   firebase_messaging: ^14.3.0
   firebase_core: ^2.8.0
   auto_size_text: ^3.0.0
   file_picker: ^5.2.10
-  device_info: ^2.0.3 #Discontinued
+  device_info_plus: ^9.1.2
   package_info: ^2.0.2 #Discontinued
   flutter_launcher_icons: ^0.11.0
-  url_launcher: ^6.1.10
+  url_launcher: ^6.2.4
   photo_view: ^0.14.0
   percent_indicator: ^4.2.3
   flutter_widget_from_html_core: ^0.8.5+3
-  flutter_background_geolocation: ^4.12.0
   intro_slider: ^3.0.5
   flutter_material_pickers: ^3.3.0
   permission_handler: ^11.0.1
@@ -45,6 +44,15 @@ dependencies:
 
   flutter_html: ^3.0.0-alpha.6
   webview_flutter: ^4.5.0
+  workmanager: ^0.5.2
+  battery_plus: ^2.1.4+1
+  badges: ^3.1.2
+  cached_network_image: ^3.3.1
+  camera_camera: ^3.0.0
+  flutter_sliding_up_panel: ^2.1.1
+  photo_gallery: ^2.2.1
+  textfield_tags: ^3.0.1
+  in_app_review: ^2.0.9
 
 dev_dependencies:
   pedantic: ^1.11.1 #Discontinued
@@ -52,6 +60,7 @@ dev_dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  test: ^1.24.3
 
 flutter_icons:
   image_path_android: "assets/img/ic_launcher.png"

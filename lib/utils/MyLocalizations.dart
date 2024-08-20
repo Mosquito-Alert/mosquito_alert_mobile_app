@@ -63,7 +63,7 @@ class MyLocalizations {
     return _englishValues[key] ?? '';
   }
 
-  static String? of(BuildContext context, String? key) {
+  static String of(BuildContext context, String? key) {
     return Localizations.of<MyLocalizations>(context, MyLocalizations)!
         .translate(key);
   }

@@ -8,8 +8,7 @@ Mosquito Alert is a mobile phone application that is part of a larger citizen sc
 1. Clone the repository to your local machine
 2. Go to android/local.properties and at the end of the file add the following lines: (If the file doesn't exist, just create it yourself)
 ```
-# By leaving the values empty, the app will compile successfully but packages using those licenses will display an error (this is ok!)
-transistorsoft.Key=
+# By leaving the values empty, the app will compile successfully but packages using this license will display an error (this is ok!)
 googlemaps.Key=
 ```
 3. Run the following commands, one by one

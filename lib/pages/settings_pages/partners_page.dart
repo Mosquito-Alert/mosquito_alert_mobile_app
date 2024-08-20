@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/partner.dart';
-import 'package:mosquito_alert_app/pages/info_pages/info_page.dart';
+import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -51,7 +51,7 @@ class _PartnersPageState extends State<PartnersPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => InfoPage(partner.pageUrl)),
+                    builder: (context) => InfoPageInWebview(partner.pageUrl)),
               );
             }
           },

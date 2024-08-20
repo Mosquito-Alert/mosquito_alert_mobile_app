@@ -45,8 +45,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
               markerId: MarkerId('mk_${markers.length}'),
               position: LatLng(Utils.report!.selected_location_lat!,
                   Utils.report!.selected_location_lon!)));
-          currentLocation = LatLng(Utils.report!.selected_location_lat!,
-              Utils.report!.selected_location_lon!);
+          currentLocation = LatLng(Utils.report!.selected_location_lat!, Utils.report!.selected_location_lon!);
           widget.setValid(true);
           break;
         case 'current':
@@ -55,8 +54,7 @@ class _BitingLocationFormState extends State<BitingLocationForm> {
               markerId: MarkerId('mk_${markers.length}'),
               position: LatLng(Utils.report!.current_location_lat!,
                   Utils.report!.current_location_lon!)));
-          currentLocation = LatLng(Utils.report!.current_location_lat!,
-              Utils.report!.current_location_lon!);
+          currentLocation = LatLng(Utils.report!.current_location_lat!, Utils.report!.current_location_lon!);
           widget.setValid(true);
           break;
         default:

@@ -32,17 +32,17 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-// flutter_background_geolocation (must be placed after the lines above)
-Project background_geolocation = project(':flutter_background_geolocation')
-apply from: "${background_geolocation.projectDir}/background_geolocation.gradle"
-
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def transistorsoftKey = properties.getProperty('transistorsoft.Key')
 def googlemapsKey = properties.getProperty('googlemaps.Key')
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -64,7 +64,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders = [
-            transistorsoftKey: transistorsoftKey, 
             googlemapsKey: googlemapsKey
             ]
     }
@@ -84,8 +83,6 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled false
             shrinkResources false
-            // background_geolocation requires custom Proguard Rules with minifyEnabled
-           proguardFiles "${background_geolocation.projectDir}/proguard-rules.pro"
         }
         /*debug {
             minifyEnabled true

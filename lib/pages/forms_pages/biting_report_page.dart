@@ -85,13 +85,17 @@ class _BitingReportPageState extends State<BitingReportPage> {
   ];
   late Report toEditReport;
 
+  void _initializeReport() async {
+    if (widget.editReport != null) {
+      toEditReport = await Report.fromJsonAsync(widget.editReport!.toJson());
+      Utils.setEditReport(toEditReport);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    if (widget.editReport != null) {
-      toEditReport = Report.fromJson(widget.editReport!.toJson());
-      Utils.setEditReport(toEditReport);
-    }
+    _initializeReport();
     _pagesController = PageController();
     _formsRepot = [
       BitingForm(
@@ -359,6 +363,8 @@ class _BitingReportPageState extends State<BitingReportPage> {
           Navigator.of(context).popUntil((r) => r.isFirst);
           Utils.resetReport();
         }
+
+        Utils.requestInAppReview();
       },
       barrierDismissible: false,
     );

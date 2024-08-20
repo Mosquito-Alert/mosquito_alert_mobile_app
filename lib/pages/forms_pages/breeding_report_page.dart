@@ -1,20 +1,16 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_other_report_form.dart';
+import 'package:mosquito_alert_app/pages/forms_pages/components/add_photo_button_widget.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/biting_location_form.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/questions_breeding_form.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class BreedingReportPage extends StatefulWidget {
   final Report? editReport;
@@ -75,20 +71,30 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   late Report toEditReport;
 
   double index = 1.0;
-  double displayContinue = 2;
+  double displayContinue = 1.0;
+  bool _atLeastOnePhotoAttached = false;
+
+  void _initializeReport() async {
+    if (widget.editReport != null) {
+      toEditReport = await Report.fromJsonAsync(widget.editReport!.toJson());
+      Utils.setEditReport(toEditReport);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    if (widget.editReport != null) {
-      toEditReport = Report.fromJson(widget.editReport!.toJson());
-      Utils.setEditReport(toEditReport);
-    }
+    _initializeReport();
     _pagesController = PageController();
 
     _formsRepot = [
-      QuestionsBreedingForm(displayQuestions.elementAt(0), setValid, true,
-          _chooseTypeImage, 'assets/img/bottoms/breeding_1.png'),
+      QuestionsBreedingForm(
+        displayQuestions.elementAt(0),
+        setValid,
+        true,
+        goNextPage,
+        'assets/img/bottoms/breeding_1.png'),
+      AddPhotoButton(true, true, _checkAtLeastOnePhotoAttached, null, null),
       QuestionsBreedingForm(
         displayQuestions.elementAt(1),
         setValid,
@@ -106,39 +112,45 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     _initialFormsReport = List.from(_formsRepot);
   }
 
-  skipPage3(skip) {
+  void skipPage3(skip) {
     var list = List<Widget>.from(_initialFormsReport);
     if (skip) {
-      list.removeAt(2);
+      list.removeAt(3);
       setState(() {
         _formsRepot = list;
-        displayContinue = 1.0;
+        displayContinue = 2.0;
       });
     } else {
       setState(() {
         _formsRepot = List.from(_initialFormsReport);
-        displayContinue = 2.0;
+        displayContinue = 3.0;
       });
     }
   }
 
-  addOtherReport(String? reportType) {
+  void _checkAtLeastOnePhotoAttached(){
+    setState(() {
+      _atLeastOnePhotoAttached = true;
+    });
+  }
+
+  void addOtherReport(String? reportType) {
     setState(() {
       otherReport = reportType;
     });
   }
 
-  setShowCamera(data) {
+  void setShowCamera(data) {
     setState(() {
       showCamera = data;
     });
   }
 
-  setValid(isValid) {
+  void setValid(isValid) {
     validStream.add(isValid);
   }
 
-  goNextPage() {
+  void goNextPage() {
     _pagesController!
         .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
         .then((value) => setValid(widget.editReport != null));
@@ -147,7 +159,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     });
   }
 
-  navigateOtherReport() async {
+  void navigateOtherReport() async {
     switch (otherReport) {
       case 'bite':
         Utils.addOtherReport('bite');
@@ -239,7 +251,17 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                   children: _formsRepot,
                 ),
                 index <= displayContinue
-                    ? Container()
+                  ? index == 1 && _atLeastOnePhotoAttached ?
+                    Container(
+                      width: double.infinity,
+                      height: 54,
+                      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                      child: Style.button(
+                        MyLocalizations.of(context, 'continue_txt'), () {
+                          goNextPage();
+                        }
+                      )
+                    ) : Container()
                     : index != _formsRepot.length.toDouble() - 1
                         ? SafeArea(
                             child: Align(
@@ -247,43 +269,29 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                             child: StreamBuilder<bool>(
                                 stream: validStream.stream,
                                 initialData: false,
-                                builder: (BuildContext ctxt,
-                                    AsyncSnapshot<bool> snapshot) {
+                                builder: (BuildContext ctxt, AsyncSnapshot<bool> snapshot) {
                                   return snapshot.data!
                                       ? Container(
                                           width: double.infinity,
                                           height: 54,
                                           margin: EdgeInsets.symmetric(
-                                              vertical: 6, horizontal: 12),
+                                            vertical: 6,
+                                            horizontal: 12),
                                           child: Style.button(
-                                              MyLocalizations.of(
-                                                  context, 'continue_txt'), () {
-                                            var currentPage =
-                                                _pagesController!.page;
+                                            MyLocalizations.of(context, 'continue_txt'), () {
+                                              var currentPage =_pagesController!.page;
 
-                                            if (currentPage == 0.0) {
-                                              _chooseTypeImage();
-                                              setState(() {
-                                                index = currentPage! + 1;
-                                              });
-                                            } else if (currentPage == 3.0 &&
-                                                    otherReport == 'adult' ||
-                                                otherReport == 'bite') {
-                                              navigateOtherReport();
-                                            } else {
-                                              setState(() {
-                                                index = currentPage! + 1;
-                                              });
-                                              _pagesController!
-                                                  .nextPage(
-                                                      duration: Duration(
-                                                          microseconds: 300),
-                                                      curve: Curves.ease)
-                                                  .then((value) => setValid(
-                                                      widget.editReport !=
-                                                          null));
+                                              if (currentPage == 0.0) {
+                                                goNextPage();
+                                              } else if (currentPage == 4.0) {
+                                                if (otherReport == 'adult' || otherReport == 'bite') {
+                                                  navigateOtherReport();
+                                                }
+                                              } else {
+                                                goNextPage();
+                                              }
                                             }
-                                          }),
+                                          ),
                                         )
                                       : Container(
                                           width: double.infinity,
@@ -331,125 +339,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     );
   }
 
-  _chooseTypeImage() {
-    if (widget.editReport == null) {
-      var listForiOS = <Widget>[
-        CupertinoActionSheetAction(
-          onPressed: () {
-            Navigator.pop(context);
-            Utils.infoBreedingCamera(context, getGalleryImages, gallery: true);
-          },
-          child: Text(
-            MyLocalizations.of(context, 'gallery')!,
-            style: TextStyle(color: Colors.blue),
-          ),
-        ),
-        CupertinoActionSheetAction(
-          onPressed: () {
-            Navigator.pop(context);
-            Utils.infoBreedingCamera(context, getImage);
-          },
-          child: Text(
-            MyLocalizations.of(context, 'camara')!,
-            style: TextStyle(color: Colors.blue),
-          ),
-        ),
-      ];
-      var listForAndroid = <Widget>[
-        InkWell(
-          onTap: () {
-            Navigator.pop(context);
-            Utils.infoBreedingCamera(context, getImage);
-          },
-          child: Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(20),
-            child: Text(MyLocalizations.of(context, 'camara')!,
-                style: TextStyle(color: Colors.blue, fontSize: 15)),
-          ),
-        ),
-        Divider(height: 1.0),
-        InkWell(
-          onTap: () {
-            Navigator.pop(context);
-            Utils.infoBreedingCamera(context, getGalleryImages, gallery: true);
-          },
-          child: Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(20),
-            child: Text(MyLocalizations.of(context, 'gallery')!,
-                style: TextStyle(color: Colors.blue, fontSize: 15)),
-          ),
-        ),
-      ];
-
-      Utils.modalDetailTrackingforPlatform(
-        Theme.of(context).platform == TargetPlatform.iOS
-            ? listForiOS
-            : listForAndroid,
-        Theme.of(context).platform,
-        context,
-        () {
-          Navigator.pop(context);
-        },
-        title: '${MyLocalizations.of(context, 'bs_info_adult_title')}:',
-      );
-    } else {
-      _pagesController!
-          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-          .then((value) => setValid(widget.editReport != null));
-    }
-  }
-
-  getGalleryImages() async {
-    var pickFiles = await FilePicker.platform.pickFiles(type: FileType.image);
-
-    if (pickFiles != null &&
-        pickFiles.files.isNotEmpty) {
-      setShowCamera(false);
-      await _pagesController!
-          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-          .then((value) => setValid(widget.editReport != null));
-      setState(() {
-        index = _pagesController!.page! + 1;
-      });
-    }
-
-    if (pickFiles != null &&
-        pickFiles.files.isNotEmpty) {
-      pickFiles.files.forEach((image) {
-        Utils.saveImgPath(File(image.path!));
-      });
-    }      
-  }
-
-  Future getImage(source) async {
-    if (await Permission.camera.isPermanentlyDenied && Platform.isIOS) {
-      await openAppSettings();
-      return;
-    }
-
-    final _picker = ImagePicker();
-    var image = await _picker.getImage(
-      source: source,
-      maxHeight: 1024,
-      imageQuality: 60,
-    );
-
-    if (image != null) {
-      final file = File(image.path);
-      Utils.saveImgPath(file);
-      setShowCamera(false);
-      await _pagesController!
-          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-          .then((value) => setValid(widget.editReport != null));
-      setState(() {
-        index = _pagesController!.page! + 1;
-      });
-    }
-  }
-
-  _showAlertOk() {
+  void _showAlertOk() {
     loadingStream.add(false);
     Utils.showAlert(
       MyLocalizations.of(context, 'app_name'),
@@ -465,12 +355,14 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
         } else {
           Navigator.of(context).popUntil((r) => r.isFirst);
         }
+
+        Utils.requestInAppReview();
       },
       barrierDismissible: false,
     );
   }
 
-  _showAlertKo() {
+  void _showAlertKo() {
     loadingStream.add(false);
     Utils.showAlert(
       MyLocalizations.of(context, 'app_name'),
@@ -489,7 +381,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     );
   }
 
-  _onWillPop() {
+  void _onWillPop() {
     if (Utils.report!.responses!.isNotEmpty) {
       Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'),
           MyLocalizations.of(context, 'close_report_no_save_txt'), () {

@@ -38,7 +38,7 @@ class ApiSingleton {
   static const reports = '/reports/';
 
   //Session
-  static const sessions = '/sessions';
+  static const sessions = '/sessions/';
   static const sessionUpdate = '/session_update/';
 
   //Images
@@ -81,6 +81,7 @@ class ApiSingleton {
     final config = await AppConfig.forEnvironment(env: env);
     baseUrl = config.baseUrl;
     serverUrl = '$baseUrl/api';
+    await UserManager.setServerUrl(serverUrl);
   }
 
   static ApiSingleton getInstance() {
@@ -229,7 +230,7 @@ class ApiSingleton {
   Future<dynamic> createSession(Session session) async {
     try {
       final response = await http
-          .post(Uri.parse('$serverUrl$sessions/'),
+          .post(Uri.parse('$serverUrl$sessions'),
               headers: headers,
               body: json.encode(
                 session.toJson(),
@@ -360,11 +361,12 @@ class ApiSingleton {
         body.addAll({'app_language': report.app_language});
       }
 
-      var hashtag = await UserManager.getHashtag();
+      var hashtag = await UserManager.getHashtags();
       if ((report.note != null && report.note != '') || hashtag != null) {
+        var combinedHashtags = hashtag?.map((tag) => '#$tag').join(' ');
         body.addAll({
           'note':
-              '${report.note != null && report.note != "" ? report.note : ''}${report.note != null && report.note != "" && hashtag != null ? ' ' : ''}${hashtag != null ? '$hashtag' : ''}'
+              '${report.note != null && report.note != "" ? report.note : ''}${report.note != null && report.note != "" && combinedHashtags != null ? ' ' : ''}${combinedHashtags != null ? '$combinedHashtags' : ''}'
         });
       }
 
@@ -391,7 +393,7 @@ class ApiSingleton {
       }
 
       var jsonAnswer = json.decode(response.body);
-      var newReport = Report.fromJson(jsonAnswer);
+      var newReport = await Report.fromJsonAsync(jsonAnswer);
 
       await PushNotificationsManager.subscribeToReportResult(newReport);
 
@@ -449,7 +451,7 @@ class ApiSingleton {
         List<dynamic> jsonAnswer = json.decode(response.body);
         var list = <Report>[];
         for (var item in jsonAnswer) {
-          list.add(Report.fromJson(item));          
+          list.add(await Report.fromJsonAsync(item));          
         }
         return list;
       }
@@ -462,7 +464,7 @@ class ApiSingleton {
   //Images
   Future<bool> saveImage(String image, String? versionUUID) async {
     try {
-      var fileName = image != null ? image.split('/').last : null;
+      var fileName = image.split('/').last;
       var dio = Dio();
 
       var img = await MultipartFile.fromFile(image,
@@ -491,15 +493,18 @@ class ApiSingleton {
       var body = {
         'user_coverage_uuid': userIdFix,
         'fix_time': time,
-        'masked_lat': lat,
-        'masked_lon': lon,
+        'masked_lat': (lat / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue,
+        'masked_lon': (lon / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue,
         'power': power,
         'phone_upload_time': DateTime.now().toUtc().toIso8601String(),
       };
 
+      // A method called by a background job while the app is not active can't access the singleton values
+      // Then, we can use SharedPrefs as a persistent storage alternative
+      var serverUrlPrefs = await UserManager.getServerUrl();
       final response = await http
           .post(
-        Uri.parse('$serverUrl$fixes'),
+        Uri.parse('$serverUrlPrefs$fixes'),
         headers: headers,
         body: json.encode(body),
       )
@@ -611,7 +616,7 @@ class ApiSingleton {
           list.map((i) => MyNotification.fromJson(i)).toList();
       return data;
     } catch (e) {
-      return false;
+      return [];
     }
   }
 

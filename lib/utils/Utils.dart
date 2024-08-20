@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +11,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/question.dart';
 import 'package:mosquito_alert_app/models/report.dart';
@@ -85,21 +86,23 @@ class Utils {
       if (response is bool && !response) {
         print('Unable to get last session.');
         return false;
-      } else if (response is ApiResponse) {
+      }
+
+      if (response is ApiResponse) {
         print('response is of type ApiResponse, not a number.');
         return false;
-      } else {
-        int? sessionId = response + 1;
-
-        session = Session(
-            session_ID: sessionId,
-            user: userUUID,
-            session_start_time: DateTime.now().toUtc().toIso8601String());
-
-        print(language);
-        session!.id = await ApiSingleton().createSession(session!);
-        // print("Session: ${jsonEncode(session.toJson())}");
       }
+
+      int? sessionId = response + 1;
+
+      session = Session(
+          session_ID: sessionId,
+          user: userUUID,
+          session_start_time: DateTime.now().toUtc().toIso8601String());
+
+      print(language);
+      session!.id = await ApiSingleton().createSession(session!);
+      // print("Session: ${jsonEncode(session.toJson())}");
     }
 
     if (session!.id != null) {
@@ -116,7 +119,7 @@ class Utils {
 
       var packageInfo = await PackageInfo.fromPlatform();
       report!.package_name = packageInfo.packageName;
-      report!.package_version = 33;
+      report!.package_version = 34;
 
       if (Platform.isAndroid) {
         var buildData = await DeviceInfoPlugin().androidInfo;
@@ -195,15 +198,15 @@ class Utils {
     }
   }
 
-  static void deleteLastReport() {
+  static Future<void> deleteLastReport() async {
     report = null;
-    report = Report.fromJson(reportsList!.last!.toJson());
+    report = await Report.fromJsonAsync(reportsList!.last!.toJson());
     reportsList!.removeLast();
     print('${jsonEncode(reportsList)}');
     // print(reportsList);
   }
 
-  static setCurrentLocation(double latitude, double longitude) {
+  static void setCurrentLocation(double latitude, double longitude) {
     report!.location_choice = 'current';
     report!.selected_location_lat = null;
     report!.selected_location_lon = null;
@@ -211,7 +214,7 @@ class Utils {
     report!.current_location_lon = longitude;
   }
 
-  static setSelectedLocation(double? lat, lon) {
+  static void setSelectedLocation(double? lat, lon) {
     report!.location_choice = 'selected';
     report!.current_location_lat = null;
     report!.current_location_lon = null;
@@ -408,7 +411,7 @@ class Utils {
     if (savedReports != null && savedReports.isNotEmpty) {
       bool isCreated;
       for (var i = 0; i < savedReports.length; i++) {
-        var savedReport = Report.fromJson(json.decode(savedReports[i]));
+        var savedReport = await Report.fromJsonAsync(json.decode(savedReports[i]));
         isCreated = await ApiSingleton().createReport(savedReport) != null
             ? true
             : false;
@@ -493,7 +496,7 @@ class Utils {
         currentPermission == LocationPermission.deniedForever ||
         currentPermission == LocationPermission.unableToDetermine) {
       await showAlertYesNo(MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'auto_location_disclaimer_alert'),
+          MyLocalizations.of(context, 'NSLocationWhenInUseUsageDescription'),
           () async {
         await Geolocator.openLocationSettings();
       }, context);
@@ -526,7 +529,7 @@ class Utils {
             actions: <Widget>[
               TextButton(
                 //Changed from FlatButton
-                child: Text(MyLocalizations.of(context, 'ok')!),
+                child: Text(MyLocalizations.of(context, 'ok')),
                 onPressed: () {
                   if (onPressed != null) {
                     onPressed();
@@ -562,7 +565,7 @@ class Utils {
             actions: <Widget>[
               CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'ok')!),
+                child: Text(MyLocalizations.of(context, 'ok')),
                 onPressed: () {
                   if (onPressed != null) {
                     onPressed();
@@ -598,7 +601,7 @@ class Utils {
             actions: <Widget>[
               TextButton(
                 //Changed from FlatButton
-                child: Text(MyLocalizations.of(context, 'ok')!),
+                child: Text(MyLocalizations.of(context, 'ok')),
                 onPressed: () {
                   if (onPressed != null) {
                     onPressed();
@@ -631,7 +634,7 @@ class Utils {
             actions: <Widget>[
               CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'ok')!),
+                child: Text(MyLocalizations.of(context, 'ok')),
                 onPressed: () {
                   if (onPressed != null) {
                     onPressed();
@@ -668,16 +671,14 @@ class Utils {
             ),
             actions: <Widget>[
               TextButton(
-                //Changed from FlatButton
-                child: Text(MyLocalizations.of(context, 'yes')!),
+                child: Text(MyLocalizations.of(context, 'yes')),
                 onPressed: () {
                   Navigator.of(context).pop();
                   onYesPressed();
                 },
               ),
               TextButton(
-                //Changed from FlatButton
-                child: Text(MyLocalizations.of(context, 'no')!),
+                child: Text(MyLocalizations.of(context, 'no')),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -705,14 +706,14 @@ class Utils {
             actions: <Widget>[
               CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'yes')!),
+                child: Text(MyLocalizations.of(context, 'yes')),
                 onPressed: () {
                   onYesPressed();
                   Navigator.of(context).pop();
                 },
               ),
               CupertinoDialogAction(
-                child: Text(MyLocalizations.of(context, 'no')!),
+                child: Text(MyLocalizations.of(context, 'no')),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -737,7 +738,7 @@ class Utils {
                     CupertinoActionSheetAction(
                       onPressed: close as void Function(),
                       child: Text(
-                        MyLocalizations.of(context, 'cancel')!,
+                        MyLocalizations.of(context, 'cancel'),
                         style: TextStyle(color: Colors.red),
                       ),
                     ),
@@ -790,7 +791,7 @@ class Utils {
                 style: TextStyle(color: Style.textColor, fontSize: 12)),
             InkWell(
               onTap: () async {
-                final url = MyLocalizations.of(context, 'url_politics')!;
+                final url = MyLocalizations.of(context, 'url_politics');
                 if (await canLaunch(url)) {
                   await launch(url);
                 } else {
@@ -798,7 +799,7 @@ class Utils {
                 }
               },
               child: Text(
-                  MyLocalizations.of(context, 'terms_and_conditions_txt2')!,
+                  MyLocalizations.of(context, 'terms_and_conditions_txt2'),
                   style: TextStyle(
                       color: Style.textColor,
                       fontSize: 12,
@@ -809,7 +810,7 @@ class Utils {
                 style: TextStyle(color: Style.textColor, fontSize: 12)),
             InkWell(
               onTap: () async {
-                final url = MyLocalizations.of(context, 'url_legal')!;
+                final url = MyLocalizations.of(context, 'url_legal');
                 if (await canLaunch(url)) {
                   await launch(url);
                 } else {
@@ -817,7 +818,7 @@ class Utils {
                 }
               },
               child: Text(
-                  MyLocalizations.of(context, 'terms_and_conditions_txt4')!,
+                  MyLocalizations.of(context, 'terms_and_conditions_txt4'),
                   style: TextStyle(
                       color: Style.textColor,
                       fontSize: 12,
@@ -1028,7 +1029,7 @@ class Utils {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text(
-              MyLocalizations.of(context, 'app_name')!,
+              MyLocalizations.of(context, 'app_name'),
             ),
             content: SingleChildScrollView(
               child: ListBody(children: <Widget>[
@@ -1057,7 +1058,7 @@ class Utils {
                       SizedBox(
                         width: 7,
                       ),
-                      Text(MyLocalizations.of(context, 'show_info')!)
+                      Text(MyLocalizations.of(context, 'show_info'))
                     ],
                   ),
                   onPressed: () {
@@ -1066,7 +1067,7 @@ class Utils {
                   }),
               TextButton(
                 //Changed from FlatButton
-                child: Text(MyLocalizations.of(context, 'no_show_info')!),
+                child: Text(MyLocalizations.of(context, 'no_show_info')),
                 onPressed: () {
                   Navigator.of(context).popUntil((r) => r.isFirst);
                   Utils.resetReport();
@@ -1082,7 +1083,7 @@ class Utils {
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
             title: Text(
-              MyLocalizations.of(context, 'app_name')!,
+              MyLocalizations.of(context, 'app_name'),
               style: TextStyle(letterSpacing: -0.3),
             ),
             content: Column(
@@ -1117,7 +1118,7 @@ class Utils {
                       SizedBox(
                         width: 7,
                       ),
-                      Text(MyLocalizations.of(context, 'show_info')!)
+                      Text(MyLocalizations.of(context, 'show_info'))
                     ],
                   ),
                   onPressed: () {
@@ -1126,7 +1127,7 @@ class Utils {
                   }),
               CupertinoDialogAction(
                 isDefaultAction: true,
-                child: Text(MyLocalizations.of(context, 'no_show_info')!),
+                child: Text(MyLocalizations.of(context, 'no_show_info')),
                 onPressed: () {
                   Navigator.of(context).popUntil((r) => r.isFirst);
                   Utils.resetReport();
@@ -1171,8 +1172,7 @@ class Utils {
     }
   }
 
-  static String getTranslatedReportType(
-      BuildContext context, String? reportType) {
+  static String getTranslatedReportType(BuildContext context, String? reportType){
     var translationString;
     switch (reportType) {
       case 'adult':
@@ -1189,16 +1189,37 @@ class Utils {
         return reportType ?? '';
     }
 
-    return MyLocalizations.of(context, translationString) ?? reportType ?? '';
+    return MyLocalizations.of(context, translationString);
+  }
+    
+  static Future<String?> getCityNameFromCoords(double lat, double lon) async {
+    var locale = await UserManager.getUserLocale();
+    var placemarks = await placemarkFromCoordinates(lat, lon, localeIdentifier: locale);
+    if (placemarks.isEmpty) { return null; }
+    return placemarks.first.locality;
   }
 
-  static Future<String> getCityNameFromCoords(double lat, double lon) async {
-    var locale = await UserManager.getUserLocale();
-    var placemarks =
-        await placemarkFromCoordinates(lat, lon, localeIdentifier: locale);
-    if (placemarks.isEmpty) {
-      return '';
+  static void requestInAppReview() async {
+    var myReports = await ApiSingleton().getReportsList();
+    var numReports = myReports.length;
+
+    if (numReports < 3) { return; }
+
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final lastReportCount = await UserManager.getLastReportCount() ?? 0;
+    final lastReviewRequest = await UserManager.getLastReviewRequest() ?? 0;
+
+    var shouldRequestReview = (numReports == 3 || numReports == 4 || numReports >= lastReportCount + 3 || now - lastReviewRequest >= 14 * 24 * 60 * 60 * 1000);
+
+    if (!shouldRequestReview) { return; }
+
+    final inAppReview = InAppReview.instance;
+
+    if (await inAppReview.isAvailable()) {
+      await inAppReview.requestReview();
+
+      await UserManager.setLastReviewRequest(now);
+      await UserManager.setLastReportCount(numReports);
     }
-    return placemarks.first.locality ?? '';
   }
 }
