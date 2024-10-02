@@ -1194,7 +1194,8 @@ class Utils {
     
   static Future<String?> getCityNameFromCoords(double lat, double lon) async {
     var locale = await UserManager.getUserLocale();
-    var placemarks = await placemarkFromCoordinates(lat, lon, localeIdentifier: locale);
+    await setLocaleIdentifier(locale!);
+    var placemarks = await placemarkFromCoordinates(lat, lon);
     if (placemarks.isEmpty) { return null; }
     return placemarks.first.locality;
   }
