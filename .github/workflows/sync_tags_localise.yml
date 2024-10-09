@@ -1,0 +1,43 @@
+name: Synchronize Github Tags with Localise tags
+
+on:
+    workflow_call:
+    workflow_dispatch:
+
+jobs:
+    tag_job:
+        runs-on: ubuntu-latest
+    
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Delete tag in localise if exist.
+              uses: fjogeleit/http-request-action@v1
+              with:
+                  url: 'https://localise.biz/api/tags/${{ github.ref_name }}.json'
+                  method: 'DELETE'
+                  customHeaders: '{"Authorization": "Loco ${{ secrets.LOCALISE_FULL_API_KEY }}"}'
+                  ignoreStatusCodes: '404'   # 404: tag not in project
+
+            - name: Create tag in localise.
+              uses: fjogeleit/http-request-action@v1
+              with:
+                  url: 'https://localise.biz/api/tags'
+                  method: 'POST'
+                  customHeaders: '{"Authorization": "Loco ${{ secrets.LOCALISE_FULL_API_KEY }}"}'
+                  contentType: "application/x-www-form-urlencoded"
+                  data: '{"name": "${{ github.ref_name }}"}'
+
+            - name: Getting all assets being used
+              run: |
+                echo "ASSET_LIST=$(grep -hrPo "MyLocalizations\.of\s*\(\s*context\s*,\s*['\"]\K[^'\"]*[^'\"]" lib/ | sort | uniq | paste -s -d,)" >> $GITHUB_ENV
+
+            - name: Apply the tag to all related assets.
+              uses: fjogeleit/http-request-action@v1
+              with:
+                  url: 'https://localise.biz/api/tags/${{ github.ref_name }}.json'
+                  method: 'POST'
+                  customHeaders: '{"Authorization": "Loco ${{ secrets.LOCALISE_FULL_API_KEY }}"}'
+                  contentType: "application/x-www-form-urlencoded"
+                  data: '{"data": "${{ env.ASSET_LIST }}"}'
