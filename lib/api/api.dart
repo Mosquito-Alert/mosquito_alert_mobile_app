@@ -30,8 +30,6 @@ class ApiSingleton {
 
   //User
   static const users = '/users/';
-  static const profile = '/profile/';
-  static const newProfile = '/profile/new/';
   static const userScore = '/stats/user_xp_data/';
 
   //Reports
@@ -118,36 +116,6 @@ class ApiSingleton {
       return true;
     } catch (c) {
       return null;
-    }
-  }
-
-  Future<dynamic> createProfile(String? firebaseId) async {
-    var userUUID = await UserManager.getUUID();
-
-    try {
-      final response = await http
-          .post(
-              Uri.parse('$serverUrl$newProfile?fbt=$firebaseId&usr=$userUUID'),
-              headers: headers)
-          .timeout(
-        Duration(seconds: _timeoutTimerInSeconds),
-        onTimeout: () {
-          print('Request timed out');
-          return Future.error('Request timed out');
-        },
-      );
-      ;
-
-      // print(response);
-
-      if (response.statusCode != 200) {
-        print(
-            'Request: ${response.request.toString()} -> Response: ${response.body}');
-        return ApiResponse.fromJson(json.decode(response.body));
-      }
-      return true;
-    } catch (e) {
-      print(e);
     }
   }
 
