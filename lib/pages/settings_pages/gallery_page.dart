@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -82,20 +83,6 @@ class _GalleryPageState extends State<GalleryPage> {
         pathImage: 'assets/img/gallery/guia_9.png',
       ),
     );
-    slides.add(
-      Slide(
-        title: '',
-        description: MyLocalizations.of(context, 'gallery_info_10'),
-        pathImage: 'assets/img/gallery/guia_10.png',
-      ),
-    );
-    slides.add(
-      Slide(
-        title: '',
-        description: MyLocalizations.of(context, 'gallery_info_11'),
-        pathImage: 'assets/img/gallery/guia_11.png',
-      ),
-    );
     return slides;
   }
 
@@ -134,7 +121,7 @@ class _GalleryPageState extends State<GalleryPage> {
         width: double.infinity,
         height: double.infinity,
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 40),
+          margin: EdgeInsets.only(bottom: 60.0),
           child: ListView(
             children: <Widget>[
               GestureDetector(
@@ -146,11 +133,12 @@ class _GalleryPageState extends State<GalleryPage> {
               )),
               Container(
                 margin: EdgeInsets.all(20.0),
-                child: Text(
-                  currentSlide.description!,
-                  textAlign: TextAlign.center,
-                  maxLines: 20,
-                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 0.0),
+                  child: MarkdownBody(
+                    data: currentSlide.description!,
+                  ),
+                )
               ),
             ],
           ),
