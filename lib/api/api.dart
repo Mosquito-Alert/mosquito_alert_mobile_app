@@ -88,31 +88,54 @@ class ApiSingleton {
     return ApiSingleton();
   }
 
+  Future<bool> checkUserExist(String? uuid) async {
+    var url = '$serverUrl$users$uuid/';
+
+    try {
+      final response = await http.get(        
+        Uri.parse(url),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+
+    return false;
+  }
+
   //User
   Future<dynamic> createUser(String? uuid) async {
+    var userExists = await checkUserExist(uuid);
     try {
-      final response = await http
-          .post(Uri.parse('$serverUrl$users'),
-              headers: headers,
-              body: json.encode({
-                'user_UUID': uuid,
-              }))
-          .timeout(
-        Duration(seconds: _timeoutTimerInSeconds),
-        onTimeout: () {
-          print('Request timed out');
-          return Future.error('Request timed out');
-        },
-      );
-      ;
+      if (userExists){
+        print('Skipping user creation. User already exists');
+      } else {
+        final response = await http
+            .post(Uri.parse('$serverUrl$users'),
+                headers: headers,
+                body: json.encode({
+                  'user_UUID': uuid,
+                }))
+            .timeout(
+          Duration(seconds: _timeoutTimerInSeconds),
+          onTimeout: () {
+            print('Request timed out');
+            return Future.error('Request timed out');
+          },
+        );
+        ;
 
-      if (response.statusCode != 201) {
-        print(
-            // ignore: prefer_single_quotes
-            "Request: ${response.request.toString()} -> Response: ${response.body}");
-        return ApiResponse.fromJson(json.decode(response.body));
+        if (response.statusCode != 201) {
+          print(
+              // ignore: prefer_single_quotes
+              "Request: ${response.request.toString()} -> Response: ${response.body}");
+          return ApiResponse.fromJson(json.decode(response.body));
+        }
       }
-
       // Utils.userCreated["created"] = true;
       Utils.initializedCheckData['userCreated']['created'] = true;
       return true;
