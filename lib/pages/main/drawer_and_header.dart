@@ -92,9 +92,9 @@ class _MainVCState extends State<MainVC> {
   late final List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     MyReportsPage(),
-    GalleryPage(goBackToHomepage: _onItemTapped),
-    SettingsPage(),
+    GalleryPage(goBackToHomepage: _onItemTapped),    
     InfoPage(),
+    SettingsPage(),
   ];
 
   void _onItemTapped(int index) {
