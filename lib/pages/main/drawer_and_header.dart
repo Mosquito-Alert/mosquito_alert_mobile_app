@@ -92,9 +92,9 @@ class _MainVCState extends State<MainVC> {
   late final List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     MyReportsPage(),
-    GalleryPage(goBackToHomepage: _onItemTapped),
-    SettingsPage(),
+    GalleryPage(goBackToHomepage: _onItemTapped),    
     InfoPage(),
+    SettingsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -207,8 +207,8 @@ class _MainVCState extends State<MainVC> {
                   _buildCustomTile(0, Icons.home, 'home_tab', context),
                   _buildCustomTile(1, Icons.file_copy, 'your_reports_txt', context),
                   _buildCustomTile(2, Icons.biotech, 'guide_tab', context),
-                  _buildCustomTile(3, Icons.settings, 'settings_title', context),
-                  _buildCustomTile(4, Icons.info, 'info_tab', context),
+                  _buildCustomTile(3, Icons.info, 'info_tab', context),
+                  _buildCustomTile(4, Icons.settings, 'settings_title', context),
                 ],
               ),
             ),

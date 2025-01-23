@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:path/path.dart' as path;
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -30,8 +33,6 @@ class ApiSingleton {
 
   //User
   static const users = '/users/';
-  static const profile = '/profile/';
-  static const newProfile = '/profile/new/';
   static const userScore = '/stats/user_xp_data/';
 
   //Reports
@@ -141,36 +142,6 @@ class ApiSingleton {
       return true;
     } catch (c) {
       return null;
-    }
-  }
-
-  Future<dynamic> createProfile(String? firebaseId) async {
-    var userUUID = await UserManager.getUUID();
-
-    try {
-      final response = await http
-          .post(
-              Uri.parse('$serverUrl$newProfile?fbt=$firebaseId&usr=$userUUID'),
-              headers: headers)
-          .timeout(
-        Duration(seconds: _timeoutTimerInSeconds),
-        onTimeout: () {
-          print('Request timed out');
-          return Future.error('Request timed out');
-        },
-      );
-      ;
-
-      // print(response);
-
-      if (response.statusCode != 200) {
-        print(
-            'Request: ${response.request.toString()} -> Response: ${response.body}');
-        return ApiResponse.fromJson(json.decode(response.body));
-      }
-      return true;
-    } catch (e) {
-      print(e);
     }
   }
 
@@ -485,16 +456,34 @@ class ApiSingleton {
   }
 
   //Images
-  Future<bool> saveImage(String image, String? versionUUID) async {
+  Future<bool> saveImage(String imagePath, String? versionUUID) async {
     try {
-      var fileName = image.split('/').last;
-      var dio = Dio();
 
-      var img = await MultipartFile.fromFile(image,
-          filename: fileName, contentType: MediaType('image', 'jpeg'));
+      // Compressing image to jpeg 4k max = 3840x2180
+      Uint8List? compressedImage = await FlutterImageCompress.compressWithFile(
+          imagePath,
+          minWidth: 3840,
+          minHeight: 2180,
+          quality: 98,
+          autoCorrectionAngle: true,
+          format: CompressFormat.jpeg,
+          keepExif: true
+      );
+
+      if (compressedImage == null) {
+          print('Failed to compress image');
+          return false;
+      }
+
+      var img = await MultipartFile.fromBytes(
+          compressedImage,
+          filename: '${path.basenameWithoutExtension(imagePath)}.jpeg',
+          contentType: MediaType('image', 'jpeg')
+      );
 
       var data = FormData.fromMap({'photo': img, 'report': versionUUID});
 
+      var dio = Dio();
       var response = await dio.post('$serverUrl$photos',
           data: data,
           options: Options(
