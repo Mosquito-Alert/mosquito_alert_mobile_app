@@ -50,7 +50,7 @@ class Utils {
     'userScores': false, // Whether the user scores got fetched
     'userCreated': {
       'created': false,
-      'required': false,
+      'required': true,
     },
     'firebase': false, // Whether firebase got initialized
   };
