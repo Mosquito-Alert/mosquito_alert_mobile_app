@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
-import 'package:flutter_html/style.dart' as html_style;
 import 'package:intl/intl.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
@@ -11,7 +10,6 @@ import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/customModalBottomSheet.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/UserManager.dart';
 
@@ -179,25 +177,20 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         data: notification.expert_html!
                             .replaceAll('<p><a', '<a')
                             .replaceAll('</a></p>', '</a>'),
-                        onLinkTap: (String? url, html.RenderContext context,
-                            Map<String, String> attributes, _) async {
-                          await launch(url!, forceSafariVC: true);
-                        },
                         style: {
                           'a': html.Style(
                               backgroundColor: Colors.transparent,
                               color: Colors.blueAccent,
-                              padding: EdgeInsets.all(12),
-                              margin: html_style.Margins(
-                                  bottom: html_style.Margin(12.0),
-                                  right: html_style.Margin(12.0),
-                                  top: html_style.Margin(12.0),
-                                  left: html_style.Margin(12.0)),
+                              padding: html.HtmlPaddings.all(12.0),
+                              margin: html.Margins(
+                                  bottom: html.Margin(12.0),
+                                  right: html.Margin(12.0),
+                                  top: html.Margin(12.0),
+                                  left: html.Margin(12.0)),
                               textDecoration: TextDecoration.underline,
                               textAlign: TextAlign.center,
                               fontSize: html.FontSize(16.0)),
                         },
-                        tagsList: html.Html.tags..addAll(['bird', 'flutter']),
                       )),
 
                       SizedBox(

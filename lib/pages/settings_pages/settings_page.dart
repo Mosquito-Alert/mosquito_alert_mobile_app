@@ -27,30 +27,30 @@ class _SettingsPageState extends State<SettingsPage> {
   bool isLoading = true;
 
   final languageCodes = [
-    Language('bg_BG', 'Bulgarian'),
-    Language('bn_BD', 'Bengali'),
-    Language('ca_ES', 'Catalan'),
-    Language('de_DE', 'German'),
-    Language('el_GR', 'Greek'),
-    Language('en_US', 'English'),
-    Language('es_ES', 'Spanish'),
-    Language('es_UY', 'Spanish (Uruguay)'),
-    Language('eu_ES', 'Basque'),
-    Language('fr_FR', 'French'),
-    Language('gl_ES', 'Galician'),
-    Language('hr_HR', 'Croatian'),
-    Language('hu_HU', 'Hungarian'),
-    Language('it_IT', 'Italian'),
-    Language('lb_LU', 'Luxembourgish (Luxembourg)'),
-    Language('mk_MK', 'Macedonian (Former Yugoslav Republic of Macedonia)'),
-    Language('nl_NL', 'Dutch'),
-    Language('pt_PT', 'Protuguese'),
-    Language('ro_RO', 'Romanian'),
-    Language('sl_SI', 'Slovenian (Slovenia)'),
-    Language('sq_AL', 'Albanian'),
-    Language('sr_RS', 'Serbian'),
-    Language('sv_SE', 'Swedish'),
-    Language('tr_TR', 'Turkish (Turkey)'),
+    Language('bg_BG', 'Bulgarian', 'Bulgarian'),
+    Language('bn_BD', 'Bengali', 'Bengali'),
+    Language('ca_ES', 'Catalan', 'Catalan'),
+    Language('de_DE', 'German', 'German'),
+    Language('el_GR', 'Greek', 'Greek'),
+    Language('en_US', 'English', 'English'),
+    Language('es_ES', 'Spanish', 'Spanish'),
+    Language('es_UY', 'Spanish (Uruguay)', 'Spanish (Uruguay)'),
+    Language('eu_ES', 'Basque', 'Basque'),
+    Language('fr_FR', 'French', 'French'),
+    Language('gl_ES', 'Galician', 'Galician'),
+    Language('hr_HR', 'Croatian', 'Croatian'),
+    Language('hu_HU', 'Hungarian', 'Hungarian'),
+    Language('it_IT', 'Italian', 'Italian'),
+    Language('lb_LU', 'Luxembourgish (Luxembourg)', 'Luxembourgish (Luxembourg)'),
+    Language('mk_MK', 'Macedonian (Former Yugoslav Republic of Macedonia)', 'Macedonian (Former Yugoslav Republic of Macedonia)'),
+    Language('nl_NL', 'Dutch', 'Dutch'),
+    Language('pt_PT', 'Protuguese', 'Protuguese'),
+    Language('ro_RO', 'Romanian', 'Romanian'),
+    Language('sl_SI', 'Slovenian (Slovenia)', 'Slovenian (Slovenia)'),
+    Language('sq_AL', 'Albanian', 'Albanian'),
+    Language('sr_RS', 'Serbian', 'Serbian'),
+    Language('sv_SE', 'Swedish', 'Swedish'),
+    Language('tr_TR', 'Turkish (Turkey)', 'Turkish (Turkey)'),
   ];
 
   @override
@@ -216,7 +216,8 @@ class _SettingsPageState extends State<SettingsPage> {
         languages: languageCodes.map(
           (language) => Language(
             language.isoCode,
-            MyLocalizations.of(context, language.isoCode)
+            MyLocalizations.of(context, language.isoCode),
+            language.nativeName
           )).toList()..sort(
                   (a, b) => a.name.compareTo(b.name)
                 ),

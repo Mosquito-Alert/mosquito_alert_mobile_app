@@ -57,7 +57,7 @@ android {
     defaultConfig {
         //multiDexEnabled true
         applicationId "ceab.movelab.tigatrapp"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

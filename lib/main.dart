@@ -47,6 +47,7 @@ void main({String env = 'prod'}) async {
   runApp(MyApp());
 }
 
+@pragma('vm:entry-point') // Mandatory if the App is using Flutter 3.1+
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     await Firebase.initializeApp();
