@@ -34,7 +34,7 @@ if (keystorePropertiesFile.exists()) {
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def googlemapsKey = properties.getProperty('googlemaps.Key')
+def googlemapsKey = properties.getProperty('googlemaps.Key', System.getenv('GOOGLE_MAPS_KEY') ?: '')
 
 android {
     compileSdkVersion 34
