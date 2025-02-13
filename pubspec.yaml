@@ -8,10 +8,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.5
   flutter_svg: ^2.0.10+1
   google_maps_flutter: ^2.2.6
-  material_segmented_control: ^5.0.1
   path_provider: ^2.0.15
   path: ^1.8.1
   uuid: ^4.1.0
@@ -30,13 +28,10 @@ dependencies:
   file_picker: ^8.0.3
   device_info_plus: ^9.1.2
   package_info: ^2.0.2 #Discontinued
-  flutter_launcher_icons: ^0.13.1
   url_launcher: ^6.3.1
   photo_view: ^0.15.0
   percent_indicator: ^4.2.3
-  flutter_widget_from_html_core: ^0.15.1
   intro_slider: ^3.0.10
-  flutter_material_pickers: ^3.7.0
   permission_handler: ^11.0.1
   language_picker: ^0.4.5
   connectivity: ^3.0.6 #Discontinued
