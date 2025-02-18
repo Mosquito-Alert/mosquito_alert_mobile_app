@@ -43,7 +43,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
       notifications = response;
       _checkOpenNotification();
     });
-      loadingStream.add(false);
+    loadingStream.add(false);
   }
 
   void _checkOpenNotification() {
@@ -192,7 +192,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
                               fontSize: html.FontSize(16.0)),
                         },
                       )),
-
                       SizedBox(
                         height: 10,
                       ),
@@ -219,12 +218,12 @@ class _NotificationsPageState extends State<NotificationsPage> {
         notifications[index].acknowledged = true;
       });
       _updateUnreadNotificationCount();
-    } 
+    }
   }
 
-  void _updateUnreadNotificationCount(){
+  void _updateUnreadNotificationCount() {
     var unacknowledgedCount = notifications.where((notification) => notification.acknowledged == false).length;
-    if(widget.onNotificationUpdate != null) {
+    if (widget.onNotificationUpdate != null) {
       widget.onNotificationUpdate!(unacknowledgedCount);
     }
   }

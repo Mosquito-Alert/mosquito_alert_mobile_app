@@ -222,18 +222,18 @@ class _MainVCState extends State<MainVC> {
                     : '',
                   style: TextStyle(
                     color: Colors.grey,
-                    fontSize: 8.0,                  
+                    fontSize: 8.0,
                   ),
                 ),
               ),
             ),
           ],
-        )        
+        )
       ),
     );
   }
 
-  Widget _uuidWithClipboard(){
+  Widget _uuidWithClipboard() {
     return FutureBuilder(
       future: UserManager.getUUID(),
       builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
@@ -278,7 +278,6 @@ class _MainVCState extends State<MainVC> {
                     ),
                   );
                 } else {
-                  // Display an error message for troubleshooting
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(MyLocalizations.of(context, 'copied_to_clipboard_error')),
@@ -287,13 +286,13 @@ class _MainVCState extends State<MainVC> {
                 }
               },
             )
-          ],            
+          ],
         );
       }
     );
   }
 
-  Widget _buildCustomTile(int index, IconData icon, String title, context){
+  Widget _buildCustomTile(int index, IconData icon, String title, context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Container(

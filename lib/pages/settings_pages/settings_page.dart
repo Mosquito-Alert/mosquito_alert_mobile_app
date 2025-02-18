@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:language_picker/language_picker.dart';
 
@@ -140,8 +142,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   setState(() {
                     isBgTrackingEnabled = trackingStatus;
                   });
-                  if (!isBgTrackingEnabled){
-                    await Workmanager().cancelByTag('trackingTask');
+                  if (!isBgTrackingEnabled) {
+                    if (Platform.isAndroid) {
+                      await Workmanager().cancelByTag('trackingTask');  // Method available only for Android
+                    } else if (Platform.isIOS) {
+                      await Workmanager().cancelAll();
+                    }
                   }
                 },
               ),

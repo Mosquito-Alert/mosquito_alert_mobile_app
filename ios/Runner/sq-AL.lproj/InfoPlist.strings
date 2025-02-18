@@ -1,0 +1,36 @@
+/*
+ * Loco ios export: Xcode InfoPlist.strings
+ * Project: Mosquito Alert
+ * Locale: sq_AL, Albanian (Albania)
+ * Tagged: info-plist
+ * Exported by: Enric Pou
+ * Exported at: Thu, 30 Jan 2025 15:07:02 +0100
+ */
+
+/* loco:66339ba61600bb5f87001572
+ * A message that tells the user why the app is requesting access to the device’s camera. */
+NSCameraUsageDescription = "Të regjistroj dhe të ndaj fotografi për të siguruar prova vizuale në raportet tuaja.";
+
+/* loco:66339c0f9dc6f586f60faac2
+ * A message that tells the user why the app is requesting access to the user’s location information at all times. */
+NSLocationAlwaysAndWhenInUseUsageDescription = "Të lejojë aksesin e vendndodhjes për gjeo-ndjekjen e sfondit anonim dhe me rezolucion të ulët për të përmirësuar vlerën shkencore të vëzhgimeve tuaja.";
+
+/* loco:66339c792a448f22630c2d62
+ * A message that tells the user why the app is requesting access to the user’s location information while the app is running in the foreground. */
+NSLocationWhenInUseUsageDescription = "Të përdor GPS për etiketim të saktë të vendndodhjes në raportet tuaja.";
+
+/* loco:66339ccb3972ba9d6a0ee1f4
+ * A message that tells the user why the app is requesting add-only access to the user’s photo library. */
+NSPhotoLibraryAddUsageDescription = "Të ruaj fotot e marra me aplikacionin në galerinë e pajisjes suaj.";
+
+/* loco:66339d1180b2837b700d7446
+ * A message that tells the user why the app is requesting access to the user’s photo library. */
+NSPhotoLibraryUsageDescription = "Të hyjë në galerinë tuaj të fotografive për të bashkëngjitur imazhet ekzistuese në raportet tuaja.";
+
+/* loco:679b86631fb7c762a90b8312
+ * A message that tells the user why the app is requesting permission to send notifications. */
+NSUserNotificationsUsageDescription = "Ne përdorim njoftimet për t'ju mbajtur të përditësuar mbi statusin e kontributeve tuaja.";
+
+/* loco:679b868034f40c577d0e1d22
+ * A message that tells the user why the app is requesting permission to track the user across sessions. */
+NSUserTrackingUsageDescription = "Ne përdorim identifikuesin e pajisjes tuaj për t'ju gjurmuar nëpër sesione dhe për të ruajtur kontributet tuaja në përputhje me rrethanat.";

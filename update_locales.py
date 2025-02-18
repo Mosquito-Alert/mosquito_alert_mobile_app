@@ -2,6 +2,8 @@ import argparse
 from pathlib import Path
 import requests
 
+from typing import Union, Callable, Optional, Dict
+
 # Only language over that percentage of translation will be downloaded.
 MIN_PROGRESS_PERCENTAGE = 80
 
@@ -16,10 +18,23 @@ FORCE_LANGUAGES = ['es_UY']
 #      https://localise.biz/info/notices/20240212
 AUTO_FALLBACK = FORCE_LANGUAGES + ['eu_ES', 'ca_ES', 'gl_ES']
 
-def update_locales(api_key: str, path: Path, format: str, tags: list = None) -> None:
+def update_locales(api_key: str, path: Union[Path, Callable[[str, str], Path]], extension: str, lang_filter: Callable[[Dict], bool] = lambda x:True, params: dict = {}, tags: list = None) -> None:
+    """
+    Update localization files for multiple locales from the Localise.biz API.
 
-    if not path.exists():
-        path.mkdir(parents=True, exist_ok=True)
+    Args:
+        api_key (str): The API key for accessing the Localise.biz API.
+        path (Union[Path, Callable[[str, str], Path]]): The path where the localization files will be saved.
+            This can be either a Path object representing a directory or a callable function
+            that takes locale_code (str) and extension (str) as arguments and returns a Path object.
+        extension (str): The file extension for the localization files (e.g., 'json', 'xml').
+        lang_filter (Callable[[Dict], bool]): A filter function to apply to the retrieved locales.
+        params (dict, optional): Additional parameters to pass in the API request. Default is an empty dictionary.
+        tags (list, optional): Filter by tags.
+
+    Returns:
+        None
+    """
 
     session = requests.Session()
     # Set up authentication for all requests
@@ -36,7 +51,7 @@ def update_locales(api_key: str, path: Path, format: str, tags: list = None) -> 
 
     # Getting available locales for the project
     locales = session.get('https://localise.biz/api/locales').json()
-    for locale in locales:
+    for locale in filter(lang_filter, locales):
         locale_progress = locale['progress']
 
         if tags:
@@ -54,10 +69,15 @@ def update_locales(api_key: str, path: Path, format: str, tags: list = None) -> 
         if is_poorly_translated and locale_code not in FORCE_LANGUAGES:
             continue
 
-        file_name = f"{locale_code}.{format}"
-        file_path = path / file_name
+        file_name = f"{locale_code}.{extension}"
+        if callable(path):
+            file_path = path(locale_code=locale_code, extension=extension)
+        else:
+            file_path = path / file_name
 
-        params = {}
+        # Check if the directory exists, create it
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+
         if locale_code in AUTO_FALLBACK:
             params['fallback'] = 'auto'
 
@@ -76,7 +96,38 @@ if __name__ == "__main__":
     parser.add_argument('--api_key', help='API key for localise.biz', required=True)
     parser.add_argument('--path', help='Destination directory for locale files', type=Path, default=Path('./assets/language/'))
     parser.add_argument('--tags', help='Filter assets by comma-separated tag names.', type=lambda x: x.split(','))
-    parser.add_argument('--format', help='File format for locale files', type=str, default='json')
     args = parser.parse_args()
 
-    update_locales(api_key=args.api_key, path=args.path, format=args.format, tags=args.tags)
+    # Update first the general translations
+    update_locales(
+        api_key=args.api_key,
+        path=Path('./assets/language/'),
+        extension='json',
+        params={
+            'filter': '!info-plist',
+        },
+        tags=args.tags
+    )
+
+    # Update only for iOS plist translations
+    ios_plist_kwargs = dict(
+        api_key=args.api_key,
+        extension='strings',
+        params={
+            'format': 'plist',
+            'filter': 'info-plist',
+            'charset': 'utf8'
+        },
+        tags=args.tags
+    )
+    # Create InfoPlist.strings in root folder (contain the translation of the app)
+    update_locales(
+        path=lambda locale_code, extension: Path('./ios/Runner/') / f'InfoPlist.{extension}',
+        lang_filter=lambda x: x['code'] == 'en_US',
+        **ios_plist_kwargs
+    )
+    # For each locale, create a new path and add its corresponding InfoPlist.strings.
+    update_locales(
+        path=lambda locale_code, extension: Path('./ios/Runner/') / f'{locale_code.replace("_", "-")}.lproj' / f'InfoPlist.{extension}',
+        **ios_plist_kwargs
+    )

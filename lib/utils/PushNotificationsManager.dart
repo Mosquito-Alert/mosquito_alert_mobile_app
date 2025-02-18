@@ -43,7 +43,11 @@ class PushNotificationsManager {
         openMessageScreen(remoteMessage.data);
       });
 
-      var token = await _firebaseMessaging
+      if (Platform.isIOS) {
+        await FirebaseMessaging.instance.getAPNSToken();
+      }
+
+      var token = await FirebaseMessaging.instance
           .getToken()
           .timeout(Duration(seconds: 10), onTimeout: () => null);
 
@@ -175,7 +179,7 @@ class PushNotificationsManager {
       if (report.nuts3 != null) {
         await subscribeToTopic('${report.nuts3}');
       }
-        } catch (e) {
+    } catch (e) {
       print('Report subscription failed for reason: $e');
     }
   }

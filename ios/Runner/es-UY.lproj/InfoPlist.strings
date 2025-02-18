@@ -1,0 +1,36 @@
+/*
+ * Loco ios export: Xcode InfoPlist.strings
+ * Project: Mosquito Alert
+ * Locale: es_UY, Spanish (Uruguay)
+ * Tagged: info-plist
+ * Exported by: Enric Pou
+ * Exported at: Thu, 30 Jan 2025 15:07:03 +0100
+ */
+
+/* loco:66339ba61600bb5f87001572
+ * A message that tells the user why the app is requesting access to the device’s camera. */
+NSCameraUsageDescription = "Capturar y compartir fotografías para proporcionar evidencia visual en sus informes.";
+
+/* loco:66339c0f9dc6f586f60faac2
+ * A message that tells the user why the app is requesting access to the user’s location information at all times. */
+NSLocationAlwaysAndWhenInUseUsageDescription = "Permitir el acceso a la ubicación para un seguimiento geográfico en segundo plano anónimo y de baja resolución para mejorar el valor científico de sus observaciones.";
+
+/* loco:66339c792a448f22630c2d62
+ * A message that tells the user why the app is requesting access to the user’s location information while the app is running in the foreground. */
+NSLocationWhenInUseUsageDescription = "Usar GPS para etiquetar ubicaciones precisas en sus informes.";
+
+/* loco:66339ccb3972ba9d6a0ee1f4
+ * A message that tells the user why the app is requesting add-only access to the user’s photo library. */
+NSPhotoLibraryAddUsageDescription = "Guardar fotos tomadas con la aplicación en la galería de su dispositivo.";
+
+/* loco:66339d1180b2837b700d7446
+ * A message that tells the user why the app is requesting access to the user’s photo library. */
+NSPhotoLibraryUsageDescription = "Acceder a su galería de fotos para adjuntar imágenes existentes a sus informes.";
+
+/* loco:679b86631fb7c762a90b8312
+ * A message that tells the user why the app is requesting permission to send notifications. */
+NSUserNotificationsUsageDescription = "Utilizamos notificaciones para mantenerlo actualizado sobre el estado de sus contribuciones.";
+
+/* loco:679b868034f40c577d0e1d22
+ * A message that tells the user why the app is requesting permission to track the user across sessions. */
+NSUserTrackingUsageDescription = "Utilizamos el identificador de su dispositivo para rastrearlo a través de las sesiones y guardar sus contribuciones en consecuencia.";

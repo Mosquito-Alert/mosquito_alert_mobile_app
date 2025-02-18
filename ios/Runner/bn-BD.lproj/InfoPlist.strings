@@ -1,0 +1,36 @@
+/*
+ * Loco ios export: Xcode InfoPlist.strings
+ * Project: Mosquito Alert
+ * Locale: bn-BD, Bengali (Bangladesh)
+ * Tagged: info-plist
+ * Exported by: Enric Pou
+ * Exported at: Thu, 30 Jan 2025 15:07:02 +0100
+ */
+
+/* loco:66339ba61600bb5f87001572
+ * A message that tells the user why the app is requesting access to the device’s camera. */
+NSCameraUsageDescription = "আপনার রিপোর্টে ভিজ্যুয়াল প্রমাণ দিতে ফটো ক্যাপচার এবং শেয়ার করুন।";
+
+/* loco:66339c0f9dc6f586f60faac2
+ * A message that tells the user why the app is requesting access to the user’s location information at all times. */
+NSLocationAlwaysAndWhenInUseUsageDescription = "আপনার পর্যবেক্ষণের বৈজ্ঞানিক মান উন্নত করতে বেনামী এবং কম-রেজোলিউশনের পটভূমি জিও-ট্র্যাকিংয়ের জন্য অবস্থান অ্যাক্সেসের অনুমতি দিন।";
+
+/* loco:66339c792a448f22630c2d62
+ * A message that tells the user why the app is requesting access to the user’s location information while the app is running in the foreground. */
+NSLocationWhenInUseUsageDescription = "আপনার রিপোর্টে সুনির্দিষ্ট অবস্থান ট্যাগ করার জন্য GPS ব্যবহার করুন।";
+
+/* loco:66339ccb3972ba9d6a0ee1f4
+ * A message that tells the user why the app is requesting add-only access to the user’s photo library. */
+NSPhotoLibraryAddUsageDescription = "অ্যাপ দিয়ে তোলা ফটোগুলি আপনার ডিভাইসের গ্যালারিতে সেভ করুন।";
+
+/* loco:66339d1180b2837b700d7446
+ * A message that tells the user why the app is requesting access to the user’s photo library. */
+NSPhotoLibraryUsageDescription = "আপনার রিপোর্টে বিদ্যমান ছবি সংযুক্ত করতে আপনার ফটো গ্যালারি অ্যাক্সেস করুন।";
+
+/* loco:679b86631fb7c762a90b8312
+ * A message that tells the user why the app is requesting permission to send notifications. */
+NSUserNotificationsUsageDescription = "আপনার অবদানের অবস্থা সম্পর্কে আপনাকে আপডেট রাখতে আমরা বিজ্ঞপ্তি ব্যবহার করি।";
+
+/* loco:679b868034f40c577d0e1d22
+ * A message that tells the user why the app is requesting permission to track the user across sessions. */
+NSUserTrackingUsageDescription = "আমরা আপনার ডিভাইস শনাক্তকারী ব্যবহার করি আপনাকে সেশন জুড়ে ট্র্যাক করতে এবং সেই অনুযায়ী আপনার অবদান সংরক্ষণ করতে।";
