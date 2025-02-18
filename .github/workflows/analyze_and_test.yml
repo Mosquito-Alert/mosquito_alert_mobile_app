@@ -1,6 +1,8 @@
 name: Static analysis + test
 on:
   pull_request:
+  push:
+    branches: ["main"]
 
 jobs:
   static_analysis_and_test:
