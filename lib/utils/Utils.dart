@@ -988,14 +988,6 @@ class Utils {
     return language;
   }
 
-  static launchUrl(url) async {
-    if (await canLaunch(url)) {
-      await launch(url, forceSafariVC: false);
-    } else {
-      throw 'Could not launch';
-    }
-  }
-
   static String getTranslatedReportType(BuildContext context, String? reportType){
     var translationString;
     switch (reportType) {
