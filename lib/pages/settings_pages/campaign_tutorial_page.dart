@@ -4,7 +4,7 @@ import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class CampaignTutorialPage extends StatefulWidget {
-  bool? fromReport;
+  final bool? fromReport;
 
   CampaignTutorialPage({this.fromReport});
 

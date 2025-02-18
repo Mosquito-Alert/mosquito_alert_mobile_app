@@ -965,24 +965,22 @@ class Utils {
   }
 
   static ui.Locale getLanguage() {
-    if (ui.window.locale != null) {
-      var stringLanguange = ui.window.locale.languageCode;
-      var stringCountry = ui.window.locale.countryCode;
+    var stringLanguange = ui.window.locale.languageCode;
+    var stringCountry = ui.window.locale.countryCode;
 
-      if (stringLanguange == 'es' && stringCountry == 'ES' ||
-          stringLanguange == 'ca' && stringCountry == 'ES' ||
-          stringLanguange == 'en' && stringCountry == 'US' ||
-          stringLanguange == 'sq' ||
-          stringLanguange == 'bg' ||
-          stringLanguange == 'nl' ||
-          stringLanguange == 'de' ||
-          stringLanguange == 'it' ||
-          stringLanguange == 'pt' ||
-          stringLanguange == 'ro') {
-        language = ui.window.locale;
-      }
-    } else {
-      language = Locale('en', 'US');
+    language = Locale('en', 'US');
+
+    if (stringLanguange == 'es' && stringCountry == 'ES' ||
+        stringLanguange == 'ca' && stringCountry == 'ES' ||
+        stringLanguange == 'en' && stringCountry == 'US' ||
+        stringLanguange == 'sq' ||
+        stringLanguange == 'bg' ||
+        stringLanguange == 'nl' ||
+        stringLanguange == 'de' ||
+        stringLanguange == 'it' ||
+        stringLanguange == 'pt' ||
+        stringLanguange == 'ro') {
+      language = ui.window.locale;
     }
 
     return language;

@@ -159,7 +159,7 @@ class PushNotificationsManager {
 
   static Future<void> registerFCMToken(String fcmToken) async {
     var userId = await UserManager.getUUID();
-    var result = ApiSingleton().setFirebaseToken(userId, fcmToken);
+    ApiSingleton().setFirebaseToken(userId, fcmToken);
     await subscribeToGlobal();
   }
 

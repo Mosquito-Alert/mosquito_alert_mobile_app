@@ -5,7 +5,6 @@ import 'dart:typed_data';
 
 import 'package:path/path.dart' as path;
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import 'package:http/http.dart' as http;
@@ -67,8 +66,6 @@ class ApiSingleton {
     'Content-Type': ' application/json',
     'Authorization': 'Token ' + token
   };
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   static final ApiSingleton _singleton = ApiSingleton._internal();
 
@@ -652,7 +649,7 @@ class ApiSingleton {
             'Request: ${response.request.toString()} -> Response: ${response.body}');
         return ApiResponse.fromJson(json.decode(response.body));
       }
-      Map<String, dynamic>? jsonAnswer = json.decode(response.body);
+      json.decode(response.body);
       return true;
     } catch (e) {
       print('updateNotification, failed for $e');
