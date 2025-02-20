@@ -1,6 +1,6 @@
 name: mosquito_alert_app
 description: A new Flutter project.
-version: 2.4.0+1739
+version: 2.4.0+1740
 publish_to: none
 
 
@@ -63,8 +63,8 @@ dev_dependencies:
   test: ^1.24.3
 
 flutter_icons:
-  image_path_android: "assets/img/ic_launcher.png"
-  image_path_ios: "assets/img/ic_launcher.png"
+  image_path_android: "assets/img/ic_launcher.webp"
+  image_path_ios: "assets/img/ic_launcher.webp"
   android: true
   ios: true
 

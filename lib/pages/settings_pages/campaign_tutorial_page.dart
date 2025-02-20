@@ -70,8 +70,8 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
       slides.add(Slide(
           title: '',
           description: MyLocalizations.of(context, 'tutorial_send_module_00${idx+1}'),
-          pathImage: 'assets/img/sendmodule/fg_module_00${idx+1}.png',
-          backgroundImage: 'assets/img/sendmodule/fg_module_00${idx+1}.png'));
+          pathImage: 'assets/img/sendmodule/fg_module_00${idx+1}.webp',
+          backgroundImage: 'assets/img/sendmodule/fg_module_00${idx+1}.webp'));
     }
     return slides;
   }

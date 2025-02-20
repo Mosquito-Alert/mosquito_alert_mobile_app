@@ -25,62 +25,62 @@ class _GalleryPageState extends State<GalleryPage> {
     slides.add(Slide(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_01'),
-        pathImage: 'assets/img/gallery/guia_1.png',
-        backgroundImage: 'assets/img/gallery/guia_1.png'));
+        pathImage: 'assets/img/gallery/guia_1.webp',
+        backgroundImage: 'assets/img/gallery/guia_1.webp'));
     slides.add(
       Slide(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_02'),
-        pathImage: 'assets/img/gallery/guia_2.png',
+        pathImage: 'assets/img/gallery/guia_2.webp',
       ),
     );
     slides.add(
       Slide(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_03'),
-        pathImage: 'assets/img/gallery/guia_3.png',
+        pathImage: 'assets/img/gallery/guia_3.webp',
       ),
     );
     slides.add(
       Slide(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_04'),
-        pathImage: 'assets/img/gallery/guia_4.png',
+        pathImage: 'assets/img/gallery/guia_4.webp',
       ),
     );
     slides.add(
       Slide(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_05'),
-        pathImage: 'assets/img/gallery/guia_5.png',
+        pathImage: 'assets/img/gallery/guia_5.webp',
       ),
     );
     slides.add(
       Slide(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_06'),
-        pathImage: 'assets/img/gallery/guia_6.png',
+        pathImage: 'assets/img/gallery/guia_6.webp',
       ),
     );
     slides.add(
       Slide(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_07'),
-        pathImage: 'assets/img/gallery/guia_7.png',
+        pathImage: 'assets/img/gallery/guia_7.webp',
       ),
     );
     slides.add(
       Slide(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_08'),
-        pathImage: 'assets/img/gallery/guia_8.png',
+        pathImage: 'assets/img/gallery/guia_8.webp',
       ),
     );
     slides.add(
       Slide(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_09'),
-        pathImage: 'assets/img/gallery/guia_9.png',
+        pathImage: 'assets/img/gallery/guia_9.webp',
       ),
     );
     return slides;

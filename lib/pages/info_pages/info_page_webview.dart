@@ -60,7 +60,7 @@ class _InfoPageInWebviewState extends State<InfoPageInWebview> {
             centerTitle: true,
             title: title == null
                 ? Image.asset(
-                    'assets/img/ic_logo.png',
+                    'assets/img/ic_logo.webp',
                     height: 45,
                   )
                 : Text(title),
