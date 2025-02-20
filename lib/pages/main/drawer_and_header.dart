@@ -110,7 +110,7 @@ class _MainVCState extends State<MainVC> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Image.asset(
-          'assets/img/ic_logo.png',
+          'assets/img/ic_logo.webp',
           height: 40,
         ),
         actions: <Widget>[
@@ -160,7 +160,7 @@ class _MainVCState extends State<MainVC> {
                             width: 60,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: AssetImage('assets/img/points_box.png'),
+                                image: AssetImage('assets/img/points_box.webp'),
                               ),
                             ),
                             child: StreamBuilder<int?>(

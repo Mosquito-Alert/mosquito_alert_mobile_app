@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           alignment: Alignment.bottomCenter,
                           child: Image.asset(
-                            'assets/img/bottoms/bottom_main.png',
+                            'assets/img/bottoms/bottom_main.webp',
                             width: double.infinity,
                             fit: BoxFit.fitWidth,
                             alignment: Alignment.bottomCenter,
@@ -81,21 +81,21 @@ class _HomePageState extends State<HomePage> {
                                 SizedBox(height: 30),
                                 CustomCard(
                                   text: 'single_mosquito',
-                                  image_path: 'assets/img/ic_mosquito_report.png',
+                                  image_path: 'assets/img/ic_mosquito_report.webp',
                                   color: '40DFD458',
                                   reportFunction: _createAdultReport
                                 ),
                                 SizedBox(height: 10),
                                 CustomCard(
                                   text: 'single_bite',
-                                  image_path: 'assets/img/ic_bite_report.png',
+                                  image_path: 'assets/img/ic_bite_report.webp',
                                   color: '40D28A73',
                                   reportFunction: _createBiteReport
                                 ),
                                 SizedBox(height: 10),
                                 CustomCard(
                                   text: 'single_breeding_site',
-                                  image_path: 'assets/img/ic_breeding_report.png',
+                                  image_path: 'assets/img/ic_breeding_report.webp',
                                   color: '407D9393',
                                   reportFunction: _createSiteReport
                                 ),

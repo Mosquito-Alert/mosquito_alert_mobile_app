@@ -42,7 +42,7 @@ class _PublicMapState extends State<PublicMap> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Image.asset(
-          'assets/img/ic_logo.png',
+          'assets/img/ic_logo.webp',
           height: 40,
         ),
       ),

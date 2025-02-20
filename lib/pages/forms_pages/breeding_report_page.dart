@@ -35,12 +35,12 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       'question': {'id': 12, 'text': 'question_12'},
       'answers': [
         {
-          'img': 'assets/img/ic_imbornal.png',
+          'img': 'assets/img/ic_imbornal.webp',
           'id': 121,
           'text': 'question_12_answer_121'
         },
         {
-          'img': 'assets/img/ic_other_site.png',
+          'img': 'assets/img/ic_other_site.webp',
           'id': 122,
           'text': 'question_12_answer_122'
         }
@@ -93,18 +93,18 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
         setValid,
         true,
         goNextPage,
-        'assets/img/bottoms/breeding_1.png'),
+        'assets/img/bottoms/breeding_1.webp'),
       AddPhotoButton(true, true, _checkAtLeastOnePhotoAttached, null, null),
       QuestionsBreedingForm(
         displayQuestions.elementAt(1),
         setValid,
         false,
         goNextPage,
-        'assets/img/bottoms/breeding_2.png',
+        'assets/img/bottoms/breeding_2.webp',
         skipPage3: skipPage3,
       ),
       QuestionsBreedingForm(displayQuestions.elementAt(2), setValid, false,
-          goNextPage, 'assets/img/bottoms/breeding_3.png'),
+          goNextPage, 'assets/img/bottoms/breeding_3.webp'),
       BitingLocationForm(
           setValid, displayQuestions.elementAt(3)['question']['text']),
       AddOtherReportPage(_createReport, setValid, percentStream),

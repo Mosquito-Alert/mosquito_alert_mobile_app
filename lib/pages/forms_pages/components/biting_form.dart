@@ -146,49 +146,49 @@ class _BitingFormState extends State<BitingForm> {
                     Stack(
                       children: <Widget>[
                         Image.asset(
-                          'assets/img/ic_full_body_off.png',
+                          'assets/img/ic_full_body_off.webp',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
                           questions!
                                   .any((question) => question!.answer_id == 25)
-                              ? 'assets/img/ic_left_leg_on.png'
-                              : 'assets/img/ic_left_leg_off.png',
+                              ? 'assets/img/ic_left_leg_on.webp'
+                              : 'assets/img/ic_left_leg_off.webp',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
                           questions!
                                   .any((question) => question!.answer_id == 26)
-                              ? 'assets/img/ic_right_leg_on.png'
-                              : 'assets/img/ic_right_leg_off.png',
+                              ? 'assets/img/ic_right_leg_on.webp'
+                              : 'assets/img/ic_right_leg_off.webp',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
                           questions!
                                   .any((question) => question!.answer_id == 22)
-                              ? 'assets/img/ic_left_hand_on.png'
-                              : 'assets/img/ic_left_hand_off.png',
+                              ? 'assets/img/ic_left_hand_on.webp'
+                              : 'assets/img/ic_left_hand_off.webp',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
                           questions!
                                   .any((question) => question!.answer_id == 23)
-                              ? 'assets/img/ic_right_hand_on.png'
-                              : 'assets/img/ic_right_hand_off.png',
+                              ? 'assets/img/ic_right_hand_on.webp'
+                              : 'assets/img/ic_right_hand_off.webp',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
                           questions!
                                   .any((question) => question!.answer_id == 21)
-                              ? 'assets/img/ic_head_on.png'
-                              : 'assets/img/ic_head_off.png',
+                              ? 'assets/img/ic_head_on.webp'
+                              : 'assets/img/ic_head_off.webp',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
                           questions!
                                   .any((question) => question!.answer_id == 24)
-                              ? 'assets/img/ic_chest_on.png'
-                              : 'assets/img/ic_chest_off.png',
+                              ? 'assets/img/ic_chest_on.webp'
+                              : 'assets/img/ic_chest_off.webp',
                           width: mediaQuery.width,
                         ),
                         Positioned(

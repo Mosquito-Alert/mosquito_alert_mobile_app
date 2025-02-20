@@ -27,7 +27,7 @@ class _ConsentFormState extends State<ConsentForm> {
               child: Column(
                 children: <Widget>[
                   Image.asset(
-                    'assets/img/bg_consent.png',
+                    'assets/img/bg_consent.webp',
                     fit: BoxFit.cover,
                   ),
                   Container(

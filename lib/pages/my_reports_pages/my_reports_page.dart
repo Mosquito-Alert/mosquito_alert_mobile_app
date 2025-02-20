@@ -50,21 +50,21 @@ class _MyReportsPageState extends State<MyReportsPage> {
             tabs: [
               Tab(
                 icon: Image.asset(
-                  'assets/img/ic_my_reports_mosquito.png',
+                  'assets/img/ic_my_reports_mosquito.webp',
                   width: 24,
                   height: 24,
                   filterQuality: FilterQuality.high),
                 text: MyLocalizations.of(context, 'single_mosquito')),
               Tab(
                 icon: Image.asset(
-                  'assets/img/ic_my_reports_bite.png',
+                  'assets/img/ic_my_reports_bite.webp',
                   width: 24,
                   height: 24,
                   filterQuality: FilterQuality.high),
                 text: MyLocalizations.of(context, 'single_bite')),
               Tab(
                 icon: Image.asset(
-                  'assets/img/ic_my_reports_breeding_site.png',
+                  'assets/img/ic_my_reports_breeding_site.webp',
                   width: 24,
                   height: 24,
                   filterQuality: FilterQuality.high),
