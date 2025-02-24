@@ -35,7 +35,7 @@ class PushNotificationsManager {
       await _firebaseMessaging.requestPermission();
 
       FirebaseMessaging.onMessage.listen((RemoteMessage remoteMessage) {
-        launchMessage(remoteMessage.data);
+        launchMessage(remoteMessage);
       });
 
       FirebaseMessaging.onMessageOpenedApp
@@ -60,51 +60,10 @@ class PushNotificationsManager {
     }
   }
 
-  static void launchMessage(Map<String, dynamic> message) {
-    String? title = '';
-    String? msg = '';
-    var notifId = '';
-
-    if (Platform.isIOS) {
-      final jsonData = jsonDecode(message['notification']);
-
-      try {
-        title = jsonData['title'];
-      } catch (e) {
-        print(e);
-      }
-
-      try {
-        msg = jsonData['body'];
-      } catch (e) {
-        print(e);
-      }
-      try {
-        notifId = "${jsonDecode(message['notification_id'])}";
-      } catch (e) {
-        print(e);
-      }
-    } else {
-      final notification_data = jsonDecode(message['notification']);
-
-      try {
-        title = notification_data['title'];
-      } catch (e) {
-        print(e);
-      }
-
-      try {
-        msg = notification_data['body'];
-      } catch (e) {
-        print(e);
-      }
-
-      try {
-        notifId = "${message['notification_id']}";
-      } catch (e) {
-        print(e);
-      }
-    }
+  static void launchMessage(RemoteMessage message) {
+    String? title = message.notification?.title;
+    String? msg = message.notification?.body;
+    var notifId = message.data['id'];
 
     if (title!.isNotEmpty || msg!.isNotEmpty) {
       showOverlayNotification((context) {
