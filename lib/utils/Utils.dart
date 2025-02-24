@@ -501,7 +501,11 @@ class Utils {
       }, context);
     } else {
       var pos = await Geolocator.getLastKnownPosition();
-      location = LatLng(pos!.latitude, pos.longitude);
+      if (pos != null) {
+        location = LatLng(pos.latitude, pos.longitude);
+      } else {
+        print('Unable to get the last known position.');
+      }
     }
   }
 
