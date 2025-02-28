@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:workmanager/workmanager.dart';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
@@ -77,7 +77,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late StreamSubscription<ConnectivityResult> subscription;
+  late StreamSubscription<List<ConnectivityResult>> subscription;
 
   MyLocalizationsDelegate _newLocaleDelegate = MyLocalizationsDelegate();
 
@@ -88,16 +88,20 @@ class _MyAppState extends State<MyApp> {
     //backgroud sync reports
     subscription = Connectivity()
         .onConnectivityChanged
-        .listen((ConnectivityResult result) {
-      print('Connectivity status changed to $result');
-      switch (result) {
-        case ConnectivityResult.mobile:
-        case ConnectivityResult.wifi:
-          Utils.checkForUnfetchedData();
-          Utils.syncReports();
-          break;
-        case ConnectivityResult.none:
-          break;
+        .listen((List<ConnectivityResult> results) {
+      print('Connectivity status changed to $results');
+      for (var result in results) {
+        switch (result) {
+          case ConnectivityResult.mobile:
+          case ConnectivityResult.wifi:
+            Utils.checkForUnfetchedData();
+            Utils.syncReports();
+            break;
+          case ConnectivityResult.none:
+            break;
+          default:
+            break;
+        }
       }
     });
     application.onLocaleChanged = onLocaleChange;
