@@ -46,7 +46,6 @@ class Utils {
 
   // Initialized data flags
   static Map<String, dynamic> initializedCheckData = {
-    'user': false, // Whether the user got fetched
     'userScores': false, // Whether the user scores got fetched
     'userCreated': {
       'created': false,
@@ -455,13 +454,6 @@ class Utils {
       UserManager.userScore = await ApiSingleton().getUserScores();
     } else {
       print('Utils (checkForUnfetchedData): UserScores were already fetched');
-    }
-
-    if (!initializedCheckData['user']) {
-      print('Utils (checkForUnfetchedData): Fetching user...');
-      await UserManager.fetchUser();
-    } else {
-      print('Utils (checkForUnfetchedData): User was already fetched');
     }
 
     if (!initializedCheckData['firebase']) {

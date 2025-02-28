@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/consent_form.dart';
@@ -12,9 +11,6 @@ import 'package:uuid/uuid.dart';
 import 'Application.dart';
 
 class UserManager {
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  static User? user;
   static var profileUUIDs;
   static int? userScore;
 
@@ -52,22 +48,10 @@ class UserManager {
     }
 
     application.onLocaleChanged(Utils.language);
-    await fetchUser();
     userScore = await ApiSingleton().getUserScores();
     await setUserScores(userScore);
 
     return true;
-  }
-
-  static Future<User?>? fetchUser() async {
-    user = _auth.currentUser;
-
-    if (user == null) {
-      return null;
-    }
-
-    Utils.initializedCheckData['user'] = true;
-    return user;
   }
 
   //set
@@ -286,6 +270,5 @@ class UserManager {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('userName');
     await prefs.remove('firebaseId');
-    user = null;
   }
 }

@@ -56,7 +56,7 @@ android {
 
     defaultConfig {
         applicationId "ceab.movelab.tigatrapp"
-        minSdkVersion 23
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
