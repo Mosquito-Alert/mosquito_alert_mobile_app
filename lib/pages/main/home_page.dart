@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                                   color: '407D9393',
                                   reportFunction: _createSiteReport
                                 ),
-                                SizedBox(height: 30),
+                                SizedBox(height: 60),
                                 Material(
                                   elevation: 5.0,
                                   borderRadius: BorderRadius.circular(100),
@@ -128,7 +128,6 @@ class _HomePageState extends State<HomePage> {
                                               MyLocalizations.of(context, 'public_map_tab'),
                                               style: TextStyle(
                                                 fontSize: 18,
-                                                color: Colors.grey[600]
                                               ),
                                             ),
                                           ),
