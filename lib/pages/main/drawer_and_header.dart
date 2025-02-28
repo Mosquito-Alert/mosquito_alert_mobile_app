@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
@@ -77,9 +75,6 @@ class _MainVCState extends State<MainVC> {
   }
 
   Future<bool> initAuthStatus() async {
-    if (Platform.isIOS) {
-      await AppTrackingTransparency.requestTrackingAuthorization();
-    }
 
     userUuid = await UserManager.getUUID();
     UserManager.userScore = await ApiSingleton().getUserScores();

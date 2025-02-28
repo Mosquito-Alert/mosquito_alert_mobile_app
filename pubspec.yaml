@@ -38,7 +38,6 @@ dependencies:
   language_picker: ^0.4.5
   connectivity: ^3.0.6 #Discontinued
   overlay_support: ^2.1.0
-  app_tracking_transparency: ^2.0.4
 
   flutter_html: ^3.0.0-beta.2
   webview_flutter: ^4.5.0
