@@ -92,10 +92,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
                             opacity:
                                 !notifications[index].acknowledged! ? 1 : 0.5,
                             child: Card(
-                              elevation: 2,
+                              elevation: 4,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8)),
-                              child: ListTile(
+                              child: ListTile(        
+                                tileColor: Colors.white,                        
                                 contentPadding: EdgeInsets.all(12),
                                 onTap: () {
                                   !notifications[index].acknowledged!

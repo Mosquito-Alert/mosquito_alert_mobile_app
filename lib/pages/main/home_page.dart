@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                                   child: Container(
                                     height: 60.0,
                                     decoration: BoxDecoration(
-                                      color: Colors.transparent,
+                                      color: Colors.white,
                                       borderRadius: BorderRadius.circular(100),
                                     ),
                                     child: InkWell(

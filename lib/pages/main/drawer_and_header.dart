@@ -137,6 +137,7 @@ class _MainVCState extends State<MainVC> {
           : _widgetOptions[_selectedIndex],
       ),
       drawer: Drawer(
+        backgroundColor: Colors.white,
         child: Column(
           children: [
             Expanded(
