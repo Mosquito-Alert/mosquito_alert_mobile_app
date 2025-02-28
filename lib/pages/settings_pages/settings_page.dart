@@ -12,7 +12,7 @@ import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:workmanager/workmanager.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -68,7 +68,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void getPackageInfo() async {
-    var _packageInfo = await PackageInfo.fromPlatform();
+    PackageInfo _packageInfo = await PackageInfo.fromPlatform();
     setState(() {
       packageInfo = _packageInfo;
     });

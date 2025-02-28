@@ -16,7 +16,7 @@ import 'package:mosquito_alert_app/pages/settings_pages/settings_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 
 class MainVC extends StatefulWidget {
@@ -67,7 +67,7 @@ class _MainVCState extends State<MainVC> {
   }
 
   Future<bool> getPackageInfo() async {
-    var _packageInfo = await PackageInfo.fromPlatform();
+    PackageInfo _packageInfo = await PackageInfo.fromPlatform();
     setState(() {
       packageInfo = _packageInfo;
     });
