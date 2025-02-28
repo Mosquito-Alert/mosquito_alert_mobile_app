@@ -13,11 +13,9 @@ googlemaps.Key=
 ```
 3. Run the following commands, one by one
 ```
-flutter channel stable
-flutter pub get
-flutter upgrade
+fvm flutter pub get
 ```
-4. Connect your device or emulator and run the command ```flutter run```
+4. Connect your device or emulator and run the command ```fvm flutter run```
 5. That's all! If you have problems, don't hesitate to open an issue on [Github Issues](https://github.com/Mosquito-Alert/Mosquito-Alert-Mobile-App/issues) and we'll be happy to help you!
 
 ## How to contribute
