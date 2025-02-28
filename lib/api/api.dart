@@ -596,7 +596,7 @@ class ApiSingleton {
   /*
   * Notifications Module
   * */
-  Future<dynamic> getNotifications() async {
+  Future<List<MyNotification>> getNotifications() async {
     try {
       var userUUID = await UserManager.getUUID();
       var locale = await UserManager.getLanguage();
@@ -615,9 +615,8 @@ class ApiSingleton {
       );
 
       if (response.statusCode != 200) {
-        print(
-            'Request: ${response.request.toString()} -> Response: ${response.body}');
-        return ApiResponse.fromJson(json.decode(response.body));
+        print('Request: ${response.request.toString()} -> Response: ${response.body}');
+        return [];
       }
 
       var list = json.decode(utf8.decode(response.bodyBytes)) as List;
