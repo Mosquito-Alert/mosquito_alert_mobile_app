@@ -160,8 +160,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                     topRight: Radius.circular(10),
                   )),
               child: Container(
-                margin:
-                    EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 80),
+                margin: EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 10),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,36 +169,24 @@ class _NotificationsPageState extends State<NotificationsPage> {
                         height: 15,
                       ),
                       Style.titleMedium(notification.expert_comment),
+                      Style.bodySmall(
+                        DateFormat('dd-MM-yyyy HH:mm').format(
+                            DateTime.parse(notification.date_comment!).toLocal()),
+                        color: Colors.grey),                      
                       SizedBox(
                         height: 10,
                       ),
-                      Container(
-                          child: html.Html(
+                      html.Html(
                         data: notification.expert_html!
                             .replaceAll('<p><a', '<a')
                             .replaceAll('</a></p>', '</a>'),
                         style: {
-                          'a': html.Style(
-                              backgroundColor: Colors.transparent,
-                              color: Colors.blueAccent,
-                              padding: html.HtmlPaddings.all(12.0),
-                              margin: html.Margins(
-                                  bottom: html.Margin(12.0),
-                                  right: html.Margin(12.0),
-                                  top: html.Margin(12.0),
-                                  left: html.Margin(12.0)),
-                              textDecoration: TextDecoration.underline,
-                              textAlign: TextAlign.center,
-                              fontSize: html.FontSize(16.0)),
+                          '*': html.Style(
+                            padding: html.HtmlPaddings.zero,
+                            margin: html.Margins.zero,
+                          ),
                         },
-                      )),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Style.bodySmall(
-                          DateFormat('dd-MM-yyyy HH:mm').format(
-                              DateTime.parse(notification.date_comment!).toLocal()),
-                          color: Colors.grey)
+                      )
                     ],
                   ),
                 ),
