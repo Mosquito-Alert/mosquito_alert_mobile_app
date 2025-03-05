@@ -41,6 +41,8 @@ dependencies:
   flutter_html: ^3.0.0-beta.2
   webview_flutter: ^4.5.0
   workmanager:
+    # The reason to have a custom ref is because the latest published version
+    # was not working for iOS, and a custom unreleased commit was solving it.
     git:
         url: https://github.com/fluttercommunity/flutter_workmanager.git
         ref: b783000
