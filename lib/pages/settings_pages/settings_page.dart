@@ -168,7 +168,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       initiallyExpanded: numTagsAdded! > 0,
                       title: Row(
                         children: [
-                            Text(
+                            Style.body(
                               MyLocalizations.of(context, 'auto_tagging_settings_title'),
                             ),
                             Spacer(flex: 1),
