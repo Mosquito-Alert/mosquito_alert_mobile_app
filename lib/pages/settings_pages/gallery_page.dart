@@ -106,13 +106,6 @@ class _GalleryPageState extends State<GalleryPage> {
     );
   }
 
-  Widget renderSkipBtn() {
-    return Icon(
-      Icons.skip_next,
-      color: Style.colorPrimary,
-    );
-  }
-
   List<Widget> renderListCustomTabs() {
     var tabs = <Widget>[];
     for (var i = 0; i < slides.length; i++) {
@@ -152,35 +145,23 @@ class _GalleryPageState extends State<GalleryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: IntroSlider(
-        // List slides
         slides: initSlides(),
-
-        // Skip button
         showSkipBtn: false,
-
-        // Next button
         renderNextBtn: renderNextBtn(),
-
-        // Done button
         renderDoneBtn: renderDoneBtn(),
         onDonePress: onDonePress,
         doneButtonStyle: ButtonStyle(
-            backgroundColor:
-            MaterialStateProperty.all(Style.colorPrimary.withOpacity(0.2)),
-            overlayColor: MaterialStateProperty.all(Style.colorPrimary)),
-
-        // Dot indicator
+          backgroundColor: WidgetStateProperty.all(Style.colorPrimary.withOpacity(0.2)),
+          overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
         colorDot: Style.colorPrimary.withOpacity(0.4),
         sizeDot: 6.0,
         colorActiveDot: Style.colorPrimary,
-        // typeDotAnimation: dotSliderAnimation.SIZE_TRANSITION,
-
-        // Tabs
         listCustomTabs: renderListCustomTabs(),
         backgroundColorAllSlides: Colors.white,
-
-        // Show or hide status bar
         hideStatusBar: false,
+        prevButtonStyle: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(Style.colorPrimary),
+          overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
       ),
     );
   }

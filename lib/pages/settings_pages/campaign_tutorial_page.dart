@@ -48,8 +48,8 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
         onDonePress: onDonePress,
         doneButtonStyle: ButtonStyle(
             backgroundColor:
-            MaterialStateProperty.all(Style.colorPrimary.withOpacity(0.2)),
-            overlayColor: MaterialStateProperty.all(Style.colorPrimary)),
+            WidgetStateProperty.all(Style.colorPrimary.withOpacity(0.2)),
+            overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
         colorDot: Style.colorPrimary.withOpacity(0.4),
         sizeDot: 6.0,
         colorActiveDot: Style.colorPrimary,
@@ -59,6 +59,9 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
           goToTab = refFunc;
         },
         hideStatusBar: false,
+        prevButtonStyle: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(Style.colorPrimary),
+          overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
       ),
     );
   }
@@ -94,12 +97,7 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
       color: Style.colorPrimary,
     );
   }
-  Widget renderSkipBtn() {
-    return Icon(
-      Icons.skip_next,
-      color: Style.colorPrimary,
-    );
-  }
+
   List<Widget> renderListCustomTabs() {
     var tabs = <Widget>[];
 
@@ -133,5 +131,4 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
     }
     return tabs;
   }
-
 }
