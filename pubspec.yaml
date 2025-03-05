@@ -59,12 +59,29 @@ dev_dependencies:
   flutter_localizations:
     sdk: flutter
   test: ^1.24.3
+  flutter_native_splash: ^2.4.4
 
 flutter_icons:
   image_path_android: "assets/img/ic_launcher.webp"
   image_path_ios: "assets/img/ic_launcher.webp"
   android: true
   ios: true
+
+flutter_native_splash:
+  android: true
+  ios: true
+  color: "#ffffff"
+  image: assets/img/mosquito_alert_splash.png
+  # Branding aspect ratio must be: 5:2
+  branding: assets/img/mosquito_alert_letters_aspectratio_5_2.png
+  branding_mode: bottom
+  branding_bottom_padding: 24
+  fullscreen: true
+  android_12:
+    image: assets/img/mosquito_alert_splash.png
+    color: "#ffffff"
+    icon_background_color: "#ffffff"
+    branding: assets/img/mosquito_alert_letters_aspectratio_5_2.png
 
 flutter:
   uses-material-design: true

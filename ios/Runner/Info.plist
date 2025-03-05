@@ -1,245 +1,247 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-<!-- 	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<dict>
+		<!-- 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>trackingTask</string>
 		<string>scheduleDailyTasks</string>
 	</array> -->
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
-	<string>cat.ibeji.tigatrapp</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleLocalizations</key>
-	<array>
-		<string>bg-BG</string>
-		<string>bn-BD</string>
-		<string>ca-ES</string>
-		<string>de-DE</string>
-		<string>el-GR</string>
-		<string>en-US</string>
-		<string>es-ES</string>
-		<string>es-UY</string>
-		<string>fr-FR</string>
-		<string>gl-ES</string>
-		<string>hr-HR</string>
-		<string>hu-HU</string>
-		<string>it-IT</string>
-		<string>lb-LU</string>
-		<string>mk-MK</string>
-		<string>nl-NL</string>
-		<string>pt-PT</string>
-		<string>ro-RO</string>
-		<string>sl-SI</string>
-		<string>sq-AL</string>
-		<string>sr-RS</string>
-		<string>sv-SE</string>
-		<string>tr-TR</string>
-	</array>
-	<key>CFBundleName</key>
-	<string>Mosquito Alert</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>com.example.mosquito_alert_app.ios.deep</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fb1971217746245293</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.960892168613-7b7r7duu9j9setj1vaa2tocola7l6g44</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
+		<key>CADisableMinimumFrameDurationOnPhone</key>
+		<true/>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>$(DEVELOPMENT_LANGUAGE)</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>cat.ibeji.tigatrapp</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleLocalizations</key>
+		<array>
+			<string>bg-BG</string>
+			<string>bn-BD</string>
+			<string>ca-ES</string>
+			<string>de-DE</string>
+			<string>el-GR</string>
+			<string>en-US</string>
+			<string>es-ES</string>
+			<string>es-UY</string>
+			<string>fr-FR</string>
+			<string>gl-ES</string>
+			<string>hr-HR</string>
+			<string>hu-HU</string>
+			<string>it-IT</string>
+			<string>lb-LU</string>
+			<string>mk-MK</string>
+			<string>nl-NL</string>
+			<string>pt-PT</string>
+			<string>ro-RO</string>
+			<string>sl-SI</string>
+			<string>sq-AL</string>
+			<string>sr-RS</string>
+			<string>sv-SE</string>
+			<string>tr-TR</string>
+		</array>
+		<key>CFBundleName</key>
+		<string>Mosquito Alert</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(MARKETING_VERSION)</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>com.example.mosquito_alert_app.ios.deep</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>fb1971217746245293</string>
+				</array>
+			</dict>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>com.googleusercontent.apps.960892168613-7b7r7duu9j9setj1vaa2tocola7l6g44</string>
+				</array>
+			</dict>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>twitter</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>twitterkit-555555555</string>
+				</array>
+			</dict>
+		</array>
+		<key>CFBundleVersion</key>
+		<string>$(CURRENT_PROJECT_VERSION)</string>
+		<key>FacebookAppID</key>
+		<string>346752412924238</string>
+		<key>FacebookDisplayName</key>
+		<string>Mosquito Alert</string>
+		<key>FirebaseAppDelegateProxyEnabled</key>
+		<false/>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>fbapi</string>
+			<string>fb-messenger-share-api</string>
+			<string>fbauth2</string>
+			<string>fbshareextension</string>
 			<string>twitter</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>twitterkit-555555555</string>
-			</array>
-		</dict>
-	</array>
-	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>FacebookAppID</key>
-	<string>346752412924238</string>
-	<key>FacebookDisplayName</key>
-	<string>Mosquito Alert</string>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>fbapi</string>
-		<string>fb-messenger-share-api</string>
-		<string>fbauth2</string>
-		<string>fbshareextension</string>
-		<string>twitter</string>
-		<string>twitterauth</string>
-	</array>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>MinimumOSVersion</key>
-	<string>13.0</string>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSExceptionDomains</key>
+			<string>twitterauth</string>
+		</array>
+		<key>LSRequiresIPhoneOS</key>
+		<true/>
+		<key>MinimumOSVersion</key>
+		<string>13.0</string>
+		<key>NSAppTransportSecurity</key>
 		<dict>
-			<key>creaf.cat</key>
+			<key>NSExceptionDomains</key>
 			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSExceptionMinimumTLSVersion</key>
-				<string>TLSv1.2</string>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<true/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSRequiresCertificateTransparency</key>
-				<false/>
-				<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-				<false/>
-				<key>NSThirdPartyExceptionMinimumTLSVersion</key>
-				<string>TLSv1.2</string>
-				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-				<true/>
-			</dict>
-			<key>madev.creaf.cat</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSExceptionMinimumTLSVersion</key>
-				<string>TLSv1.2</string>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<true/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSRequiresCertificateTransparency</key>
-				<false/>
-				<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-				<false/>
-				<key>NSThirdPartyExceptionMinimumTLSVersion</key>
-				<string>TLSv1.2</string>
-				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-				<true/>
-			</dict>
-			<key>mosquitoalert.com</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSExceptionMinimumTLSVersion</key>
-				<string>TLSv1.2</string>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<true/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSRequiresCertificateTransparency</key>
-				<false/>
-				<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-				<false/>
-				<key>NSThirdPartyExceptionMinimumTLSVersion</key>
-				<string>TLSv1.2</string>
-				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-				<true/>
-			</dict>
-			<key>webserver.mosquitoalert.com</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSExceptionMinimumTLSVersion</key>
-				<string>TLSv1.2</string>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<true/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSRequiresCertificateTransparency</key>
-				<false/>
-				<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-				<false/>
-				<key>NSThirdPartyExceptionMinimumTLSVersion</key>
-				<string>TLSv1.2</string>
-				<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-				<true/>
+				<key>creaf.cat</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true/>
+					<key>NSExceptionMinimumTLSVersion</key>
+					<string>TLSv1.2</string>
+					<key>NSExceptionRequiresForwardSecrecy</key>
+					<true/>
+					<key>NSIncludesSubdomains</key>
+					<true/>
+					<key>NSRequiresCertificateTransparency</key>
+					<false/>
+					<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+					<false/>
+					<key>NSThirdPartyExceptionMinimumTLSVersion</key>
+					<string>TLSv1.2</string>
+					<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+					<true/>
+				</dict>
+				<key>madev.creaf.cat</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true/>
+					<key>NSExceptionMinimumTLSVersion</key>
+					<string>TLSv1.2</string>
+					<key>NSExceptionRequiresForwardSecrecy</key>
+					<true/>
+					<key>NSIncludesSubdomains</key>
+					<true/>
+					<key>NSRequiresCertificateTransparency</key>
+					<false/>
+					<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+					<false/>
+					<key>NSThirdPartyExceptionMinimumTLSVersion</key>
+					<string>TLSv1.2</string>
+					<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+					<true/>
+				</dict>
+				<key>mosquitoalert.com</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true/>
+					<key>NSExceptionMinimumTLSVersion</key>
+					<string>TLSv1.2</string>
+					<key>NSExceptionRequiresForwardSecrecy</key>
+					<true/>
+					<key>NSIncludesSubdomains</key>
+					<true/>
+					<key>NSRequiresCertificateTransparency</key>
+					<false/>
+					<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+					<false/>
+					<key>NSThirdPartyExceptionMinimumTLSVersion</key>
+					<string>TLSv1.2</string>
+					<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+					<true/>
+				</dict>
+				<key>webserver.mosquitoalert.com</key>
+				<dict>
+					<key>NSExceptionAllowsInsecureHTTPLoads</key>
+					<true/>
+					<key>NSExceptionMinimumTLSVersion</key>
+					<string>TLSv1.2</string>
+					<key>NSExceptionRequiresForwardSecrecy</key>
+					<true/>
+					<key>NSIncludesSubdomains</key>
+					<true/>
+					<key>NSRequiresCertificateTransparency</key>
+					<false/>
+					<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+					<false/>
+					<key>NSThirdPartyExceptionMinimumTLSVersion</key>
+					<string>TLSv1.2</string>
+					<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+					<true/>
+				</dict>
 			</dict>
 		</dict>
+		<key>NSAppleMusicUsageDescription</key>
+		<string>We need access to this feature in order to show results suited for you</string>
+		<key>NSCalendarsUsageDescription</key>
+		<string>We need access to this feature in order to show results suited for you</string>
+		<key>NSCameraUsageDescription</key>
+		<string>We use your camera to capture and share photos to provide visual evidence in your reports</string>
+		<key>NSContactsUsageDescription</key>
+		<string>We need access to this feature in order to show results suited for you</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>We use your GPS for precise location tagging in your reports</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>We use your GPS for precise location tagging in your reports</string>
+		<key>NSLocationUsageDescription</key>
+		<string>We use your GPS for precise location tagging in your reports</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>We use your GPS for precise location tagging in your reports</string>
+		<key>NSMotionUsageDescription</key>
+		<string>Motion usage description</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>We use your image gallery to save photos taken with the app to your device's gallery</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>We use your image gallery to save photos taken with the app to your device's gallery</string>
+		<key>NSSpeechRecognitionUsageDescription</key>
+		<string>We need access to this feature in order to show results suited for you</string>
+		<key>NSUserTrackingUsageDescription</key>
+		<string>We use your device identifier to track you across sessions and to save your reports accordingly</string>
+		<key>NSUserNotificationsUsageDescription</key>
+		<string>We use notifications to keep you updated on the status of your reports</string>
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<true/>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>location</string>
+			<string>processing</string>
+			<string>remote-notification</string>
+		</array>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIMainStoryboardFile</key>
+		<string>Main</string>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+		</array>
+		<key>UISupportedInterfaceOrientations~ipad</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationPortraitUpsideDown</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false/>
+		<key>io.flutter.embedded_views_preview</key>
+		<true/>
+		<key>UIStatusBarHidden</key>
+		<true/>
 	</dict>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>We need access to this feature in order to show results suited for you</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>We need access to this feature in order to show results suited for you</string>
-	<key>NSCameraUsageDescription</key>
-	<string>We use your camera to capture and share photos to provide visual evidence in your reports</string>
-	<key>NSContactsUsageDescription</key>
-	<string>We need access to this feature in order to show results suited for you</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We use your GPS for precise location tagging in your reports</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We use your GPS for precise location tagging in your reports</string>
-	<key>NSLocationUsageDescription</key>
-	<string>We use your GPS for precise location tagging in your reports</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We use your GPS for precise location tagging in your reports</string>
-	<key>NSMotionUsageDescription</key>
-	<string>Motion usage description</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>We use your image gallery to save photos taken with the app to your device's gallery</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We use your image gallery to save photos taken with the app to your device's gallery</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>We need access to this feature in order to show results suited for you</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>We use your device identifier to track you across sessions and to save your reports accordingly</string>
-	<key>NSUserNotificationsUsageDescription</key>
-	<string>We use notifications to keep you updated on the status of your reports</string>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-		<string>location</string>
-		<string>processing</string>
-		<string>remote-notification</string>
-	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-	<key>io.flutter.embedded_views_preview</key>
-	<true/>
-</dict>
 </plist>
