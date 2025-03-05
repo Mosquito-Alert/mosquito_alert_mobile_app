@@ -55,7 +55,13 @@ dependencies:
   textfield_tags: ^3.0.1
   in_app_review: ^2.0.9
 
+dependency_overrides:
+  # Temporal for flutter_launcher_icons
+  # See: https://github.com/fluttercommunity/flutter_launcher_icons/issues/593
+  archive: ^3.6.1
+
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.3
   flutter_test:
     sdk: flutter
   flutter_localizations:
@@ -63,11 +69,16 @@ dev_dependencies:
   test: ^1.24.3
   flutter_native_splash: ^2.4.4
 
-flutter_icons:
-  image_path_android: "assets/img/ic_launcher.webp"
-  image_path_ios: "assets/img/ic_launcher.webp"
+flutter_launcher_icons:
   android: true
   ios: true
+  image_path: "assets/img/mosquito_alert_logo_transparent.png"
+  adaptive_icon_foreground: "assets/img/mosquito_alert_logo_transparent.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground_inset: 25
+  adaptive_icon_monochrome: "assets/img/mosquito_alert_logo_monochrome.png"
+  remove_alpha_ios: true
+  background_color_ios: "#ffffff"
 
 flutter_native_splash:
   android: true
