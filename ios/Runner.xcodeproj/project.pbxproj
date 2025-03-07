@@ -224,6 +224,7 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				en,
 				"en-US",
 				Base,
 				"ca-ES",
