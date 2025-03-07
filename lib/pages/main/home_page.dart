@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/breeding_report_page.dart';
@@ -83,59 +82,35 @@ class _HomePageState extends State<HomePage> {
                                   text: 'single_mosquito',
                                   image_path: 'assets/img/ic_mosquito_report.webp',
                                   color: '40DFD458',
-                                  reportFunction: _createAdultReport
+                                  onTap: _createAdultReport
                                 ),
                                 SizedBox(height: 10),
                                 CustomCard(
                                   text: 'single_bite',
                                   image_path: 'assets/img/ic_bite_report.webp',
                                   color: '40D28A73',
-                                  reportFunction: _createBiteReport
+                                  onTap: _createBiteReport
                                 ),
                                 SizedBox(height: 10),
                                 CustomCard(
                                   text: 'single_breeding_site',
                                   image_path: 'assets/img/ic_breeding_report.webp',
                                   color: '407D9393',
-                                  reportFunction: _createSiteReport
+                                  onTap: _createSiteReport
                                 ),
-                                SizedBox(height: 60),
-                                Material(
-                                  elevation: 5.0,
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: Container(
-                                    height: 60.0,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => PublicMap()),
-                                        );
-                                      },
-                                      child: Row(
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 10.0),
-                                            child: SvgPicture.asset('assets/img/maps/public-map-icon.svg', width: 50,),
-                                          ),
-                                          SizedBox(width: 15),
-                                          Expanded(
-                                            child: Text(
-                                              MyLocalizations.of(context, 'public_map_tab'),
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                )
+                                SizedBox(height: 10),
+                                CustomCard(
+                                  text: 'public_map_tab',
+                                  image_path:
+                                    'assets/img/ic_public_map.webp',
+                                  color: 'FFebf1cc',
+                                  onTap: () {
+                                     Navigator.push(
+                                       context,
+                                       MaterialPageRoute(builder: (context) => PublicMap()),
+                                     );
+                                   }
+                                ),
                               ],
                             ),
                           ),
