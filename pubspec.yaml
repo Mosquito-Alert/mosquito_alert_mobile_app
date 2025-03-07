@@ -89,7 +89,7 @@ flutter_native_splash:
   branding: assets/img/mosquito_alert_letters_aspectratio_5_2.png
   branding_mode: bottom
   branding_bottom_padding: 24
-  fullscreen: true
+  fullscreen: false
   android_12:
     image: assets/img/mosquito_alert_splash.png
     color: "#ffffff"
