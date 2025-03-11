@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -16,6 +17,7 @@ class _PublicMapState extends State<PublicMap> {
   @override
   void initState() {
     super.initState();
+    _logScreenView();
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
@@ -33,6 +35,10 @@ class _PublicMapState extends State<PublicMap> {
       );
 
       _controller.loadRequest(Uri.parse('https://map.mosquitoalert.com'));
+  }
+
+  Future<void> _logScreenView() async {
+    await FirebaseAnalytics.instance.logScreenView(screenName: '/map');
   }
 
   @override

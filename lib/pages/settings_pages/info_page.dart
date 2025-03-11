@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
@@ -17,6 +18,11 @@ class _InfoPageState extends State<InfoPage> {
   @override
   void initState() {
     super.initState();
+    _logScreenView();
+  }
+
+  Future<void> _logScreenView() async {
+    await FirebaseAnalytics.instance.logScreenView(screenName: '/info');
   }
 
   @override
@@ -39,6 +45,7 @@ class _InfoPageState extends State<InfoPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                    settings: RouteSettings(name: '/info/scoring'),
                     builder: (context) =>
                         InfoPageInWebview(MyLocalizations.of(context, 'url_scoring_1'))),
               );
@@ -51,6 +58,7 @@ class _InfoPageState extends State<InfoPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                    settings: RouteSettings(name: '/info/about_project'),
                     builder: (context) => InfoPageInWebview(
                         MyLocalizations.of(context, 'url_about_project'))),
               );
@@ -63,6 +71,7 @@ class _InfoPageState extends State<InfoPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                    settings: RouteSettings(name: '/info/about_us'),
                     builder: (context) =>
                         InfoPageInWebview(MyLocalizations.of(context, 'url_about_us'))),
               );
@@ -93,6 +102,7 @@ class _InfoPageState extends State<InfoPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                    settings: RouteSettings(name: '/info/terms'),
                     builder: (context) => InfoPageInWebview(
                           MyLocalizations.of(context, 'terms_link'),
                           localHtml: true,
@@ -106,6 +116,7 @@ class _InfoPageState extends State<InfoPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                    settings: RouteSettings(name: '/info/privacy'),
                     builder: (context) => InfoPageInWebview(
                           MyLocalizations.of(context, 'privacy_link'),
                           localHtml: true,
@@ -119,6 +130,7 @@ class _InfoPageState extends State<InfoPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                    settings: RouteSettings(name: '/info/license'),
                     builder: (context) => InfoPageInWebview(
                           MyLocalizations.of(context, 'lisence_link'),
                           localHtml: true,

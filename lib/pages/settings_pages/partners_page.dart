@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/partner.dart';
@@ -25,6 +26,7 @@ class _PartnersPageState extends State<PartnersPage> {
   @override
   void initState() {
     super.initState();
+    _logScreenView();
     getInitialData();
   }
 
@@ -33,6 +35,10 @@ class _PartnersPageState extends State<PartnersPage> {
     markersStream.close();
     loadingStream.close();
     super.dispose();
+  }
+
+  Future<void> _logScreenView() async {
+    await FirebaseAnalytics.instance.logScreenView(screenName: '/info/partners');
   }
 
   getInitialData() async {
@@ -51,6 +57,7 @@ class _PartnersPageState extends State<PartnersPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
+                    settings: RouteSettings(name: '/info/partners/${partner.id}'),
                     builder: (context) => InfoPageInWebview(partner.pageUrl)),
               );
             }

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:mosquito_alert_app/api/api.dart';
@@ -154,6 +155,12 @@ class _MyReportsListState extends State<ReportsList> {
   }
 
   void _deleteReport(Report report) async {
+    await FirebaseAnalytics.instance.logEvent(
+      name: 'delete_report',
+      parameters: {
+        'report_uuid': '${report.version_UUID}'
+      }
+    );
     Navigator.pop(context);
     var res = await Utils.deleteReport(report);
     if (res){
@@ -171,6 +178,10 @@ class _MyReportsListState extends State<ReportsList> {
   }
 
   void _reportBottomSheet(Report report, BuildContext context) async {
+    await FirebaseAnalytics.instance.logSelectContent(
+      contentType: '${report.type}_report',
+      itemId: '${report.version_UUID}'
+    );
     var hasValidLocation = report.getLocation() != null;
     var location = report.getLocation();
     var campaign = await _checkCampaigns(report.country);

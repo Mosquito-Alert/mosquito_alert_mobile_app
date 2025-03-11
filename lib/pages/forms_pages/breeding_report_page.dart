@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
@@ -85,6 +86,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   void initState() {
     super.initState();
     _initializeReport();
+    _logScreenView();
     _pagesController = PageController();
 
     _formsRepot = [
@@ -110,6 +112,10 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       AddOtherReportPage(_createReport, setValid, percentStream),
     ];
     _initialFormsReport = List.from(_formsRepot);
+  }
+
+  Future<void> _logScreenView() async {
+    await FirebaseAnalytics.instance.logScreenView(screenName: '/breeding_site_report/new');
   }
 
   void skipPage3(skip) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
@@ -19,6 +20,11 @@ class _GalleryPageState extends State<GalleryPage> {
   @override
   void initState() {
     super.initState();
+    _logScreenView();
+  }
+
+  Future<void> _logScreenView() async {
+    await FirebaseAnalytics.instance.logScreenView(screenName: '/mosquito_guide');
   }
 
   List<Slide> initSlides() {

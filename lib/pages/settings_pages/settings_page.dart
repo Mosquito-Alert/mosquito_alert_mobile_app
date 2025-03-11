@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:language_picker/language_picker.dart';
 
 import 'package:language_picker/languages.dart';
@@ -58,9 +59,14 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
+    _logScreenView();
     getPackageInfo();
     initializeBgTracking();
     initializeTagsNum();
+  }
+
+  Future<void> _logScreenView() async {
+    await FirebaseAnalytics.instance.logScreenView(screenName: '/settings');
   }
 
   void initializeBgTracking() async {

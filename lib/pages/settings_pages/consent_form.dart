@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -15,6 +16,16 @@ class _ConsentFormState extends State<ConsentForm> {
   bool? acceptConditions = false;
   bool? acceptPrivacy = false;
   StreamController<bool> buttonStream = StreamController<bool>.broadcast();
+
+  @override
+  void initState() {
+    super.initState();
+    _logScreenView();
+  }
+
+  Future<void> _logScreenView() async {
+    await FirebaseAnalytics.instance.logScreenView(screenName: '/consent_form');
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:intl/intl.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
@@ -30,10 +31,15 @@ class _NotificationsPageState extends State<NotificationsPage> {
   @override
   void initState() {
     super.initState();
+    _logScreenView();
     loadingStream.add(true);
     _getData().then((_) {
       _updateUnreadNotificationCount();
     });
+  }
+
+  Future<void> _logScreenView() async {
+    await FirebaseAnalytics.instance.logScreenView(screenName: '/notifications');
   }
 
   Future<void> _getData() async {
@@ -142,7 +148,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
     );
   }
 
-  void _infoBottomSheet(BuildContext context, MyNotification notification) {
+  void _infoBottomSheet(BuildContext context, MyNotification notification) async {
+    await FirebaseAnalytics.instance.logSelectContent(
+      contentType: 'notification',
+      itemId: '${notification.id}'
+    );
     CustomShowModalBottomSheet.customShowModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {

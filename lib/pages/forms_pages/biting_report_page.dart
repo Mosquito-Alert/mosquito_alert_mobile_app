@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/owcampaing.dart';
 import 'package:mosquito_alert_app/models/report.dart';
@@ -96,6 +97,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
   void initState() {
     super.initState();
     _initializeReport();
+    _logScreenView();
     _pagesController = PageController();
     _formsRepot = [
       BitingForm(
@@ -115,6 +117,10 @@ class _BitingReportPageState extends State<BitingReportPage> {
       ),
       AddOtherReportPage(_saveData, setValid, percentStream),
     ];
+  }
+
+  Future<void> _logScreenView() async {
+    await FirebaseAnalytics.instance.logScreenView(screenName: '/bite_report/new');
   }
 
   void addOtherReport(String? reportType) {

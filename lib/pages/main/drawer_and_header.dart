@@ -148,6 +148,7 @@ class _MainVCState extends State<MainVC> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
+                                  settings: RouteSettings(name: '/user_score'),
                                   builder: (context) => InfoPageInWebview("${MyLocalizations.of(context, 'url_point_1')}$userUuid")),
                             );
                           },

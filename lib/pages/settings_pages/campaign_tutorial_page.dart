@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -20,6 +21,11 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
   @override
   void initState() {
     super.initState();
+    _logScreenView();
+  }
+
+  Future<void> _logScreenView() async {
+    await FirebaseAnalytics.instance.logScreenView(screenName: '/info/campaigns');
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/report.dart';
@@ -23,6 +24,11 @@ class _MyReportsPageState extends State<MyReportsPage> {
   void initState() {
     super.initState();
     loadReports();
+    _logScreenView();
+  }
+
+  Future<void> _logScreenView() async {
+    await FirebaseAnalytics.instance.logScreenView(screenName: '/my_reports');
   }
 
   void loadReports() async {
@@ -76,7 +82,16 @@ class _MyReportsPageState extends State<MyReportsPage> {
                   filterQuality: FilterQuality.high),
                 text: MyLocalizations.of(context, 'single_breeding_site')),
             ],
-          ),
+            onTap: (index) async {
+              // Log the tab switch event to Firebase Analytics
+              const tabNames = ['mosquitoes', 'bites', 'breeding_site'];
+              if (index >= 0 && index < tabNames.length) {
+                await FirebaseAnalytics.instance.logEvent(
+                  name: 'tab_switched',
+                  parameters: {'tab_name': tabNames[index]},
+                );
+              }
+            }),
           title: Text(MyLocalizations.of(context, 'your_reports_txt')),
         ),
         body: isLoading ?

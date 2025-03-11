@@ -4,6 +4,7 @@ import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ import 'package:overlay_support/overlay_support.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main({String env = 'prod'}) async {
+Future<void> main({String env = 'prod'}) async {
   WidgetsFlutterBinding.ensureInitialized();
   await ApiSingleton.initialize(env);
 
@@ -81,6 +82,14 @@ class _MyAppState extends State<MyApp> {
 
   MyLocalizationsDelegate _newLocaleDelegate = MyLocalizationsDelegate();
 
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(
+        analytics: FirebaseAnalytics.instance,
+        routeFilter: (route) {
+          return route is PageRoute && route.settings.name != '/';
+        },
+      );
+
   @override
   void initState() {
     super.initState();
@@ -129,6 +138,7 @@ class _MyAppState extends State<MyApp> {
         scaffoldBackgroundColor: Colors.white,
       ),
       navigatorKey: navigatorKey,
+      navigatorObservers: <NavigatorObserver>[observer, ],
       home: MainVC(),
       localizationsDelegates: [
         _newLocaleDelegate,

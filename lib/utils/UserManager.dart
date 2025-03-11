@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/consent_form.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
@@ -51,6 +52,10 @@ class UserManager {
     userScore = await ApiSingleton().getUserScores();
     await setUserScores(userScore);
 
+    String? userUuid = await UserManager.getUUID();
+    if (userUuid != null) {
+      await FirebaseAnalytics.instance.setUserId(id: userUuid);
+    }
     return true;
   }
 
