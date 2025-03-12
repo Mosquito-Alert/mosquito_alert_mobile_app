@@ -46,7 +46,7 @@ dependencies:
     git:
         url: https://github.com/fluttercommunity/flutter_workmanager.git
         ref: b783000
-  battery_plus: ^5.0.3
+  battery_plus: ^6.2.1
   badges: ^3.1.2
   cached_network_image: ^3.3.1
   camera_camera: ^3.0.0
