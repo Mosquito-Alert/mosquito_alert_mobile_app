@@ -31,7 +31,7 @@ dependencies:
   package_info_plus: ^8.3.0
   url_launcher: ^6.3.1
   photo_view: ^0.15.0
-  percent_indicator: ^4.2.3
+  percent_indicator: ^4.2.4
   intro_slider: ^3.0.10
   permission_handler: ^11.0.1
   language_picker: ^0.4.5
