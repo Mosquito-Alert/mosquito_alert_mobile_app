@@ -4,7 +4,7 @@
  * Locale: sq_AL, Albanian (Albania)
  * Tagged: info-plist
  * Exported by: Enric Pou
- * Exported at: Thu, 30 Jan 2025 15:07:02 +0100
+ * Exported at: Fri, 14 Mar 2025 14:42:04 +0100
  */
 
 /* loco:66339ba61600bb5f87001572
@@ -29,8 +29,8 @@ NSPhotoLibraryUsageDescription = "Të hyjë në galerinë tuaj të fotografive p
 
 /* loco:679b86631fb7c762a90b8312
  * A message that tells the user why the app is requesting permission to send notifications. */
-NSUserNotificationsUsageDescription = "Ne përdorim njoftimet për t'ju mbajtur të përditësuar mbi statusin e kontributeve tuaja.";
+NSUserNotificationsUsageDescription = "Ne përdorim njoftimet për tu mbajtur të përditësuar mbi statusin e kontributeve tuaja.";
 
 /* loco:679b868034f40c577d0e1d22
  * A message that tells the user why the app is requesting permission to track the user across sessions. */
-NSUserTrackingUsageDescription = "Ne përdorim identifikuesin e pajisjes tuaj për t'ju gjurmuar nëpër sesione dhe për të ruajtur kontributet tuaja në përputhje me rrethanat.";
+NSUserTrackingUsageDescription = "Ne përdorim identifikuesin e pajisjes suaj për t'ju gjurmuar nëpër sekione dhe për të ruajtur siç duhet kontributet tuaja.";
