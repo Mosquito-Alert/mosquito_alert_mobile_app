@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/services.dart';
 import 'package:mosquito_alert_app/api/api.dart';
@@ -42,6 +43,12 @@ class _MainVCState extends State<MainVC> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Future<void> _onDrawerChanged(bool isOpened) async {
+    await FirebaseAnalytics.instance.logEvent(
+      name: isOpened ? 'drawer_open' : 'drawer_close',
+    );
   }
 
   void _startAsyncTasks() async {
@@ -131,6 +138,9 @@ class _MainVCState extends State<MainVC> {
           ? CircularProgressIndicator()
           : _widgetOptions[_selectedIndex],
       ),
+      onDrawerChanged: (isOpened) async {
+        await _onDrawerChanged(isOpened);
+      },
       drawer: Drawer(
         backgroundColor: Colors.white,
         child: Column(
