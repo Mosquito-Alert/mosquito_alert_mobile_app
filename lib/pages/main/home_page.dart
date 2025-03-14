@@ -19,10 +19,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
+  late String _suggestedActionTextId;
 
   @override
   void initState() {
     super.initState();
+    _suggestedActionTextId = getRandomWhatToDoText();
     _logScreenView();
   }
 
@@ -33,7 +35,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _logScreenView() async {
-    await FirebaseAnalytics.instance.logScreenView(screenName: '/home');
+    await FirebaseAnalytics.instance.logScreenView(
+      screenName: '/home',
+      parameters: {'action_text_id': _suggestedActionTextId}
+    );
   }
 
   @override
@@ -77,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Style.body(
-                                              MyLocalizations.of(context, getRandomWhatToDoText()),
+                                              MyLocalizations.of(context, _suggestedActionTextId),
                                               fontSize: 16),
                                         ]),
                                     )                                      
