@@ -35,6 +35,13 @@ class _BitingReportPageState extends State<BitingReportPage> {
   StreamController<double> percentStream = StreamController<double>.broadcast();
   double index = 0;
 
+  // Define the events to log
+  final List<Map<String, dynamic>> _pageEvents = [
+    {'name': 'report_add_bites', 'parameters': {'type': 'bite'}},
+    {'name': 'report_add_gps', 'parameters': {'type': 'bite'}},
+    {'name': 'report_add_note', 'parameters': {'type': 'bite'}}
+  ];
+
   List<Map> displayQuestions = [
     {
       'question': {'id': 1, 'text': 'question_1'},
@@ -86,6 +93,17 @@ class _BitingReportPageState extends State<BitingReportPage> {
   ];
   late Report toEditReport;
 
+  void _onPageChanged(int index) async {
+    // Check if the index is valid and log the event
+    if (index >= 0 && index < _pageEvents.length) {
+      final event = _pageEvents[index];
+      await FirebaseAnalytics.instance.logEvent(
+        name: event['name'],
+        parameters: event['parameters'],
+      );
+    }
+  }
+
   void _initializeReport() async {
     if (widget.editReport != null) {
       toEditReport = await Report.fromJsonAsync(widget.editReport!.toJson());
@@ -97,7 +115,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
   void initState() {
     super.initState();
     _initializeReport();
-    _logScreenView();
+    _logFirebaseAnalytics();
     _pagesController = PageController();
     _formsRepot = [
       BitingForm(
@@ -119,8 +137,8 @@ class _BitingReportPageState extends State<BitingReportPage> {
     ];
   }
 
-  Future<void> _logScreenView() async {
-    await FirebaseAnalytics.instance.logScreenView(screenName: '/bite_report/new');
+  Future<void> _logFirebaseAnalytics() async {
+    await FirebaseAnalytics.instance.logEvent(name: 'start_report', parameters: {'type': 'bite'});
   }
 
   void addOtherReport(String? reportType) {
@@ -144,6 +162,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
       percentStream.add(0.8);
     });
     loadingStream.add(true);
+    await FirebaseAnalytics.instance.logEvent(name: 'submit_report', parameters: {'type': 'bite'});
     var res = await Utils.createReport();
 
     if (widget.editReport != null) {
@@ -255,6 +274,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
               children: <Widget>[
                 PageView(
                   controller: _pagesController,
+                  onPageChanged: _onPageChanged,
                   physics: NeverScrollableScrollPhysics(),
                   children: _formsRepot,
                 ),

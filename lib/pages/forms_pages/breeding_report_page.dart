@@ -31,6 +31,16 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   StreamController<double> percentStream =
       StreamController<double>.broadcast();
 
+  // Define the events to log
+  final List<Map<String, dynamic>> _pageEvents = [
+    {'name': 'report_add_site_type', 'parameters': {'type': 'breeding_site'}},
+    {'name': 'report_add_photo', 'parameters': {'type': 'breeding_site'}},
+    {'name': 'report_add_has_water', 'parameters': {'type': 'breeding_site'}},
+    {'name': 'report_add_has_larvae', 'parameters': {'type': 'breeding_site'}},
+    {'name': 'report_add_gps', 'parameters': {'type': 'breeding_site'}},
+    {'name': 'report_add_note', 'parameters': {'type': 'breeding_site'}}
+  ];
+
   List<Map> displayQuestions = [
     {
       'question': {'id': 12, 'text': 'question_12'},
@@ -86,7 +96,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   void initState() {
     super.initState();
     _initializeReport();
-    _logScreenView();
+    _logFirebaseAnalytics();
     _pagesController = PageController();
 
     _formsRepot = [
@@ -114,8 +124,19 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     _initialFormsReport = List.from(_formsRepot);
   }
 
-  Future<void> _logScreenView() async {
-    await FirebaseAnalytics.instance.logScreenView(screenName: '/breeding_site_report/new');
+  Future<void> _logFirebaseAnalytics() async {
+    await FirebaseAnalytics.instance.logEvent(name: 'start_report', parameters: {'type': 'breeding_site'});
+  }
+
+  void _onPageChanged(int index) async {
+    // Check if the index is valid and log the event
+    if (index >= 0 && index < _pageEvents.length) {
+      final event = _pageEvents[index];
+      await FirebaseAnalytics.instance.logEvent(
+        name: event['name'],
+        parameters: event['parameters'],
+      );
+    }
   }
 
   void skipPage3(skip) {
@@ -191,6 +212,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       percentStream.add(0.8);
     });
     loadingStream.add(true);
+    await FirebaseAnalytics.instance.logEvent(name: 'submit_report', parameters: {'type': 'breeding_site'});
     var res = await Utils.createReport();
 
     if (widget.editReport != null) {
@@ -253,6 +275,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
               children: <Widget>[
                 PageView(
                   controller: _pagesController,
+                  onPageChanged: _onPageChanged,
                   physics: NeverScrollableScrollPhysics(),
                   children: _formsRepot,
                 ),
