@@ -54,6 +54,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           bottom: TabBar(
+            overlayColor: WidgetStateProperty.all(Colors.transparent),
             indicatorColor: Style.colorPrimary,
             labelColor: Colors.black,
             tabs: <Widget>[
