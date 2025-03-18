@@ -13,7 +13,9 @@ class CustomShowModalBottomSheet {
         context,
         _CullModalBottomSheetRoute<T>(
           builder: builder,
-          theme: Theme.of(context,),
+          theme: Theme.of(
+            context,
+          ),
           barrierLabel:
               MaterialLocalizations.of(context).modalBarrierDismissLabel,
           dismissible: dismissible,
@@ -86,8 +88,7 @@ class _CustomModalBottomSheetState<T>
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final localizations =
-        MaterialLocalizations.of(context);
+    final localizations = MaterialLocalizations.of(context);
     String? routeLabel;
     switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:

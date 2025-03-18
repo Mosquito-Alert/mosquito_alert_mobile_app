@@ -29,7 +29,8 @@ class MessageNotification extends StatelessWidget {
                   color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(
-                      color: Theme.of(context).colorScheme.surface, width: 0.5)),
+                      color: Theme.of(context).colorScheme.surface,
+                      width: 0.5)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

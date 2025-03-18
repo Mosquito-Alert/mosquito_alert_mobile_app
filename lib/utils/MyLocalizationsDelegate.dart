@@ -32,8 +32,7 @@ class MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {
         'sr',
         'tr',
         'zh',
-      ].contains(
-          '${locale.languageCode}');
+      ].contains('${locale.languageCode}');
 
   @override
   Future<MyLocalizations> load(Locale locale) async {

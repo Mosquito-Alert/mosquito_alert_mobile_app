@@ -36,104 +36,101 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _logScreenView() async {
     await FirebaseAnalytics.instance.logScreenView(
-      screenName: '/home',
-      parameters: {'action_text_id': _suggestedActionTextId}
-    );
+        screenName: '/home',
+        parameters: {'action_text_id': _suggestedActionTextId});
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Scaffold(
-          body: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints viewportConstraints) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: viewportConstraints.maxHeight,
-                  ),
-                  child: IntrinsicHeight(
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
+        Scaffold(body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: viewportConstraints.maxHeight,
+                ),
+                child: IntrinsicHeight(
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        child: Image.asset(
+                          'assets/img/bottoms/bottom_main.webp',
+                          width: double.infinity,
+                          fit: BoxFit.fitWidth,
                           alignment: Alignment.bottomCenter,
-                          child: Image.asset(
-                            'assets/img/bottoms/bottom_main.webp',
-                            width: double.infinity,
-                            fit: BoxFit.fitWidth,
-                            alignment: Alignment.bottomCenter,
-                          ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: <Widget>[
-                                SizedBox(
-                                  height: 24,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height: 24,
+                              ),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Expanded(
                                       flex: 2,
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Style.body(
-                                              MyLocalizations.of(context, _suggestedActionTextId),
-                                              fontSize: 16),
-                                        ]),
-                                    )                                      
-                                  ]
-                                ),
-                                SizedBox(height: 30),
-                                CustomCard(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Style.body(
+                                                MyLocalizations.of(context,
+                                                    _suggestedActionTextId),
+                                                fontSize: 16),
+                                          ]),
+                                    )
+                                  ]),
+                              SizedBox(height: 30),
+                              CustomCard(
                                   text: 'single_mosquito',
-                                  image_path: 'assets/img/ic_mosquito_report.webp',
+                                  image_path:
+                                      'assets/img/ic_mosquito_report.webp',
                                   color: '40DFD458',
-                                  onTap: _createAdultReport
-                                ),
-                                SizedBox(height: 10),
-                                CustomCard(
+                                  onTap: _createAdultReport),
+                              SizedBox(height: 10),
+                              CustomCard(
                                   text: 'single_bite',
                                   image_path: 'assets/img/ic_bite_report.webp',
                                   color: '40D28A73',
-                                  onTap: _createBiteReport
-                                ),
-                                SizedBox(height: 10),
-                                CustomCard(
+                                  onTap: _createBiteReport),
+                              SizedBox(height: 10),
+                              CustomCard(
                                   text: 'single_breeding_site',
-                                  image_path: 'assets/img/ic_breeding_report.webp',
-                                  color: '407D9393',
-                                  onTap: _createSiteReport
-                                ),
-                                SizedBox(height: 10),
-                                CustomCard(
-                                  text: 'public_map_tab',
                                   image_path:
-                                    'assets/img/ic_public_map.webp',
+                                      'assets/img/ic_breeding_report.webp',
+                                  color: '407D9393',
+                                  onTap: _createSiteReport),
+                              SizedBox(height: 10),
+                              CustomCard(
+                                  text: 'public_map_tab',
+                                  image_path: 'assets/img/ic_public_map.webp',
                                   color: 'FFebf1cc',
                                   onTap: () {
-                                     Navigator.push(
-                                       context,
-                                       MaterialPageRoute(builder: (context) => PublicMap()),
-                                     );
-                                   }
-                                ),
-                              ],
-                            ),
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PublicMap()),
+                                    );
+                                  }),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              );
-            },
-          )
-        ),
+              ),
+            );
+          },
+        )),
         Positioned.fill(
           child: StreamBuilder<bool>(
             stream: loadingStream.stream,

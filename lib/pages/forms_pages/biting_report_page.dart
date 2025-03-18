@@ -37,9 +37,18 @@ class _BitingReportPageState extends State<BitingReportPage> {
 
   // Define the events to log
   final List<Map<String, dynamic>> _pageEvents = [
-    {'name': 'report_add_bites', 'parameters': {'type': 'bite'}},
-    {'name': 'report_add_gps', 'parameters': {'type': 'bite'}},
-    {'name': 'report_add_note', 'parameters': {'type': 'bite'}}
+    {
+      'name': 'report_add_bites',
+      'parameters': {'type': 'bite'}
+    },
+    {
+      'name': 'report_add_gps',
+      'parameters': {'type': 'bite'}
+    },
+    {
+      'name': 'report_add_note',
+      'parameters': {'type': 'bite'}
+    }
   ];
 
   List<Map> displayQuestions = [
@@ -138,7 +147,8 @@ class _BitingReportPageState extends State<BitingReportPage> {
   }
 
   Future<void> _logFirebaseAnalytics() async {
-    await FirebaseAnalytics.instance.logEvent(name: 'start_report', parameters: {'type': 'bite'});
+    await FirebaseAnalytics.instance
+        .logEvent(name: 'start_report', parameters: {'type': 'bite'});
   }
 
   void addOtherReport(String? reportType) {
@@ -162,7 +172,8 @@ class _BitingReportPageState extends State<BitingReportPage> {
       percentStream.add(0.8);
     });
     loadingStream.add(true);
-    await FirebaseAnalytics.instance.logEvent(name: 'submit_report', parameters: {'type': 'bite'});
+    await FirebaseAnalytics.instance
+        .logEvent(name: 'submit_report', parameters: {'type': 'bite'});
     var res = await Utils.createReport();
 
     if (widget.editReport != null) {

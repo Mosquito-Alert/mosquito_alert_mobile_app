@@ -90,7 +90,7 @@ class ApiSingleton {
     var url = '$serverUrl$users$uuid/';
 
     try {
-      final response = await http.get(        
+      final response = await http.get(
         Uri.parse(url),
         headers: headers,
       );
@@ -109,7 +109,7 @@ class ApiSingleton {
   Future<dynamic> createUser(String? uuid) async {
     var userExists = await checkUserExist(uuid);
     try {
-      if (userExists){
+      if (userExists) {
         print('Skipping user creation. User already exists');
       } else {
         final response = await http
@@ -293,9 +293,11 @@ class ApiSingleton {
       if (report.report_id != null && report.report_id!.isNotEmpty) {
         body.addAll({'report_id': report.report_id});
       }
-      if (report.version_number != null && report.version_number == 0){
-        body.addAll({'phone_upload_time': DateTime.now().toUtc().toIso8601String()});
-      } else if (report.phone_upload_time != null && report.phone_upload_time!.isNotEmpty){
+      if (report.version_number != null && report.version_number == 0) {
+        body.addAll(
+            {'phone_upload_time': DateTime.now().toUtc().toIso8601String()});
+      } else if (report.phone_upload_time != null &&
+          report.phone_upload_time!.isNotEmpty) {
         body.addAll({'phone_upload_time': report.phone_upload_time});
       }
       if (report.creation_time != null && report.creation_time!.isNotEmpty) {
@@ -402,8 +404,7 @@ class ApiSingleton {
           if (!img['image'].contains('http')) {
             var isSaved = await saveImage(img['image'], report.version_UUID);
             if (!isSaved) {
-              final directory =
-                  await getApplicationDocumentsDirectory();
+              final directory = await getApplicationDocumentsDirectory();
               File newImage = await img['imageFile']
                   .copy('${directory.path}/${report.version_UUID}.png');
 
@@ -421,7 +422,8 @@ class ApiSingleton {
     try {
       var userUUID = await UserManager.getUUID();
 
-      final response = await http.get(
+      final response = await http
+          .get(
         Uri.parse(
             '$serverUrl$reports?user=$userUUID&is_deleted=false&is_last_version=true'),
         headers: headers,
@@ -442,7 +444,7 @@ class ApiSingleton {
         List<dynamic> jsonAnswer = json.decode(response.body);
         var list = <Report>[];
         for (var item in jsonAnswer) {
-          list.add(await Report.fromJsonAsync(item));          
+          list.add(await Report.fromJsonAsync(item));
         }
         return list;
       }
@@ -455,7 +457,6 @@ class ApiSingleton {
   //Images
   Future<bool> saveImage(String imagePath, String? versionUUID) async {
     try {
-
       // Compressing image to jpeg 4k max = 3840x2180
       Uint8List? compressedImage = await FlutterImageCompress.compressWithFile(
           imagePath,
@@ -464,19 +465,16 @@ class ApiSingleton {
           quality: 98,
           autoCorrectionAngle: true,
           format: CompressFormat.jpeg,
-          keepExif: true
-      );
+          keepExif: true);
 
       if (compressedImage == null) {
-          print('Failed to compress image');
-          return false;
+        print('Failed to compress image');
+        return false;
       }
 
-      var img = await MultipartFile.fromBytes(
-          compressedImage,
+      var img = await MultipartFile.fromBytes(compressedImage,
           filename: '${path.basenameWithoutExtension(imagePath)}.jpeg',
-          contentType: MediaType('image', 'jpeg')
-      );
+          contentType: MediaType('image', 'jpeg'));
 
       var data = FormData.fromMap({'photo': img, 'report': versionUUID});
 
@@ -502,8 +500,10 @@ class ApiSingleton {
       var body = {
         'user_coverage_uuid': userIdFix,
         'fix_time': time,
-        'masked_lat': (lat / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue,
-        'masked_lon': (lon / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue,
+        'masked_lat':
+            (lat / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue,
+        'masked_lon':
+            (lon / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue,
         'power': power,
         'phone_upload_time': DateTime.now().toUtc().toIso8601String(),
       };
@@ -615,13 +615,13 @@ class ApiSingleton {
       );
 
       if (response.statusCode != 200) {
-        print('Request: ${response.request.toString()} -> Response: ${response.body}');
+        print(
+            'Request: ${response.request.toString()} -> Response: ${response.body}');
         return [];
       }
 
       var list = json.decode(utf8.decode(response.bodyBytes)) as List;
-      var data =
-          list.map((i) => MyNotification.fromJson(i)).toList();
+      var data = list.map((i) => MyNotification.fromJson(i)).toList();
       return data;
     } catch (e) {
       return [];

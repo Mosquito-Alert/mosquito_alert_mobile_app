@@ -38,7 +38,8 @@ class _PartnersPageState extends State<PartnersPage> {
   }
 
   Future<void> _logScreenView() async {
-    await FirebaseAnalytics.instance.logScreenView(screenName: '/info/partners');
+    await FirebaseAnalytics.instance
+        .logScreenView(screenName: '/info/partners');
   }
 
   getInitialData() async {
@@ -57,7 +58,8 @@ class _PartnersPageState extends State<PartnersPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    settings: RouteSettings(name: '/info/partners/${partner.id}'),
+                    settings:
+                        RouteSettings(name: '/info/partners/${partner.id}'),
                     builder: (context) => InfoPageInWebview(partner.pageUrl)),
               );
             }

@@ -28,17 +28,34 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   late List<Widget> _formsRepot, _initialFormsReport;
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
   StreamController<bool> validStream = StreamController<bool>.broadcast();
-  StreamController<double> percentStream =
-      StreamController<double>.broadcast();
+  StreamController<double> percentStream = StreamController<double>.broadcast();
 
   // Define the events to log
   final List<Map<String, dynamic>> _pageEvents = [
-    {'name': 'report_add_site_type', 'parameters': {'type': 'breeding_site'}},
-    {'name': 'report_add_photo', 'parameters': {'type': 'breeding_site'}},
-    {'name': 'report_add_has_water', 'parameters': {'type': 'breeding_site'}},
-    {'name': 'report_add_has_larvae', 'parameters': {'type': 'breeding_site'}},
-    {'name': 'report_add_gps', 'parameters': {'type': 'breeding_site'}},
-    {'name': 'report_add_note', 'parameters': {'type': 'breeding_site'}}
+    {
+      'name': 'report_add_site_type',
+      'parameters': {'type': 'breeding_site'}
+    },
+    {
+      'name': 'report_add_photo',
+      'parameters': {'type': 'breeding_site'}
+    },
+    {
+      'name': 'report_add_has_water',
+      'parameters': {'type': 'breeding_site'}
+    },
+    {
+      'name': 'report_add_has_larvae',
+      'parameters': {'type': 'breeding_site'}
+    },
+    {
+      'name': 'report_add_gps',
+      'parameters': {'type': 'breeding_site'}
+    },
+    {
+      'name': 'report_add_note',
+      'parameters': {'type': 'breeding_site'}
+    }
   ];
 
   List<Map> displayQuestions = [
@@ -100,12 +117,8 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     _pagesController = PageController();
 
     _formsRepot = [
-      QuestionsBreedingForm(
-        displayQuestions.elementAt(0),
-        setValid,
-        true,
-        goNextPage,
-        'assets/img/bottoms/breeding_1.webp'),
+      QuestionsBreedingForm(displayQuestions.elementAt(0), setValid, true,
+          goNextPage, 'assets/img/bottoms/breeding_1.webp'),
       AddPhotoButton(true, true, _checkAtLeastOnePhotoAttached, null, null),
       QuestionsBreedingForm(
         displayQuestions.elementAt(1),
@@ -125,7 +138,8 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   }
 
   Future<void> _logFirebaseAnalytics() async {
-    await FirebaseAnalytics.instance.logEvent(name: 'start_report', parameters: {'type': 'breeding_site'});
+    await FirebaseAnalytics.instance
+        .logEvent(name: 'start_report', parameters: {'type': 'breeding_site'});
   }
 
   void _onPageChanged(int index) async {
@@ -155,7 +169,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     }
   }
 
-  void _checkAtLeastOnePhotoAttached(){
+  void _checkAtLeastOnePhotoAttached() {
     setState(() {
       _atLeastOnePhotoAttached = true;
     });
@@ -212,7 +226,8 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       percentStream.add(0.8);
     });
     loadingStream.add(true);
-    await FirebaseAnalytics.instance.logEvent(name: 'submit_report', parameters: {'type': 'breeding_site'});
+    await FirebaseAnalytics.instance
+        .logEvent(name: 'submit_report', parameters: {'type': 'breeding_site'});
     var res = await Utils.createReport();
 
     if (widget.editReport != null) {
@@ -280,17 +295,18 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                   children: _formsRepot,
                 ),
                 index <= displayContinue
-                  ? index == 1 && _atLeastOnePhotoAttached ?
-                    Container(
-                      width: double.infinity,
-                      height: 54,
-                      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                      child: Style.button(
-                        MyLocalizations.of(context, 'continue_txt'), () {
-                          goNextPage();
-                        }
-                      )
-                    ) : Container()
+                    ? index == 1 && _atLeastOnePhotoAttached
+                        ? Container(
+                            width: double.infinity,
+                            height: 54,
+                            margin: EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 12),
+                            child: Style.button(
+                                MyLocalizations.of(context, 'continue_txt'),
+                                () {
+                              goNextPage();
+                            }))
+                        : Container()
                     : index != _formsRepot.length.toDouble() - 1
                         ? SafeArea(
                             child: Align(
@@ -298,29 +314,31 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                             child: StreamBuilder<bool>(
                                 stream: validStream.stream,
                                 initialData: false,
-                                builder: (BuildContext ctxt, AsyncSnapshot<bool> snapshot) {
+                                builder: (BuildContext ctxt,
+                                    AsyncSnapshot<bool> snapshot) {
                                   return snapshot.data!
                                       ? Container(
                                           width: double.infinity,
                                           height: 54,
                                           margin: EdgeInsets.symmetric(
-                                            vertical: 6,
-                                            horizontal: 12),
+                                              vertical: 6, horizontal: 12),
                                           child: Style.button(
-                                            MyLocalizations.of(context, 'continue_txt'), () {
-                                              var currentPage =_pagesController!.page;
+                                              MyLocalizations.of(
+                                                  context, 'continue_txt'), () {
+                                            var currentPage =
+                                                _pagesController!.page;
 
-                                              if (currentPage == 0.0) {
-                                                goNextPage();
-                                              } else if (currentPage == 4.0) {
-                                                if (otherReport == 'adult' || otherReport == 'bite') {
-                                                  navigateOtherReport();
-                                                }
-                                              } else {
-                                                goNextPage();
+                                            if (currentPage == 0.0) {
+                                              goNextPage();
+                                            } else if (currentPage == 4.0) {
+                                              if (otherReport == 'adult' ||
+                                                  otherReport == 'bite') {
+                                                navigateOtherReport();
                                               }
+                                            } else {
+                                              goNextPage();
                                             }
-                                          ),
+                                          }),
                                         )
                                       : Container(
                                           width: double.infinity,

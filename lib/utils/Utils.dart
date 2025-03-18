@@ -409,7 +409,8 @@ class Utils {
     if (savedReports != null && savedReports.isNotEmpty) {
       bool isCreated;
       for (var i = 0; i < savedReports.length; i++) {
-        var savedReport = await Report.fromJsonAsync(json.decode(savedReports[i]));
+        var savedReport =
+            await Report.fromJsonAsync(json.decode(savedReports[i]));
         isCreated = await ApiSingleton().createReport(savedReport) != null
             ? true
             : false;
@@ -982,7 +983,8 @@ class Utils {
     return language;
   }
 
-  static String getTranslatedReportType(BuildContext context, String? reportType){
+  static String getTranslatedReportType(
+      BuildContext context, String? reportType) {
     var translationString;
     switch (reportType) {
       case 'adult':
@@ -1001,12 +1003,14 @@ class Utils {
 
     return MyLocalizations.of(context, translationString);
   }
-    
+
   static Future<String?> getCityNameFromCoords(double lat, double lon) async {
     var locale = await UserManager.getUserLocale();
     await setLocaleIdentifier(locale!);
     var placemarks = await placemarkFromCoordinates(lat, lon);
-    if (placemarks.isEmpty) { return null; }
+    if (placemarks.isEmpty) {
+      return null;
+    }
     return placemarks.first.locality;
   }
 
@@ -1014,15 +1018,22 @@ class Utils {
     var myReports = await ApiSingleton().getReportsList();
     var numReports = myReports.length;
 
-    if (numReports < 3) { return; }
+    if (numReports < 3) {
+      return;
+    }
 
     final now = DateTime.now().millisecondsSinceEpoch;
     final lastReportCount = await UserManager.getLastReportCount() ?? 0;
     final lastReviewRequest = await UserManager.getLastReviewRequest() ?? 0;
 
-    var shouldRequestReview = (numReports == 3 || numReports == 4 || numReports >= lastReportCount + 3 || now - lastReviewRequest >= 14 * 24 * 60 * 60 * 1000);
+    var shouldRequestReview = (numReports == 3 ||
+        numReports == 4 ||
+        numReports >= lastReportCount + 3 ||
+        now - lastReviewRequest >= 14 * 24 * 60 * 60 * 1000);
 
-    if (!shouldRequestReview) { return; }
+    if (!shouldRequestReview) {
+      return;
+    }
 
     final inAppReview = InAppReview.instance;
 

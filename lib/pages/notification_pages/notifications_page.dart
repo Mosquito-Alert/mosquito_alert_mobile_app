@@ -18,7 +18,9 @@ class NotificationsPage extends StatefulWidget {
   final String? notificationId;
   final Function(int)? onNotificationUpdate;
 
-  const NotificationsPage({Key? key, this.notificationId, this.onNotificationUpdate}) : super(key: key);
+  const NotificationsPage(
+      {Key? key, this.notificationId, this.onNotificationUpdate})
+      : super(key: key);
 
   @override
   _NotificationsPageState createState() => _NotificationsPageState();
@@ -39,7 +41,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   Future<void> _logScreenView() async {
-    await FirebaseAnalytics.instance.logScreenView(screenName: '/notifications');
+    await FirebaseAnalytics.instance
+        .logScreenView(screenName: '/notifications');
   }
 
   Future<void> _getData() async {
@@ -101,8 +104,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
                               elevation: 4,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8)),
-                              child: ListTile(        
-                                tileColor: Colors.white,                        
+                              child: ListTile(
+                                tileColor: Colors.white,
                                 contentPadding: EdgeInsets.all(12),
                                 onTap: () {
                                   !notifications[index].acknowledged!
@@ -148,11 +151,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
     );
   }
 
-  void _infoBottomSheet(BuildContext context, MyNotification notification) async {
+  void _infoBottomSheet(
+      BuildContext context, MyNotification notification) async {
     await FirebaseAnalytics.instance.logSelectContent(
-      contentType: 'notification',
-      itemId: '${notification.id}'
-    );
+        contentType: 'notification', itemId: '${notification.id}');
     CustomShowModalBottomSheet.customShowModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
@@ -170,7 +172,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
                     topRight: Radius.circular(10),
                   )),
               child: Container(
-                margin: EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 10),
+                margin:
+                    EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 10),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,9 +183,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
                       ),
                       Style.titleMedium(notification.expert_comment),
                       Style.bodySmall(
-                        DateFormat('dd-MM-yyyy HH:mm').format(
-                            DateTime.parse(notification.date_comment!).toLocal()),
-                        color: Colors.grey),                      
+                          DateFormat('dd-MM-yyyy HH:mm').format(
+                              DateTime.parse(notification.date_comment!)
+                                  .toLocal()),
+                          color: Colors.grey),
                       SizedBox(
                         height: 10,
                       ),
@@ -220,7 +224,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   void _updateUnreadNotificationCount() {
-    var unacknowledgedCount = notifications.where((notification) => notification.acknowledged == false).length;
+    var unacknowledgedCount = notifications
+        .where((notification) => notification.acknowledged == false)
+        .length;
     if (widget.onNotificationUpdate != null) {
       widget.onNotificationUpdate!(unacknowledgedCount);
     }

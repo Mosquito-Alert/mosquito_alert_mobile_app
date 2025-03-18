@@ -17,7 +17,8 @@ class AddPhotoButton extends StatefulWidget {
   final String? subtitleKey;
   final String? infoBadgeTextKey;
 
-  AddPhotoButton(this.isEditing, this.photoRequired, this._atLeastOnePhotoAttached, this.subtitleKey, this.infoBadgeTextKey);
+  AddPhotoButton(this.isEditing, this.photoRequired,
+      this._atLeastOnePhotoAttached, this.subtitleKey, this.infoBadgeTextKey);
 
   @override
   _AddPhotoButtonState createState() => _AddPhotoButtonState();
@@ -35,9 +36,9 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
 
   Future<void> initializePhotos() async {
     await _initImages();
-    if (images.isEmpty){
+    if (images.isEmpty) {
       await getImageWhatsapp();
-    }    
+    }
   }
 
   Future<void> _permissionsPath() async {
@@ -91,9 +92,9 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
         children: [
           Style.title(MyLocalizations.of(context, 'bs_info_adult_title')),
           Visibility(
-            visible: widget.subtitleKey != null,
-            child: Style.body(MyLocalizations.of(context, widget.subtitleKey))
-          ),
+              visible: widget.subtitleKey != null,
+              child:
+                  Style.body(MyLocalizations.of(context, widget.subtitleKey))),
           SizedBox(height: 15),
           GridView.builder(
             shrinkWrap: true,
@@ -106,65 +107,65 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
             itemCount: min(3, images.length + 1),
             itemBuilder: (context, index) {
               return index == (images.length)
-                ? GestureDetector(
-                    onTap: () {
-                      getImageWhatsapp();
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 1),
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Icon(
-                        Icons.add,
-                        size: 30,
-                      ),
-                    ),
-                  )
-                : Stack(
-                    alignment: Alignment.topLeft,
-                    children: <Widget>[
-                      Container(
-                        height: double.infinity,
-                        width: double.infinity,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Image.file(
-                            File(images[index]!),
-                            fit: BoxFit.cover,
-                            height: 100,
-                            width: 100,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: double.infinity,
-                        width: double.infinity,
+                  ? GestureDetector(
+                      onTap: () {
+                        getImageWhatsapp();
+                      },
+                      child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.black54,
-                              Colors.transparent,
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.center,
-                          ),
+                            border: Border.all(color: Colors.black, width: 1),
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Icon(
+                          Icons.add,
+                          size: 30,
                         ),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: IconButton(
-                            onPressed: () {
-                              _deleteImage(images[index], index);
-                            },
-                            icon: Icon(
-                              Icons.close,
-                              color: Colors.white,
+                      ),
+                    )
+                  : Stack(
+                      alignment: Alignment.topLeft,
+                      children: <Widget>[
+                        Container(
+                          height: double.infinity,
+                          width: double.infinity,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Image.file(
+                              File(images[index]!),
+                              fit: BoxFit.cover,
+                              height: 100,
+                              width: 100,
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
+                        Container(
+                          height: double.infinity,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.black54,
+                                Colors.transparent,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.center,
+                            ),
+                          ),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: IconButton(
+                              onPressed: () {
+                                _deleteImage(images[index], index);
+                              },
+                              icon: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
             },
           ),
         ],
@@ -184,18 +185,17 @@ class _AddPhotoButtonState extends State<AddPhotoButton> {
     }
   }
 
-  Future<void> getImageWhatsapp() async{
+  Future<void> getImageWhatsapp() async {
     var files = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => WhatsappCamera(
-          multiple: false,
-          infoBadgeTextKey: widget.infoBadgeTextKey,
-        )
-      ),
+          builder: (context) => WhatsappCamera(
+                multiple: false,
+                infoBadgeTextKey: widget.infoBadgeTextKey,
+              )),
     );
 
-    if(files == null){
+    if (files == null) {
       return;
     }
 

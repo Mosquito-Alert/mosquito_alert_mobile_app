@@ -43,11 +43,12 @@ class _InfoPageInWebviewState extends State<InfoPageInWebview> {
         ),
       );
 
-      if (widget.localHtml) {
-        _loadHtmlFromAssets();
-      } else {
-        _controller.loadRequest(Uri.parse(widget.url ?? 'https://www.mosquitoalert.com/'));
-      }
+    if (widget.localHtml) {
+      _loadHtmlFromAssets();
+    } else {
+      _controller.loadRequest(
+          Uri.parse(widget.url ?? 'https://www.mosquitoalert.com/'));
+    }
   }
 
   @override
@@ -99,13 +100,8 @@ class _InfoPageInWebviewState extends State<InfoPageInWebview> {
     loadingStream.add(true);
     var fileText = await rootBundle.loadString(widget.url!);
     try {
-      await _controller.loadRequest(
-        Uri.dataFromString(
-          fileText,
-          mimeType: 'text/html',
-          encoding: Encoding.getByName('utf-8')
-        )
-      );
+      await _controller.loadRequest(Uri.dataFromString(fileText,
+          mimeType: 'text/html', encoding: Encoding.getByName('utf-8')));
     } catch (e) {
       print('Error loading local HTML: $e');
     }

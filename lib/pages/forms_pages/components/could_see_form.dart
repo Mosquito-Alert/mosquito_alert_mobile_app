@@ -10,7 +10,8 @@ class CouldSeeForm extends StatefulWidget {
   final Function? addOtherReport;
   final Function nextPage;
 
-  CouldSeeForm(this.addReport, this.displayQuestion, this.setValid, this.nextPage,
+  CouldSeeForm(
+      this.addReport, this.displayQuestion, this.setValid, this.nextPage,
       {this.addOtherReport});
   @override
   _CouldSeeFormState createState() => _CouldSeeFormState();
@@ -35,7 +36,8 @@ class _CouldSeeFormState extends State<CouldSeeForm> {
             SizedBox(
               height: 35,
             ),
-            Style.title(MyLocalizations.of(context, widget.displayQuestion['question']['text'])),
+            Style.title(MyLocalizations.of(
+                context, widget.displayQuestion['question']['text'])),
             SizedBox(
               height: 30,
             ),
@@ -48,8 +50,7 @@ class _CouldSeeFormState extends State<CouldSeeForm> {
                 childAspectRatio: 5 / 2,
               ),
               itemBuilder: (context, index) {
-                String? text =
-                    widget.displayQuestion['answers'][index]['text'];
+                String? text = widget.displayQuestion['answers'][index]['text'];
                 int? id = widget.displayQuestion['answers'][index]['id'];
                 return Container(
                   padding: EdgeInsets.all(5),

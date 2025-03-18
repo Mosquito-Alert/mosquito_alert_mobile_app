@@ -23,8 +23,7 @@ class _PublicMapState extends State<PublicMap> {
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageStarted: (String url) {
-          },
+          onPageStarted: (String url) {},
           onPageFinished: (String url) {
             loadingStream.add(false);
           },
@@ -34,7 +33,7 @@ class _PublicMapState extends State<PublicMap> {
         ),
       );
 
-      _controller.loadRequest(Uri.parse('https://map.mosquitoalert.com'));
+    _controller.loadRequest(Uri.parse('https://map.mosquitoalert.com'));
   }
 
   Future<void> _logScreenView() async {
@@ -61,20 +60,20 @@ class _PublicMapState extends State<PublicMap> {
               );
             }),
             StreamBuilder<bool>(
-              stream: loadingStream.stream,
-              initialData: true,
-              builder: (BuildContext context, AsyncSnapshot<bool> snapLoading) {
-                if (snapLoading.data != true) {
-                  return Container();
-                }
+                stream: loadingStream.stream,
+                initialData: true,
+                builder:
+                    (BuildContext context, AsyncSnapshot<bool> snapLoading) {
+                  if (snapLoading.data != true) {
+                    return Container();
+                  }
 
-                return Container(
-                  child: Center(
-                    child: Utils.loading(true),
-                  ),
-                );
-              }
-            ),
+                  return Container(
+                    child: Center(
+                      child: Utils.loading(true),
+                    ),
+                  );
+                }),
           ],
         ),
       ),

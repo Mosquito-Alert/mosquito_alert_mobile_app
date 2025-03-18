@@ -4,7 +4,11 @@ import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 class CustomCard extends StatelessWidget {
   final String text, image_path, color;
   final dynamic onTap;
-  CustomCard({required this.text, required this.image_path, required this.color, required this.onTap});
+  CustomCard(
+      {required this.text,
+      required this.image_path,
+      required this.color,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +31,8 @@ class CustomCard extends StatelessWidget {
                 radius: 35,
                 backgroundColor: Color(int.parse(color, radix: 16)),
                 child: ClipOval(
-                  child: Image.asset(image_path, fit: BoxFit.cover, width: 65, height: 65),
+                  child: Image.asset(image_path,
+                      fit: BoxFit.cover, width: 65, height: 65),
                 ),
               ),
               SizedBox(width: 15),

@@ -65,7 +65,9 @@ class _AddOtherReportPageState extends State<AddOtherReportPage> {
             ),
             Style.textField(MyLocalizations.of(context, 'comments_txt'),
                 _commentsController, context,
-                keyboardType: TextInputType.multiline, maxLines: 4, expands: false, handleChange: (text) {
+                keyboardType: TextInputType.multiline,
+                maxLines: 4,
+                expands: false, handleChange: (text) {
               Utils.report!.note = text;
             }),
             Style.bottomOffset,

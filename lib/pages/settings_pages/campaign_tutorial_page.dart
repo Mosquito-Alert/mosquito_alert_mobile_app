@@ -25,12 +25,12 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
   }
 
   Future<void> _logScreenView() async {
-    await FirebaseAnalytics.instance.logScreenView(screenName: '/info/campaigns');
+    await FirebaseAnalytics.instance
+        .logScreenView(screenName: '/info/campaigns');
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -38,13 +38,19 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_outlined),
           onPressed: () {
-          if (widget.fromReport != null && widget.fromReport!) {
-            Navigator.popUntil(context, (route) => route.isFirst);
-          } else {
-            Navigator.pop(context);
-          }
-        },),
-        title: Style.title(MyLocalizations.of(context, 'campaign_tutorial_txt',), fontSize: 16),
+            if (widget.fromReport != null && widget.fromReport!) {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            } else {
+              Navigator.pop(context);
+            }
+          },
+        ),
+        title: Style.title(
+            MyLocalizations.of(
+              context,
+              'campaign_tutorial_txt',
+            ),
+            fontSize: 16),
       ),
       body: IntroSlider(
         slides: initSlides(),
@@ -54,7 +60,7 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
         onDonePress: onDonePress,
         doneButtonStyle: ButtonStyle(
             backgroundColor:
-            WidgetStateProperty.all(Style.colorPrimary.withOpacity(0.2)),
+                WidgetStateProperty.all(Style.colorPrimary.withOpacity(0.2)),
             overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
         colorDot: Style.colorPrimary.withOpacity(0.4),
         sizeDot: 6.0,
@@ -66,8 +72,8 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
         },
         hideStatusBar: false,
         prevButtonStyle: ButtonStyle(
-          foregroundColor: WidgetStateProperty.all(Style.colorPrimary),
-          overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
+            foregroundColor: WidgetStateProperty.all(Style.colorPrimary),
+            overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
       ),
     );
   }
@@ -75,21 +81,25 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
   // Slide Management
   List<Slide> initSlides() {
     slides.clear();
-    for (var idx = 0; idx < 9; idx ++) {
+    for (var idx = 0; idx < 9; idx++) {
       slides.add(Slide(
           title: '',
-          description: MyLocalizations.of(context, 'tutorial_send_module_00${idx+1}'),
-          pathImage: 'assets/img/sendmodule/fg_module_00${idx+1}.webp',
-          backgroundImage: 'assets/img/sendmodule/fg_module_00${idx+1}.webp'));
+          description:
+              MyLocalizations.of(context, 'tutorial_send_module_00${idx + 1}'),
+          pathImage: 'assets/img/sendmodule/fg_module_00${idx + 1}.webp',
+          backgroundImage:
+              'assets/img/sendmodule/fg_module_00${idx + 1}.webp'));
     }
     return slides;
   }
+
   void onDonePress() {
     Navigator.pop(context);
     if (widget.fromReport != null && widget.fromReport!) {
       Navigator.popUntil(context, (route) => route.isFirst);
     }
   }
+
   Widget renderNextBtn() {
     return Icon(
       Icons.navigate_next,
@@ -97,6 +107,7 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
       size: 35.0,
     );
   }
+
   Widget renderDoneBtn() {
     return Icon(
       Icons.done,
@@ -118,10 +129,10 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
             children: <Widget>[
               GestureDetector(
                   child: Image.asset(
-                    currentSlide.pathImage!,
-                    width: MediaQuery.of(context).size.width ,
-                    fit: BoxFit.cover,
-                  )),
+                currentSlide.pathImage!,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+              )),
               Container(
                 margin: EdgeInsets.all(12.0),
                 child: Text(

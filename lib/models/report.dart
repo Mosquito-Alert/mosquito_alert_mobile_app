@@ -65,7 +65,7 @@ class Report {
       this.nuts2,
       this.country});
 
-  Report._internal(Map<dynamic, dynamic> json){
+  Report._internal(Map<dynamic, dynamic> json) {
     log(json.toString());
     version_UUID = json['version_UUID'].toString();
     version_number = json['version_number'];
@@ -111,7 +111,7 @@ class Report {
     nuts2 = json['nuts_2'];
   }
 
-  static Future<Report> fromJsonAsync(Map<dynamic, dynamic> json) async{
+  static Future<Report> fromJsonAsync(Map<dynamic, dynamic> json) async {
     var report = Report._internal(json);
 
     await report._initializeDisplayCity();
@@ -170,9 +170,9 @@ class Report {
   }
 
   LatLng? getLocation() {
-    if (location_choice == 'current'){
+    if (location_choice == 'current') {
       return LatLng(current_location_lat ?? 0, current_location_lon ?? 0);
-    } else if (location_choice == 'selected'){
+    } else if (location_choice == 'selected') {
       return LatLng(selected_location_lat ?? 0, selected_location_lon ?? 0);
     } else {
       return null;

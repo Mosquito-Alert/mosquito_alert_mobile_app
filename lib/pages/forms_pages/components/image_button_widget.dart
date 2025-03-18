@@ -38,8 +38,7 @@ class CustomImageButton extends StatelessWidget {
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 5),
                     child: Style.titleMedium(title,
-                        textAlign: TextAlign.center, fontSize: 16
-                        ),
+                        textAlign: TextAlign.center, fontSize: 16),
                   ),
                 ),
               ],

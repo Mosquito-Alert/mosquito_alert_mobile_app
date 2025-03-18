@@ -29,6 +29,18 @@ It would be awesome if you assign yourself to an existing task or you open a new
 
 If this project is useful for you, please consider starring this repository and giving us 5 stars on the app stores to give us more visibility.
 
+### How to use pre-commit hooks
+
+1. Install pre-commit:
+    ```bash
+    pip install pre-commit
+    ```
+2. Install hooks:
+    ```bash
+    pre-commit install
+    ```
+3. Commit as usual: Pre-commit hooks will run automatically before each commit. If any checks fail, the commit will be blocked.
+
 ## Features
 * Report mosquito bite.
 * Report mosquito sighting.

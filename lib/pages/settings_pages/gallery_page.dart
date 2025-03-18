@@ -24,7 +24,8 @@ class _GalleryPageState extends State<GalleryPage> {
   }
 
   Future<void> _logScreenView() async {
-    await FirebaseAnalytics.instance.logScreenView(screenName: '/mosquito_guide');
+    await FirebaseAnalytics.instance
+        .logScreenView(screenName: '/mosquito_guide');
   }
 
   List<Slide> initSlides() {
@@ -131,14 +132,13 @@ class _GalleryPageState extends State<GalleryPage> {
                 fit: BoxFit.contain,
               )),
               Container(
-                margin: EdgeInsets.all(20.0),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 0.0),
-                  child: MarkdownBody(
-                    data: currentSlide.description!,
-                  ),
-                )
-              ),
+                  margin: EdgeInsets.all(20.0),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 0.0),
+                    child: MarkdownBody(
+                      data: currentSlide.description!,
+                    ),
+                  )),
             ],
           ),
         ),
@@ -157,8 +157,9 @@ class _GalleryPageState extends State<GalleryPage> {
         renderDoneBtn: renderDoneBtn(),
         onDonePress: onDonePress,
         doneButtonStyle: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(Style.colorPrimary.withOpacity(0.2)),
-          overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
+            backgroundColor:
+                WidgetStateProperty.all(Style.colorPrimary.withOpacity(0.2)),
+            overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
         colorDot: Style.colorPrimary.withOpacity(0.4),
         sizeDot: 6.0,
         colorActiveDot: Style.colorPrimary,
@@ -166,8 +167,8 @@ class _GalleryPageState extends State<GalleryPage> {
         backgroundColorAllSlides: Colors.white,
         hideStatusBar: false,
         prevButtonStyle: ButtonStyle(
-          foregroundColor: WidgetStateProperty.all(Style.colorPrimary),
-          overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
+            foregroundColor: WidgetStateProperty.all(Style.colorPrimary),
+            overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
       ),
     );
   }

@@ -34,17 +34,31 @@ class _AdultReportPageState extends State<AdultReportPage> {
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
   StreamController<bool> validStream = StreamController<bool>.broadcast();
   StreamController<bool> skipParts = StreamController<bool>.broadcast();
-  StreamController<double> percentStream =
-      StreamController<double>.broadcast();
+  StreamController<double> percentStream = StreamController<double>.broadcast();
   double? index;
 
   // Define the events to log
   final List<Map<String, dynamic>> _pageEvents = [
-    {'name': 'report_add_photo', 'parameters': {'type': 'adult'}},
-    {'name': 'report_add_gps', 'parameters': {'type': 'adult'}},
-    {'name': 'report_add_environment', 'parameters': {'type': 'adult'}},
-    {'name': 'report_add_bitten', 'parameters': {'type': 'adult'}},
-    {'name': 'report_add_note', 'parameters': {'type': 'adult'}}
+    {
+      'name': 'report_add_photo',
+      'parameters': {'type': 'adult'}
+    },
+    {
+      'name': 'report_add_gps',
+      'parameters': {'type': 'adult'}
+    },
+    {
+      'name': 'report_add_environment',
+      'parameters': {'type': 'adult'}
+    },
+    {
+      'name': 'report_add_bitten',
+      'parameters': {'type': 'adult'}
+    },
+    {
+      'name': 'report_add_note',
+      'parameters': {'type': 'adult'}
+    }
   ];
 
   List<Map> displayQuestions = [
@@ -86,7 +100,8 @@ class _AdultReportPageState extends State<AdultReportPage> {
     _pagesController = PageController();
     index = 0.0;
     _initialformsRepot = [
-      AddPhotoButton(true, true, _checkAtLeastOnePhotoAttached, 'ensure_single_mosquito_photos', 'one_mosquito_reminder_badge'),
+      AddPhotoButton(true, true, _checkAtLeastOnePhotoAttached,
+          'ensure_single_mosquito_photos', 'one_mosquito_reminder_badge'),
       BitingLocationForm(
           setValid, displayQuestions.elementAt(0)['question']['text']),
       QuestionsBreedingForm(
@@ -100,7 +115,8 @@ class _AdultReportPageState extends State<AdultReportPage> {
   }
 
   Future<void> _logFirebaseAnalytics() async {
-    await FirebaseAnalytics.instance.logEvent(name: 'start_report', parameters: {'type': 'adult'});
+    await FirebaseAnalytics.instance
+        .logEvent(name: 'start_report', parameters: {'type': 'adult'});
   }
 
   void _onPageChanged(int index) async {
@@ -158,10 +174,11 @@ class _AdultReportPageState extends State<AdultReportPage> {
     setState(() {
       percentStream.add(0.8);
     });
-    await FirebaseAnalytics.instance.logEvent(name: 'submit_report', parameters: {'type': 'adult'});
+    await FirebaseAnalytics.instance
+        .logEvent(name: 'submit_report', parameters: {'type': 'adult'});
     var res = await Utils.createReport();
 
-    if (res!=null && !res) {
+    if (res != null && !res) {
       _showAlertKo();
     } else {
       if (Utils.savedAdultReport != null &&
@@ -237,7 +254,9 @@ class _AdultReportPageState extends State<AdultReportPage> {
                     });
                     _onWillPop();
                   } else {
-                    if (currentPage == 2.0 && !Utils.report!.responses!.any((element) => element!.answer_id == 61)) {
+                    if (currentPage == 2.0 &&
+                        !Utils.report!.responses!
+                            .any((element) => element!.answer_id == 61)) {
                       setState(() {
                         index = 0;
                       });
@@ -287,57 +306,60 @@ class _AdultReportPageState extends State<AdultReportPage> {
                   children: _formsRepot!,
                 ),
                 index! < 1.0
-                  ? continueButtonPhotos()
-                  : index != _formsRepot!.length.toDouble() - 1
-                    ? SafeArea(
-                      child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: StreamBuilder<bool>(
-                        stream: validStream.stream,
-                        initialData: false,
-                        builder: (BuildContext ctxt, AsyncSnapshot<bool> snapshot) {
-                          return snapshot.data!
-                            ? continueButton(index)
-                            : Container(
-                                width: double.infinity,
-                                height: 54,
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 6, horizontal: 12),
-                                child: Style.button(
-                                  MyLocalizations.of(context, 'continue_txt'), null),
-                              );
-                        }),
-                    ))
-                    : SafeArea(
-                      child: _formsRepot!.length == 2
-                      ? Container(
-                          width: double.infinity,
-                          height: 54,
-                          margin: EdgeInsets.symmetric(
-                              vertical: 6, horizontal: 12),
-                          child: Style.button(
-                            MyLocalizations.of(
-                                context, 'understand_txt'),
-                            () {
-                              Navigator.pop(context);
-                              Utils.resetReport();
-                              Utils.imagePath = null;
-                            },
+                    ? continueButtonPhotos()
+                    : index != _formsRepot!.length.toDouble() - 1
+                        ? SafeArea(
+                            child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: StreamBuilder<bool>(
+                                stream: validStream.stream,
+                                initialData: false,
+                                builder: (BuildContext ctxt,
+                                    AsyncSnapshot<bool> snapshot) {
+                                  return snapshot.data!
+                                      ? continueButton(index)
+                                      : Container(
+                                          width: double.infinity,
+                                          height: 54,
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 6, horizontal: 12),
+                                          child: Style.button(
+                                              MyLocalizations.of(
+                                                  context, 'continue_txt'),
+                                              null),
+                                        );
+                                }),
+                          ))
+                        : SafeArea(
+                            child: _formsRepot!.length == 2
+                                ? Container(
+                                    width: double.infinity,
+                                    height: 54,
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 6, horizontal: 12),
+                                    child: Style.button(
+                                      MyLocalizations.of(
+                                          context, 'understand_txt'),
+                                      () {
+                                        Navigator.pop(context);
+                                        Utils.resetReport();
+                                        Utils.imagePath = null;
+                                      },
+                                    ),
+                                  )
+                                : Container(
+                                    width: double.infinity,
+                                    height: 54,
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 6, horizontal: 12),
+                                    child: Style.button(
+                                      MyLocalizations.of(context, 'send_data'),
+                                      () {
+                                        _createReport();
+                                      },
+                                    ),
+                                  ),
                           ),
-                        )
-                      : Container(
-                          width: double.infinity,
-                          height: 54,
-                          margin: EdgeInsets.symmetric(
-                              vertical: 6, horizontal: 12),
-                          child: Style.button(
-                            MyLocalizations.of(context, 'send_data'),
-                            () {
-                              _createReport();
-                            },
-                          ),
-                        ),
-                      ),                        
               ],
             ),
           ),
@@ -358,62 +380,51 @@ class _AdultReportPageState extends State<AdultReportPage> {
     );
   }
 
-  void _checkAtLeastOnePhotoAttached(){
+  void _checkAtLeastOnePhotoAttached() {
     setState(() {
       _atLeastOnePhotoAttached = true;
     });
   }
 
-  Widget continueButtonPhotos(){
-    if(!_atLeastOnePhotoAttached){
+  Widget continueButtonPhotos() {
+    if (!_atLeastOnePhotoAttached) {
       return Container();
     }
 
     return Container(
-      width: double.infinity,
-      height: 54,
-      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-      child: Style.button(
-        MyLocalizations.of(context, 'continue_txt'), () {
+        width: double.infinity,
+        height: 54,
+        margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+        child: Style.button(MyLocalizations.of(context, 'continue_txt'), () {
           goNextPage();
-        }
-      )
-    );
+        }));
   }
 
-  Widget continueButton(double? index){
+  Widget continueButton(double? index) {
     return Container(
-      width: double.infinity,
-      height: 54,
-      margin: EdgeInsets.symmetric(
-          vertical: 6, horizontal: 12),
-      child:
-        Style.button(
-          MyLocalizations.of(context, 'continue_txt'), () {
-            var currentPage = _pagesController!.page;
+        width: double.infinity,
+        height: 54,
+        margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+        child: Style.button(MyLocalizations.of(context, 'continue_txt'), () {
+          var currentPage = _pagesController!.page;
 
-            if (currentPage == 3.0 && addBiting) {
-              Utils.addOtherReport('bite');
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        BitingReportPage()),
-              );
-            } else {
-              setState(() {
-                index = currentPage! + 1;
-              });
+          if (currentPage == 3.0 && addBiting) {
+            Utils.addOtherReport('bite');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => BitingReportPage()),
+            );
+          } else {
+            setState(() {
+              index = currentPage! + 1;
+            });
 
-              _pagesController!
+            _pagesController!
                 .nextPage(
-                  duration: Duration(microseconds: 300),
-                  curve: Curves.ease)
-                .then((value) => setValid(widget.editReport != null));              
-            }
+                    duration: Duration(microseconds: 300), curve: Curves.ease)
+                .then((value) => setValid(widget.editReport != null));
           }
-        )
-    );
+        }));
   }
 
   void _showAlertOk() {

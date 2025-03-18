@@ -11,7 +11,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 import 'package:file_picker/file_picker.dart';
 
-
 class _WhatsAppCameraController extends ChangeNotifier {
   ///
   /// don't necessary to use this class
@@ -200,23 +199,22 @@ class _WhatsappCameraState extends State<WhatsappCamera>
           ),
           Visibility(
             visible: widget.infoBadgeTextKey != null,
-            child:Align(
+            child: Align(
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(top: 70),
                 child: Container(
-                  width: 0.5 * MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.orange.shade300,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                    heightFactor: 1.5,
-                    child: Text(
-                      MyLocalizations.of(context, widget.infoBadgeTextKey),
-                      style: TextStyle(color: Colors.white)),
-                  )
-                ),
+                    width: 0.5 * MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.orange.shade300,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      heightFactor: 1.5,
+                      child: Text(
+                          MyLocalizations.of(context, widget.infoBadgeTextKey),
+                          style: TextStyle(color: Colors.white)),
+                    )),
               ),
             ),
           ),
@@ -316,8 +314,7 @@ class _WhatsappCameraState extends State<WhatsappCamera>
                           ),
                         ],
                       );
-                    }
-                  ),
+                    }),
               ),
             ),
           ),

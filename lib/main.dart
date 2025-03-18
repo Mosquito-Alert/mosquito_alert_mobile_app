@@ -28,10 +28,7 @@ Future<void> main({String env = 'prod'}) async {
     print('$err');
   }
 
-  await Workmanager().initialize(
-    callbackDispatcher,
-    isInDebugMode: false
-  );
+  await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
 
   // Start background tracking at midnight to ensure 5 random samples per day
   var now = DateTime.now().toLocal();
@@ -82,13 +79,12 @@ class _MyAppState extends State<MyApp> {
 
   MyLocalizationsDelegate _newLocaleDelegate = MyLocalizationsDelegate();
 
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(
-        analytics: FirebaseAnalytics.instance,
-        routeFilter: (route) {
-          return route is PageRoute && route.settings.name != '/';
-        },
-      );
+  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(
+    analytics: FirebaseAnalytics.instance,
+    routeFilter: (route) {
+      return route is PageRoute && route.settings.name != '/';
+    },
+  );
 
   @override
   void initState() {
@@ -138,7 +134,9 @@ class _MyAppState extends State<MyApp> {
         scaffoldBackgroundColor: Colors.white,
       ),
       navigatorKey: navigatorKey,
-      navigatorObservers: <NavigatorObserver>[observer, ],
+      navigatorObservers: <NavigatorObserver>[
+        observer,
+      ],
       home: MainVC(),
       localizationsDelegates: [
         _newLocaleDelegate,

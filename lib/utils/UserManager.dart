@@ -233,12 +233,16 @@ class UserManager {
   static Future<void> migrateHashtagToHashtags() async {
     final prefs = await SharedPreferences.getInstance();
 
-    // Check if the old variable exists  
-    if (!prefs.containsKey('hashtag')) { return; }
+    // Check if the old variable exists
+    if (!prefs.containsKey('hashtag')) {
+      return;
+    }
 
     var oldHashtag = prefs.getString('hashtag');
 
-    if (oldHashtag == null){ return; }
+    if (oldHashtag == null) {
+      return;
+    }
 
     // Users were adding the hashtag manually to the strings
     if (oldHashtag.startsWith('#')) {

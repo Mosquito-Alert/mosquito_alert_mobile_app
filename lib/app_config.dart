@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 class AppConfig {
   final String baseUrl;
-  
+
   AppConfig({required this.baseUrl});
 
   static Future<AppConfig> forEnvironment({String env = 'dev'}) async {
