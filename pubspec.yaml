@@ -43,9 +43,12 @@ dependencies:
   workmanager:
     # The reason to have a custom ref is because the latest published version
     # was not working for iOS, and a custom unreleased commit was solving it.
+    # See commit: b783000
+    # NOTE: Also https://github.com/fluttercommunity/flutter_workmanager/issues/588
     git:
         url: https://github.com/fluttercommunity/flutter_workmanager.git
-        ref: b783000
+        path: workmanager
+        ref: 4ce0651
   battery_plus: ^6.2.1
   badges: ^3.1.2
   cached_network_image: ^3.3.1
