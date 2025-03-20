@@ -327,6 +327,11 @@
     "background_tracking_title": "Laginketa-esfortzua",
     "background_tracking_subtitle": "Partekatu nire kokapena modu anonimoan nire behaketen balio zientifikoa hobetzeko. Informazio gehiago beheko 'Pribatutasun politika' atalean.",
     "es_UY": "Gaztelania (Uruguai)",
+    "NSCameraUsageDescription": "Argazkiak atera eta partekatu zure txostenetan froga bisualak emateko.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Kokapenerako sarbidea baimentzea atzeko planoko jarraipen geologo anonimo eta bereizmen baxurako, zure behaketen balio zientifikoa hobetzeko.",
+    "NSLocationWhenInUseUsageDescription": "GPSa erabiltzea zure txostenetan kokapen zehatza etiketatzeko.",
+    "NSPhotoLibraryAddUsageDescription": "Aplikazioarekin ateratako argazkiak zure gailuaren galerian gordetzeko.",
+    "NSPhotoLibraryUsageDescription": "Sartu zure argazki galeria zure txostenetan dauden irudiak eransteko.",
     "plural_bite": "eltxo ziztada",
     "non_identified_specie": "Identifikatu gabeko espeziea",
     "home_tab": "Hasiera",
@@ -344,5 +349,7 @@
     "ensure_single_mosquito_photos": "Argazki anitz bidali ditzakezu, baina ziurtatu guztiak eltxo berekoak direla eta irudian ez direla beste eltxo batzuk agertzen. Eltxo bat baino gehiago baduzu, bidali txosten berri bakoitzari.",
     "one_mosquito_reminder_badge": "Eltxo bakarra",
     "auto_tagging_settings_title": "Etiketatze automatikoa",
-    "auto_tagging_settings_placeholder": "Sartu etiketa..."
+    "auto_tagging_settings_placeholder": "Sartu etiketa...",
+    "NSUserNotificationsUsageDescription": "Jakinarazpenak erabiltzen ditugu zure ekarpenen egoeraren berri emateko.",
+    "NSUserTrackingUsageDescription": "Zure gailuaren identifikatzailea erabiltzen dugu saioetan zehar zure jarraipena egiteko eta zure ekarpenak horren arabera gordetzeko."
 }

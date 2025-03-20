@@ -327,6 +327,11 @@
     "background_tracking_title": "Achtergrond volgen",
     "background_tracking_subtitle": "Deel mijn locatie anoniem om de wetenschappelijke waarde van mijn observaties te verbeteren. Meer informatie vindt u in het gedeelte 'Privacybeleid' hieronder.",
     "es_UY": "Spaans (Uruguay)",
+    "NSCameraUsageDescription": "Foto's vastleggen en delen om visueel bewijs te leveren in je rapporten.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Locatietoegang toestaan voor anonieme en lage-resolutie achtergrond geo-tracking om de wetenschappelijke waarde van je waarnemingen te verbeteren.",
+    "NSLocationWhenInUseUsageDescription": "GPS gebruiken voor nauwkeurige locatietags in je rapporten.",
+    "NSPhotoLibraryAddUsageDescription": "Foto's die met de app zijn gemaakt op te slaan in de galerij van je apparaat.",
+    "NSPhotoLibraryUsageDescription": "Toegang tot je fotogalerij om bestaande afbeeldingen aan je rapporten toe te voegen.",
     "plural_bite": "Muggenbeten",
     "non_identified_specie": "Niet geïdentificeerde soort",
     "home_tab": "Home",
@@ -344,5 +349,7 @@
     "ensure_single_mosquito_photos": "Je kunt meerdere foto's verzenden, maar zorg ervoor dat iedereen van dezelfde mug is en dat er geen andere muggen in de afbeelding verschijnen. Als u meer dan één mug hebt, dient u een nieuw rapport in voor elk.",
     "one_mosquito_reminder_badge": "Slechts één mug",
     "auto_tagging_settings_title": "Automatisch taggen",
-    "auto_tagging_settings_placeholder": "Tag invoeren..."
+    "auto_tagging_settings_placeholder": "Tag invoeren...",
+    "NSUserNotificationsUsageDescription": "Wij gebruiken meldingen om u op de hoogte te houden van de status van uw bijdragen.",
+    "NSUserTrackingUsageDescription": "Wij gebruiken uw apparaat-ID om u te volgen tijdens verschillende sessies en om uw bijdragen dienovereenkomstig op te slaan."
 }

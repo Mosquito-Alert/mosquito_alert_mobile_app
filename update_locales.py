@@ -103,9 +103,6 @@ if __name__ == "__main__":
         api_key=args.api_key,
         path=Path('./assets/language/'),
         extension='json',
-        params={
-            'filter': '!info-plist',
-        },
         tags=args.tags
     )
 

@@ -327,6 +327,11 @@
     "background_tracking_title": "Positionsspårning",
     "background_tracking_subtitle": "Dela min plats ",
     "es_UY": "Spanska (Uruguay)",
+    "NSCameraUsageDescription": "Ta och dela foton för att tillhandahålla visuella bevis i dina rapporter.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Tillåta platsåtkomst för anonym och lågupplöst geospårning i bakgrunden för att förbättra det vetenskapliga värdet av dina observationer.",
+    "NSLocationWhenInUseUsageDescription": "Använda GPS för exakt platsmärkning i dina rapporter.",
+    "NSPhotoLibraryAddUsageDescription": "Spara foton som tagits med appen i enhetens galleri.",
+    "NSPhotoLibraryUsageDescription": "Få tillgång till ditt fotogalleri för att bifoga befintliga bilder till dina rapporter.",
     "plural_bite": "myggbett",
     "non_identified_specie": "Ej identifierad art",
     "home_tab": "Hem",
@@ -344,5 +349,7 @@
     "ensure_single_mosquito_photos": "Du kan skicka flera foton, men se till att alla är av samma mygg och att inga andra myggor visas i bilden. Om du har mer än en mygg, skicka en ny rapport för varje.",
     "one_mosquito_reminder_badge": "Endast en mygg",
     "auto_tagging_settings_title": "Automatisk taggning",
-    "auto_tagging_settings_placeholder": "Ange tagg..."
+    "auto_tagging_settings_placeholder": "Ange tagg...",
+    "NSUserNotificationsUsageDescription": "Vi använder aviseringar för att hålla dig uppdaterad om statusen för dina bidrag.",
+    "NSUserTrackingUsageDescription": "Vi använder din enhetsidentifierare för att spåra dig över sessioner och för att spara dina bidrag därefter."
 }

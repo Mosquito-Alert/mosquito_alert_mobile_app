@@ -327,6 +327,11 @@
     "background_tracking_title": "Esforzo de mostraxe",
     "background_tracking_subtitle": "Comparte a miña localización de forma anónima para mellorar o valor científico das miñas observacións. Máis información na sección \"Política de privacidade\" a continuación.",
     "es_UY": "Español (Uruguai)",
+    "NSCameraUsageDescription": "Capturar e compartir fotos para proporcionar probas visuais nos teus informes.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Permitir o acceso á localización para o xeoseguimento anónimo e de baixa resolución en segundo plano para mellorar o valor científico das túas observacións.",
+    "NSLocationWhenInUseUsageDescription": "Usar o GPS para marcar a localización precisa nos teus informes.",
+    "NSPhotoLibraryAddUsageDescription": "Gardar fotos feitas coa aplicación na galería do teu dispositivo.",
+    "NSPhotoLibraryUsageDescription": "Acceder á túa galería de fotos para anexar imaxes existentes aos teus informes.",
     "plural_bite": "Picaduras",
     "non_identified_specie": "Especie non identificada",
     "home_tab": "Inicio",
@@ -344,5 +349,7 @@
     "ensure_single_mosquito_photos": "Podes enviar varias fotos, pero asegúrate de que todas sexan do mesmo mosquito e que non aparezan outros mosquitos na imaxe. Se tes máis dun mosquito, envíe un novo informe para cada un.",
     "one_mosquito_reminder_badge": "Só un mosquito",
     "auto_tagging_settings_title": "Etiquetado automático",
-    "auto_tagging_settings_placeholder": "Introduce a etiqueta..."
+    "auto_tagging_settings_placeholder": "Introduce a etiqueta...",
+    "NSUserNotificationsUsageDescription": "Usamos notificacións para manterte informado sobre o estado das túas contribucións.",
+    "NSUserTrackingUsageDescription": "Usamos o identificador do teu dispositivo para rastrexarche nas sesións e gardar as túas contribucións en consecuencia."
 }

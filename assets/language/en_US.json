@@ -327,6 +327,11 @@
     "background_tracking_title": "Background tracking",
     "background_tracking_subtitle": "Anonymously share my location to improve the scientific value of my observations. More info in the 'Privacy Policy' option below.",
     "es_UY": "Spanish (Uruguay)",
+    "NSCameraUsageDescription": "Capture and share photos to provide visual evidence in your reports.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Allow location access for anonymous and low-resolution background geo-tracking to improve the scientific value of your observations.",
+    "NSLocationWhenInUseUsageDescription": "Use GPS for precise location tagging in your reports.",
+    "NSPhotoLibraryAddUsageDescription": "Save photos taken with the app to your device's gallery.",
+    "NSPhotoLibraryUsageDescription": "Access your photo gallery to attach existing images to your reports.",
     "plural_bite": "Bites",
     "non_identified_specie": "Non identified specie",
     "home_tab": "Home",
@@ -344,5 +349,7 @@
     "ensure_single_mosquito_photos": "You can send multiple photos, but make sure all are of the same mosquito and that no other mosquitoes appear in the image. If you have more than one mosquito, please submit a new report for each.",
     "one_mosquito_reminder_badge": "Only one mosquito",
     "auto_tagging_settings_title": "Auto-tagging",
-    "auto_tagging_settings_placeholder": "Enter tag..."
+    "auto_tagging_settings_placeholder": "Enter tag...",
+    "NSUserNotificationsUsageDescription": "We use notifications to keep you updated on the status of your contributions.",
+    "NSUserTrackingUsageDescription": "We use your device identifier to track you across sessions and to save your contributions accordingly."
 }

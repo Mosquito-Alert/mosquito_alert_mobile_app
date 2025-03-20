@@ -327,6 +327,11 @@
     "background_tracking_title": "Pozadinsko praćenje",
     "background_tracking_subtitle": "Anonimno podijelite moju lokaciju kako biste poboljšali znanstvenu vrijednost svojih opažanja. Više informacija u odjeljku 'Pravila privatnosti' u nastavku.",
     "es_UY": "Španjolski (Urugvaj)",
+    "NSCameraUsageDescription": "Snimanje i dijeljenje fotografija za pružanje vizualnih dokaza u vašim izvješćima.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Omogućim pristup lokaciji za anonimno pozadinsko geo-praćenje u niskoj razlučivosti radi poboljšanja znanstvene vrijednosti vaših opažanja.",
+    "NSLocationWhenInUseUsageDescription": "Korištenje GPS-a za precizno označavanje lokacije u vašim izvješćima.",
+    "NSPhotoLibraryAddUsageDescription": "Spremanje fotografija snimljenih aplikacijom u galeriju vašeg uređaja.",
+    "NSPhotoLibraryUsageDescription": "Pristup vašoj galeriji fotografija za prilaganje postojećih slika vašim izvješćima.",
     "plural_bite": "",
     "non_identified_specie": "Neidentificirana vrsta",
     "home_tab": "Početna",
@@ -344,5 +349,7 @@
     "ensure_single_mosquito_photos": "Možete poslati više fotografija, ali budite sigurni da su svi isti komarci i da se na slici ne pojavljuju drugi komarci. Ako imate više od jednog komaraca, pošaljite novo izvješće za svaki.",
     "one_mosquito_reminder_badge": "Samo jedan komarac",
     "auto_tagging_settings_title": "Automatsko označavanje",
-    "auto_tagging_settings_placeholder": "Unesite oznaku..."
+    "auto_tagging_settings_placeholder": "Unesite oznaku...",
+    "NSUserNotificationsUsageDescription": "Koristimo obavijesti kako bismo vas informirali o statusu vaših doprinosa.",
+    "NSUserTrackingUsageDescription": "Koristimo identifikator vašeg uređaja kako bismo vas pratili kroz sesije i kako bismo u skladu s tim spremili vaše doprinose."
 }

@@ -327,6 +327,11 @@
     "background_tracking_title": "Hannergrond Tracking",
     "background_tracking_subtitle": "Deelt meng Positioun anonym fir de wëssenschaftleche Wäert vu menge Beobachtungen ze verbesseren. Méi Informatioun an der 'Privatsphär Politik' Sektioun hei ënnen.",
     "es_UY": "Spuenesch (Uruguay)",
+    "NSCameraUsageDescription": "Fotoen opzehuelen an ze deelen fir visuell Beweiser an Äre Berichter ze bidden.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Erlaabt Locationzougang fir anonym an niddereg Opléisung Hannergrond Geo-Tracking fir de wëssenschaftleche Wäert vun Ären Observatiounen ze verbesseren.",
+    "NSLocationWhenInUseUsageDescription": "GPS ze benotzen fir präzis Location Tagging an Äre Berichter.",
+    "NSPhotoLibraryAddUsageDescription": "Fotoen, déi mat der App gemaach goufen, an d'Galerie vun Ärem Apparat ze späicheren.",
+    "NSPhotoLibraryUsageDescription": "Zougang zu Ärer Fotogalerie fir existent Biller op Är Berichter ze befestigen.",
     "plural_bite": "Moustiquenbissen",
     "non_identified_specie": "Net identifizéiert Spezies",
     "home_tab": "Home",
@@ -344,5 +349,7 @@
     "ensure_single_mosquito_photos": "Dir kënnt vu méi Fotoen schécken awer gitt sécher datt all déiselwecht Mosquito an där keng aner Must bei derrëft erschécke sinn. Wann Dir méi wéi ee Mosquito hutt, gitt w.e.g. en neie Bericht fir all.",
     "one_mosquito_reminder_badge": "Nëmmen ee Mosquito",
     "auto_tagging_settings_title": "Auto-Tagging",
-    "auto_tagging_settings_placeholder": "Enter tag..."
+    "auto_tagging_settings_placeholder": "Enter tag...",
+    "NSUserNotificationsUsageDescription": "Mir benotzen Notifikatiounen fir Iech iwwer de Status vun Äre Bäiträg aktualiséiert ze halen.",
+    "NSUserTrackingUsageDescription": "Mir benotzen Ären Apparat Identifizéierer fir Iech iwwer Sessiounen ze verfolgen an Är Contributiounen deementspriechend ze späicheren."
 }

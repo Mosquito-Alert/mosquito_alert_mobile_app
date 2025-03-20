@@ -327,6 +327,11 @@
     "background_tracking_title": "Esforç de mostreig",
     "background_tracking_subtitle": "Comparteix la meva ubicació de manera anònima per millorar el valor científic de les meves observacions. Més informació a la secció \"Política de privadesa\" a continuació.",
     "es_UY": "Castellà (Uruguay)",
+    "NSCameraUsageDescription": "Capturar i compartir fotos per proporcionar proves visuals als vostres informes.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Permetre l'accés a la ubicació per a un seguiment geogràfic anònim i de baixa resolució per millorar el valor científic de les vostres observacions.",
+    "NSLocationWhenInUseUsageDescription": "Utilitzar el GPS per a l'etiquetatge d'ubicació precisa als vostres informes.",
+    "NSPhotoLibraryAddUsageDescription": "Desar les fotos fetes amb l'aplicació a la galeria del dispositiu.",
+    "NSPhotoLibraryUsageDescription": "Accedir a la teva galeria de fotos per adjuntar imatges existents als teus informes.",
     "plural_bite": "Picades",
     "non_identified_specie": "Espècie no identificada",
     "home_tab": "Inici",
@@ -344,5 +349,7 @@
     "ensure_single_mosquito_photos": "Pots enviar diverses fotos, però assegurat que totes siguin del mateix mosquit i que no apareguin altres mosquits a la imatge. Si tens més d’un mosquit, envia un informe nou per a cadascun d'ells.",
     "one_mosquito_reminder_badge": "Només un mosquit",
     "auto_tagging_settings_title": "Etiquetatge automàtic",
-    "auto_tagging_settings_placeholder": "Introdueix l'etiqueta..."
+    "auto_tagging_settings_placeholder": "Introdueix l'etiqueta...",
+    "NSUserNotificationsUsageDescription": "Utilitzem notificacions per mantenir-te informat de l'estat de les teves contribucions.",
+    "NSUserTrackingUsageDescription": "Utilitzem l'identificador del vostre dispositiu per fer-vos un seguiment a través de les sessions i per desar les vostres contribucions en conseqüència."
 }

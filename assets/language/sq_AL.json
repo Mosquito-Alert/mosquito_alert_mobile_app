@@ -327,6 +327,11 @@
     "background_tracking_title": "Gjurmimi i sfondit",
     "background_tracking_subtitle": "Për të përmirësuar vlerën shkencore të vëzhgimeve të mia, ndani vendndodhjen time në mënyrë anonime. Më shumë informacion gjendet në opsionin \"Politika e privatësisë\" më poshtë.",
     "es_UY": "Spanjisht (Uruguai)",
+    "NSCameraUsageDescription": "Të regjistroj dhe të ndaj fotografi për të siguruar prova vizuale në raportet tuaja.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Të lejojë aksesin e vendndodhjes për gjeo-ndjekjen e sfondit anonim dhe me rezolucion të ulët për të përmirësuar vlerën shkencore të vëzhgimeve tuaja.",
+    "NSLocationWhenInUseUsageDescription": "Të përdor GPS për etiketim të saktë të vendndodhjes në raportet tuaja.",
+    "NSPhotoLibraryAddUsageDescription": "Të ruaj fotot e marra me aplikacionin në galerinë e pajisjes suaj.",
+    "NSPhotoLibraryUsageDescription": "Të hyjë në galerinë tuaj të fotografive për të bashkëngjitur imazhet ekzistuese në raportet tuaja.",
     "plural_bite": "Pickime",
     "non_identified_specie": "Lloje e paidentifikuar",
     "home_tab": "Home",
@@ -344,5 +349,7 @@
     "ensure_single_mosquito_photos": "Ju mund të dërgoni foto të shumta, por sigurohuni që të gjitha janë të të njëjtit mushkonjë dhe që asnjë mushkonja tjetër nuk shfaqet në imazh. Nëse keni më shumë se një mushkonjë, ju lutemi paraqisni një raport të ri për secilin.",
     "one_mosquito_reminder_badge": "Vetëm një mushkonjë",
     "auto_tagging_settings_title": "Etiketimi automatik",
-    "auto_tagging_settings_placeholder": "Fut etiketën..."
+    "auto_tagging_settings_placeholder": "Fut etiketën...",
+    "NSUserNotificationsUsageDescription": "Ne përdorim njoftimet për tu mbajtur të përditësuar mbi statusin e kontributeve tuaja.",
+    "NSUserTrackingUsageDescription": "Ne përdorim identifikuesin e pajisjes suaj për t'ju gjurmuar nëpër sekione dhe për të ruajtur siç duhet kontributet tuaja."
 }

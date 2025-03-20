@@ -327,6 +327,11 @@
     "background_tracking_title": "Sforzo di campionamento",
     "background_tracking_subtitle": "Condividi la mia posizione in modo anonimo per migliorare il valore scientifico delle mie osservazioni. Maggiori informazioni nella sezione 'Informativa sulla privacy' di seguito.",
     "es_UY": "Spagnolo (Uruguay)",
+    "NSCameraUsageDescription": "Catturare e condividere foto per fornire prove visive nei segnalazioni.",
+    "NSLocationAlwaysAndWhenInUseUsageDescription": "Consentire l'accesso alla posizione per il geo-tracking anonimo e a bassa risoluzione dello sfondo per migliorare il valore scientifico delle osservazioni.",
+    "NSLocationWhenInUseUsageDescription": "Usare il GPS per etichettare con precisione la posizione nei segnalazioni.",
+    "NSPhotoLibraryAddUsageDescription": "Salvare le foto scattate con l'applicazione nella galleria del dispositivo.",
+    "NSPhotoLibraryUsageDescription": "Accedere alla galleria fotografica per allegare le immagini esistenti ai segnalazioni.",
     "plural_bite": "Puntura",
     "non_identified_specie": "Specie non identificata",
     "home_tab": "Home",
@@ -344,5 +349,7 @@
     "ensure_single_mosquito_photos": "Puoi inviare più foto, ma assicurati che tutti siano della stessa zanzara e che nessun'altra zanzara appaia nell'immagine. Se hai più di una zanzara, ti preghiamo di inviare un nuovo rapporto per ciascuno.",
     "one_mosquito_reminder_badge": "Solo una zanzara",
     "auto_tagging_settings_title": "Auto-tagging",
-    "auto_tagging_settings_placeholder": "Inserire il tag..."
+    "auto_tagging_settings_placeholder": "Inserire il tag...",
+    "NSUserNotificationsUsageDescription": "Utilizziamo le notifiche per tenerti aggiornato sullo stato dei tuoi contributi.",
+    "NSUserTrackingUsageDescription": "Utilizziamo l'identificativo del tuo dispositivo per tracciarti nelle sessioni e salvare di conseguenza i tuoi contributi."
 }
