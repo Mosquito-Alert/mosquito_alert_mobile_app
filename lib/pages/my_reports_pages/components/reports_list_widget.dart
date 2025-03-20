@@ -70,6 +70,7 @@ class _MyReportsListState extends State<ReportsList> {
                 itemCount: reports.length,
                 itemBuilder: (context, index) {
                   return Card(
+                    color: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
