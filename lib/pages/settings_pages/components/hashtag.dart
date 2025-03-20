@@ -96,6 +96,10 @@ class _StringMultilineTagsState extends State<StringMultilineTags> {
                                   ? ''
                                   : MyLocalizations.of(context,
                                       'auto_tagging_settings_placeholder'),
+                              hintStyle: TextStyle(
+                                fontSize: 11,
+                                color: Colors.grey[600],
+                              ),
                               errorText: inputFieldValues.error,
                               prefixIconConstraints: BoxConstraints(
                                   maxWidth: _distanceToField * 0.8),
