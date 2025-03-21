@@ -11,11 +11,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class BitingLocationForm extends StatefulWidget {
+class LocationForm extends StatefulWidget {
   final Function setValid;
   final String? displayQuestion;
 
-  BitingLocationForm(this.setValid, this.displayQuestion);
+  LocationForm(this.setValid, this.displayQuestion);
 
   @override
   _BitingLocationFormState createState() => _BitingLocationFormState();
@@ -23,7 +23,7 @@ class BitingLocationForm extends StatefulWidget {
 
 enum LocationType { current, selected, missing }
 
-class _BitingLocationFormState extends State<BitingLocationForm> {
+class _BitingLocationFormState extends State<LocationForm> {
   late GoogleMapController controller;
   List<Marker> markers = [];
 

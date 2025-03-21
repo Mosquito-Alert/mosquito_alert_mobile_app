@@ -7,7 +7,7 @@ import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_other_report_form.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_photo_button_widget.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/components/biting_location_form.dart';
+import 'package:mosquito_alert_app/pages/forms_pages/components/location_form.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/questions_breeding_form.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
@@ -49,7 +49,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       'parameters': {'type': 'breeding_site'}
     },
     {
-      'name': 'report_add_gps',
+      'name': 'report_add_location',
       'parameters': {'type': 'breeding_site'}
     },
     {
@@ -130,8 +130,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       ),
       QuestionsBreedingForm(displayQuestions.elementAt(2), setValid, false,
           goNextPage, 'assets/img/bottoms/breeding_3.webp'),
-      BitingLocationForm(
-          setValid, displayQuestions.elementAt(3)['question']['text']),
+      LocationForm(setValid, displayQuestions.elementAt(3)['question']['text']),
       AddOtherReportPage(_createReport, setValid, percentStream),
     ];
     _initialFormsReport = List.from(_formsReport);
