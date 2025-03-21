@@ -25,7 +25,7 @@ class BreedingReportPage extends StatefulWidget {
 
 class _BreedingReportPageState extends State<BreedingReportPage> {
   PageController? _pagesController;
-  late List<Widget> _formsRepot, _initialFormsReport;
+  late List<Widget> _formsReport, _initialFormsReport;
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
   StreamController<bool> validStream = StreamController<bool>.broadcast();
   StreamController<double> percentStream = StreamController<double>.broadcast();
@@ -116,7 +116,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     _logFirebaseAnalytics();
     _pagesController = PageController();
 
-    _formsRepot = [
+    _formsReport = [
       QuestionsBreedingForm(displayQuestions.elementAt(0), setValid, true,
           goNextPage, 'assets/img/bottoms/breeding_1.webp'),
       AddPhotoButton(true, true, _checkAtLeastOnePhotoAttached, null, null),
@@ -134,7 +134,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
           setValid, displayQuestions.elementAt(3)['question']['text']),
       AddOtherReportPage(_createReport, setValid, percentStream),
     ];
-    _initialFormsReport = List.from(_formsRepot);
+    _initialFormsReport = List.from(_formsReport);
   }
 
   Future<void> _logFirebaseAnalytics() async {
@@ -158,12 +158,12 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     if (skip) {
       list.removeAt(3);
       setState(() {
-        _formsRepot = list;
+        _formsReport = list;
         displayContinue = 2.0;
       });
     } else {
       setState(() {
-        _formsRepot = List.from(_initialFormsReport);
+        _formsReport = List.from(_initialFormsReport);
         displayContinue = 3.0;
       });
     }
@@ -292,7 +292,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                   controller: _pagesController,
                   onPageChanged: _onPageChanged,
                   physics: NeverScrollableScrollPhysics(),
-                  children: _formsRepot,
+                  children: _formsReport,
                 ),
                 index <= displayContinue
                     ? index == 1 && _atLeastOnePhotoAttached
@@ -307,7 +307,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
                               goNextPage();
                             }))
                         : Container()
-                    : index != _formsRepot.length.toDouble() - 1
+                    : index != _formsReport.length.toDouble() - 1
                         ? SafeArea(
                             child: Align(
                             alignment: Alignment.bottomCenter,

@@ -26,7 +26,7 @@ class BitingReportPage extends StatefulWidget {
 
 class _BitingReportPageState extends State<BitingReportPage> {
   PageController? _pagesController;
-  late List<Widget> _formsRepot;
+  late List<Widget> _formsReport;
   String? otherReport;
   bool seeButton = false;
   bool addMosquito = false;
@@ -126,7 +126,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
     _initializeReport();
     _logFirebaseAnalytics();
     _pagesController = PageController();
-    _formsRepot = [
+    _formsReport = [
       BitingForm(
         [
           displayQuestions.elementAt(0),
@@ -287,11 +287,11 @@ class _BitingReportPageState extends State<BitingReportPage> {
                   controller: _pagesController,
                   onPageChanged: _onPageChanged,
                   physics: NeverScrollableScrollPhysics(),
-                  children: _formsRepot,
+                  children: _formsReport,
                 ),
                 index == 0.0
                     ? Container()
-                    : index != _formsRepot.length.toDouble() - 1
+                    : index != _formsReport.length.toDouble() - 1
                         ? SafeArea(
                             child: Align(
                                 alignment: Alignment.bottomCenter,
