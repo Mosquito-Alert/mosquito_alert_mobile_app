@@ -88,7 +88,6 @@ class _MainVCState extends State<MainVC> {
     UserManager.userScore = await ApiSingleton().getUserScores();
     await UserManager.setUserScores(UserManager.userScore);
     await Utils.loadFirebase();
-    await Utils.getLocation(context);
     return true;
   }
 
