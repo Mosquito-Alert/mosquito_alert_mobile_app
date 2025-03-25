@@ -783,9 +783,10 @@ class Utils {
                 style: TextStyle(color: Style.textColor, fontSize: 12)),
             InkWell(
               onTap: () async {
-                final url = MyLocalizations.of(context, 'url_politics');
-                if (await canLaunch(url)) {
-                  await launch(url);
+                Uri url =
+                    Uri.parse(MyLocalizations.of(context, 'url_politics'));
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url);
                 } else {
                   throw 'Could not launch $url';
                 }
@@ -802,9 +803,9 @@ class Utils {
                 style: TextStyle(color: Style.textColor, fontSize: 12)),
             InkWell(
               onTap: () async {
-                final url = MyLocalizations.of(context, 'url_legal');
-                if (await canLaunch(url)) {
-                  await launch(url);
+                Uri url = Uri.parse(MyLocalizations.of(context, 'url_legal'));
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url);
                 } else {
                   throw 'Could not launch $url';
                 }
