@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/consent_form.dart';
+import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -28,10 +28,8 @@ class UserManager {
 
       await prefs.setBool('firstTime', true);
       var uuid = Uuid().v4();
-      var trackingUuid = Uuid().v4();
       await prefs.setString('uuid', uuid);
-      await prefs.setString('trackingUUID', trackingUuid);
-      await prefs.setBool('trackingEnabled', true);
+      await BackgroundTracking.start(shouldRun: true);
 
       Utils.initializedCheckData['userCreated']['required'] = true;
 
@@ -68,53 +66,6 @@ class UserManager {
   static Future<void> setUserScores(scores) async {
     var prefs = await SharedPreferences.getInstance();
     await prefs.setInt('userScores', scores);
-  }
-
-  static Future<void> setTracking(bool new_value) async {
-    var prefs = await SharedPreferences.getInstance();
-
-    if (new_value == false) {
-      // Disable tracking
-      print('disable bg tracking');
-      await prefs.setBool('trackingEnabled', false);
-      return;
-    }
-
-    print('enable bg tracking');
-
-    // Step 1: Check the status of locationWhenInUse permission
-    var whenInUseStatus = await Permission.locationWhenInUse.status;
-
-    // Step 2: If locationWhenInUse is not granted, request it
-    if (!whenInUseStatus.isGranted) {
-      whenInUseStatus = await Permission.locationWhenInUse.request();
-    }
-
-    if (whenInUseStatus.isPermanentlyDenied) {
-      await openAppSettings(); // Open app settings for the user to manually enable the permission
-    }
-
-    // Step 3: If locationWhenInUse is granted, request locationAlways permission
-    if (whenInUseStatus.isGranted) {
-      var alwaysStatus = await Permission.locationAlways.status;
-
-      // Step 4: If locationAlways is not granted, request it
-      if (!alwaysStatus.isGranted) {
-        alwaysStatus = await Permission.locationAlways.request();
-      }
-
-      // Step 5: Handle the result of the locationAlways request
-      if (alwaysStatus.isGranted) {
-        await prefs.setBool('trackingEnabled', true);
-      } else if (alwaysStatus.isPermanentlyDenied) {
-        await openAppSettings(); // Open app settings for the user to manually enable the permission
-      } else {
-        print('Location Always permission denied. Tracking not enabled.');
-        return;
-      }
-    }
-
-    print('Location When In Use permission denied. Tracking not enabled.');
   }
 
   static Future<void> setSowInfoAdult(show) async {
@@ -155,11 +106,6 @@ class UserManager {
     return prefs.setStringList('hashtags', hashtags);
   }
 
-  static Future<void> setServerUrl(String serverUrl) async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setString('serverUrl', serverUrl);
-  }
-
   static Future<void> setLastReviewRequest(int lastReviewRequest) async {
     var prefs = await SharedPreferences.getInstance();
     await prefs.setInt('lastReviewRequest', lastReviewRequest);
@@ -176,11 +122,6 @@ class UserManager {
     return prefs.get('uuid') as FutureOr<String?>;
   }
 
-  static Future<String?> getTrackingId() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.get('trackingUUID') as FutureOr<String?>;
-  }
-
   static Future<String?> getFirebaseId() async {
     var prefs = await SharedPreferences.getInstance();
     return prefs.getString('firebaseId');
@@ -189,11 +130,6 @@ class UserManager {
   static Future<int?> getUserScores() async {
     var prefs = await SharedPreferences.getInstance();
     return prefs.getInt('userScores');
-  }
-
-  static Future<bool> getTracking() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('trackingEnabled') ?? false;
   }
 
   static Future<bool?> getShowInfoAdult() async {
@@ -258,11 +194,6 @@ class UserManager {
     await UserManager.migrateHashtagToHashtags();
     var prefs = await SharedPreferences.getInstance();
     return prefs.getStringList('hashtags');
-  }
-
-  static Future<String> getServerUrl() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.getString('serverUrl') ?? '';
   }
 
   static Future<int?> getLastReviewRequest() async {

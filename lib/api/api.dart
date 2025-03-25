@@ -75,11 +75,10 @@ class ApiSingleton {
 
   ApiSingleton._internal();
 
-  static Future<void> initialize(String env) async {
-    final config = await AppConfig.forEnvironment(env: env);
+  static Future<void> initialize() async {
+    final config = await AppConfig.loadConfig();
     baseUrl = config.baseUrl;
     serverUrl = '$baseUrl/api';
-    await UserManager.setServerUrl(serverUrl);
   }
 
   static ApiSingleton getInstance() {
@@ -493,49 +492,42 @@ class ApiSingleton {
     }
   }
 
-  Future<dynamic> sendFixes(lat, lon, time, power) async {
+  Future<bool> sendFixes(String trackingUuid, double lat, double lon,
+      DateTime time, int power) async {
     try {
-      var userIdFix = await UserManager.getTrackingId();
+      final double maskedLat =
+          (lat / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue;
+      final double maskedLon =
+          (lon / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue;
 
-      var body = {
-        'user_coverage_uuid': userIdFix,
-        'fix_time': time,
-        'masked_lat':
-            (lat / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue,
-        'masked_lon':
-            (lon / Utils.maskCoordsValue).floor() * Utils.maskCoordsValue,
+      final body = json.encode({
+        'user_coverage_uuid': trackingUuid,
+        'fix_time': time.toUtc().toIso8601String(),
+        'masked_lat': maskedLat,
+        'masked_lon': maskedLon,
         'power': power,
         'phone_upload_time': DateTime.now().toUtc().toIso8601String(),
-      };
+      });
 
-      // A method called by a background job while the app is not active can't access the singleton values
-      // Then, we can use SharedPrefs as a persistent storage alternative
-      var serverUrlPrefs = await UserManager.getServerUrl();
+      final url = Uri.parse('$serverUrl$fixes');
+
       final response = await http
           .post(
-        Uri.parse('$serverUrlPrefs$fixes'),
-        headers: headers,
-        body: json.encode(body),
-      )
-          .timeout(
-        Duration(seconds: _timeoutTimerInSeconds),
-        onTimeout: () {
-          print('Request timed out');
-          return Future.error('Request timed out');
-        },
-      );
-      ;
+            url,
+            headers: headers,
+            body: body,
+          )
+          .timeout(Duration(seconds: _timeoutTimerInSeconds));
 
-      if (response.statusCode != 201) {
-        print(
-            'Request: ${response.request.toString()} -> Response: ${response.body}');
-        return false;
-      }
-
-      return true;
+      return response.statusCode == 201;
+    } on TimeoutException {
+      print("Error: Request timed out.");
+    } on http.ClientException catch (e) {
+      print("HTTP Client Exception: $e");
     } catch (e) {
-      return false;
+      print("Error : ${e}");
     }
+    return false;
   }
 
   Future<dynamic> getCampaigns(countryId) async {

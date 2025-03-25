@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/api/api.dart';
+import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/pages/main/drawer_and_header.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mosquito_alert_app/utils/Application.dart';
@@ -20,7 +21,9 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main({String env = 'prod'}) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await ApiSingleton.initialize(env);
+
+  await AppConfig.setEnvironment(env);
+  await ApiSingleton.initialize();
 
   try {
     await Firebase.initializeApp();
@@ -30,18 +33,12 @@ Future<void> main({String env = 'prod'}) async {
 
   await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
 
-  // Start background tracking at midnight to ensure 5 random samples per day
-  var now = DateTime.now().toLocal();
-  var nextMidnight = DateTime(now.year, now.month, now.day + 1);
-  var timeUntilMidnight = nextMidnight.difference(now);
-
-  await Workmanager().registerPeriodicTask(
-    'scheduleDailyTasks',
-    'scheduleDailyTasks',
-    tag: 'scheduleDailyTasks',
-    frequency: Duration(days: 1),
-    initialDelay: timeUntilMidnight,
-  );
+  bool trackingEnabled = await BackgroundTracking.isEnabled();
+  if (trackingEnabled) {
+    await BackgroundTracking.start(requestPermissions: false);
+  } else {
+    await BackgroundTracking.stop();
+  }
 
   runApp(MyApp());
 }
@@ -55,15 +52,27 @@ void callbackDispatcher() {
       print('$err');
     }
 
+    await ApiSingleton.initialize();
+
+    // Support 3 possible outcomes:
+    // - Future.value(true): task is successful
+    // - Future.value(false): task failed and needs to be retried
+    // - Future.error(): task failed.
+
     switch (task) {
       case 'trackingTask':
-        await BackgroundTracking.trackingTask();
-        break;
+        // NOTE: do not use await, it should return a Future value
+        return BackgroundTracking.sendLocationUpdate();
       case 'scheduleDailyTasks':
-        await BackgroundTracking.scheduleMultipleTrackingTask(5);
-        break;
+        int numTaskAlreadyScheduled =
+            inputData?['numTaskAlreadyScheduled'] ?? 0;
+        // NOTE: do not use await, it should return a Future value
+        return BackgroundTracking.scheduleDailyTrackingTask(
+            numScheduledTasks: numTaskAlreadyScheduled);
+      default:
+        // If the task doesn't match, return true as a fallback
+        return Future.value(true);
     }
-    return Future.value(true);
   });
 }
 
