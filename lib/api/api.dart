@@ -243,8 +243,7 @@ class ApiSingleton {
       var body = json.decode(response.body);
       return body['id'];
     } catch (e) {
-      // print(e);
-      return false;
+      return null;
     }
   }
 
