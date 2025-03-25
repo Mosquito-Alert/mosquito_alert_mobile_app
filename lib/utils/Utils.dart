@@ -961,8 +961,10 @@ class Utils {
   }
 
   static ui.Locale getLanguage() {
-    var stringLanguange = ui.window.locale.languageCode;
-    var stringCountry = ui.window.locale.countryCode;
+    var stringLanguange =
+        WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+    var stringCountry =
+        WidgetsBinding.instance.platformDispatcher.locale.countryCode;
 
     language = Locale('en', 'US');
 
@@ -976,7 +978,7 @@ class Utils {
         stringLanguange == 'it' ||
         stringLanguange == 'pt' ||
         stringLanguange == 'ro') {
-      language = ui.window.locale;
+      language = WidgetsBinding.instance.platformDispatcher.locale;
     }
 
     return language;
