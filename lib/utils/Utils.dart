@@ -870,7 +870,8 @@ class Utils {
                     children: [
                       SvgPicture.asset(
                         'assets/img/sendmodule/ic_adn.svg',
-                        color: Style.colorPrimary,
+                        colorFilter: ColorFilter.mode(
+                            Style.colorPrimary, BlendMode.srcIn),
                         height: 20,
                       ),
                       SizedBox(
@@ -930,7 +931,8 @@ class Utils {
                     children: [
                       SvgPicture.asset(
                         'assets/img/sendmodule/ic_adn.svg',
-                        color: Colors.blueAccent,
+                        colorFilter: ColorFilter.mode(
+                            Colors.blueAccent, BlendMode.srcIn),
                         height: 20,
                       ),
                       SizedBox(
