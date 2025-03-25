@@ -50,7 +50,7 @@ class _AddOtherReportPageState extends State<AddOtherReportPage> {
                     percent: snapshot.data!,
                     animateFromLastPercent: true,
                     animation: true,
-                    backgroundColor: Colors.grey.withOpacity(0.3),
+                    backgroundColor: Colors.grey.withValues(alpha: 0.3),
                     progressColor: Style.colorPrimary,
                   );
                 },

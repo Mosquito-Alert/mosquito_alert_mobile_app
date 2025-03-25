@@ -6,7 +6,7 @@ class Style {
   //Colors
   static final Color colorPrimary = Color(0XFFF0A402);
   static final Color textColor = Color(0XFF282828);
-  static final Color greyColor = Colors.black.withOpacity(0.5);
+  static final Color greyColor = Colors.black.withValues(alpha: 0.5);
 
   //UI
   static Icon get iconBack =>
@@ -133,7 +133,7 @@ class Style {
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding: EdgeInsets.symmetric(vertical: 14),
         backgroundColor: Colors.transparent,
-        foregroundColor: colorPrimary.withOpacity(0.5),
+        foregroundColor: colorPrimary.withValues(alpha: 0.5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3),
           side: BorderSide(color: borderColor ?? Colors.transparent),
@@ -215,7 +215,7 @@ class Style {
       controller: controller,
       style: TextStyle(
           fontSize: 15,
-          color: enabled ? textColor : textColor.withOpacity(0.6)),
+          color: enabled ? textColor : textColor.withValues(alpha: 0.6)),
       textInputAction: textInputAction ?? TextInputAction.done,
       focusNode: focusNode,
       obscureText: obscure ?? false,
@@ -244,17 +244,17 @@ class Style {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(3.0),
           borderSide:
-              BorderSide(color: Colors.black.withOpacity(0.1), width: 1),
+              BorderSide(color: Colors.black.withValues(alpha: 0.1), width: 1),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(3.0),
           borderSide:
-              BorderSide(color: Colors.black.withOpacity(0.1), width: 1),
+              BorderSide(color: Colors.black.withValues(alpha: 0.1), width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(3.0),
           borderSide:
-              BorderSide(color: Colors.black.withOpacity(0.1), width: 1),
+              BorderSide(color: Colors.black.withValues(alpha: 0.1), width: 1),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(3.0),

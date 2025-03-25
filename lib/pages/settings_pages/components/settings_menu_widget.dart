@@ -13,7 +13,7 @@ class SettingsMenuWidget extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: Colors.white,
-          border: Border.all(color: Colors.black.withOpacity(0.1))),
+          border: Border.all(color: Colors.black.withValues(alpha: 0.1))),
       child: ListTile(
         onTap: () {
           onTap();

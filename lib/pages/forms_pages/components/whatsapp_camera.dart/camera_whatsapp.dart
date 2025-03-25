@@ -237,7 +237,7 @@ class _WhatsappCameraState extends State<WhatsappCamera>
               padding: const EdgeInsets.only(bottom: 32, right: 64),
               child: CircleAvatar(
                 radius: 20,
-                backgroundColor: Colors.black.withOpacity(0.6),
+                backgroundColor: Colors.black..withValues(alpha: 0.6),
                 child: IconButton(
                   color: Colors.white,
                   onPressed: () async {
@@ -497,7 +497,7 @@ class _ImageItem extends StatelessWidget {
           ),
           if (selected)
             Container(
-              color: Colors.grey.withOpacity(.3),
+              color: Colors.grey.withValues(alpha: 0.3),
               child: Center(
                 child: Stack(
                   children: [

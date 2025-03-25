@@ -276,7 +276,7 @@ class _BitingFormState extends State<BitingForm> {
                                     }
                                   : null,
                               child: Container(
-                                color: Colors.blue.withOpacity(0.0),
+                                color: Colors.blue..withValues(alpha: 0.0),
                                 height: mediaQuery.height * 0.1,
                                 width: mediaQuery.width * 0.18,
                               ),

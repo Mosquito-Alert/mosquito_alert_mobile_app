@@ -129,7 +129,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             borderRadius: BorderRadius.circular(5),
                             color: Colors.white,
                             border: Border.all(
-                                color: Colors.black.withOpacity(0.1))),
+                                color: Colors.black.withValues(alpha: 0.1))),
                         child: SwitchListTile(
                           title: Style.body(MyLocalizations.of(
                               context, 'background_tracking_title')),
@@ -179,8 +179,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.white,
-                          border:
-                              Border.all(color: Colors.black.withOpacity(0.1)),
+                          border: Border.all(
+                              color: Colors.black.withValues(alpha: 0.1)),
                         ),
                         child: Row(
                           children: [

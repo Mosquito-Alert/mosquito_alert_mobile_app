@@ -59,10 +59,10 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
         renderDoneBtn: renderDoneBtn(),
         onDonePress: onDonePress,
         doneButtonStyle: ButtonStyle(
-            backgroundColor:
-                WidgetStateProperty.all(Style.colorPrimary.withOpacity(0.2)),
+            backgroundColor: WidgetStateProperty.all(
+                Style.colorPrimary.withValues(alpha: 0.2)),
             overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
-        colorDot: Style.colorPrimary.withOpacity(0.4),
+        colorDot: Style.colorPrimary.withValues(alpha: 0.4),
         sizeDot: 6.0,
         colorActiveDot: Style.colorPrimary,
         listCustomTabs: renderListCustomTabs(),
