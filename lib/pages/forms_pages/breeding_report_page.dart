@@ -428,7 +428,8 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   }
 
   void _onWillPop() {
-    if (Utils.report!.responses!.isNotEmpty) {
+    var responses = Utils.report?.responses ?? [];
+    if (responses.isNotEmpty) {
       Utils.showAlertYesNo(MyLocalizations.of(context, 'app_name'),
           MyLocalizations.of(context, 'close_report_no_save_txt'), () {
         if (Utils.reportsList != null && Utils.reportsList!.isNotEmpty) {
