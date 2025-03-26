@@ -572,11 +572,13 @@ class _BitingFormState extends State<BitingForm> {
     var bodyParts = Utils.report!.responses!
         .where((element) => element!.question_id == 2)
         .toList();
-    if (int.parse(bodyParts.last!.answer_value!) > 1) {
-      bodyParts.last!.answer_value =
-          (int.parse(bodyParts.last!.answer_value!) - 1).toString();
-    } else {
-      bodyParts.removeLast();
+    if (bodyParts.isNotEmpty) {
+      if (int.parse(bodyParts.last!.answer_value!) > 1) {
+        bodyParts.last!.answer_value =
+            (int.parse(bodyParts.last!.answer_value!) - 1).toString();
+      } else {
+        bodyParts.removeLast();
+      }
     }
 
     Utils.report!.responses = <dynamic>{
