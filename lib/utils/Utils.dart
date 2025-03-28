@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:mosquito_alert_app/api/api.dart';
@@ -75,23 +74,6 @@ class Utils {
     double? lon,
     String? locationType,
   }) async {
-    if (lat == null && lon == null) {
-      bool locationEnabled = await Geolocator.isLocationServiceEnabled();
-      LocationPermission locPerm = await Geolocator.checkPermission();
-      bool hasLocationPermission = ![
-        LocationPermission.denied,
-        LocationPermission.deniedForever
-      ].contains(locPerm);
-
-      if (locationEnabled && hasLocationPermission) {
-        Position currentPosition = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high);
-        lat = currentPosition.latitude;
-        lon = currentPosition.longitude;
-        locationType = 'current';
-      }
-    }
-
     if (session == null) {
       reportsList = [];
 
@@ -117,7 +99,6 @@ class Utils {
 
       print(language);
       session!.id = await ApiSingleton().createSession(session!);
-      // print("Session: ${jsonEncode(session.toJson())}");
     }
 
     if (session!.id != null) {
