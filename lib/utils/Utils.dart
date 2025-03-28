@@ -101,7 +101,7 @@ class Utils {
       session!.id = await ApiSingleton().createSession(session!);
     }
 
-    if (session!.id != null) {
+    if (session?.id != null) {
       var lang = await UserManager.getLanguage();
       var userUUID = await UserManager.getUUID();
       report = Report(

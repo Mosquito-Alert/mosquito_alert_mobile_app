@@ -217,7 +217,7 @@ class ApiSingleton {
     }
   }
 
-  Future<dynamic> createSession(Session session) async {
+  Future<int?> createSession(Session session) async {
     try {
       final response = await http
           .post(Uri.parse('$serverUrl$sessions'),
@@ -225,26 +225,22 @@ class ApiSingleton {
               body: json.encode(
                 session.toJson(),
               ))
-          .timeout(
-        Duration(seconds: _timeoutTimerInSeconds),
-        onTimeout: () {
-          print('Request timed out');
-          return Future.error('Request timed out');
-        },
-      );
-      ;
-
-      if (response.statusCode != 201) {
-        print(
-            'Request: ${response.request.toString()} -> Response: ${response.body}');
-        return ApiResponse.fromJson(json.decode(response.body));
+          .timeout(Duration(seconds: _timeoutTimerInSeconds));
+      if (response.statusCode == 201) {
+        var body = json.decode(response.body);
+        return body['id'] as int;
+      } else {
+        print("Error: Unexpected response code ${response.statusCode}");
+        print("Response body: ${response.body}");
       }
-
-      var body = json.decode(response.body);
-      return body['id'];
+    } on TimeoutException {
+      print("Error: Request timed out.");
+    } on http.ClientException catch (e) {
+      print("HTTP Client Exception: $e");
     } catch (e) {
-      return null;
+      print("Error : ${e}");
     }
+    return null;
   }
 
   Future<dynamic> closeSession(Session session) async {
