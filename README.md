@@ -5,6 +5,7 @@ Mosquito Alert is a mobile phone application that is part of a larger citizen sc
 ![Mosquito_Alert](https://user-images.githubusercontent.com/30580652/162627346-7018489f-7525-40ca-a3f6-b0dd59b519f3.png)
 
 ## How to compile the app
+### Android
 1. Clone the repository to your local machine
 2. Go to android/local.properties and at the end of the file add the following lines: (If the file doesn't exist, just create it yourself)
 ```
@@ -19,6 +20,20 @@ fvm flutter pub get
 - For development: ```fvm flutter run --target lib/main_dev.dart```
 - For production: ```fvm flutter run```
 5. That's all! If you have problems, don't hesitate to open an issue on [Github Issues](https://github.com/Mosquito-Alert/Mosquito-Alert-Mobile-App/issues) and we'll be happy to help you!
+
+### iOS
+1. Clone the repository to your local machine
+2. Go to ios/Runner and create the file GoogleService-Info.plist
+3. Run the following commands, one by one
+```
+fvm flutter pub get
+cd ios
+pod install
+cd ..
+```
+4. Connect your device or emulator and run the command:
+- For development: ```fvm flutter run --target lib/main_dev.dart```
+- For production: ```fvm flutter run```
 
 ## How to contribute
 Do you want to contribute?
