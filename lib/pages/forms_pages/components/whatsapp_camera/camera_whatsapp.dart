@@ -5,7 +5,7 @@ import 'package:camera_camera/camera_camera.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sliding_up_panel/flutter_sliding_up_panel.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/components/whatsapp_camera.dart/view_image.dart';
+import 'package:mosquito_alert_app/pages/forms_pages/components/whatsapp_camera/view_image.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
