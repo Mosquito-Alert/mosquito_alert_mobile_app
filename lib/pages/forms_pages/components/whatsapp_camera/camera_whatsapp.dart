@@ -231,23 +231,26 @@ class _WhatsappCameraState extends State<WhatsappCamera>
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 32, right: 64),
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.black.withValues(alpha: 0.6),
-                child: IconButton(
-                  color: Colors.white,
-                  onPressed: () async {
-                    await controller.openGallery().then((value) {
-                      if (controller.selectedImages.isNotEmpty) {
-                        Navigator.pop(context, controller.selectedImages);
-                      }
-                    });
-                  },
-                  icon: const Icon(Icons.image),
+          SafeArea(
+            minimum: const EdgeInsets.only(bottom: 0),
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 32, right: 64),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.black.withValues(alpha: 0.6),
+                  child: IconButton(
+                    color: Colors.white,
+                    onPressed: () async {
+                      await controller.openGallery().then((value) {
+                        if (controller.selectedImages.isNotEmpty) {
+                          Navigator.pop(context, controller.selectedImages);
+                        }
+                      });
+                    },
+                    icon: const Icon(Icons.image),
+                  ),
                 ),
               ),
             ),
