@@ -154,8 +154,8 @@
     "tutorial_info_11": "Riceverai risposte da esperti sulle tue osservazioni e sarai sempre aggiornato sulle ultime novità.",
     "tutorial_title_12": "Configura Mosquito Alert",
     "tutorial_info_12": "Nel menu puoi cambiare la lingua e accedere a contenuti extra. Troverai anche una guida all'identificazione delle zanzare e il tutorial dell'app.",
-    "tutorial_title_13": "Lo sforzo di campionamento, essenziale per la scienza.",
-    "tutorial_info_13": "A caso, e non più di 5 volte al giorno, se lo consenti, Mosquito Alert raccoglie la tua posizione approssimativa, su una griglia 2x2 km. Non sapremo dove sei stato e, quindi, tuteliamo la tua privacy. Questa informazione è essenziale per la scienza: senza di essa non possiamo sapere se ci sono molte zanzare o se c'è effettivamente molta partecipazione.\nSe non desideri che l'app rilevi la tua posizione approssimativa, disattiva questa opzione nel menu (impostazione).",
+    "tutorial_title_13": "Contribuire a una migliore mappa delle zanzare pubbliche",
+    "tutorial_info_13": "L'avviso di zanzare raccoglie la tua posizione approssimativa cinque volte al giorno per aiutare a mappare dove vengono segnalate le zanzare.\nQuesti dati aiutano gli scienziati e i team di sanità pubblica a stimare le popolazioni di zanzare e migliorare la mappa delle zanzare pubbliche, che è possibile visualizzare direttamente nell'app. La tua posizione esatta non viene mai condivisa: solo una griglia dell'area di 2x2 km viene utilizzata per proteggere la tua privacy. La condivisione della posizione è facoltativa; Puoi disattivarlo in qualsiasi momento nelle impostazioni dell'app.",
     "tutorial_title_14": "Mantieni i tuoi dati personali per rimanere nell'anonimato.",
     "tutorial_info_14": "Ricordati che la tua partecipazione è anonima. Tuttavia, abbiamo sviluppato un sistema che ti consente, se lo desideri, di accedere a Mosquito Alert con account esterni e conservare le tue segnalazioni e il tuo punteggio. Pertanto, puoi sincronizzare diversi dispositivi e recuperare i dati se devi disinstallare l'app. Maggiori informazioni sono disponibili nel menu e nella Privacy Policy dell'app.",
     "tutorial_info_15": "Puoi iniziare adesso! Dopo aver inviato la tua prima segnalazione, sei ufficialmente uno scienziato!",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Auto-tagging",
     "auto_tagging_settings_placeholder": "Inserire il tag...",
     "NSUserNotificationsUsageDescription": "Utilizziamo le notifiche per tenerti aggiornato sullo stato dei tuoi contributi.",
-    "NSUserTrackingUsageDescription": "Utilizziamo l'identificativo del tuo dispositivo per tracciarti nelle sessioni e salvare di conseguenza i tuoi contributi."
+    "NSUserTrackingUsageDescription": "Utilizziamo l'identificativo del tuo dispositivo per tracciarti nelle sessioni e salvare di conseguenza i tuoi contributi.",
+    "tracking_perm_view_text": "Accendendo il monitoraggio dello sfondo, richiederemo l'autorizzazione per accedere sempre alla tua posizione in background. Le impostazioni del telefono possono essere aperte per abilitarlo.",
+    "turn_on_location_button": "Accendi la posizione"
 }

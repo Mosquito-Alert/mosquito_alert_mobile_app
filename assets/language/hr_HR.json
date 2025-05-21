@@ -154,8 +154,8 @@
     "tutorial_info_11": "Dobit ćete stručne odgovore o Vašim izvješćima kao i o najnovijim vijestima.",
     "tutorial_title_12": "Oblikujte Mosquito Alert",
     "tutorial_info_12": "U izborniku možete promijeniti jezik i pristupiti dodatnom sadržaju. Također možete pronaći vodič za determinaciju vrsta i tutorial za aplikaciju.",
-    "tutorial_title_13": "Uzorkovanje je izuzetno značajno za znanost.",
-    "tutorial_info_13": "Aplikacija Mosquito Alert će sakupljati vaše slučajne lokacije nasumično pet puta u danu. Lokacije su smještene u mrežu veličine približno 2x2 km. Ta informacija je vrijedna za znanost jer nam omogućuje bolju procjenu populacije komaraca, razlikovanje npr. između područja s nekoliko komaraca i područja s nekoliko sudionika (ali potencijalno s puno komaraca). Također, možete isključiti te značajke u postavkama aplikacije.",
+    "tutorial_title_13": "Doprinijeti boljoj javnoj karti komaraca",
+    "tutorial_info_13": "Upozorenje komaraca sakuplja vašu približnu lokaciju pet puta dnevno kako bi pomogao mapirati tamo gdje se prijavljuju komarci.\nOvi podaci pomažu znanstvenicima i javnim zdravstvenim timovima da procjenjuju populaciju komaraca i poboljšaju javnu kartu komaraca, koju možete izravno vidjeti u aplikaciji. Vaša točna lokacija nikada se ne dijeli - samo se za zaštitu vaše privatnosti koristi samo 2x2 km rešetka. Dijeljenje lokacije nije obavezno; Možete ga isključiti bilo kada u postavkama aplikacije.",
     "tutorial_title_14": "Zadržite svoje podatke i sačuvajte svoju anonimnost.",
     "tutorial_info_14": "Vaše sudjelovanje je anonimno. Možete ući u aplikaciju Mosquito Alert koristeći vanjski račun i tako zadržati svoju povijest prijava i bodove i ako pristupite sustavu s drugih uređaja, ili ako deinstalirate aplikaciju s jednog uređaja.  Više informacija o tim značajkama možete pronaći u postavkama i u pravilima privatnosti.",
     "tutorial_info_15": "Možete započeti sada! Jednom kad predate svoje prvo izvješće, službeno postajete građanin znanstvenik! Vaša promatranja će pridonijeti istraživanju o komarcima koji prenose zarazne bolesti.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Automatsko označavanje",
     "auto_tagging_settings_placeholder": "Unesite oznaku...",
     "NSUserNotificationsUsageDescription": "Koristimo obavijesti kako bismo vas informirali o statusu vaših doprinosa.",
-    "NSUserTrackingUsageDescription": "Koristimo identifikator vašeg uređaja kako bismo vas pratili kroz sesije i kako bismo u skladu s tim spremili vaše doprinose."
+    "NSUserTrackingUsageDescription": "Koristimo identifikator vašeg uređaja kako bismo vas pratili kroz sesije i kako bismo u skladu s tim spremili vaše doprinose.",
+    "tracking_perm_view_text": "Uključivanjem praćenja pozadine zatražit ćemo dozvolu za uvijek pristup vašem mjestu u pozadini. Postavke vašeg telefona mogu se otvoriti kako bi se omogućilo.",
+    "turn_on_location_button": "Uključite lokaciju"
 }

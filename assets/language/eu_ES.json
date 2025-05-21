@@ -154,8 +154,8 @@
     "tutorial_info_11": "Zure oharrei buruzko adituen erantzunak jasoko dituzu, eta azken notizien berri izango duzu.",
     "tutorial_title_12": "Konfiguratu Mosquito Alert",
     "tutorial_info_12": "Menuan, hizkuntza aldatu eta eduki gehigarrietara sar zaitezke. Espezieak identifikatzeko gida eta aplikazioaren tutoriala ere aurkituko dituzu.",
-    "tutorial_title_13": "Laginketa esfortzua, ezinbestekoa zientziarako",
-    "tutorial_info_13": "Ausaz, eta egunean 5 aldiz baino gutxiagotan, baimentzen baduzu, Mosquito Alertek zure gutxi gorabeherako kokapena jasotzen du, 2x2 km-ko lauki-sare batean. Ez dugu jakingo non egon zaren, eta, hala, zure pribatutasunari eutsiko diogu. Informazio hori funtsezkoa da zientziarentzat: hura gabe, ezin dugu jakin eltxo asko dauden edo benetan parte-hartzea handia den.\nApp-ak gutxi gorabeherako kokapena jasotzea nahi ez baduzu, desaktibatu aukera hau menuan (doikuntza).",
+    "tutorial_title_13": "Eltxo publiko hobeago batean lagundu",
+    "tutorial_info_13": "Mosquito Alertak zure gutxi gorabeherako kokapena bost aldiz biltzen du egunero eltxoak salatzen ari diren mapan laguntzeko.\nDatu honek zientzialariek eta osasun publikoko taldeek eltxoen populazioak estimatzen dituzte eta aplikazioan zuzenean ikus dezakezuen eltxo publikoaren mapa hobetzen dute. Zure kokapen zehatza ez da inoiz partekatzen - 2x2 km eremuko sarea soilik erabiltzen da zure pribatutasuna babesteko. Kokapen partekatzea aukerakoa da; Aplikazioaren ezarpenetan edozein unetan desaktibatu dezakezu.",
     "tutorial_title_14": "Gorde zure datuak eta zure anonimatua mantendu",
     "tutorial_info_14": "Zure parte-hartzea anonimoa da. Hala ere, sistema bat garatu dugu, nahi izanez gero, Mosquito Alert-en saioa kanpoko kontuekin hasteko eta zure datuak eta puntuazioa gordetzeko. Hala, aplikazioa desinstalatu behar baduzu, hainbat gailu sinkroniza ditzakezu eta datuak berreskuratu. Informazio gehiago, aplikazioaren menuan eta pribatutasun-politikan.",
     "tutorial_info_15": "Has zaitezke! Zure lehen jakinarazpena bidalitakoan, herritar zientifikoa izango zara ofizialki! Zure behaketek gaixotasunak transmititzen dituzten eltxoak aztertzen lagunduko dute.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Etiketatze automatikoa",
     "auto_tagging_settings_placeholder": "Sartu etiketa...",
     "NSUserNotificationsUsageDescription": "Jakinarazpenak erabiltzen ditugu zure ekarpenen egoeraren berri emateko.",
-    "NSUserTrackingUsageDescription": "Zure gailuaren identifikatzailea erabiltzen dugu saioetan zehar zure jarraipena egiteko eta zure ekarpenak horren arabera gordetzeko."
+    "NSUserTrackingUsageDescription": "Zure gailuaren identifikatzailea erabiltzen dugu saioetan zehar zure jarraipena egiteko eta zure ekarpenak horren arabera gordetzeko.",
+    "tracking_perm_view_text": "Atzeko planoaren jarraipena piztuz, baimena eskatuko dugu zure kokapena atzeko planoan sartzeko. Zure telefonoaren ezarpenak ireki daitezke gaitzeko.",
+    "turn_on_location_button": "Kokapena piztu"
 }

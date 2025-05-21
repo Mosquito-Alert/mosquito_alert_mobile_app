@@ -154,8 +154,8 @@
     "tutorial_info_11": "You will receive responses from experts about your reports as well as the latest news.",
     "tutorial_title_12": "Configure Mosquito Alert",
     "tutorial_info_12": "In the menu you can change the language and access extra content. You will also find a guide to identifying mosquito species and a tutorial of the app.",
-    "tutorial_title_13": "Sampling effort is essential to science",
-    "tutorial_info_13": "Mosquito Alert will collect your approximate location at five random times each day. The locations are masked on a grid of approximately 2x2 km, with the grid square identifier sent to the server rather than any precise location within the square. This information is valuable for science because it allows us to better estimate mosquito populations, distinguishing, for example, between areas with few mosquitoes and areas with few participants (but potentially many mosquitoes). You can also turn this feature off in the app settings menu.",
+    "tutorial_title_13": "Contribute to a better public mosquito map",
+    "tutorial_info_13": "Mosquito Alert collects your approximate location five times daily to help map where mosquitoes are being reported.\nThis data helps scientists and public health teams estimate mosquito populations and improve the public mosquito map, which you can view directly in the app. Your exact location is never shared — only a 2x2 km area grid is used to protect your privacy. Location sharing is optional; you can turn it off anytime in the app settings.",
     "tutorial_title_14": "Keep your data and maintain your anonymity",
     "tutorial_info_14": "Your participation is anonymous. However, you may log into Mosquito Alert using an external account and thereby keep your reporting history and score even if you access the system from multiple devices, and even if you uninstall the app from one device. More information on this feature can be found in the settings menu and in the app's Privacy Policy.",
     "tutorial_info_15": "You can start now! Once you have submitted your first report you will officially be a citizen scientist! Your observations will contribute to the study of disease-transmitting mosquitoes.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Auto-tagging",
     "auto_tagging_settings_placeholder": "Enter tag...",
     "NSUserNotificationsUsageDescription": "We use notifications to keep you updated on the status of your contributions.",
-    "NSUserTrackingUsageDescription": "We use your device identifier to track you across sessions and to save your contributions accordingly."
+    "NSUserTrackingUsageDescription": "We use your device identifier to track you across sessions and to save your contributions accordingly.",
+    "tracking_perm_view_text": "By turning on the background tracking, we are going to request permission to always access your location in the background. Your phone settings may be opened to enable it.",
+    "turn_on_location_button": "Turn on location"
 }

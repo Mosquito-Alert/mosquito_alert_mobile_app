@@ -154,8 +154,8 @@
     "tutorial_info_11": "Dir kritt Äntwerte vun Experten iwwer Är Meldungen an och déi lescht Neiegkeeten.",
     "tutorial_title_12": "Mosquito-Alert-Astellungen",
     "tutorial_info_12": "Am Menu kënnt Dir d'Sprooch auswielen an op weider Contenuen zougräifen. Hei fannt Dir och e Guide fir d'Identifikatioun vu Mustikenaarten an en Tutorial vun der App.",
-    "tutorial_title_13": "De Prouweneffort ass wesentlech fir d'Wëssenschaft.",
-    "tutorial_info_13": "Mosquito Alert lokaliséiert Iech all Dag zu fënnef zoufällegen Zäiten. D'Plaze sinn op engem Raster vun ongeféier 2x2 km anonymiséiert, an nëmmen d'Nr. vum Quadrant gëtt op de Server geschéckt an net är präzis Positioun. Dës Infoe si wäertvoll fir d'Wëssenschaft well si eis erlaben, Mustikspopulatiounen besser anzeschätzen, z'ënnerscheeden tëschent Gebidder mat wéinege Mustiken a Gebidder mat wéineg Participanten (awer potenziell vill Mustiken). Dat ass eng Optioun, déi Dir an den Astellungen kënnt ausschalten.",
+    "tutorial_title_13": "Bäidroen zu enger besserer ëffentlecher Mosquito Kaart",
+    "tutorial_info_13": "Mosquito Alert sammelt Är ongeféier Location Fënnef Mol deeglech fir Kaart ze hëllefen, wou de Mustquitoe gemellt ginn.\nDëst der Dater hëlleft Wëssenschaftler an ëffentlech GesondheetskommSekopervisioun Billerespopulatioun a LESIQUSQULOSO BEILECHO fir d'App ze verbesseren. Är exakt Plaz ass ni gedeelt - nëmmen eng 2x2 Krresland Gitter gëtt benotzt fir Är Privatsphär ze schützen. Location Sharing ass fakultativ; Dir kënnt et zu all Moment an der App Astellunge maachen.",
     "tutorial_title_14": "Späichert Är Donnéeën a behaalt Är Anonymitéit",
     "tutorial_info_14": "Är Participatioun ass anonym. Wéi och ëmmer, Dir kënnt Iech op Mosquito Alert umellen mat engem externen Account an doduerch den Historique vun äre Meldungen an de Klassementer behalen, och wann Dir vu méi Geräter aus mat der App schafft, an och wann Dir d'App vun engem Apparat deinstalléiert. Méi Informatioun doriwwer fannt Dir am Astellungsmenü an an den Dateschutzbestëmmungen vun der App.",
     "tutorial_info_15": "Dir kënnt elo lass leeën! Wann Dir Är éischt Meldung geschéckt hutt, sidd Dir offiziell e Biergerwëssenschaftler! Är Observatiounen droen zu der Studie vu Mustike bäi, déi Krankheeten iwwerdroen.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Auto-Tagging",
     "auto_tagging_settings_placeholder": "Enter tag...",
     "NSUserNotificationsUsageDescription": "Mir benotzen Notifikatiounen fir Iech iwwer de Status vun Äre Bäiträg aktualiséiert ze halen.",
-    "NSUserTrackingUsageDescription": "Mir benotzen Ären Apparat Identifizéierer fir Iech iwwer Sessiounen ze verfolgen an Är Contributiounen deementspriechend ze späicheren."
+    "NSUserTrackingUsageDescription": "Mir benotzen Ären Apparat Identifizéierer fir Iech iwwer Sessiounen ze verfolgen an Är Contributiounen deementspriechend ze späicheren.",
+    "tracking_perm_view_text": "Andeems Dir op den Hannergrond Tracking dréckt, wäerte mir Erlaabnis froen fir ëmmer op Är Plaz am Hannergrond ze froen. Ären Telefon Astellunge ka opgemaach ginn fir et z'aktivéieren.",
+    "turn_on_location_button": "Maacht op Location"
 }

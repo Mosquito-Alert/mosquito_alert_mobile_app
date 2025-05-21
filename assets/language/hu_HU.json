@@ -154,8 +154,8 @@
     "tutorial_info_11": "A legfrissebb hírekről, valamint a jelentéseidről a szakértőink fognak értesítést és választ küldeni.",
     "tutorial_title_12": "Mosquito Alert Konfigurálása.",
     "tutorial_info_12": "A menüben megváltoztathatod a nyelvet és extra tartalmakhoz férhetsz hozzá. Egy útmutatót is találsz a szúnyogok határozásához és az alkalmazás használatához.",
-    "tutorial_title_13": "A mintavételi erőfeszítések elengedhetetlenek a tudomány számára.",
-    "tutorial_info_13": "A Mosquito Alert a hozzávetőleges tartózkodási helyed naponta öt véletlenszerű alkalommal gyűjti össze. A helyzetek egy körülbelül 2x2 km négyzethálón jelennek meg, a szerver felé mindössze a négyzetháló azonosítója kerül továbbításra a pontos helyzet helyett. Ez az információ azért értékes a tudomány számára, mert lehetővé teszi a szúnyogpopulációk jobb becslését, különbséget téve például a kevés szúnyogos és a kevés résztvevővel rendelkező (de feltehetően sok szúnyogos) területek között. Ezt a funkciót az alkalmazás beállítások menüben ki is kapcsolhatja.",
+    "tutorial_title_13": "Hozzájáruljon a jobb nyilvános szúnyogtérképhez",
+    "tutorial_info_13": "A Mosquito Riasztás napi ötször összegyűjti a hozzávetőleges elhelyezkedését, hogy segítsen térképezni, ahol szúnyogokat jelentenek.\nEzek az adatok segítenek a tudósoknak és a közegészségügyi csapatoknak megbecsülni a szúnyogpopulációkat és javítják a nyilvános szúnyogtérképet, amelyet közvetlenül az alkalmazásban megtekinthet. A pontos helyedet soha nem osztják meg - csak egy 2x2 km -es területi rácsot használnak a magánélet védelme érdekében. A helymegosztás nem kötelező; Bármikor kikapcsolhatja az alkalmazásbeállításokban.",
     "tutorial_title_14": "Őrizd meg az adataid és tartsd fenn a névtelenséged (anonimitásod).",
     "tutorial_info_14": "A részvételed névtelen (anonim). Azonban, egy külső fiókkal bejelentkezhetsz a Mosquito Alert-be és így megőrizheted a jelentés előzményeket és a pontszámokat akkor is, ha több eszközről használod a rendszert, és akkor is ha valamelyik eszközről törölted az alkalmazást. További információ erről a funkcióról a beállítások menüben és az alkalmazás adatvédelmi irányelveiben található.",
     "tutorial_info_15": "Most már kezdhetsz is! Amint beküldöd az első jelentésed, hivatalosan is \"civil tudós\" (citizen scientist) leszel! A megfigyeléseid hozzájárulnak a betegség-terjesztő szúnyogok tanulmányozásához.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Automatikus címkézés",
     "auto_tagging_settings_placeholder": "Adja meg a címkét...",
     "NSUserNotificationsUsageDescription": "Értesítések segítségével tájékoztatjuk Önt hozzájárulásai állapotáról.",
-    "NSUserTrackingUsageDescription": "Eszközazonosítóját arra használjuk, hogy nyomon követhessük Önt a munkamenetek során, és ennek megfelelően mentsük el hozzájárulásait."
+    "NSUserTrackingUsageDescription": "Eszközazonosítóját arra használjuk, hogy nyomon követhessük Önt a munkamenetek során, és ennek megfelelően mentsük el hozzájárulásait.",
+    "tracking_perm_view_text": "A háttérkövetés bekapcsolásával engedélyt kérünk, hogy mindig a háttérben elérjék a tartózkodási helyét. A telefon beállításai megnyithatók annak engedélyezéséhez.",
+    "turn_on_location_button": "Kapcsolja be a helyet"
 }

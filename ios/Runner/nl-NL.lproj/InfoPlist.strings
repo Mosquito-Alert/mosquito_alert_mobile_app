@@ -4,7 +4,7 @@
  * Locale: nl-NL, Dutch (Netherlands)
  * Tagged: info-plist
  * Exported by: Enric Pou
- * Exported at: Thu, 30 Jan 2025 15:07:01 +0100
+ * Exported at: Thu, 15 May 2025 12:20:41 +0200
  */
 
 /* loco:66339ba61600bb5f87001572
@@ -25,7 +25,7 @@ NSPhotoLibraryAddUsageDescription = "Foto's die met de app zijn gemaakt op te sl
 
 /* loco:66339d1180b2837b700d7446
  * A message that tells the user why the app is requesting access to the user’s photo library. */
-NSPhotoLibraryUsageDescription = "Toegang tot je fotogalerij om bestaande afbeeldingen aan je rapporten toe te voegen.";
+NSPhotoLibraryUsageDescription = "Toegang krijgen tot je fotogalerij om bestaande afbeeldingen aan je rapporten toe te voegen.";
 
 /* loco:679b86631fb7c762a90b8312
  * A message that tells the user why the app is requesting permission to send notifications. */

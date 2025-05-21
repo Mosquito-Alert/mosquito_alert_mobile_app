@@ -4,20 +4,20 @@
  * Locale: pt-PT, Portuguese (Portugal)
  * Tagged: info-plist
  * Exported by: Enric Pou
- * Exported at: Thu, 30 Jan 2025 15:07:02 +0100
+ * Exported at: Thu, 15 May 2025 12:20:42 +0200
  */
 
 /* loco:66339ba61600bb5f87001572
  * A message that tells the user why the app is requesting access to the device’s camera. */
-NSCameraUsageDescription = "Capturar e partilhar fotografias para fornecer provas visuais nos suas observações.";
+NSCameraUsageDescription = "Capture e compartilhe fotografias para fornecer evidências visuais nos seus relatórios.";
 
 /* loco:66339c0f9dc6f586f60faac2
  * A message that tells the user why the app is requesting access to the user’s location information at all times. */
-NSLocationAlwaysAndWhenInUseUsageDescription = "Permitir o acesso à localização para o rastreio geográfico de fundo anónimo e de baixa resolução para melhorar o valor científico das suas observações.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "Permita o acesso à localização para rastreamento geográfico anónimo e de baixa resolução em segundo plano, para melhorar o valor científico das suas observações";
 
 /* loco:66339c792a448f22630c2d62
  * A message that tells the user why the app is requesting access to the user’s location information while the app is running in the foreground. */
-NSLocationWhenInUseUsageDescription = "Utilizar o GPS para marcar a localização exacta nos suas observações.";
+NSLocationWhenInUseUsageDescription = "Utilizar o GPS para marcar a localização exata das suas observações.";
 
 /* loco:66339ccb3972ba9d6a0ee1f4
  * A message that tells the user why the app is requesting add-only access to the user’s photo library. */
@@ -25,11 +25,11 @@ NSPhotoLibraryAddUsageDescription = "Guardar fotografias tiradas com a aplicaç�
 
 /* loco:66339d1180b2837b700d7446
  * A message that tells the user why the app is requesting access to the user’s photo library. */
-NSPhotoLibraryUsageDescription = "Aceder à sua galeria de fotografias para anexar imagens existentes aos suas observações.";
+NSPhotoLibraryUsageDescription = "Acesse a sua galeria de fotografias para anexar imagens existentes aos seus relatórios.";
 
 /* loco:679b86631fb7c762a90b8312
  * A message that tells the user why the app is requesting permission to send notifications. */
-NSUserNotificationsUsageDescription = "Usamos notificações para mantê-lo atualizado sobre o status de suas contribuições.";
+NSUserNotificationsUsageDescription = "Usamos notificações para mantê-lo atualizado sobre o status das suas contribuições.";
 
 /* loco:679b868034f40c577d0e1d22
  * A message that tells the user why the app is requesting permission to track the user across sessions. */

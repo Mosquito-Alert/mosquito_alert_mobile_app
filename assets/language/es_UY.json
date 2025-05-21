@@ -154,8 +154,8 @@
     "tutorial_info_11": "Recibirás respuestas de expertos sobre tus observaciones y estarás al día de las últimas noticias.",
     "tutorial_title_12": "Configura Mosquito Alert",
     "tutorial_info_12": "En el menú podrás cambiar el idioma y acceder a contenidos extra. Encontrarás también una guía de identificación de especies y el tutorial de la app.",
-    "tutorial_title_13": "El esfuerzo de muestreo, esencial para la ciencia",
-    "tutorial_info_13": "De manera aleatoria, y no más de 5 veces al día, si lo permites, Mosquito Alert recoge tu posición aproximada, en una cuadrícula de 2x2 km. No sabremos en qué lugar concreto has estado, y así, mantenemos tu privacidad. Esta información es esencial para la ciencia: sin ella, no podemos saber si hay muchos mosquitos o si en realidad lo que hay es mucha participación. \nSi no deseas que la app recoja tu posición aproximada, desactiva esta opción en el menú (ajuste).",
+    "tutorial_title_13": "Contribuir a un mejor mapa de mosquitos públicos",
+    "tutorial_info_13": "La alerta de mosquitos recoge su ubicación aproximada cinco veces al día para ayudar a mapear donde se informan mosquitos.\nEstos datos ayudan a los científicos y equipos de salud pública a estimar las poblaciones de mosquitos y mejorar el mapa de mosquitos públicos, que puede ver directamente en la aplicación. Su ubicación exacta nunca se comparte: solo se utiliza una cuadrícula de área de 2x2 km para proteger su privacidad. El intercambio de ubicaciones es opcional; Puede apagarlo en cualquier momento en la configuración de la aplicación.",
     "tutorial_title_14": "Conserva tus datos y mantén tu anonimato",
     "tutorial_info_14": "Tu participación es anónima. Aún así, hemos desarrollado un sistema que te permite, si quieres, iniciar sesión en Mosquito Alert con cuentas externas y conservar tus datos y puntuación. Así, puedes sincronizar varios dispositivos y recuperar datos si tienes que desinstalar la app. Más información en el menú y en la Política de Privacidad de la app.",
     "tutorial_info_15": "¡Ya puedes empezar! ¡Una vez que hayas enviado tu primera notificación ya serás oficialmente un ciudadano científico! Tus observaciones contribuirán al estudio de los mosquitos transmisores de enfermedades.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Etiquetado automático",
     "auto_tagging_settings_placeholder": "Introduce la etiqueta...",
     "NSUserNotificationsUsageDescription": "Utilizamos notificaciones para mantenerlo actualizado sobre el estado de sus contribuciones.",
-    "NSUserTrackingUsageDescription": "Utilizamos el identificador de su dispositivo para rastrearlo a través de las sesiones y guardar sus contribuciones en consecuencia."
+    "NSUserTrackingUsageDescription": "Utilizamos el identificador de su dispositivo para rastrearlo a través de las sesiones y guardar sus contribuciones en consecuencia.",
+    "tracking_perm_view_text": "Al encender el seguimiento de fondo, vamos a solicitar permiso para acceder siempre a su ubicación en segundo plano. La configuración de su teléfono se puede abrir para habilitarla.",
+    "turn_on_location_button": "Encender la ubicación"
 }

@@ -154,8 +154,8 @@
     "tutorial_info_11": "Do të merrni përgjigje nga ekspertët mbi raportet tuaja, po ashtu edhe lajmet e fundit.",
     "tutorial_title_12": "Konfiguroni Aplikacionin \"Mosquito Alert\"",
     "tutorial_info_12": "Në menu mund të ndryshoni gjuhën dhe të hyni në përmbajtjen shtesë. Ju do të gjeni gjithashtu edhe udhëzuesin për të identifikuar llojet e mushkonjave dhe një pjesë praktike të aplikacionit.",
-    "tutorial_title_13": "Përpjekja për marrje mostre është thelbësore për shkencën.",
-    "tutorial_info_13": "Aplikacioni \"Mosquito Alert\" do të mbledh të dhëna mbi vendndodhjen e përafërt tuaj në pesë kohë të rastësishme në ditë. Vendndodhjet maskohen në një rrjetë përafërsisht 2x2 km, me identifikuesin e katrorit të rrjetës së dërguara tek serveri (sistemi) më tepër sesa një vendndodhje e saktë brenda katrorit. Ky informacion është i vlefshëm për shkencën sepse na lejon të vlerësojmë më mirë popullatat e mushkonjave, dallimin për shembull, midis zonave me pak mushkonja dhe zonave me pak pjesëmarrës (por mundësisht shumë mushkonja). Mund ta ç'aktivizoni këtë tipar në menunë e cilësimeve në aplikacion.",
+    "tutorial_title_13": "Kontribuoni në një hartë më të mirë të mushkonjave publike",
+    "tutorial_info_13": "Mushkonja Alert mbledh vendndodhjen tuaj të përafërt pesë herë në ditë për të ndihmuar hartën ku raportohen mushkonjat.\nKëto të dhëna ndihmojnë shkencëtarët dhe ekipet e shëndetit publik të vlerësojnë popullsinë e mushkonjave dhe të përmirësojnë hartën publike të mushkonjave, të cilën mund ta shihni direkt në aplikacion. Vendndodhja juaj e saktë nuk ndahet kurrë - vetëm një rrjet zone 2x2 km përdoret për të mbrojtur privatësinë tuaj. Ndarja e vendndodhjes është opsionale; Ju mund ta fikni atë në çdo kohë në cilësimet e aplikacionit.",
     "tutorial_title_14": "Mbani të dhënat tuaja dhe ruani anonimitetin.",
     "tutorial_info_14": "Pjesëmarrja juaj është anonime. Megjithatë, ju mund të hyni në Aplikacionin \"Mosquito Alert\" duke përdorur një llogari të jashtme dhe në këtë mënyrë të ruani historinë e raportimit tuaj dhe të fitoni pikë edhe nëse hyni në sistem nga pajisje të ndryshme, madje edhe nëse e ç'instaloni aplikacionin nga pajisja juaj. Më shumë informacione të kësaj natyre mund të gjenden në menu pjesa cilësimet (Settings) dhe tek politikat e privatësisë së aplikacionit.",
     "tutorial_info_15": "Mund të filloni tani! Sapo keni dërguar raportin e parë ju do të jeni zyrtarisht një qytetar shkencëtar! Vëzhgimet tuaja do të kontribuojnë në studimet e mushkonjave që transmetojnë sëmundje.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Etiketimi automatik",
     "auto_tagging_settings_placeholder": "Fut etiketën...",
     "NSUserNotificationsUsageDescription": "Ne përdorim njoftimet për tu mbajtur të përditësuar mbi statusin e kontributeve tuaja.",
-    "NSUserTrackingUsageDescription": "Ne përdorim identifikuesin e pajisjes suaj për t'ju gjurmuar nëpër sekione dhe për të ruajtur siç duhet kontributet tuaja."
+    "NSUserTrackingUsageDescription": "Ne përdorim identifikuesin e pajisjes suaj për t'ju gjurmuar nëpër sekione dhe për të ruajtur siç duhet kontributet tuaja.",
+    "tracking_perm_view_text": "Duke aktivizuar përcjelljen e sfondit, ne do të kërkojmë leje për të hyrë gjithmonë në vendndodhjen tuaj në sfond. Cilësimet e telefonit tuaj mund të hapen për ta mundësuar atë.",
+    "turn_on_location_button": "Ndizni vendndodhjen"
 }

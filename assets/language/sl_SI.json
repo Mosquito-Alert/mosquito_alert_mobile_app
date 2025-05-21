@@ -154,8 +154,8 @@
     "tutorial_info_11": "Prejeli boste odgovore strokovnjakov o vaših poročilih in najnovejše novice.",
     "tutorial_title_12": "Nastavitve Mosquito Alert",
     "tutorial_info_12": "V meniju lahko spremenite jezik in dostopite do dodatnih vsebin. Prav tako boste našli vodnik za prepoznavanje vrst komarjev in navodila o aplikaciji.",
-    "tutorial_title_13": "Napor vzorčenja je za znanost ključnega pomena.",
-    "tutorial_info_13": "Mosquito Alert bo vsak dan zbiral vašo približno lokacijo ob petih naključnih trenutkih. Lokacije so skrite v mrežo približno 2 x 2 km, pri čemer se strežniku pošlje identifikator kvadrata, nikakor pa ne natančne lokacije znotraj kvadrata. Te informacije so koristne za znanost, saj nam omogočajo boljšo oceno populacije komarjev, na primer ločimo med območji z malo komarji in območji z malo udeležencev (toda potencialno veliko komarjev). To funkcijo lahko tudi izklopite v meniju z nastavitvami aplikacije.",
+    "tutorial_title_13": "Prispevajte k boljši javni zemljevidi komarjev",
+    "tutorial_info_13": "Opozorilo o komarju zbira vašo približno lokacijo petkrat na dan, da pomaga preslikati, kjer se poročajo komarji.\nTi podatki pomagajo znanstvenikom in javnim zdravstvenim skupinam oceniti populacijo komarjev in izboljšati zemljevid javnih komarjev, ki si ga lahko ogledate neposredno v aplikaciji. Vaša natančna lokacija se nikoli ne deli - za zaščito vaše zasebnosti se uporablja le mreža 2x2 km. Skupna raba lokacije ni obvezna; V nastavitvah aplikacije ga lahko kadar koli izklopite.",
     "tutorial_title_14": "Ohranite svoje podatke in ohranite anonimnost.",
     "tutorial_info_14": "Vaša udeležba je anonimna, vendar se lahko prijavite v Mosquito Alert z zunanjim računom in s tem obdržite zgodovino poročanja in točke, tudi če do sistema dostopate preko več naprav in tudi če odstranite aplikacijo iz ene naprave. Več informacij o tej funkciji je na voljo v meniju z nastavitvami in v pravilniku o zasebnosti aplikacije.",
     "tutorial_info_15": "Lahko začnete zdaj! Vaša opažanja bodo prispevala k preučevanju komarjev, ki prenašajo raznovrstne povzročitelje bolezni.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Samodejno označevanje",
     "auto_tagging_settings_placeholder": "Vnesite oznako...",
     "NSUserNotificationsUsageDescription": "Z obvestili vas obveščamo o stanju vaših prispevkov.",
-    "NSUserTrackingUsageDescription": "Identifikator vaše naprave uporabljamo za sledenje med sejami in ustrezno shranjevanje vaših prispevkov."
+    "NSUserTrackingUsageDescription": "Identifikator vaše naprave uporabljamo za sledenje med sejami in ustrezno shranjevanje vaših prispevkov.",
+    "tracking_perm_view_text": "Z vklopom sledenja ozadja bomo zahtevali dovoljenje, da vedno dostopate do vaše lokacije v ozadju. Nastavitve telefona se lahko odprejo, da ga omogočite.",
+    "turn_on_location_button": "Vklopite lokacijo"
 }

@@ -154,8 +154,8 @@
     "tutorial_info_11": "Uzmanlardan raporlarınız ve en son haberler hakkında yanıtlar alacaksınız.",
     "tutorial_title_12": "Mosquito Alert'i yapılandır",
     "tutorial_info_12": "Menüden dili değiştirebilir ve ekstra içeriğe erişebilirsiniz. Ayrıca, sivrisinek türlerinin tanımlanması için bir rehber ve uygulama rehberi (tutorial) bulabilirsiniz.",
-    "tutorial_title_13": "Örnekleme çabası bilim için çok önemlidir",
-    "tutorial_info_13": "Mosquito Alert, yaklaşık konumunuzu her gün rastgele beş kez toplayacaktır. Konumlar, 2x2 km'lik kare içindeki herhangi bir kesin konum yerine sunucuya gönderilen ızgara kare tanımlayıcısı ile bir ızgara üzerinde maskelenir. Bu bilgi bilim için değerlidir, çünkü sivrisinek popülasyonlarını daha iyi tahmin etmemizi sağlar. Örneğin az sayıda sivrisinek bulunan alanlar ile az sayıda katılımcının bulunduğu (ancak potansiyel olarak çok sayıda sivrisinek) olan alanlar arasında ayrım yapmamıza olanak tanır. Bu özelliği uygulama ayarları menüsünden de kapatabilirsiniz.",
+    "tutorial_title_13": "Daha iyi bir kamu sivrisinek haritasına katkıda bulun",
+    "tutorial_info_13": "Sivrisinek Uyarısı, sivrisineklerin rapor edildiği haritaya yardımcı olmak için yaklaşık konumunuzu günde beş kez toplar.\nBu veriler, bilim adamlarının ve halk sağlığı ekiplerinin sivrisinek popülasyonlarını tahmin etmesine ve doğrudan uygulamada görüntüleyebileceğiniz kamu sivrisinek haritasını geliştirmelerine yardımcı olur. Tam konumunuz asla paylaşılmaz - gizliliğinizi korumak için sadece 2x2 km'lik bir alan ızgarası kullanılır. Konum paylaşımı isteğe bağlıdır; Uygulama ayarlarında istediğiniz zaman kapatabilirsiniz.",
     "tutorial_title_14": "Verinizi saklayın, anonimliğinizi koruyun",
     "tutorial_info_14": "Katılımınız anonimdir. Ancak, başka bir hesap kullanarak Mosquito Alert' te oturum açabilir ve böylece sisteme birden fazla cihazdan erişseniz ve uygulamayı tek bir cihazdan kaldırsanız bile raporlama geçmişinizi ve puanınızı saklayabilirsiniz. Bu özellikle ilgili daha fazla bilgi ayarlar menüsünde ve uygulamanın Gizlilik Politikasında bulunabilir.",
     "tutorial_info_15": "Şimdi başlayabilirsiniz! İlk raporunuzu gönderdikten sonra resmi olarak vatandaş bilim insanı olacaksınız! Gözlemleriniz, hastalık bulaştıran sivrisineklerin incelenmesine katkıda bulunacaktır.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Otomatik etiketleme",
     "auto_tagging_settings_placeholder": "Etiketi girin...",
     "NSUserNotificationsUsageDescription": "Katkılarınızın durumu hakkında sizi güncel tutmak için bildirimleri kullanıyoruz.",
-    "NSUserTrackingUsageDescription": "Oturumlar arasında sizi takip etmek ve katkılarınızı buna göre kaydetmek için cihaz tanımlayıcınızı kullanırız."
+    "NSUserTrackingUsageDescription": "Oturumlar arasında sizi takip etmek ve katkılarınızı buna göre kaydetmek için cihaz tanımlayıcınızı kullanırız.",
+    "tracking_perm_view_text": "Arka plan izlemeyi açarak, konumunuza her zaman arka planda erişme izni talep edeceğiz. Etkinleştirmek için telefon ayarlarınız açılabilir.",
+    "turn_on_location_button": "Konumu aç"
 }

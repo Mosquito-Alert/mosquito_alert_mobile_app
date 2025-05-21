@@ -154,8 +154,8 @@
     "tutorial_info_11": "Rebràs respostes d’experts sobre les teves observacions i estaràs al dia de les últimes notícies.",
     "tutorial_title_12": "Configura Mosquito Alert",
     "tutorial_info_12": "Al menú podràs canviar l’idioma i accedir a continguts extra. Trobaràs també una guia d’identificació d’espècies i el tutorial de l’app.",
-    "tutorial_title_13": "L’esforç de mostreig, essencial per a la ciència",
-    "tutorial_info_13": "De manera aleatòria, i no més de 5 vegades al dia, si ho permets, Mosquito Alert recull la teva posició aproximada, en una quadrícula de 2x2 km. No sabrem en quin lloc concret has estat, i així, mantenim la teva privacitat. Aquesta informació és essencial per a la ciència: sense ella, no podem saber si hi ha molts mosquits o si en realitat el que hi ha és molta participació.\nSi no desitges que l’app reculli la teva posició aproximada, desactiva aquesta opció al menú (ajustos).",
+    "tutorial_title_13": "Contribuir a un millor mapa de mosquits públics",
+    "tutorial_info_13": "L’alerta de mosquit recull la vostra ubicació aproximada cinc vegades al dia per ajudar a mapejar on s’estan reportant mosquits.\nAquestes dades ajuden els científics i els equips de salut pública a estimar les poblacions de mosquits i a millorar el mapa públic dels mosquits, que podeu veure directament a l’aplicació. La vostra ubicació exacta no es comparteix mai: només s’utilitza una xarxa d’àrea de 2x2 km per protegir la vostra privadesa. L’intercanvi d’ubicacions és opcional; Podeu desactivar -lo en qualsevol moment a la configuració de l'aplicació.",
     "tutorial_title_14": "Conserva les teves dades i mantingues el teu anonimat",
     "tutorial_info_14": "La teva participació és anònima. Tot i això, hem desenvolupat un sistema que et permet, si vols, iniciar sessió a Mosquito Alert amb comptes externs i conservar les teves dades i puntuació. Així, pots sincronitzar diversos dispositius i recuperar dades si has de desinstal·lar l’app. Més informació al menú i a la Política de Privacitat de l’app.",
     "tutorial_info_15": "Ja pots començar! Un cop hagis enviat la teva primera notificació ja seràs oficialment un ciutadà científic! Les teves observacions contribuiran a l’estudi dels mosquits transmissors de malalties.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Etiquetatge automàtic",
     "auto_tagging_settings_placeholder": "Introdueix l'etiqueta...",
     "NSUserNotificationsUsageDescription": "Utilitzem notificacions per mantenir-te informat de l'estat de les teves contribucions.",
-    "NSUserTrackingUsageDescription": "Utilitzem l'identificador del vostre dispositiu per fer-vos un seguiment a través de les sessions i per desar les vostres contribucions en conseqüència."
+    "NSUserTrackingUsageDescription": "Utilitzem l'identificador del vostre dispositiu per fer-vos un seguiment a través de les sessions i per desar les vostres contribucions en conseqüència.",
+    "tracking_perm_view_text": "En activar el seguiment de fons, sol·licitarem permís per accedir sempre a la vostra ubicació en segon pla. Es pot obrir la configuració del telèfon per habilitar -la.",
+    "turn_on_location_button": "Activar la ubicació"
 }

@@ -154,8 +154,8 @@
     "tutorial_info_11": "Vei primi răspunsuri de la experți despre rapoartele tale, precum și cele mai noi știri.",
     "tutorial_title_12": "Configurare Mosquito Alert.",
     "tutorial_info_12": "În meniu puteți schimba limba și a accesa conținutul suplimentar. Veți găsi, de asemenea, un ghid pentru identificarea speciilor de țânțari și un tutorial al aplicației.",
-    "tutorial_title_13": "Efortul de eșantionare este esențial pentru știință.",
-    "tutorial_info_13": "Mosquito Alert va colecta locația dvs. aproximativă de cinci ori aleatoriu în fiecare zi. Locațiile sunt mascate pe o grilă de aproximativ 2x2 km, cu identificatorul pătratului grilă trimis serverului, mai degrabă decât pe orice locație precisă din pătrat. Aceste informații sunt valoroase pentru știință, deoarece ne permit să estimăm mai bine populațiile de țânțari, distingând, de exemplu, între zonele cu puțini țânțari și zonele cu puțini participanți (dar potențial mulți țânțari). De asemenea, în aplicație puteți dezactiva această caracteristică în meniul de setări.",
+    "tutorial_title_13": "Contribuie la o hartă publică mai bună a țânțarilor",
+    "tutorial_info_13": "Alerta de țânțari colectează locația dvs. aproximativă de cinci ori pe zi pentru a ajuta la harta unde sunt raportate țânțarii.\nAceste date ajută oamenii de știință și echipele de sănătate publică să estimeze populațiile de țânțari și să îmbunătățească harta publică a țânțarilor, pe care o puteți vizualiza direct în aplicație. Locația dvs. exactă nu este niciodată împărtășită - doar o grilă de suprafață de 2x2 km este folosită pentru a vă proteja confidențialitatea. Partajarea locației este opțională; Îl puteți opri oricând în setările aplicației.",
     "tutorial_title_14": "Păstrați-vă datele și mențineți-vă anonimatul.",
     "tutorial_info_14": "Participarea dvs. este anonimă. Cu toate acestea, vă puteți conecta la Mosquito Alert folosind un cont extern și astfel păstrați istoricul de raportare și punctaj, chiar dacă accesați sistemul de pe mai multe dispozitive și chiar dacă dezinstalați aplicația de pe un dispozitiv. Mai multe informații despre această caracteristică pot fi găsite în meniul de setări și în Politica de confidențialitate a aplicației.",
     "tutorial_info_15": "Puteți începe acum! Odată ce ați trimis primul raport, veți fi oficial om de știință cetățean! Observațiile dvs. vor contribui la studiul țânțarilor care transmit boli.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Etichetare automată",
     "auto_tagging_settings_placeholder": "Introduceți eticheta...",
     "NSUserNotificationsUsageDescription": "Folosim notificări pentru a vă ține la curent cu starea contribuțiilor dvs.",
-    "NSUserTrackingUsageDescription": "Utilizăm identificatorul dispozitivului dvs. pentru a vă urmări pe parcursul sesiunilor și pentru a vă salva contribuțiile în consecință."
+    "NSUserTrackingUsageDescription": "Utilizăm identificatorul dispozitivului dvs. pentru a vă urmări pe parcursul sesiunilor și pentru a vă salva contribuțiile în consecință.",
+    "tracking_perm_view_text": "Prin activarea urmăririi fundalului, vom solicita permisiunea de a accesa întotdeauna locația dvs. în fundal. Setările telefonului dvs. pot fi deschise pentru a -l activa.",
+    "turn_on_location_button": "Porniți locația"
 }

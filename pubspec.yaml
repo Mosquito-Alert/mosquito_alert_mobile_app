@@ -106,6 +106,7 @@ flutter:
   assets:
     - assets/
     - assets/img/
+    - assets/img/location/
     - assets/img/sendmodule/
     - assets/img/gallery/
     - assets/img/bottoms/

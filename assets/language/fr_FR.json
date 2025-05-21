@@ -154,8 +154,8 @@
     "tutorial_info_11": "Vous recevrez des réponses d'experts concernant vos observations ainsi que les dernières nouvelles.",
     "tutorial_title_12": "Configurer Mosquito Alert",
     "tutorial_info_12": "Dans le menu, vous pouvez changer la langue et accéder à des contenus supplémentaires. Vous trouverez également un guide d'identification des espèces de moustiques et un tutoriel de l'application.",
-    "tutorial_title_13": "L'effort d'échantillonnage est essentiel pour la science",
-    "tutorial_info_13": "Mosquito Alert recueillera votre position approximative chaque jour à cinq moments aléatoires. Les emplacements sont relevés sur une grille d'environ 2x2 km, l'identifiant du carré de la grille étant envoyé au serveur plutôt que l'emplacement précis dans le carré. Ces informations sont précieuses pour la science car elles nous permettent de mieux estimer les populations de moustiques, en distinguant, par exemple, les zones où il y a peu de moustiques et celles où il y a peu de participants (mais potentiellement beaucoup de moustiques). Vous pouvez également désactiver cette fonction dans le menu des paramètres de l'application.",
+    "tutorial_title_13": "Contribuer à une meilleure carte des moustiques publics",
+    "tutorial_info_13": "Mosquito Alert recueille votre emplacement approximatif cinq fois par jour pour vous aider à cartographier là où les moustiques sont signalés.\nCes données aident les scientifiques et les équipes de santé publique à estimer les populations de moustiques et à améliorer la carte des moustiques publics, que vous pouvez consulter directement dans l'application. Votre emplacement exact n'est jamais partagé - seule une grille de zone de 2x2 km est utilisée pour protéger votre intimité. Le partage de localisation est facultatif; Vous pouvez le désactiver à tout moment dans les paramètres de l'application.",
     "tutorial_title_14": "Conservez vos données et préservez votre anonymat",
     "tutorial_info_14": "Votre participation est anonyme. Cependant, vous pouvez vous connecter à Mosquito Alert en utilisant un compte externe et ainsi conserver l'historique de votre participation et votre score même si vous accédez au système à partir de plusieurs appareils, et même si vous désinstallez l'application à partir d'un seul appareil. Vous trouverez plus d'informations sur cette fonctionnalité dans le menu des paramètres et dans la politique de confidentialité de l'application.",
     "tutorial_info_15": "Vous pouvez commencer dès maintenant ! Une fois que vous aurez soumis votre première observation, vous serez officiellement un citoyen-chercheur ! Vos observations contribueront à l'étude des moustiques vecteurs de maladies.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Marquage automatique",
     "auto_tagging_settings_placeholder": "Saisir une étiquette...",
     "NSUserNotificationsUsageDescription": "Nous utilisons des notifications pour vous tenir informé de l'état de vos contributions.",
-    "NSUserTrackingUsageDescription": "Nous utilisons l'identifiant de votre appareil pour vous suivre au fil des sessions et pour enregistrer vos contributions en conséquence."
+    "NSUserTrackingUsageDescription": "Nous utilisons l'identifiant de votre appareil pour vous suivre au fil des sessions et pour enregistrer vos contributions en conséquence.",
+    "tracking_perm_view_text": "En activant le suivi de l'arrière-plan, nous allons demander la permission de toujours accéder à votre emplacement en arrière-plan. Les paramètres de votre téléphone peuvent être ouverts pour l'activer.",
+    "turn_on_location_button": "Activer l'emplacement"
 }

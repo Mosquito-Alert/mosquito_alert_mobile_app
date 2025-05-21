@@ -154,8 +154,8 @@
     "tutorial_info_11": "Primaćete odgovore od stručnjaka o Vašim izveštajima kao i o najnovijim vestima.",
     "tutorial_title_12": "Konfigurišite Mosquito Alert",
     "tutorial_info_12": "U meniju možete promeniti jezik i pristupiti dodatnim sadržajima. Takođe ćete pronaći i  vodič za identifikaciju vrsta komaraca i tutorijal o aplikaciji.",
-    "tutorial_title_13": "Uzorkovanje je izuzetno značajno za nauku",
-    "tutorial_info_13": "Mosquito Alert će sakupljati Vaše približne lokacije pet puta svakog dana u nasumičnim vremenskim intervalima. Lokacije su maskirane na koordinatnoj mreži  za otprilike 2 x 2 km sa identifikatorom mreže kvadrata, koja je poslata na server umesto precizne lokacije sa kvadratom. Ove nformacije su dragocene za nauku jer omogućavaju bolju procenu populacije komaraca, zatim razlikovanje npr. oblasti sa nekoliko komaraca od oblasti sa nekoliko učesnika (ali potencijalno sa mnogo komaraca). Ovu opciju možete isključiti u podešavanjima koja se nalaze u meniju aplikacije.",
+    "tutorial_title_13": "Доприносе бољој јавној мапи комараца",
+    "tutorial_info_13": "Упозорење против комараца прикупља вашу приближну локацију пет пута дневно да бисте помогли мапи на којој се пријављују комарци.\nОви подаци помажу научницима и јавним здравственим тимовима проценити популације комараца и побољшати јавну мапу комараца, коју можете видети директно у апликацији. Ваша тачна локација никада није дељена - само 2к2 км решетка за површину користи се за заштиту ваше приватности. Дељење локације је опционо; Можете га искључити било када у подешавањима апликација.",
     "tutorial_title_14": "Zadržite podatke i sačuvajte Vašu anonimnost",
     "tutorial_info_14": "Vaše učešće je anonimno. Međutim, možete se prijaviti na Mosquito Alert koristeći eksterni nalog i tako zadržati istoriju Vaših izveštavanja i poene čak i ako pristupite sistemu sa više uređaja, i čak i ako deinstalirate aplikaciju na jednom od uređaja. Više informacija o ovim mogućnostima možete pronaći u podešavanjima na meniju i u politici privatnosti aplikacije.",
     "tutorial_info_15": "Možete početi sada! Jednom kada ste poslali Vaš prvi izveštaj, zvanično postajete građanin naučnik! Vaša posmatranja će biti doprinos proučavanju komaraca koji su prenosioci prouzrokovača oboljenja.",
@@ -351,5 +351,7 @@
     "auto_tagging_settings_title": "Аутоматско означавање",
     "auto_tagging_settings_placeholder": "Унесите ознаку...",
     "NSUserNotificationsUsageDescription": "Користимо обавештења да бисмо вас обавештавали о статусу ваших доприноса.",
-    "NSUserTrackingUsageDescription": "Користимо идентификатор вашег уређаја да бисмо вас пратили кроз сесије и да бисмо сходно томе сачували ваше доприносе."
+    "NSUserTrackingUsageDescription": "Користимо идентификатор вашег уређаја да бисмо вас пратили кроз сесије и да бисмо сходно томе сачували ваше доприносе.",
+    "tracking_perm_view_text": "Укључивањем позадинског праћења, тражићемо дозволу да увек приступимо вашој локацији у позадини. Поставке телефона могу се отворити да би се то омогућило.",
+    "turn_on_location_button": "Укључите локацију"
 }
