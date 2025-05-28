@@ -210,10 +210,4 @@ class UserManager {
     var prefs = await SharedPreferences.getInstance();
     return prefs.getInt('lastReportCount');
   }
-
-  static signOut() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('userName');
-    await prefs.remove('firebaseId');
-  }
 }
