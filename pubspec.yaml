@@ -15,7 +15,7 @@ dependencies:
   path_provider: ^2.0.15
   path: ^1.8.1
   uuid: ^4.1.0
-  shared_preferences: ^2.2.3
+  shared_preferences: ^2.5.3
   http: ^1.2.2
   random_string: ^2.3.1
   geolocator: ^11.1.0
