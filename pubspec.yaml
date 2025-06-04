@@ -57,7 +57,7 @@ dependencies:
   photo_gallery: ^2.2.1
   textfield_tags: ^3.0.1
   in_app_review: ^2.0.9
-  firebase_analytics: ^11.4.4
+  firebase_analytics: ^11.4.6
 
 dependency_overrides:
   # Temporal for flutter_launcher_icons
