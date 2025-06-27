@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/api/api.dart';
-import 'package:mosquito_alert_app/models/partner.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
@@ -45,24 +46,25 @@ class _PartnersPageState extends State<PartnersPage> {
   getInitialData() async {
     // Set loading state to true initially
     loadingStream.add(true);
-
     try {
-      List<Partner> partners = await ApiSingleton().getPartners();
+      PartnersApi partnersApi = ApiSingleton.api.getPartnersApi();
+      Response<PaginatedPartnerList> response = await partnersApi.list();
+      PaginatedPartnerList? partners = response.data;
 
-      for (var partner in partners) {
+      if (partners == null || partners.results == null) return;
+
+      for (var partner in partners.results!) {
         markers.add(Marker(
           markerId: MarkerId(partner.id.toString()),
-          position: LatLng(partner.point['lat'], partner.point['long']),
+          position: LatLng(partner.point.latitude, partner.point.longitude),
           onTap: () {
-            if (partner.pageUrl != null) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    settings:
-                        RouteSettings(name: '/info/partners/${partner.id}'),
-                    builder: (context) => InfoPageInWebview(partner.pageUrl)),
-              );
-            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                settings: RouteSettings(name: '/info/partners/${partner.id}'),
+                builder: (context) => InfoPageInWebview(partner.url),
+              ),
+            );
           },
         ));
       }
@@ -103,7 +105,7 @@ class _PartnersPageState extends State<PartnersPage> {
                       mapToolbarEnabled: false,
                       myLocationButtonEnabled: false,
                       initialCameraPosition: CameraPosition(
-                        target: LatLng(49.895268, 11.2773223),
+                        target: LatLng(49.895268, 11.2773223), // Address: St 2188, 91347 Aufseß, Germany
                         zoom: 3.5,
                       ),
                       markers: Set<Marker>.of(snapshot.data!),

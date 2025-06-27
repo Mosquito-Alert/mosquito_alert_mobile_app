@@ -1,6 +1,6 @@
 name: mosquito_alert_app
 description: A new Flutter project.
-version: 4.1.0+2884
+version: 4.1.0+2885
 publish_to: none
 
 
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.1.0
-  google_maps_flutter: ^2.2.6
+  google_maps_flutter: ^2.12.3
   path_provider: ^2.0.15
   path: ^1.8.1
   uuid: ^4.1.0
@@ -58,6 +58,11 @@ dependencies:
   textfield_tags: ^3.0.1
   in_app_review: ^2.0.9
   firebase_analytics: ^11.4.6
+  mosquito_alert:
+    git:
+      url: https://github.com/Mosquito-Alert/mosquito-alert-dart-sdk.git
+      ref: 0.1.10
+  flutter_secure_storage: ^9.2.4
 
 dependency_overrides:
   # Temporal for flutter_launcher_icons
