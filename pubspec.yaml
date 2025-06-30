@@ -61,7 +61,7 @@ dependencies:
   mosquito_alert:
     git:
       url: https://github.com/Mosquito-Alert/mosquito-alert-dart-sdk.git
-      ref: 0.1.10
+      ref: 0.1.21
   flutter_secure_storage: ^9.2.4
 
 dependency_overrides:
