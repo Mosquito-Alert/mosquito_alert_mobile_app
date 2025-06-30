@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -225,8 +226,17 @@ class BackgroundTracking {
       String trackingUuid = await BackgroundTracking._getTrackingUUID();
 
       // Send data to API
-      return await ApiSingleton().sendFixes(trackingUuid, position.latitude,
-          position.longitude, DateTime.now().toUtc(), batteryLevel);
+      FixRequest fixRequest = FixRequest((b) => b
+        ..coverageUuid = trackingUuid
+        ..createdAt = DateTime.now().toUtc()
+        ..sentAt = DateTime.now().toUtc()
+        ..point.replace(FixLocationRequest((p) => p
+          ..latitude = position.latitude
+          ..longitude = position.longitude))
+        ..power = batteryLevel / 100.0);
+      final response =
+          await ApiSingleton.fixesApi.create(fixRequest: fixRequest);
+      return response.statusCode == 201;
     } catch (e) {
       return Future.error(e);
     }

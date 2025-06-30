@@ -105,7 +105,8 @@ class _PartnersPageState extends State<PartnersPage> {
                       mapToolbarEnabled: false,
                       myLocationButtonEnabled: false,
                       initialCameraPosition: CameraPosition(
-                        target: LatLng(49.895268, 11.2773223), // Address: St 2188, 91347 Aufseß, Germany
+                        // Address: St 2188, 91347 Aufseß, Germany
+                        target: LatLng(49.895268, 11.2773223),
                         zoom: 3.5,
                       ),
                       markers: Set<Marker>.of(snapshot.data!),
