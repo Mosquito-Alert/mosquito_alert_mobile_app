@@ -1,11 +1,12 @@
 name: Build app
 on:
+  pull_request:
   merge_group:
   push:
     branches: ["main"]
 
 jobs:
-  android:
+  android_build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -29,7 +30,7 @@ jobs:
     - name: Build Android on debug mode
       run: flutter build appbundle --debug
 
-  ios:
+  ios_build:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
