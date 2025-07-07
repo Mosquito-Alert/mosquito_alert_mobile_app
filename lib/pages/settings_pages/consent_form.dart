@@ -90,6 +90,7 @@ class _ConsentFormState extends State<ConsentForm> {
                         Row(
                           children: <Widget>[
                             Checkbox(
+                              key: ValueKey("acceptConditionsCheckbox"),
                               value: acceptConditions,
                               onChanged: (newValue) {
                                 buttonStream.add(acceptPrivacy! && newValue!);
@@ -135,6 +136,7 @@ class _ConsentFormState extends State<ConsentForm> {
                         Row(
                           children: <Widget>[
                             Checkbox(
+                              key: ValueKey("acceptPrivacyPolicy"),
                               value: acceptPrivacy,
                               onChanged: (newValue) {
                                 buttonStream

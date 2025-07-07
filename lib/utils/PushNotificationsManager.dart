@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/models/topic.dart';
 import 'package:mosquito_alert_app/utils/MessageNotification.dart';
@@ -31,7 +32,8 @@ class PushNotificationsManager {
   * Push Notification Manager Init
   */
   static Future<void> init() async {
-    if (!_initialized) {
+    final appConfig = await AppConfig.loadConfig();
+    if (!_initialized && appConfig.useAuth) {
       await _firebaseMessaging.requestPermission();
 
       FirebaseMessaging.onMessage.listen((RemoteMessage remoteMessage) {

@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mosquito_alert_app/api/api.dart';
+import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
 import 'package:mosquito_alert_app/pages/main/home_page.dart';
@@ -84,6 +85,12 @@ class _MainVCState extends State<MainVC> {
   }
 
   Future<bool> initAuthStatus() async {
+    final appConfig = await AppConfig.loadConfig();
+    if (!appConfig.useAuth) {
+      // Requesting permissions on automated tests creates many problems
+      // and mocking permission acceptance is difficult on Android and iOS
+      return false;
+    }
     userUuid = await UserManager.getUUID();
     UserManager.userScore = await ApiSingleton().getUserScores();
     await UserManager.setUserScores(UserManager.userScore);

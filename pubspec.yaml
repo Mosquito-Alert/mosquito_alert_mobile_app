@@ -76,6 +76,8 @@ dev_dependencies:
   flutter_localizations:
     sdk: flutter
   test: ^1.24.3
+  integration_test:
+    sdk: flutter
   flutter_native_splash: ^2.4.4
 
 flutter_launcher_icons:
