@@ -19,7 +19,7 @@ dependencies:
   http: ^1.2.2
   random_string: ^2.3.1
   geolocator: ^11.1.0
-  geocoding: ^3.0.0
+  geocoding: ^4.0.0
   dio: ^5.8.0+1
   flutter_image_compress: ^2.3.0
   flutter_markdown: ^0.7.4+3
