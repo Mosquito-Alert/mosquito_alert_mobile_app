@@ -34,8 +34,6 @@ class Utils {
   //Manage Data
   static LatLng? location;
   static LatLng defaultLocation = LatLng(0, 0);
-  static StreamController<int?> userScoresController =
-      StreamController<int?>.broadcast();
 
   //REPORTS
   static Report? report;
@@ -45,7 +43,6 @@ class Utils {
 
   // Initialized data flags
   static Map<String, dynamic> initializedCheckData = {
-    'userScores': false, // Whether the user scores got fetched
     'userCreated': {
       'created': false,
       'required': true,
@@ -446,13 +443,6 @@ class Utils {
     } else {
       print(
           'Utils (checkForUnfetchedData): Either the user was created or it was not required (${jsonEncode(userCreated)})');
-    }
-
-    if (!initializedCheckData['userScores']) {
-      print('Utils (checkForUnfetchedData): Fetching user scores...');
-      UserManager.userScore = await ApiSingleton().getUserScores();
-    } else {
-      print('Utils (checkForUnfetchedData): UserScores were already fetched');
     }
 
     if (!initializedCheckData['firebase']) {

@@ -15,10 +15,12 @@ import 'package:mosquito_alert_app/pages/notification_pages/notifications_page.d
 import 'package:mosquito_alert_app/pages/settings_pages/gallery_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/info_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/settings_page.dart';
+import 'package:mosquito_alert_app/providers/user_provider.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
 
 class MainVC extends StatefulWidget {
   const MainVC({key});
@@ -92,8 +94,6 @@ class _MainVCState extends State<MainVC> {
       return false;
     }
     userUuid = await UserManager.getUUID();
-    UserManager.userScore = await ApiSingleton().getUserScores();
-    await UserManager.setUserScores(UserManager.userScore);
     await Utils.loadFirebase();
     return true;
   }
@@ -180,15 +180,11 @@ class _MainVCState extends State<MainVC> {
                                 image: AssetImage('assets/img/points_box.webp'),
                               ),
                             ),
-                            child: StreamBuilder<int?>(
-                                stream: Utils.userScoresController.stream,
-                                initialData: UserManager.userScore,
-                                builder: (context, snapshot) {
-                                  return Center(
-                                      child: AutoSizeText(
-                                    snapshot.data != null && snapshot.hasData
-                                        ? snapshot.data.toString()
-                                        : '',
+                            child: Consumer<UserProvider>(
+                              builder: (context, userProvider, _) {
+                                return Center(
+                                  child: AutoSizeText(
+                                    userProvider.userScore.toString(),
                                     maxLines: 1,
                                     maxFontSize: 26,
                                     minFontSize: 16,
@@ -196,8 +192,10 @@ class _MainVCState extends State<MainVC> {
                                         color: Color(0xFF4B3D04),
                                         fontWeight: FontWeight.w500,
                                         fontSize: 24),
-                                  ));
-                                }),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
 
