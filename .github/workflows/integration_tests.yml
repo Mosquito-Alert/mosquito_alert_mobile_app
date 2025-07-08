@@ -35,11 +35,16 @@ jobs:
         sudo udevadm control --reload-rules
         sudo udevadm trigger --name-match=kvm
 
+    - name: Clean up emulator/app state
+      run: |
+        adb uninstall com.example.mosquito_alert_app || true
+        adb emu kill || true
+
     - name: Run integration tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 34
+        api-level: 33
         target: google_apis
         arch: x86_64
         profile: Nexus 6
-        script: "flutter test integration_test"
+        script: "flutter test integration_test --verbose"
