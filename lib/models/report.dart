@@ -21,7 +21,6 @@ class Report {
   String? note;
   String? package_name;
   int? package_version;
-  int? session;
   List<Photo>? photos;
   List<Question?>? responses;
   String? device_manufacturer;
@@ -52,7 +51,6 @@ class Report {
       this.note,
       this.package_name,
       this.package_version,
-      this.session,
       this.responses,
       this.device_manufacturer,
       this.device_model,
@@ -83,7 +81,6 @@ class Report {
     note = json['note'].toString();
     package_name = json['package_name'].toString();
     package_version = json['package_version'];
-    session = json['session'];
 
     if (json['photos'] != null) {
       photos = <Photo>[];
@@ -150,7 +147,6 @@ class Report {
     data['note'] = note;
     data['package_name'] = package_name;
     data['package_version'] = package_version;
-    data['session'] = session;
 
     if (responses != null) {
       data['responses'] = responses!.map((r) => r!.toJson()).toList();

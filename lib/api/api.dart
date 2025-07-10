@@ -12,7 +12,6 @@ import 'package:mosquito_alert/src/auth/jwt_auth.dart';
 import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
 import 'package:mosquito_alert_app/models/report.dart';
-import 'package:mosquito_alert_app/models/session.dart';
 import 'package:mosquito_alert_app/models/topic.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
@@ -68,7 +67,6 @@ class ApiSingleton {
     usersApi = api.getUsersApi();
     fixesApi = api.getFixesApi();
 
-    // Try to restore session if we have stored credentials
     final apiUser = await UserManager.getApiUser();
     final apiPassword = await UserManager.getApiPassword();
     if (apiUser != null && apiPassword != null) {
@@ -159,22 +157,6 @@ class ApiSingleton {
     } catch (e) {
       print("Login failed: $e");
     }
-    return false;
-  }
-
-  //Sessions
-  Future<dynamic> getLastSession(String? userUUID) async {
-    // TODO
-    return false;
-  }
-
-  Future<int?> createSession(Session session) async {
-    // TODO
-    return null;
-  }
-
-  Future<dynamic> closeSession(Session session) async {
-    // TODO
     return false;
   }
 

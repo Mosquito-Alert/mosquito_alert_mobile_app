@@ -13,8 +13,6 @@ import 'package:in_app_review/in_app_review.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/question.dart';
 import 'package:mosquito_alert_app/models/report.dart';
-import 'package:mosquito_alert_app/models/response.dart';
-import 'package:mosquito_alert_app/models/session.dart';
 import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -37,7 +35,6 @@ class Utils {
 
   //REPORTS
   static Report? report;
-  static Session? session;
   static List<Report?>? reportsList;
   static Report? savedAdultReport;
 
@@ -60,98 +57,60 @@ class Utils {
     imagePath!.removeWhere((element) => element['image'] == image);
   }
 
-  static void closeSession() {
-    session!.session_end_time = DateTime.now().toUtc().toIso8601String();
-    ApiSingleton().closeSession(session!);
-  }
-
   static Future<bool> createNewReport(
     String type, {
     double? lat,
     double? lon,
     String? locationType,
   }) async {
-    if (session == null) {
-      reportsList = [];
+    var lang = await UserManager.getLanguage();
+    var userUUID = await UserManager.getUUID();
+    report = Report(
+        type: type,
+        report_id: randomAlphaNumeric(4).toString(),
+        version_number: 0,
+        version_UUID: Uuid().v4(),
+        user: userUUID,
+        responses: []);
 
-      var userUUID = await UserManager.getUUID();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    report!.package_name = packageInfo.packageName;
+    report!.package_version = 34;
 
-      dynamic response = await ApiSingleton().getLastSession(userUUID);
-      if (response is bool && !response) {
-        print('Unable to get last session.');
-        return false;
-      }
-
-      if (response is ApiResponse) {
-        print('response is of type ApiResponse, not a number.');
-        return false;
-      }
-
-      int? sessionId = response + 1;
-
-      session = Session(
-          session_ID: sessionId,
-          user: userUUID,
-          session_start_time: DateTime.now().toUtc().toIso8601String());
-
-      print(language);
-      session!.id = await ApiSingleton().createSession(session!);
+    if (Platform.isAndroid) {
+      var buildData = await DeviceInfoPlugin().androidInfo;
+      report!.device_manufacturer = buildData.manufacturer;
+      report!.device_model = buildData.model;
+      report!.os = 'Android';
+      report!.os_language = language.languageCode;
+      report!.os_version = buildData.version.sdkInt.toString();
+      report!.app_language = lang ?? language.languageCode;
+    } else if (Platform.isIOS) {
+      var buildData = await DeviceInfoPlugin().iosInfo;
+      report!.device_manufacturer = 'Apple';
+      report!.device_model = buildData.model;
+      report!.os = buildData.systemName;
+      report!.os_language = language.languageCode;
+      report!.os_version = buildData.systemVersion;
+      report!.app_language = lang ?? language.languageCode;
     }
 
-    if (session?.id != null) {
-      var lang = await UserManager.getLanguage();
-      var userUUID = await UserManager.getUUID();
-      report = Report(
-          type: type,
-          report_id: randomAlphaNumeric(4).toString(),
-          version_number: 0,
-          version_UUID: Uuid().v4(),
-          user: userUUID,
-          session: session!.id,
-          responses: []);
-
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      report!.package_name = packageInfo.packageName;
-      report!.package_version = 34;
-
-      if (Platform.isAndroid) {
-        var buildData = await DeviceInfoPlugin().androidInfo;
-        report!.device_manufacturer = buildData.manufacturer;
-        report!.device_model = buildData.model;
-        report!.os = 'Android';
-        report!.os_language = language.languageCode;
-        report!.os_version = buildData.version.sdkInt.toString();
-        report!.app_language = lang ?? language.languageCode;
-      } else if (Platform.isIOS) {
-        var buildData = await DeviceInfoPlugin().iosInfo;
-        report!.device_manufacturer = 'Apple';
-        report!.device_model = buildData.model;
-        report!.os = buildData.systemName;
-        report!.os_language = language.languageCode;
-        report!.os_version = buildData.systemVersion;
-        report!.app_language = lang ?? language.languageCode;
+    if (lat != null && lon != null) {
+      if (locationType == 'selected') {
+        report!.location_choice = 'selected';
+        report!.selected_location_lat = lat;
+        report!.selected_location_lon = lon;
+      } else {
+        report!.location_choice = 'current';
+        report!.current_location_lat = lat;
+        report!.current_location_lon = lon;
       }
-
-      if (lat != null && lon != null) {
-        if (locationType == 'selected') {
-          report!.location_choice = 'selected';
-          report!.selected_location_lat = lat;
-          report!.selected_location_lon = lon;
-        } else {
-          report!.location_choice = 'current';
-          report!.current_location_lat = lat;
-          report!.current_location_lon = lon;
-        }
-      }
-      return true;
     }
-
-    return false;
+    return true;
   }
 
   static void resetReport() {
     report = null;
-    session = null;
     reportsList = null;
   }
 
@@ -366,7 +325,6 @@ class Utils {
         }
       }
 
-      closeSession();
       return isCreated;
     }
   }
