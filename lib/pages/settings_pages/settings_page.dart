@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:language_picker/language_picker.dart';
-
 import 'package:language_picker/languages.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/hashtag.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/settings_menu_widget.dart';
@@ -267,7 +266,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       application.onLocaleChanged(
                           Locale(languageCodes[0], languageCodes[1]));
                       PushNotificationsManager.subscribeToTopic(
-                          languageCodes[0]);
+                          languageCodes[0], context);
                     }),
                 itemBuilder: (Language language) {
                   return Row(

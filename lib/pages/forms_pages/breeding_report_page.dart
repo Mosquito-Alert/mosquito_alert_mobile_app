@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
@@ -202,14 +202,14 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   void navigateOtherReport() async {
     switch (otherReport) {
       case 'bite':
-        Utils.addOtherReport('bite');
+        Utils.addOtherReport('bite', context);
         await Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => BitingReportPage()),
         );
         break;
       case 'adult':
-        Utils.addOtherReport('adult');
+        Utils.addOtherReport('adult', context);
         await Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => AdultReportPage()),

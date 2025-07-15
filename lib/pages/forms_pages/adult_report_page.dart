@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/owcampaing.dart';
 import 'package:mosquito_alert_app/models/report.dart';
@@ -153,7 +153,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
 
   void goNextPage() {
     if (addBiting) {
-      Utils.addOtherReport('bite');
+      Utils.addOtherReport('bite', context);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => BitingReportPage()),
@@ -408,7 +408,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
           var currentPage = _pagesController!.page;
 
           if (currentPage == 3.0 && addBiting) {
-            Utils.addOtherReport('bite');
+            Utils.addOtherReport('bite', context);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => BitingReportPage()),

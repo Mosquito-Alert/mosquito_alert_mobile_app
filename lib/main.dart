@@ -116,7 +116,7 @@ class _MyAppState extends State<MyApp> {
         switch (result) {
           case ConnectivityResult.mobile:
           case ConnectivityResult.wifi:
-            Utils.checkForUnfetchedData();
+            Utils.checkForUnfetchedData(context);
             Utils.syncReports();
             break;
           case ConnectivityResult.none:

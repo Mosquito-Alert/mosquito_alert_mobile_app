@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:intl/intl.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
+import 'package:mosquito_alert_app/providers/user_provider.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/customModalBottomSheet.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
-
-import '../../utils/UserManager.dart';
+import 'package:provider/provider.dart';
 
 class NotificationsPage extends StatefulWidget {
   final String? notificationId;
@@ -211,8 +211,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   Future<void> _updateNotification(id) async {
-    var userId = await UserManager.getUUID();
-    var res = await ApiSingleton().markNotificationAsRead(userId, id);
+    final userUuid =
+        Provider.of<UserProvider>(context, listen: false).user?.uuid;
+    var res = await ApiSingleton().markNotificationAsRead(userUuid, id);
 
     if (res) {
       var index = notifications.indexWhere((element) => element.id == id);

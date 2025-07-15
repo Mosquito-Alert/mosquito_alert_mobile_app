@@ -1,19 +1,15 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
-import 'package:mosquito_alert/src/auth/jwt_auth.dart';
 import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/models/topic.dart';
-import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
@@ -66,98 +62,6 @@ class ApiSingleton {
     authApi = api.getAuthApi();
     usersApi = api.getUsersApi();
     fixesApi = api.getFixesApi();
-
-    final apiUser = await UserManager.getApiUser();
-    final apiPassword = await UserManager.getApiPassword();
-    if (apiUser != null && apiPassword != null) {
-      await loginJwt(apiUser, apiPassword);
-    }
-  }
-
-  Future<dynamic> createUser(String? uuid) async {
-    try {
-      // Try to authenticate with existing credentials first
-      final apiUser = await UserManager.getApiUser();
-      final apiPassword = await UserManager.getApiPassword();
-
-      if (apiUser != null && apiPassword != null) {
-        final success = await loginJwt(apiUser, apiPassword);
-        if (success) {
-          return true;
-        }
-      }
-
-      // No stored credentials or login failed - register as new guest
-      // Generate a random string of 16 characters for password
-      final random = Random.secure();
-      const chars =
-          'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#\$%^&*';
-      final guestPassword =
-          List.generate(16, (index) => chars[random.nextInt(chars.length)])
-              .join();
-
-      final guestRegistrationRequest =
-          GuestRegistrationRequest((b) => b..password = guestPassword);
-
-      final registeredGuest = await authApi.signupGuest(
-          guestRegistrationRequest: guestRegistrationRequest);
-
-      if (registeredGuest.data?.username != null) {
-        final newApiUser = registeredGuest.data!.username;
-        await UserManager.setUser(newApiUser, guestPassword);
-
-        final success = await loginJwt(newApiUser, guestPassword);
-        if (success) {
-          return true;
-        }
-      }
-
-      return false;
-    } catch (e) {
-      print('Error creating user: $e');
-      return null;
-    }
-  }
-
-  static Future<bool> loginJwt(String user, String password) async {
-    final deviceInfoPlugin = DeviceInfoPlugin();
-    final deviceInfo = await deviceInfoPlugin.deviceInfo;
-    String? deviceId;
-    if (deviceInfo is AndroidDeviceInfo) {
-      deviceId = deviceInfo.id;
-    } else if (deviceInfo is IosDeviceInfo) {
-      deviceId = deviceInfo.identifierForVendor;
-    }
-    AppUserTokenObtainPairRequest appUserTokenObtainPairRequest =
-        AppUserTokenObtainPairRequest((b) => b
-          ..username = user
-          ..password = password
-          ..deviceId = deviceId);
-
-    try {
-      final obtainToken = await authApi.obtainToken(
-          appUserTokenObtainPairRequest: appUserTokenObtainPairRequest);
-
-      if (obtainToken.data?.access != null &&
-          obtainToken.data?.refresh != null) {
-        // Clear any existing interceptors and add the JWT auth interceptor
-        api.dio.interceptors.clear();
-        api.dio.interceptors.add(JwtAuthInterceptor(
-          apiClient: api,
-          accessToken: obtainToken.data!.access,
-          refreshToken: obtainToken.data!.refresh,
-        ));
-
-        // Store tokens for future use
-        await UserManager.setToken(obtainToken.data!.access);
-        await UserManager.setRefreshToken(obtainToken.data!.refresh);
-
-        return true;
-      }
-    } catch (e) {
-      print("Login failed: $e");
-    }
-    return false;
   }
 
   //Reports

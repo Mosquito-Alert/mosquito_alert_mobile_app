@@ -93,8 +93,7 @@ class _MainVCState extends State<MainVC> {
       // and mocking permission acceptance is difficult on Android and iOS
       return false;
     }
-    userUuid = await UserManager.getUUID();
-    await Utils.loadFirebase();
+    await Utils.loadFirebase(context);
     return true;
   }
 
@@ -247,63 +246,52 @@ class _MainVCState extends State<MainVC> {
   }
 
   Widget _uuidWithClipboard() {
-    return FutureBuilder(
-        future: UserManager.getUUID(),
-        builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          }
-
-          return Row(
-            children: [
-              Text(
-                'ID: ',
+    return Consumer<UserProvider>(
+      builder: (context, userProvider, _) {
+        String uuid = userProvider.user?.uuid ?? '';
+        if (uuid.isEmpty) {
+          // Don't show anything if UUID is not available
+          return SizedBox.shrink();
+        }
+        return Row(
+          children: [
+            Text(
+              'ID: ',
+              style: TextStyle(
+                color: Colors.black.withValues(alpha: 0.7),
+                fontSize: 8,
+              ),
+            ),
+            Container(
+              width: 150,
+              child: Text(
+                uuid,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: Colors.black.withValues(alpha: 0.7),
+                  color: Colors.grey,
                   fontSize: 8,
                 ),
               ),
-              Container(
-                width: 150,
-                child: Text(
-                  snapshot.data ?? '',
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 8,
-                  ),
-                ),
+            ),
+            GestureDetector(
+              child: Icon(
+                Icons.copy_rounded,
+                size: 12,
               ),
-              GestureDetector(
-                child: Icon(
-                  Icons.copy_rounded,
-                  size: 12,
-                ),
-                onTap: () {
-                  final data = snapshot.data;
-                  if (data != null) {
-                    Clipboard.setData(ClipboardData(text: data));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(MyLocalizations.of(
-                            context, 'copied_to_clipboard_success')),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(MyLocalizations.of(
-                            context, 'copied_to_clipboard_error')),
-                      ),
-                    );
-                  }
-                },
-              )
-            ],
-          );
-        });
+              onTap: () {
+                Clipboard.setData(ClipboardData(text: uuid));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(MyLocalizations.of(
+                        context, 'copied_to_clipboard_success')),
+                  ),
+                );
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildCustomTile(int index, IconData icon, String title, context) {

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/breeding_report_page.dart';
@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _createBiteReport() async {
-    var createReport = await Utils.createNewReport('bite');
+    var createReport = await Utils.createNewReport('bite', context: context);
     loadingStream.add(false);
     if (createReport) {
       await Navigator.push(
@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _createAdultReport() async {
-    var createReport = await Utils.createNewReport('adult');
+    var createReport = await Utils.createNewReport('adult', context: context);
     loadingStream.add(false);
     if (createReport) {
       await Navigator.push(
@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _createSiteReport() async {
-    var createReport = await Utils.createNewReport('site');
+    var createReport = await Utils.createNewReport('site', context: context);
     loadingStream.add(false);
     if (createReport) {
       await Navigator.push(

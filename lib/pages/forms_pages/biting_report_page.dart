@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/owcampaing.dart';
 import 'package:mosquito_alert_app/models/report.dart';
@@ -315,7 +315,8 @@ class _BitingReportPageState extends State<BitingReportPage> {
 
                                                 if (currentPage == 2 &&
                                                     addMosquito) {
-                                                  Utils.addOtherReport('adult');
+                                                  Utils.addOtherReport(
+                                                      'adult', context);
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
