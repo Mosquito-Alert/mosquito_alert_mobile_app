@@ -7,7 +7,6 @@ import 'package:mosquito_alert_app/pages/settings_pages/components/settings_menu
 import 'package:mosquito_alert_app/utils/Application.dart';
 import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
-import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -265,8 +264,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       UserManager.setLanguageCountry(languageCodes[1]);
                       application.onLocaleChanged(
                           Locale(languageCodes[0], languageCodes[1]));
-                      PushNotificationsManager.subscribeToTopic(
-                          languageCodes[0], context);
                     }),
                 itemBuilder: (Language language) {
                   return Row(
