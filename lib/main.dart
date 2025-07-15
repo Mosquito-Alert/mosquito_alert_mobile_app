@@ -32,13 +32,16 @@ Future<void> main({String env = 'prod'}) async {
     print('$err');
   }
 
-  await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
+  final appConfig = await AppConfig.loadConfig();
+  if (appConfig.useAuth) {
+    await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
 
-  bool trackingEnabled = await BackgroundTracking.isEnabled();
-  if (trackingEnabled) {
-    await BackgroundTracking.start(requestPermissions: false);
-  } else {
-    await BackgroundTracking.stop();
+    bool trackingEnabled = await BackgroundTracking.isEnabled();
+    if (trackingEnabled) {
+      await BackgroundTracking.start(requestPermissions: false);
+    } else {
+      await BackgroundTracking.stop();
+    }
   }
 
   runApp(

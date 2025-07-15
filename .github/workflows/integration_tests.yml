@@ -40,11 +40,18 @@ jobs:
         adb uninstall com.example.mosquito_alert_app || true
         adb emu kill || true
 
+      # The timeout for a single step in Github Actions is 12 minutes
+    - name: Build debug appbundle (avoids test loader timeouts)
+      run: flutter build appbundle --debug
+
     - name: Run integration tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 33
+        api-level: 35
         target: google_apis
         arch: x86_64
         profile: Nexus 6
-        script: "flutter test integration_test --verbose"
+        script: |
+          adb wait-for-device
+          adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+          flutter test integration_test
