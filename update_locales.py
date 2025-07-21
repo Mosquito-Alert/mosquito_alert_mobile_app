@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 import requests
 
-from typing import Union, Callable, Optional, Dict
+from typing import Union, Callable, Optional, Dict, Any, List
 
 # Only language over that percentage of translation will be downloaded.
 MIN_PROGRESS_PERCENTAGE = 80
@@ -18,7 +18,7 @@ FORCE_LANGUAGES = ['es_UY']
 #      https://localise.biz/info/notices/20240212
 AUTO_FALLBACK = FORCE_LANGUAGES + ['eu_ES', 'ca_ES', 'gl_ES']
 
-def update_locales(api_key: str, path: Union[Path, Callable[[str, str], Path]], extension: str, lang_filter: Callable[[Dict], bool] = lambda x:True, params: dict = {}, tags: list = None) -> None:
+def update_locales(api_key: str, path: Union[Path, Callable[[str, str], Path]], extension: str, lang_filter: Callable[[Dict], bool] = lambda x:True, params: Dict[str, Any] = {}, tags: Optional[List[str]] = None) -> None:
     """
     Update localization files for multiple locales from the Localise.biz API.
 
