@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppConfig {
@@ -30,6 +31,8 @@ class AppConfig {
 
     final json = jsonDecode(contents);
 
-    return AppConfig(baseUrl: json['baseUrl'], useAuth: json['useAuth']);
+    return AppConfig(
+        baseUrl: json['baseUrl'] ?? MosquitoAlert.basePath,
+        useAuth: json['useAuth']);
   }
 }

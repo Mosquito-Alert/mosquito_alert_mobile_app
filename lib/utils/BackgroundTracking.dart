@@ -5,16 +5,21 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
-import 'package:mosquito_alert_app/api/api.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:workmanager/workmanager.dart';
 
 class BackgroundTracking {
+  static late FixesApi _fixesApi;
+
   static String _scheduledTasksPrefsKey = 'scheduledTrackingEpochs';
   static String _isEnabledPrefsKey = 'trackingEnabled';
   static int tasksPerDay = 5;
+
+  static void configure({required MosquitoAlert apiClient}) {
+    _fixesApi = apiClient.getFixesApi();
+  }
 
   static Future<void> start(
       {bool shouldRun = false, bool requestPermissions = true}) async {
@@ -234,8 +239,7 @@ class BackgroundTracking {
           ..latitude = position.latitude
           ..longitude = position.longitude))
         ..power = batteryLevel / 100.0);
-      final response =
-          await ApiSingleton.fixesApi.create(fixRequest: fixRequest);
+      final response = await _fixesApi.create(fixRequest: fixRequest);
       return response.statusCode == 201;
     } catch (e) {
       return Future.error(e);

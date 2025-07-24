@@ -1,19 +1,14 @@
 import 'dart:async';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/consent_form.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/location_consent_screen/background_tracking_explanation.dart';
-import 'package:mosquito_alert_app/providers/user_provider.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Application.dart';
 
 class UserManager {
-  static final _secureStorage = FlutterSecureStorage();
   static var profileUUIDs;
 
   static Future<bool> startFirstTime(context) async {
@@ -28,8 +23,6 @@ class UserManager {
       );
 
       await prefs.setBool('firstTime', true);
-
-      await Provider.of<UserProvider>(context, listen: false).createUser();
 
       await setLanguage(Utils.language.languageCode);
       await setLanguageCountry(Utils.language.countryCode);
@@ -51,11 +44,6 @@ class UserManager {
 
     application.onLocaleChanged(Utils.language);
 
-    final userUuid =
-        Provider.of<UserProvider>(context, listen: false).user?.uuid;
-    if (userUuid != null && userUuid.isNotEmpty) {
-      await FirebaseAnalytics.instance.setUserId(id: userUuid);
-    }
     return true;
   }
 
@@ -111,19 +99,6 @@ class UserManager {
   static Future<void> setLastReportCount(int lastReportCount) async {
     var prefs = await SharedPreferences.getInstance();
     await prefs.setInt('lastReportCount', lastReportCount);
-  }
-
-  static Future<void> setToken(String token) async {
-    await _secureStorage.write(key: 'jwt_token', value: token);
-  }
-
-  static Future<void> setRefreshToken(String token) async {
-    await _secureStorage.write(key: 'jwt_refresh_token', value: token);
-  }
-
-  static Future<void> setUser(String username, String password) async {
-    await _secureStorage.write(key: 'username', value: username);
-    await _secureStorage.write(key: 'password', value: password);
   }
 
   //get
@@ -204,21 +179,5 @@ class UserManager {
   static Future<int?> getLastReportCount() async {
     var prefs = await SharedPreferences.getInstance();
     return prefs.getInt('lastReportCount');
-  }
-
-  static Future<String?> getToken() async {
-    return await _secureStorage.read(key: 'jwt_token');
-  }
-
-  static Future<String?> getRefreshToken() async {
-    return await _secureStorage.read(key: 'jwt_refresh_token');
-  }
-
-  static Future<String?> getApiUser() async {
-    return await _secureStorage.read(key: 'username');
-  }
-
-  static Future<String?> getApiPassword() async {
-    return await _secureStorage.read(key: 'password');
   }
 }

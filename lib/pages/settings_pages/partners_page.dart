@@ -5,11 +5,11 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
-import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
+import 'package:provider/provider.dart';
 
 class PartnersPage extends StatefulWidget {
   @override
@@ -17,6 +17,8 @@ class PartnersPage extends StatefulWidget {
 }
 
 class _PartnersPageState extends State<PartnersPage> {
+  late PartnersApi partnersApi;
+
   GoogleMapController? controller;
 
   List<Marker> markers = [];
@@ -27,6 +29,9 @@ class _PartnersPageState extends State<PartnersPage> {
   @override
   void initState() {
     super.initState();
+    MosquitoAlert apiClient =
+        Provider.of<MosquitoAlert>(context, listen: false);
+    partnersApi = apiClient.getPartnersApi();
     _logScreenView();
     getInitialData();
   }
@@ -47,7 +52,6 @@ class _PartnersPageState extends State<PartnersPage> {
     // Set loading state to true initially
     loadingStream.add(true);
     try {
-      PartnersApi partnersApi = ApiSingleton.api.getPartnersApi();
       Response<PaginatedPartnerList> response = await partnersApi.list();
       PaginatedPartnerList? partners = response.data;
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -42,9 +43,6 @@ class Utils {
 
   // Initialized data flags
   static Map<String, dynamic> initializedCheckData = {
-    'userCreated': {
-      'created': false,
-    },
     'firebase': false, // Whether firebase got initialized
   };
 
@@ -403,15 +401,6 @@ class Utils {
     final appConfig = await AppConfig.loadConfig();
     if (!appConfig.useAuth) {
       return;
-    }
-
-    // if (userCreated["required"] && !userCreated["created"]) {
-    final Map<String, bool> userCreated = initializedCheckData['userCreated'];
-    if (!userCreated['created']!) {
-      await Provider.of<UserProvider>(context, listen: false).createUser();
-    } else {
-      print(
-          'Utils (checkForUnfetchedData): Either the user was created or it was not required (${jsonEncode(userCreated)})');
     }
 
     if (!initializedCheckData['firebase']) {
@@ -983,5 +972,13 @@ class Utils {
       await UserManager.setLastReviewRequest(now);
       await UserManager.setLastReportCount(numReports);
     }
+  }
+
+  static String getRandomPassword(int length) {
+    const chars =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#\$%^&*';
+    final rand = Random.secure();
+    return List.generate(length, (index) => chars[rand.nextInt(chars.length)])
+        .join();
   }
 }

@@ -5,6 +5,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/models/notification.dart';
@@ -15,6 +16,7 @@ import 'package:mosquito_alert_app/pages/notification_pages/notifications_page.d
 import 'package:mosquito_alert_app/pages/settings_pages/gallery_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/info_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/settings_page.dart';
+import 'package:mosquito_alert_app/providers/auth_provider.dart';
 import 'package:mosquito_alert_app/providers/user_provider.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
@@ -55,12 +57,12 @@ class _MainVCState extends State<MainVC> {
 
   void _startAsyncTasks() async {
     await UserManager.startFirstTime(context);
+    await initAuthStatus();
     setState(() {
       isLoading = false;
     });
     await _getNotificationCount();
     await getPackageInfo();
-    await initAuthStatus();
   }
 
   Future<void> _getNotificationCount() async {
@@ -86,15 +88,42 @@ class _MainVCState extends State<MainVC> {
     return true;
   }
 
-  Future<bool> initAuthStatus() async {
+  Future<void> initAuthStatus() async {
     final appConfig = await AppConfig.loadConfig();
     if (!appConfig.useAuth) {
       // Requesting permissions on automated tests creates many problems
       // and mocking permission acceptance is difficult on Android and iOS
-      return false;
+      return;
+    }
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    String? username = authProvider.username;
+    String? password = authProvider.password;
+    if (username == null && password == null) {
+      // Create a guest user
+      password = Utils.getRandomPassword(10);
+      final GuestRegistration? guestRegistration =
+          await authProvider.createGuestUser(password: password);
+      // If guest user creation was successful, set the username to the guest username
+      if (guestRegistration == null) {
+        throw Exception("Failed to create guest user.");
+      }
+      username = guestRegistration.username;
+    }
+
+    // Check if the user is authenticated but the user data is not yet loaded
+    if (userProvider.user == null) {
+      try {
+        // Try fetching user if already authenticated
+        await userProvider.fetchUser();
+      } catch (_) {
+        // If fetching fails, try logging in and then fetch
+        await authProvider.login(username: username!, password: password!);
+        await userProvider.fetchUser();
+      }
     }
     await Utils.loadFirebase(context);
-    return true;
   }
 
   late final List<Widget> _widgetOptions = <Widget>[
