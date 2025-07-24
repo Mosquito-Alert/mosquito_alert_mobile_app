@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Wij gebruiken meldingen om u op de hoogte te houden van de status van uw bijdragen.",
     "NSUserTrackingUsageDescription": "Wij gebruiken uw apparaat-ID om u te volgen tijdens verschillende sessies en om uw bijdragen dienovereenkomstig op te slaan.",
     "tracking_perm_view_text": "Door de achtergrondvolging in te schakelen, gaan we toestemming vragen om altijd toegang te krijgen tot uw locatie op de achtergrond. Uw telefooninstellingen kunnen worden geopend om dit in te schakelen.",
-    "turn_on_location_button": "Schakel de locatie in"
+    "turn_on_location_button": "Schakel uw locatie in",
+    "camera_permission_required": "Cameramondgave is vereist",
+    "open_settings": "Open het menu Instellingen"
 }

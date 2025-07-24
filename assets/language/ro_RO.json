@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Folosim notificări pentru a vă ține la curent cu starea contribuțiilor dvs.",
     "NSUserTrackingUsageDescription": "Utilizăm identificatorul dispozitivului dvs. pentru a vă urmări pe parcursul sesiunilor și pentru a vă salva contribuțiile în consecință.",
     "tracking_perm_view_text": "Prin activarea urmăririi fundalului, vom solicita permisiunea de a accesa întotdeauna locația dvs. în fundal. Setările telefonului dvs. pot fi deschise pentru a -l activa.",
-    "turn_on_location_button": "Porniți locația"
+    "turn_on_location_button": "Porniți locația",
+    "camera_permission_required": "Permisiunea camerei este necesară",
+    "open_settings": "Deschideți meniul Setări"
 }

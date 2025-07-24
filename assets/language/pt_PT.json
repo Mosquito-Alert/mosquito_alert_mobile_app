@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Usamos notificações para mantê-lo atualizado sobre o status das suas contribuições.",
     "NSUserTrackingUsageDescription": "Usamos o identificador do seu dispositivo para rastreá-lo nas sessões e salvar suas contribuições adequadamente.",
     "tracking_perm_view_text": "Ao ativar o rastreamento em segundo plano, solicitaremos permissão para acessar sempre sua localização em segundo plano. As configurações do seu telefone podem ser abertas para ativá -lo.",
-    "turn_on_location_button": "Ligue a localização"
+    "turn_on_location_button": "Ligue a localização",
+    "camera_permission_required": "A permissão da câmera é necessária",
+    "open_settings": "Abra o menu de configurações"
 }

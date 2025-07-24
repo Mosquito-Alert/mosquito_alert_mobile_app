@@ -4,7 +4,7 @@
  * Locale: nl-NL, Dutch (Netherlands)
  * Tagged: info-plist
  * Exported by: Enric Pou
- * Exported at: Thu, 15 May 2025 12:20:41 +0200
+ * Exported at: Mon, 21 Jul 2025 10:18:47 +0200
  */
 
 /* loco:66339ba61600bb5f87001572
@@ -21,7 +21,7 @@ NSLocationWhenInUseUsageDescription = "GPS gebruiken voor nauwkeurige locatietag
 
 /* loco:66339ccb3972ba9d6a0ee1f4
  * A message that tells the user why the app is requesting add-only access to the user’s photo library. */
-NSPhotoLibraryAddUsageDescription = "Foto's die met de app zijn gemaakt op te slaan in de galerij van je apparaat.";
+NSPhotoLibraryAddUsageDescription = "Foto's die met de app zijn gemaakt opslaan in de galerij van je apparaat.";
 
 /* loco:66339d1180b2837b700d7446
  * A message that tells the user why the app is requesting access to the user’s photo library. */

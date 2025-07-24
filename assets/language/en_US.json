@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "We use notifications to keep you updated on the status of your contributions.",
     "NSUserTrackingUsageDescription": "We use your device identifier to track you across sessions and to save your contributions accordingly.",
     "tracking_perm_view_text": "By turning on the background tracking, we are going to request permission to always access your location in the background. Your phone settings may be opened to enable it.",
-    "turn_on_location_button": "Turn on location"
+    "turn_on_location_button": "Turn on location",
+    "camera_permission_required": "Camera permission is required",
+    "open_settings": "Open the settings menu"
 }

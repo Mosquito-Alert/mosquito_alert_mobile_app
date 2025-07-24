@@ -109,6 +109,7 @@ class _WhatsappCameraState extends State<WhatsappCamera>
     with WidgetsBindingObserver {
   late _WhatsAppCameraController controller;
   final painel = SlidingUpPanelController();
+  bool _isCameraPermissionGranted = false;
 
   @override
   void dispose() {
@@ -128,7 +129,7 @@ class _WhatsappCameraState extends State<WhatsappCamera>
   void initState() {
     super.initState();
     controller = _WhatsAppCameraController(multiple: widget.multiple);
-    controller.loadRecentGalleryImages();
+    _requestCameraPermission();
     painel.addListener(() {
       if (painel.status.name == 'hidden') {
         controller.selectedImages.clear();
@@ -136,8 +137,61 @@ class _WhatsappCameraState extends State<WhatsappCamera>
     });
   }
 
+  Future<void> _requestCameraPermission() async {
+    final status = await Permission.camera.request();
+    setState(() {
+      _isCameraPermissionGranted = status.isGranted;
+    });
+    if (status.isGranted) {
+      controller.loadRecentGalleryImages();
+    }
+  }
+
+  Widget _buildCameraPermissionDeniedScreen() {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Positioned(
+            top: 40,
+            left: 16,
+            child: IconButton(
+              icon: Icon(Icons.close, color: Colors.white),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  MyLocalizations.of(context, 'camera_permission_required'),
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (await openAppSettings()) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text(MyLocalizations.of(context, 'open_settings')),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!_isCameraPermissionGranted) {
+      return _buildCameraPermissionDeniedScreen();
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -202,109 +256,85 @@ Widget closeButton(BuildContext context) {
 
 Widget galleryButton(
     BuildContext context, _WhatsAppCameraController controller) {
-  return FutureBuilder<PermissionStatus>(
-    future: Permission.photos.status,
-    builder: (context, snapshot) {
-      if (!snapshot.hasData ||
-          snapshot.data == null ||
-          snapshot.data!.isDenied ||
-          snapshot.data!.isPermanentlyDenied) {
-        return Container();
-      }
+  return SafeArea(
+    minimum: const EdgeInsets.only(bottom: 0),
+    child: Align(
+      alignment: Alignment.bottomRight,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 32, right: 64),
+        child: CircleAvatar(
+          radius: 20,
+          backgroundColor: Colors.black.withValues(alpha: 0.6),
+          child: IconButton(
+            color: Colors.white,
+            onPressed: () async {
+              // Request permission when gallery button is tapped
+              final status = await Permission.photos.request();
+              if (status.isPermanentlyDenied) {
+                // Open app settings if permanently denied
+                await openAppSettings();
+                return;
+              }
 
-      return SafeArea(
-        minimum: const EdgeInsets.only(bottom: 0),
-        child: Align(
-          alignment: Alignment.bottomRight,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 32, right: 64),
-            child: CircleAvatar(
-              radius: 20,
-              backgroundColor: Colors.black.withValues(alpha: 0.6),
-              child: IconButton(
-                color: Colors.white,
-                onPressed: () async {
-                  await controller.openGallery().then((value) {
-                    if (controller.selectedImages.isNotEmpty) {
-                      Navigator.pop(context, controller.selectedImages);
-                    }
-                  });
-                },
-                icon: const Icon(Icons.image),
-              ),
-            ),
+              await controller.openGallery().then((value) {
+                if (controller.selectedImages.isNotEmpty) {
+                  Navigator.pop(context, controller.selectedImages);
+                }
+              });
+            },
+            icon: const Icon(Icons.image),
           ),
         ),
-      );
-    },
+      ),
+    ),
   );
 }
 
 Widget recentPhotosStrip(
     BuildContext context, _WhatsAppCameraController controller) {
-  if (Platform.isIOS)
-    return Container(); // Feature of showing recent pictures in whatsapp style is disabled for iOS
+  if (Platform.isIOS) return Container();
 
-  return Positioned(
-    bottom: 120,
-    left: 0,
-    right: 0,
-    child: Container(
-      height: 90,
-      child: AnimatedBuilder(
-        animation: controller,
-        builder: (context, _) {
-          if (controller.images.isEmpty) {
-            return ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return _buildImagePlaceholder();
-              },
-            );
-          }
+  return FutureBuilder<PermissionStatus>(
+    future: Permission.photos.status,
+    builder: (context, snapshot) {
+      if (!snapshot.hasData || snapshot.data != PermissionStatus.granted) {
+        return Container();
+      }
 
-          return ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: controller.images.length,
-            itemBuilder: (context, index) {
-              final medium = controller.images[index];
-              return FutureBuilder<Widget>(
-                future: _buildImage(context, controller, medium),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      snapshot.hasData) {
-                    return snapshot.data!;
-                  }
-                  return _buildImagePlaceholder();
+      return Positioned(
+        bottom: 120,
+        left: 0,
+        right: 0,
+        child: Container(
+          height: 90,
+          child: AnimatedBuilder(
+            animation: controller,
+            builder: (context, _) {
+              if (controller.images.isEmpty) {
+                return Container();
+              }
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: controller.images.length,
+                itemBuilder: (context, index) {
+                  final medium = controller.images[index];
+                  return FutureBuilder<Widget>(
+                    future: _buildImage(context, controller, medium),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done &&
+                          snapshot.hasData) {
+                        return snapshot.data!;
+                      }
+                      return Container();
+                    },
+                  );
                 },
               );
             },
-          );
-        },
-      ),
-    ),
-  );
-}
-
-Widget _buildImagePlaceholder() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 2),
-    child: Container(
-      width: 70,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white38, width: 1),
-        color: Colors.black26,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: const Center(
-        child: Icon(
-          Icons.image_not_supported,
-          color: Colors.white24,
-          size: 20,
+          ),
         ),
-      ),
-    ),
+      );
+    },
   );
 }
 

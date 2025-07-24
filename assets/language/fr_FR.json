@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Nous utilisons des notifications pour vous tenir informé de l'état de vos contributions.",
     "NSUserTrackingUsageDescription": "Nous utilisons l'identifiant de votre appareil pour vous suivre au fil des sessions et pour enregistrer vos contributions en conséquence.",
     "tracking_perm_view_text": "En activant le suivi de l'arrière-plan, nous allons demander la permission de toujours accéder à votre emplacement en arrière-plan. Les paramètres de votre téléphone peuvent être ouverts pour l'activer.",
-    "turn_on_location_button": "Activer l'emplacement"
+    "turn_on_location_button": "Activer l'emplacement",
+    "camera_permission_required": "L'autorisation de la caméra est requise",
+    "open_settings": "Ouvrez le menu Paramètres"
 }

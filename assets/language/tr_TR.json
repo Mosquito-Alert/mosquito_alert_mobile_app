@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Katkılarınızın durumu hakkında sizi güncel tutmak için bildirimleri kullanıyoruz.",
     "NSUserTrackingUsageDescription": "Oturumlar arasında sizi takip etmek ve katkılarınızı buna göre kaydetmek için cihaz tanımlayıcınızı kullanırız.",
     "tracking_perm_view_text": "Arka plan izlemeyi açarak, konumunuza her zaman arka planda erişme izni talep edeceğiz. Etkinleştirmek için telefon ayarlarınız açılabilir.",
-    "turn_on_location_button": "Konumu aç"
+    "turn_on_location_button": "Konumu aç",
+    "camera_permission_required": "Kamera izni gerekli",
+    "open_settings": "Ayarlar menüsünü aç"
 }

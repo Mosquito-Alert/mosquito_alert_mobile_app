@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Wir verwenden Benachrichtigungen, um dich über den Status deiner Beiträge auf dem Laufenden zu halten.",
     "NSUserTrackingUsageDescription": "Wir verwenden deine Gerätekennung, um dich über Sitzungen hinweg zu verfolgen und deine Beiträge entsprechend zu speichern.",
     "tracking_perm_view_text": "Durch das Aktivieren des Hintergrund-Trackings werden wir die Erlaubnis anfordern, deinen Standort immer im Hintergrund zuzugreifen. Deine Telefoneinstellungen könnten geöffnet werden, um dies zu ermöglichen.",
-    "turn_on_location_button": "Standortübermittlung einschalten"
+    "turn_on_location_button": "Standortübermittlung einschalten",
+    "camera_permission_required": "Zugriff auf die Kamera ist erforderlich",
+    "open_settings": "Einstellungen öffnen"
 }

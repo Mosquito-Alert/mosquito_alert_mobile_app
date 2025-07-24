@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Jakinarazpenak erabiltzen ditugu zure ekarpenen egoeraren berri emateko.",
     "NSUserTrackingUsageDescription": "Zure gailuaren identifikatzailea erabiltzen dugu saioetan zehar zure jarraipena egiteko eta zure ekarpenak horren arabera gordetzeko.",
     "tracking_perm_view_text": "Atzeko planoaren jarraipena piztuz, baimena eskatuko dugu zure kokapena atzeko planoan sartzeko. Zure telefonoaren ezarpenak ireki daitezke gaitzeko.",
-    "turn_on_location_button": "Kokapena piztu"
+    "turn_on_location_button": "Kokapena piztu",
+    "camera_permission_required": "Kameraren baimena beharrezkoa da",
+    "open_settings": "Ireki ezarpenen menua"
 }

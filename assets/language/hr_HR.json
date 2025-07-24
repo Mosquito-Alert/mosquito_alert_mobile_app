@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Koristimo obavijesti kako bismo vas informirali o statusu vaših doprinosa.",
     "NSUserTrackingUsageDescription": "Koristimo identifikator vašeg uređaja kako bismo vas pratili kroz sesije i kako bismo u skladu s tim spremili vaše doprinose.",
     "tracking_perm_view_text": "Uključivanjem praćenja pozadine zatražit ćemo dozvolu za uvijek pristup vašem mjestu u pozadini. Postavke vašeg telefona mogu se otvoriti kako bi se omogućilo.",
-    "turn_on_location_button": "Uključite lokaciju"
+    "turn_on_location_button": "Uključite lokaciju",
+    "camera_permission_required": "Potrebno je dopuštenje za kameru",
+    "open_settings": "Otvorite izbornik Postavke"
 }

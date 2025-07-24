@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Vi använder aviseringar för att hålla dig uppdaterad om statusen för dina rapporter.",
     "NSUserTrackingUsageDescription": "Vi använder din mobiltelefons id för att spåra din geografiska position och för att spara dina inskickade rapporter.",
     "tracking_perm_view_text": "Genom att slå på bakgrundsspårningen kommer vi att begära tillåtelse att alltid komma åt din plats i bakgrunden. Dina telefoninställningar kan öppnas för att aktivera den.",
-    "turn_on_location_button": "Slå på plats"
+    "turn_on_location_button": "Slå på plats",
+    "camera_permission_required": "Kamerans tillstånd krävs",
+    "open_settings": "Öppna inställningsmenyn"
 }

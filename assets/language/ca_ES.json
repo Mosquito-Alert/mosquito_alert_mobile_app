@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Utilitzem notificacions per mantenir-te informat de l'estat de les teves contribucions.",
     "NSUserTrackingUsageDescription": "Utilitzem l'identificador del vostre dispositiu per fer-vos un seguiment a través de les sessions i per desar les vostres contribucions en conseqüència.",
     "tracking_perm_view_text": "En activar el seguiment de fons, sol·licitarem permís per accedir sempre a la vostra ubicació en segon pla. Es pot obrir la configuració del telèfon per habilitar -la.",
-    "turn_on_location_button": "Activar la ubicació"
+    "turn_on_location_button": "Activar la ubicació",
+    "camera_permission_required": "Cal permís de la càmera",
+    "open_settings": "Obrir el menú configuració"
 }

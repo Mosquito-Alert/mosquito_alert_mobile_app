@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Mir benotzen Notifikatiounen fir Iech iwwer de Status vun Äre Bäiträg aktualiséiert ze halen.",
     "NSUserTrackingUsageDescription": "Mir benotzen Ären Apparat Identifizéierer fir Iech iwwer Sessiounen ze verfolgen an Är Contributiounen deementspriechend ze späicheren.",
     "tracking_perm_view_text": "Andeems Dir op den Hannergrond Tracking dréckt, wäerte mir Erlaabnis froen fir ëmmer op Är Plaz am Hannergrond ze froen. Ären Telefon Astellunge ka opgemaach ginn fir et z'aktivéieren.",
-    "turn_on_location_button": "Maacht op Location"
+    "turn_on_location_button": "Maacht op Location",
+    "camera_permission_required": "Kamera Erlaabnis ass erfuerderlech",
+    "open_settings": "Öffnen d'Astellunge Menu"
 }

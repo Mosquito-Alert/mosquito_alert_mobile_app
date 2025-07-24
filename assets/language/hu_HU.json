@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Értesítések segítségével tájékoztatjuk Önt hozzájárulásai állapotáról.",
     "NSUserTrackingUsageDescription": "Eszközazonosítóját arra használjuk, hogy nyomon követhessük Önt a munkamenetek során, és ennek megfelelően mentsük el hozzájárulásait.",
     "tracking_perm_view_text": "A háttérkövetés bekapcsolásával engedélyt kérünk, hogy mindig a háttérben elérjék a tartózkodási helyét. A telefon beállításai megnyithatók annak engedélyezéséhez.",
-    "turn_on_location_button": "Kapcsolja be a helyet"
+    "turn_on_location_button": "Kapcsolja be a helyet",
+    "camera_permission_required": "Kamera engedély szükséges",
+    "open_settings": "Nyissa meg a Beállítások menüt"
 }

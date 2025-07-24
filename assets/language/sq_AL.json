@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Ne përdorim njoftimet për tu mbajtur të përditësuar mbi statusin e kontributeve tuaja.",
     "NSUserTrackingUsageDescription": "Ne përdorim identifikuesin e pajisjes suaj për t'ju gjurmuar nëpër sekione dhe për të ruajtur siç duhet kontributet tuaja.",
     "tracking_perm_view_text": "Duke aktivizuar përcjelljen e sfondit, ne do të kërkojmë leje për të hyrë gjithmonë në vendndodhjen tuaj në sfond. Cilësimet e telefonit tuaj mund të hapen për ta mundësuar atë.",
-    "turn_on_location_button": "Ndizni vendndodhjen"
+    "turn_on_location_button": "Ndizni butonin e vendndodhjes",
+    "camera_permission_required": "Kërkohet leja e kamerës",
+    "open_settings": "Hapni menunë e Cilësimeve"
 }

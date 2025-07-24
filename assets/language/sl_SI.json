@@ -353,5 +353,7 @@
     "NSUserNotificationsUsageDescription": "Z obvestili vas obveščamo o stanju vaših prispevkov.",
     "NSUserTrackingUsageDescription": "Identifikator vaše naprave uporabljamo za sledenje med sejami in ustrezno shranjevanje vaših prispevkov.",
     "tracking_perm_view_text": "Z vklopom sledenja ozadja bomo zahtevali dovoljenje, da vedno dostopate do vaše lokacije v ozadju. Nastavitve telefona se lahko odprejo, da ga omogočite.",
-    "turn_on_location_button": "Vklopite lokacijo"
+    "turn_on_location_button": "Vklopite lokacijo",
+    "camera_permission_required": "Potrebno je dovoljenje za kamero",
+    "open_settings": "Odprite meni Nastavitve"
 }
