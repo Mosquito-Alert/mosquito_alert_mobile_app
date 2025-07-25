@@ -36,7 +36,6 @@ class Application {
   //returns the list of supported Locales
   Iterable<Locale> supportedLocales() =>
       supportedLanguagesCodes.map<Locale>((language) {
-        // var languageCodes = language.split('_');
         return Locale(language);
       });
 
