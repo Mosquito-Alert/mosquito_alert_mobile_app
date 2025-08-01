@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:intro_slider/intro_slider.dart';
+import 'package:markdown/markdown.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
@@ -135,8 +136,8 @@ class _GalleryPageState extends State<GalleryPage> {
                   margin: EdgeInsets.all(20.0),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 0.0),
-                    child: MarkdownBody(
-                      data: currentSlide.description!,
+                    child: html.Html(
+                      data: markdownToHtml(currentSlide.description!),
                     ),
                   )),
             ],
