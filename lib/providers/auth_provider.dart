@@ -62,29 +62,28 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<GuestRegistration?> createGuestUser({required String password}) async {
+  Future<GuestRegistration> createGuestUser({required String password}) async {
     final GuestRegistrationRequest guestRegistrationRequest =
         GuestRegistrationRequest((b) => b..password = password);
     try {
       final Response<GuestRegistration> response = await authApi.signupGuest(
           guestRegistrationRequest: guestRegistrationRequest);
 
-      if (response.statusCode == 201) {
-        return response.data;
+      if (response.statusCode == 201 && response.data != null) {
+        return response.data!;
       } else {
-        print(
+        throw Exception(
           'Failed to create guest user: StatusCode=${response.statusCode}, '
           'Username=${response.data?.username}',
         );
-        return null;
       }
     } catch (e) {
       print('Error creating user: $e');
-      return null;
+      rethrow;
     }
   }
 
-  Future<bool> login(
+  Future<void> login(
       {required String username, required String password}) async {
     try {
       final deviceInfoPlugin = DeviceInfoPlugin();
@@ -111,15 +110,14 @@ class AuthProvider with ChangeNotifier {
         _setPassword(password: password);
         setAccessToken(accessToken: response.data!.access);
         setRefreshToken(refreshToken: response.data!.refresh);
-        return true;
+        return;
       } else {
-        print(
+        throw Exception(
             'Login failed: Server responded with status ${response.statusCode}');
-        return false;
       }
     } catch (e) {
       print("Login failed: $e");
-      return false;
+      rethrow;
     }
   }
 }

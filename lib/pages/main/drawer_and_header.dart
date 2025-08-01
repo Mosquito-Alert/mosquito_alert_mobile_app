@@ -18,6 +18,7 @@ import 'package:mosquito_alert_app/pages/settings_pages/info_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/settings_page.dart';
 import 'package:mosquito_alert_app/providers/auth_provider.dart';
 import 'package:mosquito_alert_app/providers/user_provider.dart';
+import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
@@ -57,9 +58,12 @@ class _MainVCState extends State<MainVC> {
 
   void _startAsyncTasks() async {
     await UserManager.startFirstTime(context);
-    await initAuthStatus();
+    bool initSuccess = await initAuth();
+    if (initSuccess) {
+      await initBackgroundTracking();
+    }
     setState(() {
-      isLoading = false;
+      isLoading = !initSuccess;
     });
     await _getNotificationCount();
     await getPackageInfo();
@@ -88,12 +92,12 @@ class _MainVCState extends State<MainVC> {
     return true;
   }
 
-  Future<void> initAuthStatus() async {
+  Future<bool> initAuth() async {
     final appConfig = await AppConfig.loadConfig();
     if (!appConfig.useAuth) {
       // Requesting permissions on automated tests creates many problems
       // and mocking permission acceptance is difficult on Android and iOS
-      return;
+      return true;
     }
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -103,13 +107,23 @@ class _MainVCState extends State<MainVC> {
     if (username == null && password == null) {
       // Create a guest user
       password = Utils.getRandomPassword(10);
-      final GuestRegistration? guestRegistration =
-          await authProvider.createGuestUser(password: password);
-      // If guest user creation was successful, set the username to the guest username
-      if (guestRegistration == null) {
-        throw Exception("Failed to create guest user.");
+      try {
+        final GuestRegistration guestRegistration =
+            await authProvider.createGuestUser(password: password);
+        username = guestRegistration.username;
+      } catch (e) {
+        print('Error creating guest user: $e');
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to create user: $e'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+        return false;
       }
-      username = guestRegistration.username;
     }
 
     // Check if the user is authenticated but the user data is not yet loaded
@@ -119,11 +133,38 @@ class _MainVCState extends State<MainVC> {
         await userProvider.fetchUser();
       } catch (_) {
         // If fetching fails, try logging in and then fetch
-        await authProvider.login(username: username!, password: password!);
-        await userProvider.fetchUser();
+        try {
+          await authProvider.login(username: username!, password: password!);
+          await userProvider.fetchUser();
+        } catch (e) {
+          print('Error logging in: $e');
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Login failed: $e'),
+                backgroundColor: Colors.red,
+                duration: Duration(seconds: 3),
+              ),
+            );
+          }
+          return false;
+        }
       }
     }
     await Utils.loadFirebase(context);
+    return true;
+  }
+
+  Future<void> initBackgroundTracking() async {
+    BackgroundTracking.configure(
+      apiClient: Provider.of<MosquitoAlert>(context, listen: false),
+    );
+    bool trackingEnabled = await BackgroundTracking.isEnabled();
+    if (trackingEnabled) {
+      await BackgroundTracking.start(requestPermissions: false);
+    } else {
+      await BackgroundTracking.stop();
+    }
   }
 
   late final List<Widget> _widgetOptions = <Widget>[

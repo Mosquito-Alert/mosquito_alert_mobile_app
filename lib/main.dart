@@ -42,25 +42,10 @@ Future<void> main({String env = 'prod'}) async {
 
   authProvider.setApiClient(apiClient);
   final userProvider = UserProvider(apiClient: apiClient);
-  BackgroundTracking.configure(apiClient: apiClient);
 
   final appConfig = await AppConfig.loadConfig();
   if (appConfig.useAuth) {
-    String? username = authProvider.username;
-    String? password = authProvider.password;
-    if (username != null && password != null) {
-      await authProvider.login(username: username, password: password);
-      await userProvider.fetchUser();
-    }
-
     await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
-
-    bool trackingEnabled = await BackgroundTracking.isEnabled();
-    if (trackingEnabled) {
-      await BackgroundTracking.start(requestPermissions: false);
-    } else {
-      await BackgroundTracking.stop();
-    }
   }
 
   runApp(
@@ -97,10 +82,16 @@ void callbackDispatcher() {
     String? username = authProvider.username;
     String? password = authProvider.password;
     if (username == null && password == null) {
-      return false; // No user credentials available, cannot proceed
+      return Future.value(
+          false); // No user credentials available, cannot proceed
     }
-    await authProvider.login(username: username!, password: password!);
-    await userProvider.fetchUser();
+    try {
+      await authProvider.login(username: username!, password: password!);
+      await userProvider.fetchUser();
+    } catch (e) {
+      print('Error logging in: $e');
+      return Future.value(false); // Login failed, cannot proceed
+    }
 
     BackgroundTracking.configure(apiClient: apiClient);
     // Support 3 possible outcomes:
