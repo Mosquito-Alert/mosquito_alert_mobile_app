@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:camera_camera/camera_camera.dart';
+import 'package:camera/camera.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sliding_up_panel/flutter_sliding_up_panel.dart';
@@ -28,9 +28,6 @@ class _WhatsAppCameraController extends ChangeNotifier {
   var images = <Medium>[];
 
   Future<void> loadRecentGalleryImages() async {
-    if (Platform.isIOS)
-      return; // Functionality of album.listMedia() crashes on iOS
-
     final status = await Permission.photos.request();
     if (status.isDenied) return;
     if (status.isPermanentlyDenied) return;
@@ -108,13 +105,17 @@ class WhatsappCamera extends StatefulWidget {
 class _WhatsappCameraState extends State<WhatsappCamera>
     with WidgetsBindingObserver {
   late _WhatsAppCameraController controller;
-  final painel = SlidingUpPanelController();
+  final panel = SlidingUpPanelController();
   bool _isCameraPermissionGranted = false;
+  List<CameraDescription> _cameras = [];
+  CameraController? _cameraController;
+  Future<void>? _initializeControllerFuture;
 
   @override
   void dispose() {
+    _cameraController?.dispose();
     controller.dispose();
-    painel.dispose();
+    panel.dispose();
     super.dispose();
   }
 
@@ -129,12 +130,39 @@ class _WhatsappCameraState extends State<WhatsappCamera>
   void initState() {
     super.initState();
     controller = _WhatsAppCameraController(multiple: widget.multiple);
+    _initializeCamera();
     _requestCameraPermission();
-    painel.addListener(() {
-      if (painel.status.name == 'hidden') {
+    panel.addListener(() {
+      if (panel.status.name == 'hidden') {
         controller.selectedImages.clear();
       }
     });
+  }
+
+  Future<void> _initializeCamera() async {
+    try {
+      _cameras = await availableCameras();
+      final backCamera = _cameras.firstWhere(
+        (camera) => camera.lensDirection == CameraLensDirection.back,
+        orElse: () => _cameras.first,
+      );
+
+      _cameraController = CameraController(
+        backCamera,
+        ResolutionPreset.high,
+        enableAudio: false,
+      );
+
+      _initializeControllerFuture = _cameraController!
+          .initialize()
+          .timeout(const Duration(seconds: 3), onTimeout: () {
+        print("Error: _initializeCamera timed out before it could initialize.");
+        Navigator.pop(context);
+      });
+      setState(() {});
+    } catch (e) {
+      print('Camera error: $e');
+    }
   }
 
   Future<void> _requestCameraPermission() async {
@@ -192,186 +220,233 @@ class _WhatsappCameraState extends State<WhatsappCamera>
       return _buildCameraPermissionDeniedScreen();
     }
 
+    if (_initializeControllerFuture == null) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          CameraCamera(
-            enableZoom: false,
-            resolutionPreset: ResolutionPreset.high,
-            cameraSide: CameraSide.front,
-            onFile: (file) {
-              controller.captureImage(file);
-              Navigator.pop(context, controller.selectedImages);
+          FutureBuilder<void>(
+            future: _initializeControllerFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return CameraPreview(_cameraController!);
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
             },
           ),
           onlyOneMosquitoBadge(context, widget),
           closeButton(context),
-          galleryButton(context, controller),
           recentPhotosStrip(context, controller),
+          cameraAndGalleryButtons(context, controller),
         ],
       ),
     );
   }
-}
 
-Widget onlyOneMosquitoBadge(BuildContext context, dynamic widget) {
-  return Visibility(
-    visible: widget.infoBadgeTextKey != null,
-    child: Align(
-      alignment: Alignment.topCenter,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 70),
-        child: Container(
-            width: 0.5 * MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Colors.orange.shade300,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Center(
-              heightFactor: 1.5,
-              child: Text(MyLocalizations.of(context, widget.infoBadgeTextKey),
-                  style: TextStyle(color: Colors.white)),
-            )),
-      ),
-    ),
-  );
-}
-
-Widget closeButton(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 30),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          color: Colors.white,
-          onPressed: (() => Navigator.pop(context)),
-          icon: const Icon(Icons.close),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget galleryButton(
-    BuildContext context, _WhatsAppCameraController controller) {
-  return SafeArea(
-    minimum: const EdgeInsets.only(bottom: 0),
-    child: Align(
-      alignment: Alignment.bottomRight,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 32, right: 64),
-        child: CircleAvatar(
-          radius: 20,
-          backgroundColor: Colors.black.withValues(alpha: 0.6),
-          child: IconButton(
-            color: Colors.white,
-            onPressed: () async {
-              // Request permission when gallery button is tapped
-              final status = await Permission.photos.request();
-              if (status.isPermanentlyDenied) {
-                // Open app settings if permanently denied
-                await openAppSettings();
-                return;
-              }
-
-              await controller.openGallery().then((value) {
-                if (controller.selectedImages.isNotEmpty) {
-                  Navigator.pop(context, controller.selectedImages);
-                }
-              });
-            },
-            icon: const Icon(Icons.image),
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-Widget recentPhotosStrip(
-    BuildContext context, _WhatsAppCameraController controller) {
-  if (Platform.isIOS) return Container();
-
-  return FutureBuilder<PermissionStatus>(
-    future: Permission.photos.status,
-    builder: (context, snapshot) {
-      if (!snapshot.hasData || snapshot.data != PermissionStatus.granted) {
-        return Container();
-      }
-
-      return Positioned(
-        bottom: 120,
+  Widget cameraAndGalleryButtons(
+      BuildContext context, _WhatsAppCameraController controller) {
+    return Positioned(
+        bottom: 32 + MediaQuery.of(context).padding.bottom,
         left: 0,
         right: 0,
-        child: Container(
-          height: 90,
-          child: AnimatedBuilder(
-            animation: controller,
-            builder: (context, _) {
-              if (controller.images.isEmpty) {
-                return Container();
-              }
-              return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: controller.images.length,
-                itemBuilder: (context, index) {
-                  final medium = controller.images[index];
-                  return FutureBuilder<Widget>(
-                    future: _buildImage(context, controller, medium),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done &&
-                          snapshot.hasData) {
-                        return snapshot.data!;
-                      }
-                      return Container();
-                    },
-                  );
-                },
-              );
-            },
-          ),
+        child: Row(
+          children: [
+            Expanded(child: SizedBox()), // empty on the left
+            captureImageButton(),
+            Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: galleryButton(context, controller),
+              ),
+            ),
+          ],
+        ));
+  }
+
+  Widget captureImageButton() {
+    return GestureDetector(
+      onTap: _captureImage,
+      child: Container(
+        width: 64,
+        height: 64,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
         ),
-      );
-    },
-  );
-}
+        child: Icon(Icons.camera_alt, color: Colors.black, size: 28),
+      ),
+    );
+  }
 
-Future<Widget> _buildImage(BuildContext context,
-    _WhatsAppCameraController controller, Medium medium) async {
-  final List<int> thumbnailData = await medium.getThumbnail(
-    width: 200,
-    height: 200,
-    highQuality: true,
-  );
+  Future<void> _captureImage() async {
+    try {
+      await _initializeControllerFuture;
+      final image = await _cameraController!.takePicture();
 
-  final Uint8List thumbnail = Uint8List.fromList(thumbnailData);
+      final file = File(image.path);
+      controller.captureImage(file);
+      Navigator.pop(context, controller.selectedImages);
+    } catch (e) {
+      print('Error capturing image: $e');
+    }
+  }
 
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 2),
-    child: GestureDetector(
+  Widget onlyOneMosquitoBadge(BuildContext context, dynamic widget) {
+    return Visibility(
+      visible: widget.infoBadgeTextKey != null,
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 70),
+          child: Container(
+              width: 0.5 * MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: Colors.orange.shade300,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                heightFactor: 1.5,
+                child: Text(
+                    MyLocalizations.of(context, widget.infoBadgeTextKey),
+                    style: TextStyle(color: Colors.white)),
+              )),
+        ),
+      ),
+    );
+  }
+
+  Widget closeButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            color: Colors.white,
+            onPressed: (() => Navigator.pop(context)),
+            icon: const Icon(Icons.close),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget galleryButton(
+      BuildContext context, _WhatsAppCameraController controller) {
+    return GestureDetector(
       onTap: () async {
-        final file = await medium.getFile();
-        controller.captureImage(file);
-        Navigator.pop(context, controller.selectedImages);
+        final status = await Permission.photos.request();
+        if (status.isPermanentlyDenied) {
+          await openAppSettings();
+          return;
+        }
+
+        await controller.openGallery().then((_) {
+          if (controller.selectedImages.isNotEmpty) {
+            Navigator.pop(context, controller.selectedImages);
+          }
+        });
       },
       child: Container(
-        width: 70,
+        width: 50,
+        height: 50,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.white38, width: 1),
-          borderRadius: BorderRadius.circular(8),
+          shape: BoxShape.circle,
+          color: Colors.white,
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Image.memory(
-            thumbnail,
-            width: 70,
-            height: 70,
-            fit: BoxFit.cover,
+        child: Icon(Icons.photo_library, color: Colors.black, size: 24),
+      ),
+    );
+  }
+
+  Widget recentPhotosStrip(
+      BuildContext context, _WhatsAppCameraController controller) {
+    return FutureBuilder<PermissionStatus>(
+      future: Permission.photos.status,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data != PermissionStatus.granted) {
+          return Container();
+        }
+
+        return Positioned(
+          bottom: 120 + MediaQuery.of(context).padding.bottom,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: 90,
+            child: AnimatedBuilder(
+              animation: controller,
+              builder: (context, _) {
+                if (controller.images.isEmpty) {
+                  return Container();
+                }
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: controller.images.length,
+                  itemBuilder: (context, index) {
+                    final medium = controller.images[index];
+                    return FutureBuilder<Widget>(
+                      future: _buildImage(context, controller, medium),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            snapshot.hasData) {
+                          return snapshot.data!;
+                        }
+                        return Container();
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<Widget> _buildImage(BuildContext context,
+      _WhatsAppCameraController controller, Medium medium) async {
+    final List<int> thumbnailData = await medium.getThumbnail(
+      width: 200,
+      height: 200,
+      highQuality: true,
+    );
+
+    final Uint8List thumbnail = Uint8List.fromList(thumbnailData);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2),
+      child: GestureDetector(
+        onTap: () async {
+          final file = await medium.getFile();
+          controller.captureImage(file);
+          Navigator.pop(context, controller.selectedImages);
+        },
+        child: Container(
+          width: 70,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white38, width: 1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.memory(
+              thumbnail,
+              width: 70,
+              height: 70,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
