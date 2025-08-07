@@ -16,10 +16,6 @@ import 'components/biting_form.dart';
 import 'components/location_form.dart';
 
 class BitingReportPage extends StatefulWidget {
-  final Report? editReport;
-  final Function? loadData;
-
-  BitingReportPage({this.editReport, this.loadData});
   @override
   _BitingReportPageState createState() => _BitingReportPageState();
 }
@@ -113,17 +109,9 @@ class _BitingReportPageState extends State<BitingReportPage> {
     }
   }
 
-  void _initializeReport() async {
-    if (widget.editReport != null) {
-      toEditReport = await Report.fromJsonAsync(widget.editReport!.toJson());
-      Utils.setEditReport(toEditReport);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    _initializeReport();
     _logFirebaseAnalytics();
     _pagesController = PageController();
     _formsReport = [
@@ -176,9 +164,6 @@ class _BitingReportPageState extends State<BitingReportPage> {
         .logEvent(name: 'submit_report', parameters: {'type': 'bite'});
     var res = await Utils.createReport();
 
-    if (widget.editReport != null) {
-      widget.loadData!();
-    }
     if (!res!) {
       _showAlertKo();
     } else {
@@ -327,15 +312,10 @@ class _BitingReportPageState extends State<BitingReportPage> {
                                                   setState(() {
                                                     index = currentPage! + 1;
                                                   });
-                                                  _pagesController!
-                                                      .nextPage(
-                                                          duration: Duration(
-                                                              microseconds:
-                                                                  300),
-                                                          curve: Curves.ease)
-                                                      .then((value) => setValid(
-                                                          widget.editReport !=
-                                                              null));
+                                                  _pagesController!.nextPage(
+                                                      duration: Duration(
+                                                          microseconds: 300),
+                                                      curve: Curves.ease);
                                                 }
                                               }),
                                             )
@@ -389,19 +369,12 @@ class _BitingReportPageState extends State<BitingReportPage> {
     loadingStream.add(false);
     Utils.showAlert(
       MyLocalizations.of(context, 'app_name'),
-      widget.editReport == null
-          ? MyLocalizations.of(context, 'save_report_ok_txt')
-          : MyLocalizations.of(context, 'edited_report_ok_txt'),
+      MyLocalizations.of(context, 'save_report_ok_txt'),
       context,
       onPressed: () {
         Navigator.pop(context);
-        if (widget.editReport != null) {
-          Navigator.pop(context);
-        } else {
-          Navigator.of(context).popUntil((r) => r.isFirst);
-          Utils.resetReport();
-        }
-
+        Navigator.of(context).popUntil((r) => r.isFirst);
+        Utils.resetReport();
         Utils.requestInAppReview();
       },
       barrierDismissible: false,
@@ -416,12 +389,8 @@ class _BitingReportPageState extends State<BitingReportPage> {
       context,
       onPressed: () {
         Navigator.pop(context);
-        if (widget.editReport != null) {
-          Navigator.pop(context);
-        } else {
-          Navigator.of(context).popUntil((r) => r.isFirst);
-          Utils.resetReport();
-        }
+        Navigator.of(context).popUntil((r) => r.isFirst);
+        Utils.resetReport();
       },
       barrierDismissible: false,
     );

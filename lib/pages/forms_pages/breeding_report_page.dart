@@ -14,11 +14,6 @@ import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class BreedingReportPage extends StatefulWidget {
-  final Report? editReport;
-  final Function? loadData;
-
-  BreedingReportPage({this.editReport, this.loadData});
-
   @override
   _BreedingReportPageState createState() => _BreedingReportPageState();
 }
@@ -102,17 +97,9 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
   double displayContinue = 1.0;
   bool _atLeastOnePhotoAttached = false;
 
-  void _initializeReport() async {
-    if (widget.editReport != null) {
-      toEditReport = await Report.fromJsonAsync(widget.editReport!.toJson());
-      Utils.setEditReport(toEditReport);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    _initializeReport();
     _logFirebaseAnalytics();
     _pagesController = PageController();
 
@@ -192,8 +179,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
 
   void goNextPage() {
     _pagesController!
-        .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-        .then((value) => setValid(widget.editReport != null));
+        .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease);
     setState(() {
       index = _pagesController!.page! + 1;
     });
@@ -229,9 +215,6 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
         .logEvent(name: 'submit_report', parameters: {'type': 'breeding_site'});
     var res = await Utils.createReport();
 
-    if (widget.editReport != null) {
-      widget.loadData!();
-    }
     if (!res!) {
       _showAlertKo();
     } else {
@@ -389,19 +372,12 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     loadingStream.add(false);
     Utils.showAlert(
       MyLocalizations.of(context, 'app_name'),
-      widget.editReport == null
-          ? MyLocalizations.of(context, 'save_report_ok_txt')
-          : MyLocalizations.of(context, 'edited_report_ok_txt'),
+      MyLocalizations.of(context, 'save_report_ok_txt'),
       context,
       onPressed: () {
         Navigator.pop(context);
         Utils.resetReport();
-        if (widget.editReport != null) {
-          Navigator.pop(context);
-        } else {
-          Navigator.of(context).popUntil((r) => r.isFirst);
-        }
-
+        Navigator.of(context).popUntil((r) => r.isFirst);
         Utils.requestInAppReview();
       },
       barrierDismissible: false,
@@ -417,11 +393,7 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
       onPressed: () {
         Navigator.pop(context);
         Utils.resetReport();
-        if (widget.editReport != null) {
-          Navigator.pop(context);
-        } else {
-          Navigator.of(context).popUntil((r) => r.isFirst);
-        }
+        Navigator.of(context).popUntil((r) => r.isFirst);
       },
       barrierDismissible: false,
     );

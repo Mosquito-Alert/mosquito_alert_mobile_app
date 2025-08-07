@@ -18,11 +18,6 @@ import 'package:mosquito_alert_app/utils/style.dart';
 import 'components/location_form.dart';
 
 class AdultReportPage extends StatefulWidget {
-  final Report? editReport;
-  final Function? loadData;
-
-  AdultReportPage({this.editReport, this.loadData});
-
   @override
   _AdultReportPageState createState() => _AdultReportPageState();
 }
@@ -85,17 +80,9 @@ class _AdultReportPageState extends State<AdultReportPage> {
   late Report toEditReport;
   bool _atLeastOnePhotoAttached = false;
 
-  void _initializeReport() async {
-    if (widget.editReport != null) {
-      toEditReport = await Report.fromJsonAsync(widget.editReport!.toJson());
-      Utils.setEditReport(toEditReport);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    _initializeReport();
     _logFirebaseAnalytics();
     _pagesController = PageController();
     index = 0.0;
@@ -160,8 +147,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
       );
     } else {
       _pagesController!
-          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease)
-          .then((value) => setValid(widget.editReport != null));
+          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease);
       setState(() {
         index = _pagesController!.page! + 1;
       });
@@ -218,9 +204,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
       });
     }
     loadingStream.add(false);
-    if (widget.editReport != null) {
-      widget.loadData!();
-    }
   }
 
   @override
@@ -418,10 +401,8 @@ class _AdultReportPageState extends State<AdultReportPage> {
               index = currentPage! + 1;
             });
 
-            _pagesController!
-                .nextPage(
-                    duration: Duration(microseconds: 300), curve: Curves.ease)
-                .then((value) => setValid(widget.editReport != null));
+            _pagesController!.nextPage(
+                duration: Duration(microseconds: 300), curve: Curves.ease);
           }
         }));
   }
@@ -431,19 +412,12 @@ class _AdultReportPageState extends State<AdultReportPage> {
 
     Utils.showAlert(
       MyLocalizations.of(context, 'app_name'),
-      widget.editReport == null
-          ? MyLocalizations.of(context, 'save_report_ok_txt')
-          : MyLocalizations.of(context, 'edited_report_ok_txt'),
+      MyLocalizations.of(context, 'save_report_ok_txt'),
       context,
       onPressed: () {
         Navigator.pop(context);
-        if (widget.editReport != null) {
-          Navigator.pop(context);
-        } else {
-          Navigator.of(context).popUntil((r) => r.isFirst);
-          Utils.resetReport();
-        }
-
+        Navigator.of(context).popUntil((r) => r.isFirst);
+        Utils.resetReport();
         Utils.requestInAppReview();
       },
       barrierDismissible: false,
@@ -458,12 +432,8 @@ class _AdultReportPageState extends State<AdultReportPage> {
       context,
       onPressed: () {
         Navigator.pop(context);
-        if (widget.editReport != null) {
-          Navigator.pop(context);
-        } else {
-          Navigator.of(context).popUntil((r) => r.isFirst);
-          Utils.resetReport();
-        }
+        Navigator.of(context).popUntil((r) => r.isFirst);
+        Utils.resetReport();
       },
       barrierDismissible: false,
     );
