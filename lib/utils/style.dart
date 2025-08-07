@@ -102,9 +102,9 @@ class Style {
   ///Buttons
 
   static Widget button(text, onPressed,
-      {color, textColor, borderColor, elevation}) {
+      {color, textColor, borderColor, elevation, Key? key}) {
     return ElevatedButton(
-      key: ValueKey("style.button"),
+      key: key,
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         elevation: 0,

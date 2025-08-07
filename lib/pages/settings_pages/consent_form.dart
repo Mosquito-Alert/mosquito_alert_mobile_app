@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -263,6 +263,7 @@ class _ConsentFormState extends State<ConsentForm> {
                     margin: EdgeInsets.all(15),
                     width: double.infinity,
                     child: Style.button(
+                        key: ValueKey("style.button"),
                         MyLocalizations.of(context, 'continue_txt'),
                         snapshot.data as bool
                             ? () {
