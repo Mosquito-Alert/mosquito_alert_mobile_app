@@ -62,7 +62,12 @@ class PushNotificationsManager {
   static void launchMessage(RemoteMessage message) {
     String? title = message.notification?.title;
     String? msg = message.notification?.body;
-    var notifId = message.data['id'];
+    int? notifId = int.tryParse(message.data['id'].toString());
+    // Don't proceed if notifId is null
+    if (notifId == null) {
+      print('Notification ID is null, aborting navigation.');
+      return;
+    }
 
     if (title!.isNotEmpty || msg!.isNotEmpty) {
       showOverlayNotification((context) {
@@ -86,20 +91,24 @@ class PushNotificationsManager {
   }
 
   static void openMessageScreen(Map<String, dynamic> message) {
-    var notifId = '';
+    int? notifId;
 
-    if (Platform.isIOS) {
-      try {
-        notifId = "${jsonDecode(message['id'])}";
-      } catch (e) {
-        print(e);
+    try {
+      final rawId = message['id'];
+
+      if (Platform.isIOS) {
+        notifId = int.tryParse(jsonDecode(rawId).toString());
+      } else {
+        notifId = int.tryParse(rawId.toString());
       }
-    } else {
-      try {
-        notifId = "${message['id']}";
-      } catch (e) {
-        print(e);
-      }
+    } catch (e) {
+      print('Error parsing notification ID: $e');
+    }
+
+    // Don't proceed if notifId is null
+    if (notifId == null) {
+      print('Notification ID is null, aborting navigation.');
+      return;
     }
 
     SchedulerBinding.instance.addPostFrameCallback((_) {

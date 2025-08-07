@@ -12,7 +12,9 @@ class ApiService {
     final BaseOptions options = BaseOptions(
       baseUrl: baseUrl,
       connectTimeout: const Duration(milliseconds: 5000),
-      receiveTimeout: const Duration(milliseconds: 3000),
+      receiveTimeout: const Duration(
+          milliseconds:
+              10000), // A lower receiveTimeout causes a timeout on the notifications endpoint
     );
     final Dio _dio = Dio(options);
 

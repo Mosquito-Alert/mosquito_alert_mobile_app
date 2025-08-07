@@ -13,6 +13,7 @@ import 'package:mosquito_alert_app/services/api_service.dart';
 import 'package:mosquito_alert_app/utils/Application.dart';
 import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizationsDelegate.dart';
+import 'package:mosquito_alert_app/utils/ObserverUtils.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
@@ -185,6 +186,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: navigatorKey,
       navigatorObservers: <NavigatorObserver>[
         observer,
+        ObserverUtils.routeObserver
       ],
       home: MainVC(),
       localizationsDelegates: [

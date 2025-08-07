@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
-import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/app_config.dart';
-import 'package:mosquito_alert_app/models/notification.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
 import 'package:mosquito_alert_app/pages/main/home_page.dart';
 import 'package:mosquito_alert_app/pages/my_reports_pages/my_reports_page.dart';
@@ -20,6 +19,7 @@ import 'package:mosquito_alert_app/providers/auth_provider.dart';
 import 'package:mosquito_alert_app/providers/user_provider.dart';
 import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/utils/ObserverUtils.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -32,7 +32,8 @@ class MainVC extends StatefulWidget {
   State<MainVC> createState() => _MainVCState();
 }
 
-class _MainVCState extends State<MainVC> {
+class _MainVCState extends State<MainVC>
+    with RouteAware, WidgetsBindingObserver {
   int _selectedIndex = 0;
   int unreadNotifications = 0;
   var packageInfo;
@@ -42,12 +43,35 @@ class _MainVCState extends State<MainVC> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _startAsyncTasks();
   }
 
   @override
   void dispose() {
+    ObserverUtils.routeObserver.unsubscribe(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    ObserverUtils.routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void didPopNext() {
+    // Called when returning from another page
+    _fetchNotificationCount();
+  }
+
+  // Called when app lifecycle state changes
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _fetchNotificationCount();
+    }
   }
 
   Future<void> _onDrawerChanged(bool isOpened) async {
@@ -65,22 +89,26 @@ class _MainVCState extends State<MainVC> {
     setState(() {
       isLoading = !initSuccess;
     });
-    await _getNotificationCount();
+    await _fetchNotificationCount();
     await getPackageInfo();
   }
 
-  Future<void> _getNotificationCount() async {
-    List<MyNotification> notifications =
-        await ApiSingleton().getNotifications();
-    var unacknowledgedCount = notifications
-        .where((notification) => notification.acknowledged == false)
-        .length;
-    updateNotificationCount(unacknowledgedCount);
-  }
+  Future<void> _fetchNotificationCount() async {
+    int count = 0;
+    try {
+      MosquitoAlert apiClient =
+          Provider.of<MosquitoAlert>(context, listen: false);
+      NotificationsApi notificationsApi = apiClient.getNotificationsApi();
 
-  void updateNotificationCount(int newCount) {
+      final Response<PaginatedNotificationList> response =
+          await notificationsApi.listMine(isRead: false, pageSize: 1);
+      count = response.data?.count ?? 0;
+    } catch (e, stackTrace) {
+      print('Failed to fetch notification count: $e');
+      debugPrintStack(stackTrace: stackTrace);
+    }
     setState(() {
-      unreadNotifications = newCount;
+      unreadNotifications = count;
     });
   }
 
@@ -204,8 +232,7 @@ class _MainVCState extends State<MainVC> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => NotificationsPage(
-                            onNotificationUpdate: updateNotificationCount)),
+                        builder: (context) => NotificationsPage()),
                   );
                 },
               ))
