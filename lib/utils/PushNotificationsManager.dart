@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -29,64 +28,64 @@ class PushNotificationsManager {
 
       // Foreground message handler
       FirebaseMessaging.onMessage.listen((RemoteMessage remoteMessage) {
-        launchMessage(remoteMessage);
+        _handleForegroundMessage(remoteMessage);
       });
 
       // When the app is opened from a background state
       FirebaseMessaging.onMessageOpenedApp
           .listen((RemoteMessage remoteMessage) {
-        openMessageScreen(remoteMessage.data);
+        _handleBackgroundMessage(remoteMessage);
       });
     }
   }
 
-  static void launchMessage(RemoteMessage message) {
-    String? title = message.notification?.title;
-    String? msg = message.notification?.body;
-    int? notifId = int.tryParse(message.data['id'].toString());
-    // Don't proceed if notifId is null
-    if (notifId == null) {
-      print('Notification ID is null, aborting navigation.');
+  static void _handleForegroundMessage(RemoteMessage message) {
+    RemoteNotification? notification = message.notification;
+    if (notification == null) {
+      print('Notification is null, aborting launch.');
+      return;
+    }
+    String? title = notification.title;
+    String? msg = notification.body;
+    if (title == null || msg == null) {
+      print('Title or message is null, aborting launch.');
       return;
     }
 
-    if (title!.isNotEmpty || msg!.isNotEmpty) {
-      showOverlayNotification((context) {
-        return MessageNotification(
-          title: title,
-          message: msg,
-          onTap: () {
-            OverlaySupportEntry.of(context)!.dismiss();
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NotificationsPage(
-                        notificationId: notifId,
-                      ),
-                  fullscreenDialog: true),
-            );
-          },
-        );
-      }, duration: Duration(milliseconds: 4000));
-    }
+    int? notifId = int.tryParse(message.data['id'].toString());
+
+    showOverlayNotification((context) {
+      return MessageNotification(
+        title: title,
+        message: msg,
+        onTap: () {
+          OverlaySupportEntry.of(context)!.dismiss();
+          if (notifId == null) {
+            print('Notification ID is null, not navigating.');
+            return;
+          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NotificationsPage(
+                      notificationId: notifId,
+                    ),
+                fullscreenDialog: true),
+          );
+        },
+      );
+    }, duration: Duration(milliseconds: 4000));
   }
 
-  static void openMessageScreen(Map<String, dynamic> message) {
-    int? notifId;
-
-    try {
-      final rawId = message['id'];
-
-      if (Platform.isIOS) {
-        notifId = int.tryParse(jsonDecode(rawId).toString());
-      } else {
-        notifId = int.tryParse(rawId.toString());
-      }
-    } catch (e) {
-      print('Error parsing notification ID: $e');
+  static void _handleBackgroundMessage(RemoteMessage message) {
+    RemoteNotification? notification = message.notification;
+    if (notification == null) {
+      print('Notification is null, aborting launch.');
+      return;
     }
 
-    // Don't proceed if notifId is null
+    int? notifId = int.tryParse(message.data['id'].toString());
+
     if (notifId == null) {
       print('Notification ID is null, aborting navigation.');
       return;
