@@ -239,21 +239,31 @@ class _MainVCState extends State<MainVC>
         ),
         actions: <Widget>[
           badges.Badge(
-              position: badges.BadgePosition.topEnd(top: 4, end: 4),
+              position: badges.BadgePosition.topEnd(top: 0, end: 3),
               showBadge: unreadNotifications > 0,
-              badgeContent: Text('$unreadNotifications',
-                  style: TextStyle(color: Colors.white)),
+              badgeContent: Text(
+                  unreadNotifications > 9 ? '+9' : '$unreadNotifications',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: unreadNotifications > 9 ? 10 : 13)),
+              badgeStyle: badges.BadgeStyle(
+                padding: unreadNotifications > 9
+                    ? EdgeInsets.all(5)
+                    : EdgeInsets.all(6),
+                shape: badges.BadgeShape.circle,
+                badgeColor: Colors.red,
+                borderSide:
+                    BorderSide(color: Colors.white, width: 2), // white border
+              ),
               child: IconButton(
-                padding: EdgeInsets.only(top: 6),
-                icon: Icon(Icons.notifications, size: 24),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => NotificationsPage()),
-                  );
-                },
-              ))
+                  icon: Icon(Icons.notifications_none),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NotificationsPage()),
+                    );
+                  }))
         ],
       ),
       body: Center(
