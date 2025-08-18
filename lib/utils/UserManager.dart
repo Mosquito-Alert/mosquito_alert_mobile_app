@@ -48,11 +48,6 @@ class UserManager {
   }
 
   //set
-  static Future<void> setFrirebaseId(id) async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setString('firebaseId', id);
-  }
-
   static Future<void> setSowInfoAdult(show) async {
     var prefs = await SharedPreferences.getInstance();
     await prefs.setBool('infoCameraAdult', show);
@@ -102,11 +97,6 @@ class UserManager {
   }
 
   //get
-  static Future<String?> getFirebaseId() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.getString('firebaseId');
-  }
-
   static Future<bool?> getShowInfoAdult() async {
     var prefs = await SharedPreferences.getInstance();
     return prefs.getBool('infoCameraAdult');

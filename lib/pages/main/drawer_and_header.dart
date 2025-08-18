@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
@@ -16,10 +17,12 @@ import 'package:mosquito_alert_app/pages/settings_pages/gallery_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/info_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/settings_page.dart';
 import 'package:mosquito_alert_app/providers/auth_provider.dart';
+import 'package:mosquito_alert_app/providers/device_provider.dart';
 import 'package:mosquito_alert_app/providers/user_provider.dart';
 import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/ObserverUtils.dart';
+import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -83,8 +86,14 @@ class _MainVCState extends State<MainVC>
   void _startAsyncTasks() async {
     await UserManager.startFirstTime(context);
     bool initSuccess = await initAuth();
+    await PushNotificationsManager.init();
     if (initSuccess) {
       await initBackgroundTracking();
+      FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async {
+        final deviceProvider =
+            Provider.of<DeviceProvider>(context, listen: false);
+        await deviceProvider.updateFcmToken(fcmToken);
+      });
     }
     setState(() {
       isLoading = !initSuccess;
@@ -129,6 +138,7 @@ class _MainVCState extends State<MainVC>
     }
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final deviceProvider = Provider.of<DeviceProvider>(context, listen: false);
 
     String? username = authProvider.username;
     String? password = authProvider.password;
@@ -179,7 +189,15 @@ class _MainVCState extends State<MainVC>
         }
       }
     }
-    await Utils.loadFirebase(context);
+    // Register device
+    try {
+      await deviceProvider.registerDevice();
+      if (deviceProvider.device != null) {
+        await authProvider.setDevice(deviceProvider.device!);
+      }
+    } catch (e) {
+      print('Error registering device: $e');
+    }
     return true;
   }
 

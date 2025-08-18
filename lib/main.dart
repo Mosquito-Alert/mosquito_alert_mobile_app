@@ -9,6 +9,7 @@ import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/pages/main/drawer_and_header.dart';
 import 'package:mosquito_alert_app/providers/auth_provider.dart';
+import 'package:mosquito_alert_app/providers/device_provider.dart';
 import 'package:mosquito_alert_app/services/api_service.dart';
 import 'package:mosquito_alert_app/utils/Application.dart';
 import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
@@ -43,6 +44,7 @@ Future<void> main({String env = 'prod'}) async {
 
   authProvider.setApiClient(apiClient);
   final userProvider = UserProvider(apiClient: apiClient);
+  final deviceProvider = await DeviceProvider.create(apiClient: apiClient);
 
   final appConfig = await AppConfig.loadConfig();
   if (appConfig.useAuth) {
@@ -55,6 +57,7 @@ Future<void> main({String env = 'prod'}) async {
         Provider<MosquitoAlert>.value(value: apiClient),
         ChangeNotifierProvider<AuthProvider>.value(value: authProvider),
         ChangeNotifierProvider<UserProvider>.value(value: userProvider),
+        ChangeNotifierProvider<DeviceProvider>.value(value: deviceProvider),
       ],
       child: MyApp(),
     ),
@@ -80,6 +83,7 @@ void callbackDispatcher() {
     authProvider.setApiClient(apiClient);
 
     final userProvider = UserProvider(apiClient: apiClient);
+    final deviceProvider = await DeviceProvider.create(apiClient: apiClient);
     String? username = authProvider.username;
     String? password = authProvider.password;
     if (username == null && password == null) {
@@ -92,6 +96,14 @@ void callbackDispatcher() {
     } catch (e) {
       print('Error logging in: $e');
       return Future.value(false); // Login failed, cannot proceed
+    }
+    try {
+      await deviceProvider.registerDevice();
+      if (deviceProvider.device != null) {
+        await authProvider.setDevice(deviceProvider.device!);
+      }
+    } catch (e) {
+      print('Error registering device: $e');
     }
 
     BackgroundTracking.configure(apiClient: apiClient);
@@ -149,7 +161,6 @@ class _MyAppState extends State<MyApp> {
         switch (result) {
           case ConnectivityResult.mobile:
           case ConnectivityResult.wifi:
-            Utils.checkForUnfetchedData(context);
             Utils.syncReports();
             break;
           case ConnectivityResult.none:

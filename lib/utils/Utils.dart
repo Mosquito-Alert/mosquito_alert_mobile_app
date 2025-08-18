@@ -16,7 +16,6 @@ import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/models/question.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/providers/user_provider.dart';
-import 'package:mosquito_alert_app/utils/PushNotificationsManager.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -40,11 +39,6 @@ class Utils {
   static Report? report;
   static List<Report?>? reportsList;
   static Report? savedAdultReport;
-
-  // Initialized data flags
-  static Map<String, dynamic> initializedCheckData = {
-    'firebase': false, // Whether firebase got initialized
-  };
 
   static void saveImgPath(File img) {
     imagePath ??= [];
@@ -397,20 +391,6 @@ class Utils {
     }
   }
 
-  static Future<void> checkForUnfetchedData(BuildContext context) async {
-    final appConfig = await AppConfig.loadConfig();
-    if (!appConfig.useAuth) {
-      return;
-    }
-
-    if (!initializedCheckData['firebase']) {
-      print('Utils (checkForUnfetchedData): Loading Firebase...');
-      await loadFirebase(context);
-    } else {
-      print('Utils (checkForUnfetchedData): Firebase was already initialized.');
-    }
-  }
-
   static Future<bool> deleteReport(r) async {
     Report deleteReport = r;
     deleteReport.version_time = DateTime.now().toUtc().toIso8601String();
@@ -420,10 +400,6 @@ class Utils {
     var res =
         await ApiSingleton().createReport(deleteReport) != null ? true : false;
     return res;
-  }
-
-  static Future<void> loadFirebase(BuildContext context) async {
-    await PushNotificationsManager.init(context);
   }
 
   static final RegExp mailRegExp = RegExp(

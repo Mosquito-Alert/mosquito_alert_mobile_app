@@ -102,9 +102,4 @@ class ApiSingleton {
     // TODO
     return false;
   }
-
-  Future<bool> setFirebaseToken(String? userIdentifier, String fcmToken) async {
-    // TODO
-    return false;
-  }
 }

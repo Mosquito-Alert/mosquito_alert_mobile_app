@@ -1,4 +1,3 @@
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -12,6 +11,7 @@ class AuthProvider with ChangeNotifier {
   String? _refreshToken;
   String? _username;
   String? _password;
+  String? _deviceId;
 
   Future<void> init() async {
     _accessToken = await _storage.read(key: 'access_token');
@@ -30,6 +30,12 @@ class AuthProvider with ChangeNotifier {
     authApi = apiClient.getAuthApi();
   }
 
+  Future<void> setDevice(Device device) async {
+    if (device.deviceId != _deviceId) {
+      await login(username: _username!, password: _password!, device: device);
+    }
+  }
+
   Future<void> _setUsername({required String username}) async {
     _username = username;
     await _storage.write(key: 'username', value: username);
@@ -39,6 +45,12 @@ class AuthProvider with ChangeNotifier {
   Future<void> _setPassword({required String password}) async {
     _password = password;
     await _storage.write(key: 'password', value: password);
+    notifyListeners();
+  }
+
+  Future<void> _setDeviceId({required String? deviceId}) async {
+    _deviceId = deviceId;
+    await _storage.write(key: 'deviceId', value: deviceId);
     notifyListeners();
   }
 
@@ -84,23 +96,15 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> login(
-      {required String username, required String password}) async {
+      {required String username,
+      required String password,
+      Device? device}) async {
     try {
-      final deviceInfoPlugin = DeviceInfoPlugin();
-      final deviceInfo = await deviceInfoPlugin.deviceInfo;
-
-      String? deviceId;
-      if (deviceInfo is AndroidDeviceInfo) {
-        deviceId = deviceInfo.id;
-      } else if (deviceInfo is IosDeviceInfo) {
-        deviceId = deviceInfo.identifierForVendor;
-      }
-
       final AppUserTokenObtainPairRequest request =
           AppUserTokenObtainPairRequest((b) => b
             ..username = username
             ..password = password
-            ..deviceId = deviceId);
+            ..deviceId = device?.deviceId ?? _deviceId);
 
       final Response<AppUserTokenObtainPair> response =
           await authApi.obtainToken(appUserTokenObtainPairRequest: request);
@@ -108,6 +112,7 @@ class AuthProvider with ChangeNotifier {
       if (response.statusCode == 200 && response.data != null) {
         _setUsername(username: username);
         _setPassword(password: password);
+        _setDeviceId(deviceId: device?.deviceId);
         setAccessToken(accessToken: response.data!.access);
         setRefreshToken(refreshToken: response.data!.refresh);
         return;
