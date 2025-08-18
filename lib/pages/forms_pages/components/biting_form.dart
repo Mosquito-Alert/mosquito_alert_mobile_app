@@ -7,6 +7,39 @@ import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
+enum BodyPart {
+  head(21),
+  leftArm(22),
+  rightArm(23),
+  body(24),
+  leftLeg(25),
+  rightLeg(26);
+
+  final int id;
+  const BodyPart(this.id);
+}
+
+enum BiteQuestion {
+  howMany(1),
+  bittenBodyPart(2),
+  whatTime(3),
+  vehicleOrBuilding(4),
+  when_now_or_last_24h(5),
+  whatDoesItLookLike(7);
+
+  final int id;
+  const BiteQuestion(this.id);
+}
+
+enum Answer {
+  just_now(51),
+  last_24h(52),
+  inside_vehicle(131);
+
+  final int id;
+  const Answer(this.id);
+}
+
 class BitingForm extends StatefulWidget {
   final List<Map> displayQuestions;
   final Function setValid, nextPage;
@@ -34,13 +67,14 @@ class _BitingFormState extends State<BitingForm> {
 
     if (Utils.report != null) {
       for (var q in Utils.report!.responses!) {
-        if (q!.question_id == 1) {
+        if (q!.question_id == BiteQuestion.howMany.id) {
           bites = int.parse(q.answer_value!);
         }
-        if (q.question_id! <= 4 || q.question_id == 5) {
+        if (q.question_id! <= BiteQuestion.vehicleOrBuilding.id ||
+            q.question_id == BiteQuestion.when_now_or_last_24h.id) {
           questions!.add(q);
         }
-        if (q.answer_id == 52) {
+        if (q.answer_id == Answer.last_24h.id) {
           showDaytime = true;
         }
       }
@@ -50,10 +84,11 @@ class _BitingFormState extends State<BitingForm> {
       valid = isValid;
     });
     _textController.text = bites.toString();
-    displayQuestions =
-        widget.displayQuestions.where((q) => q['question']['id'] > 2).toList();
+    displayQuestions = widget.displayQuestions
+        .where((q) => q['question']['id'] > BiteQuestion.bittenBodyPart.id)
+        .toList();
     bodyQuestion = widget.displayQuestions
-        .where((q) => q['question']['id'] == 2)
+        .where((q) => q['question']['id'] == BiteQuestion.bittenBodyPart.id)
         .toList()[0];
   }
 
@@ -93,8 +128,8 @@ class _BitingFormState extends State<BitingForm> {
                         questions = Utils.report!.responses;
                       });
                       addToList(question[0]['question']['text'], '',
-                          question_id: 1,
-                          answer_id: 11,
+                          question_id: BiteQuestion.howMany.id,
+                          //answer_id: 11, // TODO: It's an empty string, deprecate?
                           answer_value: _textController.text);
 
                       var isValid = canContinue();
@@ -128,8 +163,8 @@ class _BitingFormState extends State<BitingForm> {
                           .where((q) => q['question']['id'] == 1)
                           .toList();
                       addToList(question[0]['question']['text'], '',
-                          question_id: 1,
-                          answer_id: 11,
+                          question_id: BiteQuestion.howMany.id,
+                          //answer_id: 11, // TODO: Empty value, deprecate?
                           answer_value: _textController.text);
                       var isValid = canContinue();
                       setState(() {
@@ -150,43 +185,43 @@ class _BitingFormState extends State<BitingForm> {
                           width: mediaQuery.width,
                         ),
                         Image.asset(
-                          questions!
-                                  .any((question) => question!.answer_id == 25)
+                          questions!.any((question) =>
+                                  question!.answer_id == BodyPart.leftLeg.id)
                               ? 'assets/img/ic_left_leg_on.webp'
                               : 'assets/img/ic_left_leg_off.webp',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
-                          questions!
-                                  .any((question) => question!.answer_id == 26)
+                          questions!.any((question) =>
+                                  question!.answer_id == BodyPart.rightLeg.id)
                               ? 'assets/img/ic_right_leg_on.webp'
                               : 'assets/img/ic_right_leg_off.webp',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
-                          questions!
-                                  .any((question) => question!.answer_id == 22)
+                          questions!.any((question) =>
+                                  question!.answer_id == BodyPart.leftArm.id)
                               ? 'assets/img/ic_left_hand_on.webp'
                               : 'assets/img/ic_left_hand_off.webp',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
-                          questions!
-                                  .any((question) => question!.answer_id == 23)
+                          questions!.any((question) =>
+                                  question!.answer_id == BodyPart.rightArm.id)
                               ? 'assets/img/ic_right_hand_on.webp'
                               : 'assets/img/ic_right_hand_off.webp',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
-                          questions!
-                                  .any((question) => question!.answer_id == 21)
+                          questions!.any((question) =>
+                                  question!.answer_id == BodyPart.head.id)
                               ? 'assets/img/ic_head_on.webp'
                               : 'assets/img/ic_head_off.webp',
                           width: mediaQuery.width,
                         ),
                         Image.asset(
-                          questions!
-                                  .any((question) => question!.answer_id == 24)
+                          questions!.any((question) =>
+                                  question!.answer_id == BodyPart.body.id)
                               ? 'assets/img/ic_chest_on.webp'
                               : 'assets/img/ic_chest_off.webp',
                           width: mediaQuery.width,
@@ -194,49 +229,49 @@ class _BitingFormState extends State<BitingForm> {
                         Positioned(
                           top: mediaQuery.height * 0.05,
                           left: mediaQuery.width * 0.37,
-                          child: questions!
-                                  .any((question) => question!.answer_id == 21)
-                              ? Style.body(getIndexBody(21))
+                          child: questions!.any((question) =>
+                                  question!.answer_id == BodyPart.head.id)
+                              ? Style.body(getIndexBody(BodyPart.head.id))
                               : Container(),
                         ),
                         Positioned(
                           top: mediaQuery.height * 0.18,
                           left: mediaQuery.width * 0.21,
-                          child: questions!
-                                  .any((question) => question!.answer_id == 23)
-                              ? Style.body(getIndexBody(23))
+                          child: questions!.any((question) =>
+                                  question!.answer_id == BodyPart.rightArm.id)
+                              ? Style.body(getIndexBody(BodyPart.rightArm.id))
                               : Container(),
                         ),
                         Positioned(
                           top: mediaQuery.height * 0.18,
                           left: mediaQuery.width * 0.70,
-                          child: questions!
-                                  .any((question) => question!.answer_id == 22)
-                              ? Style.body(getIndexBody(22))
+                          child: questions!.any((question) =>
+                                  question!.answer_id == BodyPart.leftArm.id)
+                              ? Style.body(getIndexBody(BodyPart.leftArm.id))
                               : Container(),
                         ),
                         Positioned(
                           top: mediaQuery.height * 0.23,
                           left: mediaQuery.width * 0.56,
-                          child: questions!
-                                  .any((question) => question!.answer_id == 24)
-                              ? Style.body(getIndexBody(24))
+                          child: questions!.any((question) =>
+                                  question!.answer_id == BodyPart.body.id)
+                              ? Style.body(getIndexBody(BodyPart.body.id))
                               : Container(),
                         ),
                         Positioned(
                           top: mediaQuery.height * 0.37,
                           left: mediaQuery.width * 0.28,
-                          child: questions!
-                                  .any((question) => question!.answer_id == 26)
-                              ? Style.body(getIndexBody(26))
+                          child: questions!.any((question) =>
+                                  question!.answer_id == BodyPart.rightLeg.id)
+                              ? Style.body(getIndexBody(BodyPart.rightLeg.id))
                               : Container(),
                         ),
                         Positioned(
                           top: mediaQuery.height * 0.37,
                           left: mediaQuery.width * 0.63,
-                          child: questions!
-                                  .any((question) => question!.answer_id == 25)
-                              ? Style.body(getIndexBody(25))
+                          child: questions!.any((question) =>
+                                  question!.answer_id == BodyPart.leftLeg.id)
+                              ? Style.body(getIndexBody(BodyPart.leftLeg.id))
                               : Container(),
                         ),
                       ],
@@ -249,7 +284,9 @@ class _BitingFormState extends State<BitingForm> {
                               ? () {
                                   addToList(bodyQuestion['question']['text'],
                                       bodyQuestion['answers'][0]['text'],
-                                      question_id: 2, answer_id: 21);
+                                      question_id:
+                                          BiteQuestion.bittenBodyPart.id,
+                                      answer_id: BodyPart.head.id);
                                 }
                               : null,
                           child: Center(
@@ -271,8 +308,9 @@ class _BitingFormState extends State<BitingForm> {
                                       addToList(
                                           bodyQuestion['question']['text'],
                                           bodyQuestion['answers'][2]['text'],
-                                          question_id: 2,
-                                          answer_id: 23);
+                                          question_id:
+                                              BiteQuestion.bittenBodyPart.id,
+                                          answer_id: BodyPart.rightArm.id);
                                     }
                                   : null,
                               child: Container(
@@ -288,8 +326,9 @@ class _BitingFormState extends State<BitingForm> {
                                       addToList(
                                           bodyQuestion['question']['text'],
                                           bodyQuestion['answers'][3]['text'],
-                                          question_id: 2,
-                                          answer_id: 24);
+                                          question_id:
+                                              BiteQuestion.bittenBodyPart.id,
+                                          answer_id: BodyPart.body.id);
                                     }
                                   : null,
                               child: Container(
@@ -305,8 +344,9 @@ class _BitingFormState extends State<BitingForm> {
                                       addToList(
                                           bodyQuestion['question']['text'],
                                           bodyQuestion['answers'][1]['text'],
-                                          question_id: 2,
-                                          answer_id: 22);
+                                          question_id:
+                                              BiteQuestion.bittenBodyPart.id,
+                                          answer_id: BodyPart.leftArm.id);
                                     }
                                   : null,
                               child: Container(
@@ -327,8 +367,9 @@ class _BitingFormState extends State<BitingForm> {
                                       addToList(
                                           bodyQuestion['question']['text'],
                                           bodyQuestion['answers'][5]['text'],
-                                          question_id: 2,
-                                          answer_id: 26);
+                                          question_id:
+                                              BiteQuestion.bittenBodyPart.id,
+                                          answer_id: BodyPart.rightLeg.id);
                                     }
                                   : null,
                               child: Container(
@@ -344,8 +385,9 @@ class _BitingFormState extends State<BitingForm> {
                                       addToList(
                                           bodyQuestion['question']['text'],
                                           bodyQuestion['answers'][4]['text'],
-                                          question_id: 2,
-                                          answer_id: 25);
+                                          question_id:
+                                              BiteQuestion.bittenBodyPart.id,
+                                          answer_id: BodyPart.leftLeg.id);
                                     }
                                   : null,
                               child: Container(
@@ -430,11 +472,11 @@ class _BitingFormState extends State<BitingForm> {
                                 padding: EdgeInsets.all(5),
                                 child: InkWell(
                                   onTap: () {
-                                    if (answerId == 52) {
+                                    if (answerId == Answer.last_24h.id) {
                                       setState(() {
                                         showDaytime = true;
                                       });
-                                    } else if (answerId == 51) {
+                                    } else if (answerId == Answer.just_now.id) {
                                       setState(() {
                                         showDaytime = false;
                                       });
@@ -507,8 +549,9 @@ class _BitingFormState extends State<BitingForm> {
 
   addToList(String? question, String? answer,
       {question_id, answer_id, answer_value}) {
-    if ((question_id != 1 && int.parse(_textController.text) > 0) ||
-        question_id == 1) {
+    if ((question_id != BiteQuestion.howMany.id &&
+            int.parse(_textController.text) > 0) ||
+        question_id == BiteQuestion.howMany.id) {
       Utils.addBiteResponse(
         question,
         answer,
@@ -530,7 +573,7 @@ class _BitingFormState extends State<BitingForm> {
   bool _validateAddBite() {
     var totalParts = 0;
     questions!.forEach((q) {
-      if (q!.question_id == 2) {
+      if (q!.question_id == BiteQuestion.bittenBodyPart.id) {
         totalParts = totalParts + int.parse(q.answer_value!);
       }
     });
@@ -545,12 +588,12 @@ class _BitingFormState extends State<BitingForm> {
       var totalQ5 = 0;
 
       questions!.forEach((q) {
-        if (q!.question_id == 4) totalQ3++;
-        if (q.question_id == 5) totalQ4++;
-        if (q.question_id == 3) totalQ5++;
+        if (q!.question_id == BiteQuestion.vehicleOrBuilding.id) totalQ3++;
+        if (q.question_id == BiteQuestion.when_now_or_last_24h.id) totalQ4++;
+        if (q.question_id == BiteQuestion.whatTime.id) totalQ5++;
       });
 
-      if (questions!.any((q) => q!.answer_id == 52)) {
+      if (questions!.any((q) => q!.answer_id == Answer.last_24h.id)) {
         if (bites > 0 &&
             !totalBites &&
             totalQ3 == 1 &&
@@ -570,7 +613,8 @@ class _BitingFormState extends State<BitingForm> {
 
   void removeBite() {
     var bodyParts = Utils.report!.responses!
-        .where((element) => element!.question_id == 2)
+        .where(
+            (element) => element!.question_id == BiteQuestion.bittenBodyPart.id)
         .toList();
     if (bodyParts.isNotEmpty) {
       if (int.parse(bodyParts.last!.answer_value!) > 1) {
