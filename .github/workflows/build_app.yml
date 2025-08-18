@@ -38,7 +38,7 @@ jobs:
       run: flutter build appbundle --debug
 
   ios_build:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
     - uses: actions/checkout@v4
 
