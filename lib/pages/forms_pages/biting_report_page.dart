@@ -166,42 +166,53 @@ class _BitingReportPageState extends State<BitingReportPage> {
 
     if (!res!) {
       _showAlertKo();
-    } else {
-      if (Utils.savedAdultReport != null) {
-        List<Campaign> campaingsList =
-            await ApiSingleton().getCampaigns(Utils.savedAdultReport!.country);
-        var now = DateTime.now().toUtc();
-        if (campaingsList.any((element) =>
-            DateTime.parse(element.startDate!).isBefore(now) &&
-            DateTime.parse(element.endDate!).isAfter(now))) {
-          var activeCampaign = campaingsList.firstWhere((element) =>
-              DateTime.parse(element.startDate!).isBefore(now) &&
-              DateTime.parse(element.endDate!).isAfter(now));
-          await Utils.showAlertCampaign(
-            context,
-            activeCampaign,
-            (ctx) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CampaignTutorialPage(
-                          fromReport: true,
-                        )),
-              );
-              Utils.resetReport();
-            },
-          );
-        } else {
-          _showAlertOk();
-        }
-      } else {
-        _showAlertOk();
-      }
-
-      setState(() {
-        percentStream.add(1.0);
-      });
+      return;
     }
+
+    if (Utils.savedAdultReport == null) {
+      return showSuccess();
+    }
+
+    List<Campaign> campaigns =
+        await ApiSingleton().getCampaigns(Utils.savedAdultReport!.country);
+
+    final activeCampaign = findActiveCampaign(campaigns);
+    if (activeCampaign != null) {
+      await Utils.showAlertCampaign(
+        context,
+        activeCampaign,
+        (ctx) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CampaignTutorialPage(fromReport: true),
+            ),
+          );
+        },
+      );
+    }
+    return showSuccess();
+  }
+
+  void showSuccess() {
+    _showAlertOk();
+    Utils.resetReport();
+    setState(() {
+      percentStream.add(1.0);
+    });
+  }
+
+  Campaign? findActiveCampaign(List<Campaign> campaigns) {
+    final now = DateTime.now().toUtc();
+    final filtered = campaigns.where((element) {
+      final start = DateTime.tryParse(element.startDate ?? '');
+      final end = DateTime.tryParse(element.endDate ?? '');
+      if (start == null || end == null) return false;
+      return start.isBefore(now) && end.isAfter(now);
+    }).toList();
+
+    if (filtered.isEmpty) return null;
+    return filtered.first;
   }
 
   void goNextPage() {
