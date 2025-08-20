@@ -1,9 +1,10 @@
 import 'dart:async';
 
+import 'package:built_collection/built_collection.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:mosquito_alert_app/api/api.dart';
-import 'package:mosquito_alert_app/models/owcampaing.dart';
+import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_other_report_form.dart';
@@ -14,6 +15,7 @@ import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.d
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
+import 'package:provider/provider.dart';
 
 import 'components/location_form.dart';
 
@@ -31,6 +33,7 @@ class _AdultReportPageState extends State<AdultReportPage> {
   StreamController<bool> skipParts = StreamController<bool>.broadcast();
   StreamController<double> percentStream = StreamController<double>.broadcast();
   double? index;
+  late CampaignsApi campaignsApi;
 
   // Define the events to log
   final List<Map<String, dynamic>> _pageEvents = [
@@ -83,6 +86,9 @@ class _AdultReportPageState extends State<AdultReportPage> {
   @override
   void initState() {
     super.initState();
+    MosquitoAlert apiClient =
+        Provider.of<MosquitoAlert>(context, listen: false);
+    campaignsApi = apiClient.getCampaignsApi();
     _logFirebaseAnalytics();
     _pagesController = PageController();
     index = 0.0;
@@ -155,55 +161,60 @@ class _AdultReportPageState extends State<AdultReportPage> {
   }
 
   void _createReport() async {
-    loadingStream.add(true);
     setState(() {
       percentStream.add(0.8);
     });
+    loadingStream.add(true);
     await FirebaseAnalytics.instance
         .logEvent(name: 'submit_report', parameters: {'type': 'adult'});
-    var res = await Utils.createReport();
+    var res = await Utils.createReport(); // TODO: Replace with issue #400
 
-    if (res != null && !res) {
+    if (!res!) {
       _showAlertKo();
-    } else {
-      if (Utils.savedAdultReport != null &&
-          Utils.savedAdultReport!.country != null) {
-        List<Campaign> campaignsList =
-            await ApiSingleton().getCampaigns(Utils.savedAdultReport!.country);
-        var now = DateTime.now().toUtc();
-        if (campaignsList.any((element) =>
-            DateTime.parse(element.startDate!).isBefore(now) &&
-            DateTime.parse(element.endDate!).isAfter(now))) {
-          var activeCampaign = campaignsList.firstWhere((element) =>
-              DateTime.parse(element.startDate!).isBefore(now) &&
-              DateTime.parse(element.endDate!).isAfter(now));
-
-          await Utils.showAlertCampaign(
-            context,
-            activeCampaign,
-            (ctx) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CampaignTutorialPage(
-                          fromReport: true,
-                        )),
-              );
-              Utils.resetReport();
-            },
-          );
-        } else {
-          _showAlertOk();
-        }
-      } else {
-        _showAlertOk();
-      }
-
-      setState(() {
-        percentStream.add(1.0);
-      });
+      return;
     }
-    loadingStream.add(false);
+
+    if (Utils.savedAdultReport == null) {
+      return showSuccess();
+    }
+
+    Campaign? activeCampaign = null;
+    try {
+      Response<PaginatedCampaignList> response = await campaignsApi.list(
+        countryId: Utils.savedAdultReport!.country,
+        isActive: true,
+        orderBy: BuiltList<String>.of(["-start_date"]),
+        pageSize: 1,
+      );
+      activeCampaign = response.data!.results!.first;
+    } catch (e, stackTrace) {
+      print('Failed to fetch campaigns: $e');
+      debugPrintStack(stackTrace: stackTrace);
+    }
+
+    showSuccess();
+
+    if (activeCampaign != null) {
+      await Utils.showAlertCampaign(
+        context,
+        (ctx) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CampaignTutorialPage(fromReport: true),
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  void showSuccess() {
+    _showAlertOk();
+    Utils.resetReport();
+    setState(() {
+      percentStream.add(1.0);
+    });
   }
 
   @override

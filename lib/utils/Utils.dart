@@ -747,7 +747,7 @@ class Utils {
         : Container();
   }
 
-  static Future showAlertCampaign(ctx, activeCampaign, onPressed) {
+  static Future showAlertCampaign(ctx, onPressed) {
     if (Platform.isAndroid) {
       return showDialog(
         context: ctx,

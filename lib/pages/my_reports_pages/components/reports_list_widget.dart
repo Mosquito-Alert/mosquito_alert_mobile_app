@@ -1,15 +1,16 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:mosquito_alert_app/api/api.dart';
-import 'package:mosquito_alert_app/models/owcampaing.dart';
+import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/customModalBottomSheet.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
+import 'package:provider/provider.dart';
 
 class ReportsList extends StatefulWidget {
   ReportsList({Key? key, required this.reports}) : super(key: key);
@@ -22,8 +23,17 @@ class ReportsList extends StatefulWidget {
 class _MyReportsListState extends State<ReportsList> {
   List<Report> reports;
   GoogleMapController? miniMapController;
+  late CampaignsApi campaignsApi;
 
   _MyReportsListState({required this.reports});
+
+  @override
+  void initState() {
+    super.initState();
+    MosquitoAlert apiClient =
+        Provider.of<MosquitoAlert>(context, listen: false);
+    campaignsApi = apiClient.getCampaignsApi();
+  }
 
   String formatCreationTime(String? utcTimeString) {
     utcTimeString ??= '1970-01-01 00:00';
@@ -138,18 +148,23 @@ class _MyReportsListState extends State<ReportsList> {
               ));
   }
 
-  Future<Campaign?> _checkCampaigns(int? country) async {
-    List<Campaign> campaignsList = await ApiSingleton().getCampaigns(country);
-    var now = DateTime.now().toUtc();
-    if (campaignsList.any((element) =>
-        DateTime.parse(element.startDate!).isBefore(now) &&
-        DateTime.parse(element.endDate!).isAfter(now))) {
-      var activeCampaign = campaignsList.firstWhere((element) =>
-          DateTime.parse(element.startDate!).isBefore(now) &&
-          DateTime.parse(element.endDate!).isAfter(now));
-      return activeCampaign;
+  Future<Campaign?> _fetchFirstActiveCampaign(int? country) async {
+    try {
+      final response = await campaignsApi.list(
+        countryId: country,
+        isActive: true,
+        orderBy: BuiltList<String>.of(["-start_date"]),
+        pageSize: 1,
+      );
+
+      final results = response.data?.results;
+      if (results == null || results.isEmpty) return null;
+      return results.first;
+    } catch (e, stackTrace) {
+      print('Failed to fetch campaigns: $e');
+      debugPrintStack(stackTrace: stackTrace);
+      return null;
     }
-    return null;
   }
 
   void _onMiniMapCreated(GoogleMapController controller) async {
@@ -181,7 +196,7 @@ class _MyReportsListState extends State<ReportsList> {
         contentType: '${report.type}_report', itemId: '${report.version_UUID}');
     var hasValidLocation = report.getLocation() != null;
     var location = report.getLocation();
-    var campaign = await _checkCampaigns(report.country);
+    var campaign = await _fetchFirstActiveCampaign(report.country);
     await CustomShowModalBottomSheet.customShowModalBottomSheet(
         context: context,
         dismissible: true,
