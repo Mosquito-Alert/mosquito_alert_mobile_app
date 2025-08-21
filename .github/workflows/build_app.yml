@@ -21,7 +21,7 @@ jobs:
 
     - name: Get Dependencies
       run: flutter pub get
-    
+
     - name: Validate pubspec.lock is up to date
       run: |
         if ! git diff --quiet pubspec.lock; then
@@ -34,8 +34,20 @@ jobs:
       env:
         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_ANDROID_BASE64 }}
 
-    - name: Build Android on debug mode
-      run: flutter build appbundle --debug
+    - name: Build Android on debug mode (capture logs)
+      run: flutter build appbundle --debug 2>&1 | tee build_log.txt
+
+    - name: Check for obsolete Java version warnings
+      run: |
+        if grep -q "source value 8 is obsolete" build_log.txt; then
+          echo "❌ Obsolete Java 'source' value warning found!"
+          exit 1
+        elif grep -q "target value 8 is obsolete" build_log.txt; then
+          echo "❌ Obsolete Java 'target' value warning found!"
+          exit 1
+        else
+          echo "✅ No obsolete Java version warnings found."
+        fi
 
   ios_build:
     runs-on: macos-14
