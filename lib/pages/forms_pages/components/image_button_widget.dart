@@ -30,13 +30,13 @@ class CustomImageButton extends StatelessWidget {
                           img!,
                         ),
                       )
-                    : SizedBox(
+                    : const SizedBox(
                         height: 140,
                       ),
                 Expanded(
                   flex: MediaQuery.textScalerOf(context).scale(1.0) < 1.23 ? 1 : 2,
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
                     child: Style.titleMedium(title,
                         textAlign: TextAlign.center, fontSize: 16),
                   ),

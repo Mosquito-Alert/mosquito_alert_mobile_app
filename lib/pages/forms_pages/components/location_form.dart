@@ -209,18 +209,18 @@ class _BitingLocationFormState extends State<LocationForm> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
+            margin: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 35,
                 ),
                 Style.title(
                     MyLocalizations.of(context, widget.displayQuestion)),
                 Style.body(MyLocalizations.of(context, 'chose_option_txt')),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 30),
+                  margin: const EdgeInsets.symmetric(vertical: 30),
                   child: StreamBuilder(
                     stream: streamType.stream,
                     initialData: Utils.report!.location_choice != null
@@ -248,7 +248,7 @@ class _BitingLocationFormState extends State<LocationForm> {
                                           selected: snapshot.data ==
                                               LocationType.current,
                                         ))),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Expanded(
@@ -266,11 +266,11 @@ class _BitingLocationFormState extends State<LocationForm> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(vertical: 5),
+                            margin: const EdgeInsets.symmetric(vertical: 5),
                             height: MediaQuery.of(context).size.height * 0.4,
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
@@ -313,7 +313,7 @@ class _BitingLocationFormState extends State<LocationForm> {
                                   },
                                 )),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Style.button(

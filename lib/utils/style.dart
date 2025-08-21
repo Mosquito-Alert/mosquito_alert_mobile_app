@@ -109,7 +109,7 @@ class Style {
       style: ElevatedButton.styleFrom(
         elevation: 0,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding: EdgeInsets.symmetric(vertical: 14),
+        padding: const EdgeInsets.symmetric(vertical: 14),
         backgroundColor: color ?? colorPrimary,
         foregroundColor: textColor ?? Colors.white,
         shape: RoundedRectangleBorder(
@@ -175,8 +175,8 @@ class Style {
         fillColor: Colors.white,
         hintText: hint,
         hintMaxLines: 5,
-        hintStyle: TextStyle(fontSize: 17),
-        contentPadding: EdgeInsets.fromLTRB(15.0, 16.0, 10.0, 16.0),
+        hintStyle: const TextStyle(fontSize: 17),
+        contentPadding: const EdgeInsets.fromLTRB(15.0, 16.0, 10.0, 16.0),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(3.0),
           borderSide:

@@ -47,12 +47,12 @@ class _ConsentFormState extends State<ConsentForm> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        SizedBox(
+                        const SizedBox(
                           height: 35,
                         ),
                         Style.title(
                             MyLocalizations.of(context, 'consent_welcome_txt')),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Style.body(

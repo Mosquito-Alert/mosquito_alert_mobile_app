@@ -19,7 +19,7 @@ class SettingsMenuWidget extends StatelessWidget {
           onTap();
         },
         title: Style.body(text),
-        trailing: Icon(
+        trailing: const Icon(
           Icons.arrow_forward_ios,
           color: Colors.black,
           size: 18,

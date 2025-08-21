@@ -35,7 +35,7 @@ class CustomCard extends StatelessWidget {
                       fit: BoxFit.cover, width: 65, height: 65),
                 ),
               ),
-              SizedBox(width: 15),
+              const SizedBox(width: 15),
               Expanded(
                 child: Text(
                   MyLocalizations.of(context, text),

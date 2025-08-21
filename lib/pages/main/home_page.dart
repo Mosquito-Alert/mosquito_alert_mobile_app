@@ -64,11 +64,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: SingleChildScrollView(
                           child: Column(
                             children: <Widget>[
-                              SizedBox(
+                              const SizedBox(
                                 height: 24,
                               ),
                               Row(
@@ -88,27 +88,27 @@ class _HomePageState extends State<HomePage> {
                                           ]),
                                     )
                                   ]),
-                              SizedBox(height: 30),
+                              const SizedBox(height: 30),
                               CustomCard(
                                   text: 'single_mosquito',
                                   image_path:
                                       'assets/img/ic_mosquito_report.webp',
                                   color: '40DFD458',
                                   onTap: _createAdultReport),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               CustomCard(
                                   text: 'single_bite',
                                   image_path: 'assets/img/ic_bite_report.webp',
                                   color: '40D28A73',
                                   onTap: _createBiteReport),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               CustomCard(
                                   text: 'single_breeding_site',
                                   image_path:
                                       'assets/img/ic_breeding_report.webp',
                                   color: '407D9393',
                                   onTap: _createSiteReport),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               CustomCard(
                                   text: 'public_map_tab',
                                   image_path: 'assets/img/ic_public_map.webp',

@@ -122,7 +122,7 @@ class _GalleryPageState extends State<GalleryPage> {
         width: double.infinity,
         height: double.infinity,
         child: Container(
-          margin: EdgeInsets.only(bottom: 60.0),
+          margin: const EdgeInsets.only(bottom: 60.0),
           child: ListView(
             children: <Widget>[
               GestureDetector(

@@ -13,16 +13,16 @@ class QuestionOption extends StatelessWidget {
       opacity: disabled ? 0.5 : 1,
       child: Card(
         color: selected ? Style.colorPrimary : Colors.white,
-        margin: EdgeInsets.symmetric(vertical: 5),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         elevation: 2,
         child: Container(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
-                margin: EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.only(left: 10),
                 child: Image.asset(
                   img,
                   height: 40,
@@ -35,7 +35,7 @@ class QuestionOption extends StatelessWidget {
                   color: selected ? Colors.white : Style.textColor,
                 ),
               ),
-              SizedBox(width: 40),
+              const SizedBox(width: 40),
             ],
           ),
         ),

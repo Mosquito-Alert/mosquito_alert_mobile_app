@@ -108,7 +108,7 @@ class _SettingsPageState extends State<SettingsPage> {
       key: key,
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(15),
+          margin: const EdgeInsets.all(15),
           child: isLoading
               ? Container(
                   height: MediaQuery.sizeOf(context).height * 0.8,
@@ -117,7 +117,7 @@ class _SettingsPageState extends State<SettingsPage> {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       SettingsMenuWidget(
@@ -125,11 +125,11 @@ class _SettingsPageState extends State<SettingsPage> {
                           () {
                         _openLanguagePickerDialog();
                       }),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Container(
-                        padding: EdgeInsets.only(bottom: 12.0, top: 12.0),
+                        padding: const EdgeInsets.only(bottom: 12.0, top: 12.0),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                             color: Colors.white,
@@ -139,11 +139,11 @@ class _SettingsPageState extends State<SettingsPage> {
                           title: Style.body(MyLocalizations.of(
                               context, 'background_tracking_title')),
                           subtitle: Padding(
-                            padding: EdgeInsets.only(top: 8.0),
+                            padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
                               MyLocalizations.of(
                                   context, 'background_tracking_subtitle'),
-                              style: TextStyle(fontSize: 11),
+                              style: const TextStyle(fontSize: 11),
                             ),
                           ),
                           value: isBgTrackingEnabled,
@@ -177,7 +177,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           },
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Container(
@@ -201,15 +201,15 @@ class _SettingsPageState extends State<SettingsPage> {
                                     Spacer(flex: 1),
                                     if (numTagsAdded! > 0)
                                       Container(
-                                        margin: EdgeInsets.only(left: 8.0),
-                                        padding: EdgeInsets.all(4.0),
-                                        decoration: BoxDecoration(
+                                        margin: const EdgeInsets.only(left: 8.0),
+                                        padding: const EdgeInsets.all(4.0),
+                                        decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: Colors.grey,
                                         ),
                                         child: Text(
                                           '$numTagsAdded',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 12.0,
                                             fontWeight: FontWeight.bold,
@@ -256,7 +256,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         language.nativeName))
                     .toList()
                   ..sort((a, b) => a.name.compareTo(b.name)),
-                titlePadding: EdgeInsets.all(8.0),
+                titlePadding: const EdgeInsets.all(8.0),
                 searchCursorColor: Style.colorPrimary,
                 searchInputDecoration: InputDecoration(
                     hintText: MyLocalizations.of(context, 'search_txt')),

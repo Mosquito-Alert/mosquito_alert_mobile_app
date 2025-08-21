@@ -59,16 +59,16 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
                 )
               : Container(),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
+            margin: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 35,
                 ),
                 Style.title(MyLocalizations.of(
                     context, widget.displayQuestion['question']['text'])),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 GridView.builder(
@@ -102,7 +102,7 @@ class _QuestionsBreedingFormState extends State<QuestionsBreedingForm> {
                       );
                     }
                     return Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       child: GestureDetector(
                           onTap: () {
                             addQuestion(text, id);
