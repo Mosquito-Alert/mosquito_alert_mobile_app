@@ -6,10 +6,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/models/report.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_other_report_form.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_photo_button_widget.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/components/could_see_form.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/questions_breeding_form.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
@@ -50,10 +48,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
       'parameters': {'type': 'adult'}
     },
     {
-      'name': 'report_add_bitten',
-      'parameters': {'type': 'adult'}
-    },
-    {
       'name': 'report_add_note',
       'parameters': {'type': 'adult'}
     }
@@ -68,16 +62,8 @@ class _AdultReportPageState extends State<AdultReportPage> {
         {'id': 133, 'text': 'question_13_answer_133'},
       ]
     },
-    {
-      'question': {'id': 8, 'text': 'question_8'},
-      'answers': [
-        {'id': 82, 'text': 'question_8_answer_82'},
-        {'id': 81, 'text': 'question_8_answer_81'},
-      ]
-    },
   ];
 
-  bool addBiting = false;
   bool showCamera = false;
   String? otherReport;
   late Report toEditReport;
@@ -98,8 +84,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
       LocationForm(setValid, displayQuestions.elementAt(0)['question']['text']),
       QuestionsBreedingForm(
           displayQuestions.elementAt(0), setValid, false, null, ''),
-      CouldSeeForm(
-          addBitingReport, displayQuestions.elementAt(1), setValid, goNextPage),
       AddOtherReportPage(_createReport, setValid, percentStream),
     ];
 
@@ -128,12 +112,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
     });
   }
 
-  void addBitingReport(addReport) {
-    setState(() {
-      addBiting = addReport;
-    });
-  }
-
   void addOtherReport(String? reportType) {
     setState(() {
       otherReport = reportType;
@@ -145,19 +123,11 @@ class _AdultReportPageState extends State<AdultReportPage> {
   }
 
   void goNextPage() {
-    if (addBiting) {
-      Utils.addOtherReport('bite', context);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => BitingReportPage()),
-      );
-    } else {
-      _pagesController!
-          .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease);
-      setState(() {
-        index = _pagesController!.page! + 1;
-      });
-    }
+    _pagesController!
+        .nextPage(duration: Duration(microseconds: 300), curve: Curves.ease);
+    setState(() {
+      index = _pagesController!.page! + 1;
+    });
   }
 
   void _createReport() async {
@@ -262,14 +232,6 @@ class _AdultReportPageState extends State<AdultReportPage> {
                           .then((value) {
                         setValid(true);
                         addOtherReport(null);
-                      });
-                    } else if (currentPage == 4.0) {
-                      addBitingReport(false);
-                      _pagesController!.previousPage(
-                          duration: Duration(microseconds: 300),
-                          curve: Curves.ease);
-                      setState(() {
-                        index = currentPage! - 1;
                       });
                     } else {
                       setState(() {
@@ -403,20 +365,12 @@ class _AdultReportPageState extends State<AdultReportPage> {
         child: Style.button(MyLocalizations.of(context, 'continue_txt'), () {
           var currentPage = _pagesController!.page;
 
-          if (currentPage == 3.0 && addBiting) {
-            Utils.addOtherReport('bite', context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BitingReportPage()),
-            );
-          } else {
-            setState(() {
-              index = currentPage! + 1;
-            });
+          setState(() {
+            index = currentPage! + 1;
+          });
 
-            _pagesController!.nextPage(
-                duration: Duration(microseconds: 300), curve: Curves.ease);
-          }
+          _pagesController!.nextPage(
+              duration: Duration(microseconds: 300), curve: Curves.ease);
         }));
   }
 
