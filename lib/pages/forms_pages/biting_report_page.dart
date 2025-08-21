@@ -1,13 +1,10 @@
 import 'dart:async';
 
-import 'package:built_collection/built_collection.dart';
-import 'package:dio/src/response.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_other_report_form.dart';
-import 'package:mosquito_alert_app/pages/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -175,42 +172,6 @@ class _BitingReportPageState extends State<BitingReportPage> {
       return;
     }
 
-    if (Utils.savedAdultReport == null) {
-      return showSuccess();
-    }
-
-    Campaign? activeCampaign = null;
-    try {
-      Response<PaginatedCampaignList> response = await campaignsApi.list(
-        countryId: Utils.savedAdultReport!.country,
-        isActive: true,
-        orderBy: BuiltList<String>.of(["-start_date"]),
-        pageSize: 1,
-      );
-      activeCampaign = response.data!.results!.first;
-    } catch (e, stackTrace) {
-      print('Failed to fetch campaigns: $e');
-      debugPrintStack(stackTrace: stackTrace);
-    }
-
-    showSuccess();
-
-    if (activeCampaign != null) {
-      await Utils.showAlertCampaign(
-        context,
-        (ctx) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CampaignTutorialPage(fromReport: true),
-            ),
-          );
-        },
-      );
-    }
-  }
-
-  void showSuccess() {
     _showAlertOk();
     Utils.resetReport();
     setState(() {

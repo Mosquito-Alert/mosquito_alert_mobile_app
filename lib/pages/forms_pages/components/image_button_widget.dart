@@ -34,7 +34,9 @@ class CustomImageButton extends StatelessWidget {
                         height: 140,
                       ),
                 Expanded(
-                  flex: MediaQuery.textScalerOf(context).scale(1.0) < 1.23 ? 1 : 2,
+                  flex: MediaQuery.textScalerOf(context).scale(1.0) < 1.23
+                      ? 1
+                      : 2,
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5),
                     child: Style.titleMedium(title,
