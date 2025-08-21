@@ -225,10 +225,12 @@ class _AdultReportPageState extends State<AdultReportPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        _onWillPop();
-        return false;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) {
+        if (!didPop) {
+          _onWillPop();
+        }
       },
       child: Stack(
         children: <Widget>[
