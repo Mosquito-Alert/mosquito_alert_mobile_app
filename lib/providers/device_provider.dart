@@ -74,7 +74,7 @@ class DeviceProvider with ChangeNotifier {
 
     final mobileApp = MobileAppRequest((b) => b
       ..packageName = packageInfo.packageName
-      ..packageVersion = packageInfo.version);
+      ..packageVersion = '${packageInfo.version}+${packageInfo.buildNumber}');
 
     await _fetchDevice();
     if (device == null) {
