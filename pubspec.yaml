@@ -35,7 +35,7 @@ dependencies:
   intro_slider: ^3.0.10
   permission_handler: ^11.4.0
   language_picker: ^0.4.5
-  connectivity_plus: ^6.1.4
+  connectivity_plus: ^6.1.5
   overlay_support: ^2.1.0
 
   flutter_html: ^3.0.0
