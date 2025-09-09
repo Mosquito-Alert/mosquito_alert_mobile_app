@@ -54,6 +54,7 @@ dependencies:
   cached_network_image: ^3.3.1
   camera: ^0.11.2
   flutter_sliding_up_panel: ^2.1.1
+  image_picker: ^1.2.0
   photo_gallery: ^2.2.1
   textfield_tags: ^3.0.1
   in_app_review: ^2.0.9

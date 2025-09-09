@@ -3,9 +3,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sliding_up_panel/flutter_sliding_up_panel.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
@@ -27,7 +28,13 @@ class _WhatsAppCameraController extends ChangeNotifier {
   final selectedImages = <File>[];
   var images = <Medium>[];
 
-  Future<void> loadRecentGalleryImages() async {
+  Future<void> loadRecentGalleryImages(BuildContext context) async {
+    if (!(await isRecentPhotosFeatureEnabled(context))) {
+      images.clear();
+      notifyListeners();
+      return;
+    }
+
     final status = await Permission.photos.request();
     if (status.isDenied) return;
     if (status.isPermanentlyDenied) return;
@@ -47,18 +54,43 @@ class _WhatsAppCameraController extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print('Error loading gallery images: $e');
+      images.clear();
+      notifyListeners();
     }
   }
 
+  Future<bool> isRecentPhotosFeatureEnabled(BuildContext context) async {
+    if (!Platform.isIOS) {
+      return true;
+    }
+
+    // Disable feature only for iOS 17+ due to a crash
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+    final systemVersion = iosInfo.systemVersion;
+
+    final versionParts = systemVersion.split('.').map(int.parse).toList();
+    final majorVersion = versionParts.isNotEmpty ? versionParts[0] : 0;
+
+    if (majorVersion >= 17) {
+      // Disable feature for iOS 17+ where there's a known bug/crash
+      return false;
+    }
+
+    return true;
+  }
+
   Future<void> openGallery() async {
-    final res = await FilePicker.platform.pickFiles(
-      allowMultiple: multiple,
-      type: FileType.image,
-    );
-    if (res != null) {
-      for (var element in res.files) {
-        if (element.path != null) selectedImages.add(File(element.path!));
-      }
+    final picker = ImagePicker();
+    List<XFile> pickedImages = [];
+    if (multiple) {
+      pickedImages = await picker.pickMultiImage();
+    } else {
+      final singleImage = await picker.pickImage(source: ImageSource.gallery);
+      if (singleImage != null) pickedImages.add(singleImage);
+    }
+    for (var xfile in pickedImages) {
+      selectedImages.add(File(xfile.path));
     }
   }
 
@@ -113,6 +145,7 @@ class _WhatsappCameraState extends State<WhatsappCamera>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _cameraController?.dispose();
     controller.dispose();
     panel.dispose();
@@ -122,16 +155,35 @@ class _WhatsappCameraState extends State<WhatsappCamera>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      Navigator.pop(context);
+      _handlePermissionsOnResume();
+    }
+  }
+
+  Future<void> _handlePermissionsOnResume() async {
+    if (!mounted) return;
+
+    final status = await Permission.camera.status;
+    if (status.isGranted != _isCameraPermissionGranted && mounted) {
+      setState(() {
+        _isCameraPermissionGranted = status.isGranted;
+      });
+      if (status.isGranted && mounted) {
+        controller.loadRecentGalleryImages(context);
+      }
+    }
+    if (mounted) {
+      await _loadRecentPhotosIfPermissionGranted();
     }
   }
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     controller = _WhatsAppCameraController(multiple: widget.multiple);
     _initializeCamera();
     _requestCameraPermission();
+    _loadRecentPhotosIfPermissionGranted();
     panel.addListener(() {
       if (panel.status.name == 'hidden') {
         controller.selectedImages.clear();
@@ -167,11 +219,32 @@ class _WhatsappCameraState extends State<WhatsappCamera>
 
   Future<void> _requestCameraPermission() async {
     final status = await Permission.camera.request();
-    setState(() {
-      _isCameraPermissionGranted = status.isGranted;
-    });
-    if (status.isGranted) {
-      controller.loadRecentGalleryImages();
+    if (mounted) {
+      setState(() {
+        _isCameraPermissionGranted = status.isGranted;
+      });
+      if (status.isGranted) {
+        controller.loadRecentGalleryImages(context);
+      }
+    }
+  }
+
+  Future<void> _loadRecentPhotosIfPermissionGranted() async {
+    if (!mounted) return;
+
+    final photosStatus = await Permission.photos.status;
+    if (photosStatus.isGranted) {
+      if (mounted) {
+        controller.loadRecentGalleryImages(context);
+      }
+    } else {
+      // Request photos permission if not granted
+      final requestedStatus = await Permission.photos.request();
+      if (requestedStatus.isGranted && mounted) {
+        controller.loadRecentGalleryImages(context);
+        // Trigger a rebuild to show the recent photos strip immediately
+        setState(() {});
+      }
     }
   }
 
@@ -201,7 +274,10 @@ class _WhatsappCameraState extends State<WhatsappCamera>
                 ElevatedButton(
                   onPressed: () async {
                     if (await openAppSettings()) {
-                      Navigator.pop(context);
+                      // Check permission status when returning from settings
+                      if (mounted) {
+                        await _handlePermissionsOnResume();
+                      }
                     }
                   },
                   child: Text(MyLocalizations.of(context, 'open_settings')),
@@ -348,8 +424,13 @@ class _WhatsappCameraState extends State<WhatsappCamera>
           return;
         }
 
+        if (status.isGranted && mounted) {
+          // Trigger a rebuild to show recent photos strip if it wasn't visible before
+          setState(() {});
+        }
+
         await controller.openGallery().then((_) {
-          if (controller.selectedImages.isNotEmpty) {
+          if (controller.selectedImages.isNotEmpty && mounted) {
             Navigator.pop(context, controller.selectedImages);
           }
         });
@@ -373,6 +454,13 @@ class _WhatsappCameraState extends State<WhatsappCamera>
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data != PermissionStatus.granted) {
           return Container();
+        }
+
+        // Trigger loading if permission is granted but no images loaded yet
+        if (controller.images.isEmpty) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            controller.loadRecentGalleryImages(context);
+          });
         }
 
         return Positioned(
