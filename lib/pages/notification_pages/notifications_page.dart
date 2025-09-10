@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:html/parser.dart' show parse;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as sdk;
+import 'package:mosquito_alert_app/services/analytics_service.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/customModalBottomSheet.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -15,8 +15,13 @@ import 'package:provider/provider.dart';
 
 class NotificationsPage extends StatefulWidget {
   final int? notificationId;
+  final AnalyticsService? analyticsService;
 
-  const NotificationsPage({Key? key, this.notificationId}) : super(key: key);
+  const NotificationsPage({
+    Key? key,
+    this.notificationId,
+    this.analyticsService,
+  }) : super(key: key);
 
   @override
   _NotificationsPageState createState() => _NotificationsPageState();
@@ -43,6 +48,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
   late sdk.NotificationsApi notificationsApi;
+  late AnalyticsService _analyticsService;
 
   @override
   void initState() {
@@ -50,6 +56,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     sdk.MosquitoAlert apiClient =
         Provider.of<sdk.MosquitoAlert>(context, listen: false);
     notificationsApi = apiClient.getNotificationsApi();
+    _analyticsService = widget.analyticsService ?? FirebaseAnalyticsService();
     _logScreenView();
     loadingStream.add(true);
 
@@ -82,8 +89,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   Future<void> _logScreenView() async {
-    await FirebaseAnalytics.instance
-        .logScreenView(screenName: '/notifications');
+    await _analyticsService.logScreenView(screenName: '/notifications');
   }
 
   String _parseHtmlString(String htmlString) {
@@ -161,7 +167,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   void _showNotificationBottomSheet(
       BuildContext context, sdk.Notification notification) async {
-    await FirebaseAnalytics.instance.logSelectContent(
+    await _analyticsService.logSelectContent(
         contentType: 'notification', itemId: '${notification.id}');
 
     if (!notification.isRead) {
