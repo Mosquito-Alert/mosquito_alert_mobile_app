@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
@@ -7,9 +6,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/models/report.dart';
-import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 class ApiSingleton {
   static String baseUrl = '';
@@ -35,29 +32,8 @@ class ApiSingleton {
 
   //Reports
   Future<dynamic> createReport(Report report) async {
-    // TODO
+    // TODO: Delete?
     return null;
-  }
-
-  Future saveImages(Report report) async {
-    if (Utils.imagePath != null) {
-      Utils.imagePath!.forEach((img) async {
-        if (img['id'] == report.version_UUID) {
-          if (!img['image'].contains('http')) {
-            var isSaved = await saveImage(img['image'], report.version_UUID);
-            if (!isSaved) {
-              final directory = await getApplicationDocumentsDirectory();
-              File newImage = await img['imageFile']
-                  .copy('${directory.path}/${report.version_UUID}.png');
-
-              await Utils.saveLocalImage(newImage.path, report.version_UUID);
-            } else {
-              Utils.deleteImage(img['image']);
-            }
-          }
-        }
-      });
-    }
   }
 
   Future<List<Report>> getReportsList() async {

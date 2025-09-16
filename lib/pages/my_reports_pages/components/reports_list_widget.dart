@@ -14,14 +14,14 @@ import 'package:provider/provider.dart';
 
 class ReportsList extends StatefulWidget {
   ReportsList({Key? key, required this.reports}) : super(key: key);
-  final List<Report> reports;
+  final List<dynamic> reports;
 
   @override
   _MyReportsListState createState() => _MyReportsListState(reports: reports);
 }
 
 class _MyReportsListState extends State<ReportsList> {
-  List<Report> reports;
+  List<dynamic> reports;
   GoogleMapController? miniMapController;
   late CampaignsApi campaignsApi;
 
@@ -74,7 +74,7 @@ class _MyReportsListState extends State<ReportsList> {
     return Scaffold(
         body: reports.isEmpty
             ? Center(
-                child: Text('No reports found.'),
+                child: Text('No reports found.'), // TODO: Translate
               )
             : ListView.builder(
                 itemCount: reports.length,

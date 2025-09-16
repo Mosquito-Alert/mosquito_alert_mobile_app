@@ -156,7 +156,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _createBiteReport() async {
-    var createReport = await Utils.createNewReport('bite', context: context);
+    var createReport =
+        await Utils.createNewReport('bite', context: context); // TODO: Comment?
     loadingStream.add(false);
     if (createReport) {
       await Navigator.push(

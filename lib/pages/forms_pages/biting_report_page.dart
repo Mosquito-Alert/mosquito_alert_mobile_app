@@ -29,7 +29,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
   StreamController<bool> validStream = StreamController<bool>.broadcast();
   StreamController<double> percentStream = StreamController<double>.broadcast();
   double index = 0;
-  late CampaignsApi campaignsApi;
+  late BitesApi bitesApi;
 
   // Define the events to log
   final List<Map<String, dynamic>> _pageEvents = [
@@ -114,7 +114,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
     super.initState();
     MosquitoAlert apiClient =
         Provider.of<MosquitoAlert>(context, listen: false);
-    campaignsApi = apiClient.getCampaignsApi();
+    bitesApi = apiClient.getBitesApi();
     _logFirebaseAnalytics();
     _pagesController = PageController();
     _formsReport = [
@@ -165,18 +165,138 @@ class _BitingReportPageState extends State<BitingReportPage> {
     loadingStream.add(true);
     await FirebaseAnalytics.instance
         .logEvent(name: 'submit_report', parameters: {'type': 'bite'});
-    var res = await Utils.createReport(); // TODO: Replace with issue #397
 
-    if (!res!) {
+    try {
+      final locationPoint = LocationPoint((b) => b
+        ..latitude = Utils.report!.location_choice == 'current'
+            ? Utils.report!.current_location_lat!
+            : Utils.report!.selected_location_lat!
+        ..longitude = Utils.report!.location_choice == 'current'
+            ? Utils.report!.current_location_lon!
+            : Utils.report!.selected_location_lon!);
+
+      final location = LocationRequest((b) => b
+        ..source_ = Utils.report!.location_choice == 'current'
+            ? LocationRequestSource_Enum.auto
+            : LocationRequestSource_Enum.manual
+        ..point.replace(locationPoint));
+
+      // Map environment response
+      final environmentResponse = Utils.report!.responses!.firstWhere(
+        (q) => q!.question_id == 4, // Environment question ID
+      );
+      final environment =
+          _mapEnvironmentToEnum(environmentResponse!.answer_id!);
+
+      // Map moment response
+      final momentResponse = Utils.report!.responses!.firstWhere(
+        (q) => q!.question_id == 5, // When question ID
+      );
+      final moment = _mapMomentToEnum(momentResponse!.answer_id!);
+
+      // Extract bite counts from responses
+      final bodyPartResponses = Utils.report!.responses!
+          .where((q) => q!.question_id == 2) // Body part question ID
+          .toList();
+
+      // Map body part counts
+      int headCount = 0;
+      int leftArmCount = 0;
+      int rightArmCount = 0;
+      int chestCount = 0;
+      int leftLegCount = 0;
+      int rightLegCount = 0;
+
+      for (var response in bodyPartResponses) {
+        switch (response!.answer_id!) {
+          case 21:
+            headCount = int.parse(response.answer_value!);
+            break;
+          case 22:
+            leftArmCount = int.parse(response.answer_value!);
+            break;
+          case 23:
+            rightArmCount = int.parse(response.answer_value!);
+            break;
+          case 24:
+            chestCount = int.parse(response.answer_value!);
+            break;
+          case 25:
+            leftLegCount = int.parse(response.answer_value!);
+            break;
+          case 26:
+            rightLegCount = int.parse(response.answer_value!);
+            break;
+        }
+      }
+      final counts = BiteCountsRequest((b) => b
+        ..head = headCount
+        ..leftArm = leftArmCount
+        ..rightArm = rightArmCount
+        ..chest = chestCount
+        ..leftLeg = leftLegCount
+        ..rightLeg = rightLegCount);
+      // Create the bite request
+      final biteRequest = BiteRequest((b) => b
+        ..createdAt = DateTime.now().toUtc()
+        ..sentAt = DateTime.now().toUtc()
+        ..location.replace(location)
+        ..note = Utils.report!.note
+        ..eventEnvironment = environment
+        ..eventMoment = moment
+        ..counts.replace(counts));
+
+      // Send the request
+      final response = await bitesApi.create(biteRequest: biteRequest);
+
+      if (response.statusCode == 201) {
+        showSuccess();
+      } else {
+        _showAlertKo();
+      }
+    } catch (e) {
+      print('Error creating bite report: $e');
       _showAlertKo();
-      return;
     }
+  }
 
+  void showSuccess() {
     _showAlertOk();
     Utils.resetReport();
     setState(() {
       percentStream.add(1.0);
     });
+  }
+
+  // Helper methods to map current values to SDK enums
+  // TODO: Mix with the Enums in biting_form.dart?
+  BiteRequestEventEnvironmentEnum _mapEnvironmentToEnum(int answerId) {
+    switch (answerId) {
+      case 41:
+        return BiteRequestEventEnvironmentEnum.indoors;
+      case 42:
+        return BiteRequestEventEnvironmentEnum.outdoors;
+      case 43:
+        return BiteRequestEventEnvironmentEnum.vehicle;
+      default:
+        return BiteRequestEventEnvironmentEnum.indoors;
+    }
+  }
+
+  BiteRequestEventMomentEnum _mapMomentToEnum(int answerId) {
+    // TODO: Bug: "Last 24h" returns always answerId: 52 so it's not possible to select a different answer
+    switch (answerId) {
+      case 51:
+        return BiteRequestEventMomentEnum.now;
+      case 52:
+        return BiteRequestEventMomentEnum.lastNight;
+      case 9999999:
+        return BiteRequestEventMomentEnum.lastAfternoon;
+      case 99999998:
+        return BiteRequestEventMomentEnum.lastMidday;
+      default:
+        return BiteRequestEventMomentEnum.lastMorning;
+    }
   }
 
   void goNextPage() {

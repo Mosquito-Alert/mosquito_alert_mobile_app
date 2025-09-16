@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:mosquito_alert_app/utils/style.dart';
+import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/models/report.dart';
+import 'package:mosquito_alert_app/pages/my_reports_pages/components/reports_list_bites.dart';
 import 'package:mosquito_alert_app/pages/my_reports_pages/components/reports_list_widget.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 
 class MyReportsPage extends StatefulWidget {
   const MyReportsPage({Key? key}) : super(key: key);
@@ -15,7 +16,6 @@ class MyReportsPage extends StatefulWidget {
 
 class _MyReportsPageState extends State<MyReportsPage> {
   late List<Report> adultReports;
-  late List<Report> biteReports;
   late List<Report> siteReports;
   bool isLoading = true;
 
@@ -40,7 +40,6 @@ class _MyReportsPageState extends State<MyReportsPage> {
     setState(() {
       adultReports =
           myReports.where((report) => report.type == 'adult').toList();
-      biteReports = myReports.where((report) => report.type == 'bite').toList();
       siteReports = myReports.where((report) => report.type == 'site').toList();
       isLoading = false;
     });
@@ -99,7 +98,7 @@ class _MyReportsPageState extends State<MyReportsPage> {
             : TabBarView(
                 children: [
                   ReportsList(reports: adultReports),
-                  ReportsList(reports: biteReports),
+                  ReportsListBites(),
                   ReportsList(reports: siteReports),
                 ],
               ),
