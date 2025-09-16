@@ -1,4 +1,7 @@
 # **Mosquito Alert** 
+
+[![codecov](https://codecov.io/gh/Mosquito-Alert/Mosquito-Alert-Mobile-App/branch/main/graph/badge.svg)](https://codecov.io/gh/Mosquito-Alert/Mosquito-Alert-Mobile-App)
+
 ## What is Mosquito Alert?
 Mosquito Alert is a mobile phone application that is part of a larger citizen science system bringing together ordinary people, scientists and public health officials to fight against mosquitoes that can transmit diseases like Zika, dengue and chikungunya. More information about the project can be found at http://www.mosquitoalert.com.
 
