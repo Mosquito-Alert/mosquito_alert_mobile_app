@@ -15,5 +15,8 @@ jobs:
     - name: Statically analyze the Dart code for any errors/warnings/info, treating all as errors
       run: flutter analyze
 
-    - name: Test
-      run: flutter test
+    - name: Unit Tests
+      run: flutter test test/unit/
+
+    - name: Widget Tests
+      run: flutter test test/widget/

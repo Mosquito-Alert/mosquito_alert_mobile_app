@@ -8,7 +8,7 @@ void main() {
     {'input': '#myTag2', 'expectedHashtag': 'myTag2'},
   ];
 
-  testWidgets('Migration from hashtag to hashtags', (tester) async {
+  test('Migration from hashtag to hashtags', () async {
     // Set mock initial values for SharedPreferences
     SharedPreferences.setMockInitialValues({});
 

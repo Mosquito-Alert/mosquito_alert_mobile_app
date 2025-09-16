@@ -6,7 +6,7 @@ import 'package:mosquito_alert_app/services/analytics_service.dart';
 import 'package:provider/provider.dart';
 
 // Import shared mocks
-import 'mocks/mocks.dart';
+import '../mocks/mocks.dart';
 
 Widget createTestWidget({
   int? notificationId,
