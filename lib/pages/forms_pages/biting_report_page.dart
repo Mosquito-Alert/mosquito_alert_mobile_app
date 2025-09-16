@@ -189,10 +189,15 @@ class _BitingReportPageState extends State<BitingReportPage> {
           _mapEnvironmentToEnum(environmentResponse!.answer_id!);
 
       // Map moment response
-      final momentResponse = Utils.report!.responses!.firstWhere(
-        (q) => q!.question_id == 5, // When question ID
+      // First check for specific time response (question_id 3), then fall back to general when response (question_id 5)
+      final timeResponse = Utils.report!.responses!.firstWhere(
+        (q) => q!.question_id == 3, // Specific time question ID
+        orElse: () => null
       );
-      final moment = _mapMomentToEnum(momentResponse!.answer_id!);
+      final whenResponse = Utils.report!.responses!.firstWhere(
+        (q) => q!.question_id == 5, // General when question ID
+      );
+      final moment = _mapMomentToEnum(timeResponse?.answer_id ?? whenResponse!.answer_id!);
 
       // Extract bite counts from responses
       final bodyPartResponses = Utils.report!.responses!
@@ -284,16 +289,17 @@ class _BitingReportPageState extends State<BitingReportPage> {
   }
 
   BiteRequestEventMomentEnum _mapMomentToEnum(int answerId) {
-    // TODO: Bug: "Last 24h" returns always answerId: 52 so it's not possible to select a different answer
     switch (answerId) {
       case 51:
         return BiteRequestEventMomentEnum.now;
-      case 52:
-        return BiteRequestEventMomentEnum.lastNight;
-      case 9999999:
-        return BiteRequestEventMomentEnum.lastAfternoon;
-      case 99999998:
+      case 31:
+        return BiteRequestEventMomentEnum.lastMorning;
+      case 32:
         return BiteRequestEventMomentEnum.lastMidday;
+      case 33:
+        return BiteRequestEventMomentEnum.lastAfternoon;
+      case 34:
+        return BiteRequestEventMomentEnum.lastNight;
       default:
         return BiteRequestEventMomentEnum.lastMorning;
     }
