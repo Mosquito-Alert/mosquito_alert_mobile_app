@@ -46,6 +46,18 @@ class MockMyLocalizations extends MyLocalizations {
         return 'Report saved successfully';
       case 'save_report_ko_txt':
         return 'Error saving report';
+      case 'delete_report_title':
+        return 'Delete Report';
+      case 'delete_report_txt':
+        return 'Are you sure you want to delete this report?';
+      case 'delete':
+        return 'Delete';
+      case 'yes':
+        return 'Yes';
+      case 'no':
+        return 'No';
+      case 'app_name':
+        return 'Mosquito Alert';
       default:
         return key ?? '';
     }

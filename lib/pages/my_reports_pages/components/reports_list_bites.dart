@@ -312,26 +312,18 @@ class _ReportsListBitesState extends State<ReportsListBites> {
       parameters: {'report_uuid': report.uuid},
     );
     Navigator.pop(context);
-    // TODO: Call deleteBiteReport with new api
-    /*try {
-      final success = true;
-      if (success) {
-        setState(() {
-          biteReports.removeWhere((b) => b.uuid == report.uuid);
-        });
-      } else {
-        await Utils.showAlert(
-          MyLocalizations.of(context, 'app_name'),
-          MyLocalizations.of(context, 'save_report_ko_txt'),
-          context,
-        );
-      }
+
+    try {
+      await bitesApi.destroy(uuid: report.uuid);
+      setState(() {
+        biteReports.removeWhere((b) => b.uuid == report.uuid);
+      });
     } catch (e) {
       await Utils.showAlert(
         MyLocalizations.of(context, 'app_name'),
         MyLocalizations.of(context, 'save_report_ko_txt'),
         context,
       );
-    }*/
+    }
   }
 }

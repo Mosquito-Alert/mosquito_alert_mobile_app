@@ -119,5 +119,36 @@ void main() {
       expect(find.byType(Card), findsOneWidget);
       expect(find.text('1 bite'), findsOneWidget);
     });
+
+    testWidgets('should render bite report cards correctly',
+        (WidgetTester tester) async {
+      // Given - Mock bite reports
+      final testBites = [
+        createTestBite(
+          uuid: 'bite-1',
+          createdAt: DateTime(2024, 9, 15, 10, 30),
+          totalBites: 2,
+        ),
+        createTestBite(
+          uuid: 'bite-2',
+          createdAt: DateTime(2024, 9, 14, 15, 45),
+          totalBites: 3,
+        ),
+      ];
+      mockBitesApi.setBites(testBites);
+
+      // When - Create widget and wait for loading
+      await tester
+          .pumpWidget(createReportsListBitesTestWidget(mockClient: mockClient));
+      await pumpAndSettleIgnoringFirebaseException(tester);
+
+      // Then - Verify cards are displayed correctly
+      expect(find.byType(Card), findsNWidgets(2));
+      expect(find.text('2 bites'), findsOneWidget);
+      expect(find.text('3 bites'), findsOneWidget);
+
+      // Verify cards have proper tap behavior
+      expect(find.byType(ListTile), findsNWidgets(2));
+    });
   });
 }

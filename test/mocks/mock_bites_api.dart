@@ -7,6 +7,9 @@ class MockBitesApi extends sdk.BitesApi {
   bool createCalled = false;
   sdk.BiteRequest? lastBiteRequest;
   bool shouldFail = false;
+  bool destroyCalled = false;
+  String? lastDestroyedUuid;
+  bool shouldFailDestroy = false;
   List<sdk.Bite> _bites = [];
 
   MockBitesApi() : super(Dio(), sdk.serializers);
@@ -90,6 +93,34 @@ class MockBitesApi extends sdk.BitesApi {
         ..next = hasNext ? 'next-page-url' : null
         ..previous = currentPage > 1 ? 'previous-page-url' : null
         ..results = BuiltList<sdk.Bite>(paginatedResults).toBuilder()),
+    );
+  }
+
+  @override
+  Future<Response<dynamic>> destroy({
+    required String uuid,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? extra,
+    Map<String, dynamic>? headers,
+    void Function(int, int)? onReceiveProgress,
+    void Function(int, int)? onSendProgress,
+    bool Function(int?)? validateStatus,
+  }) async {
+    destroyCalled = true;
+    lastDestroyedUuid = uuid;
+
+    await Future.delayed(Duration(milliseconds: 100));
+
+    if (shouldFailDestroy) {
+      throw Exception('Delete failed');
+    }
+
+    // Remove the bite from the mock data
+    _bites.removeWhere((bite) => bite.uuid == uuid);
+
+    return Response<dynamic>(
+      statusCode: 204, // No Content - standard for successful delete
+      requestOptions: RequestOptions(path: '/bites/$uuid/'),
     );
   }
 }
