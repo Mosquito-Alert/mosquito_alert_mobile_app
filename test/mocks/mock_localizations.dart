@@ -12,8 +12,28 @@ class MockMyLocalizations extends MyLocalizations {
         return 'Notifications';
       case 'no_notifications_yet_txt':
         return 'No notifications yet';
+      case 'no_reports_yet_txt':
+        return 'No registered reports';
       case 'single_bite':
-        return 'Report Bite';
+        return 'Bite';
+      case 'plural_bite':
+        return 'Bites';
+      case 'no_bites':
+        return 'No bites';
+      case 'bite_report_bodypart_head':
+        return 'Head';
+      case 'bite_report_bodypart_chest':
+        return 'Chest';
+      case 'bite_report_bodypart_leftarm':
+        return 'Left arm';
+      case 'bite_report_bodypart_rightarm':
+        return 'Right arm';
+      case 'bite_report_bodypart_leftleg':
+        return 'Left leg';
+      case 'bite_report_bodypart_rightleg':
+        return 'Right leg';
+      case 'unknown':
+        return 'Unknown';
       case 'continue_txt':
         return 'Continue';
       case 'current_location_txt':

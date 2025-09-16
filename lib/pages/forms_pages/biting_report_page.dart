@@ -190,14 +190,14 @@ class _BitingReportPageState extends State<BitingReportPage> {
 
       // Map moment response
       // First check for specific time response (question_id 3), then fall back to general when response (question_id 5)
-      final timeResponse = Utils.report!.responses!.firstWhere(
-        (q) => q!.question_id == 3, // Specific time question ID
-        orElse: () => null
-      );
+      final timeResponse = Utils.report!.responses!
+          .firstWhere((q) => q!.question_id == 3, // Specific time question ID
+              orElse: () => null);
       final whenResponse = Utils.report!.responses!.firstWhere(
         (q) => q!.question_id == 5, // General when question ID
       );
-      final moment = _mapMomentToEnum(timeResponse?.answer_id ?? whenResponse!.answer_id!);
+      final moment =
+          _mapMomentToEnum(timeResponse?.answer_id ?? whenResponse!.answer_id!);
 
       // Extract bite counts from responses
       final bodyPartResponses = Utils.report!.responses!
