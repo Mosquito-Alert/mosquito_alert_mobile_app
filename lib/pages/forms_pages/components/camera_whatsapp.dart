@@ -168,6 +168,7 @@ class _WhatsappCameraState extends State<WhatsappCamera>
         _isCameraPermissionGranted = status.isGranted;
       });
       if (status.isGranted && mounted) {
+        await _initializeCamera();
         controller.loadRecentGalleryImages(context);
       }
     }
@@ -181,7 +182,6 @@ class _WhatsappCameraState extends State<WhatsappCamera>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     controller = _WhatsAppCameraController(multiple: widget.multiple);
-    _initializeCamera();
     _requestCameraPermission();
     _loadRecentPhotosIfPermissionGranted();
     panel.addListener(() {
@@ -224,6 +224,7 @@ class _WhatsappCameraState extends State<WhatsappCamera>
         _isCameraPermissionGranted = status.isGranted;
       });
       if (status.isGranted) {
+        await _initializeCamera();
         controller.loadRecentGalleryImages(context);
       }
     }
