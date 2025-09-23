@@ -1,15 +1,19 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:intro_slider/intro_slider.dart';
 import 'package:markdown/markdown.dart';
+import 'package:mosquito_alert_app/services/analytics_service.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class GalleryPage extends StatefulWidget {
   final Function goBackToHomepage;
+  final AnalyticsService? analyticsService;
 
-  GalleryPage({required this.goBackToHomepage});
+  GalleryPage({
+    required this.goBackToHomepage,
+    this.analyticsService,
+  });
 
   @override
   _GalleryPageState createState() => _GalleryPageState();
@@ -17,16 +21,17 @@ class GalleryPage extends StatefulWidget {
 
 class _GalleryPageState extends State<GalleryPage> {
   List<Slide> slides = [];
+  late AnalyticsService _analyticsService;
 
   @override
   void initState() {
     super.initState();
+    _analyticsService = widget.analyticsService ?? FirebaseAnalyticsService();
     _logScreenView();
   }
 
   Future<void> _logScreenView() async {
-    await FirebaseAnalytics.instance
-        .logScreenView(screenName: '/mosquito_guide');
+    await _analyticsService.logScreenView(screenName: '/mosquito_guide');
   }
 
   List<Slide> initSlides() {

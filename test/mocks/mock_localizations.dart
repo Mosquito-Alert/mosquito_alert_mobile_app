@@ -58,6 +58,24 @@ class MockMyLocalizations extends MyLocalizations {
         return 'No';
       case 'app_name':
         return 'Mosquito Alert';
+      case 'gallery_info_01':
+        return 'Welcome to the Mosquito Guide - Slide 1';
+      case 'gallery_info_02':
+        return 'Mosquito Identification - Slide 2';
+      case 'gallery_info_03':
+        return 'Breeding Sites - Slide 3';
+      case 'gallery_info_04':
+        return 'Prevention Tips - Slide 4';
+      case 'gallery_info_05':
+        return 'Reporting Process - Slide 5';
+      case 'gallery_info_06':
+        return 'Photo Guidelines - Slide 6';
+      case 'gallery_info_07':
+        return 'Location Accuracy - Slide 7';
+      case 'gallery_info_08':
+        return 'Community Impact - Slide 8';
+      case 'gallery_info_09':
+        return 'Thank You - Slide 9';
       default:
         return key ?? '';
     }
