@@ -80,7 +80,7 @@ class _EnvironmentQuestionPageState extends State<EnvironmentQuestionPage> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Where did you find the mosquito?',
+                    MyLocalizations.of(context, "question_13"),
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -88,7 +88,7 @@ class _EnvironmentQuestionPageState extends State<EnvironmentQuestionPage> {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    'This information helps researchers understand mosquito behavior and habitat preferences.',
+                    '(HC) This information helps researchers understand mosquito behavior and habitat preferences.',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey[600],

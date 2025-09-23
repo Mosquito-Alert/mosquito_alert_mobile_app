@@ -336,8 +336,6 @@ class _BreedingSiteReportControllerState
       onSubmit: _submitReport,
       onPrevious: _previousStep,
       isSubmitting: _isSubmitting,
-      notesHint:
-          '(HC) e.g., "Large container", "Near construction site", "Visible mosquito larvae"...',
       submitLoadingText: '(HC) Submitting your breeding site report...',
     );
   }

@@ -293,8 +293,6 @@ class _AdultReportControllerState extends State<AdultReportController> {
                   onSubmit: _submitReport,
                   onPrevious: _previousStep,
                   isSubmitting: _isSubmitting,
-                  notesHint:
-                      '(HC) e.g., "Found near standing water", "Very active", "Unusual markings"...',
                   submitLoadingText: '(HC) Submitting your mosquito report...',
                 ),
               ],
