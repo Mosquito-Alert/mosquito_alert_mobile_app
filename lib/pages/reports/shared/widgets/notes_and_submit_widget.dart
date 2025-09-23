@@ -1,35 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 
-import '../models/adult_report_data.dart';
-
-class NotesAndSubmitPage extends StatefulWidget {
-  final AdultReportData reportData;
+class NotesAndSubmitWidget extends StatefulWidget {
+  final String? initialNotes;
+  final Function(String?) onNotesChanged;
   final VoidCallback onSubmit;
   final VoidCallback onPrevious;
   final bool isSubmitting;
+  final String notesHint;
+  final String submitLoadingText;
 
-  const NotesAndSubmitPage({
+  const NotesAndSubmitWidget({
     Key? key,
-    required this.reportData,
+    this.initialNotes,
+    required this.onNotesChanged,
     required this.onSubmit,
     required this.onPrevious,
     required this.isSubmitting,
+    this.notesHint =
+        '(HC) e.g., "Found near standing water", "Very active", "Unusual markings"...',
+    this.submitLoadingText = '(HC) Submitting your report...',
   }) : super(key: key);
 
   @override
-  _NotesAndSubmitPageState createState() => _NotesAndSubmitPageState();
+  _NotesAndSubmitWidgetState createState() => _NotesAndSubmitWidgetState();
 }
 
-class _NotesAndSubmitPageState extends State<NotesAndSubmitPage> {
+class _NotesAndSubmitWidgetState extends State<NotesAndSubmitWidget> {
   final _notesController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     // Pre-fill notes if they exist
-    if (widget.reportData.notes != null) {
-      _notesController.text = widget.reportData.notes!;
+    if (widget.initialNotes != null) {
+      _notesController.text = widget.initialNotes!;
     }
   }
 
@@ -40,8 +45,8 @@ class _NotesAndSubmitPageState extends State<NotesAndSubmitPage> {
   }
 
   void _updateNotes() {
-    widget.reportData.notes =
-        _notesController.text.isEmpty ? null : _notesController.text;
+    final notes = _notesController.text.isEmpty ? null : _notesController.text;
+    widget.onNotesChanged(notes);
   }
 
   @override
@@ -64,7 +69,7 @@ class _NotesAndSubmitPageState extends State<NotesAndSubmitPage> {
           SizedBox(height: 8),
 
           Text(
-            '(HC) Add any additional observations or details about the mosquito or circumstances.',
+            '(HC) Add any additional observations or details.',
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey[600],
@@ -79,8 +84,7 @@ class _NotesAndSubmitPageState extends State<NotesAndSubmitPage> {
             maxLength: 500,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText:
-                  '(HC) e.g., "Found near standing water", "Very active", "Unusual markings"...',
+              hintText: widget.notesHint,
               labelText: '(HC) Notes',
             ),
             onChanged: (value) => _updateNotes(),
@@ -102,7 +106,7 @@ class _NotesAndSubmitPageState extends State<NotesAndSubmitPage> {
                   CircularProgressIndicator(),
                   SizedBox(height: 12),
                   Text(
-                    '(HC) Submitting your report...',
+                    widget.submitLoadingText,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -110,7 +114,7 @@ class _NotesAndSubmitPageState extends State<NotesAndSubmitPage> {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    '(HC) Please wait while we process your mosquito report.',
+                    '(HC) Please wait while we process your report.',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey[600],

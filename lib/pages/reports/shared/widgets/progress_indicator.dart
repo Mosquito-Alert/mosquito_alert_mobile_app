@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class AdultReportProgressIndicator extends StatelessWidget {
+class ReportProgressIndicator extends StatelessWidget {
   final int currentStep;
   final int totalSteps;
   final List<String> stepTitles;
 
-  const AdultReportProgressIndicator({
+  const ReportProgressIndicator({
     Key? key,
     required this.currentStep,
     required this.totalSteps,
