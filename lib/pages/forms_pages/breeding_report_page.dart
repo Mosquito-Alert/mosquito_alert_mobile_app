@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/models/report.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/adult_report_page.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_other_report_form.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/add_photo_button_widget.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/location_form.dart';
@@ -185,27 +183,6 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     });
   }
 
-  void navigateOtherReport() async {
-    switch (otherReport) {
-      case 'bite':
-        Utils.addOtherReport('bite', context);
-        await Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => BitingReportPage()),
-        );
-        break;
-      case 'adult':
-        Utils.addOtherReport('adult', context);
-        await Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AdultReportPage()),
-        );
-        break;
-      default:
-        break;
-    }
-  }
-
   void _createReport() async {
     setState(() {
       percentStream.add(0.8);
@@ -213,16 +190,6 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
     loadingStream.add(true);
     await FirebaseAnalytics.instance
         .logEvent(name: 'submit_report', parameters: {'type': 'breeding_site'});
-    var res = await Utils.createReport();
-
-    if (!res!) {
-      _showAlertKo();
-    } else {
-      _showAlertOk();
-      setState(() {
-        percentStream.add(1.0);
-      });
-    }
   }
 
   @override
@@ -314,13 +281,6 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
 
                                             if (currentPage == 0.0) {
                                               goNextPage();
-                                            } else if (currentPage == 4.0) {
-                                              if (otherReport == 'adult' ||
-                                                  otherReport == 'bite') {
-                                                navigateOtherReport();
-                                              }
-                                            } else {
-                                              goNextPage();
                                             }
                                           }),
                                         )
@@ -367,37 +327,6 @@ class _BreedingReportPageState extends State<BreedingReportPage> {
           )
         ],
       ),
-    );
-  }
-
-  void _showAlertOk() {
-    loadingStream.add(false);
-    Utils.showAlert(
-      MyLocalizations.of(context, 'app_name'),
-      MyLocalizations.of(context, 'save_report_ok_txt'),
-      context,
-      onPressed: () {
-        Navigator.pop(context);
-        Utils.resetReport();
-        Navigator.of(context).popUntil((r) => r.isFirst);
-        Utils.requestInAppReview();
-      },
-      barrierDismissible: false,
-    );
-  }
-
-  void _showAlertKo() {
-    loadingStream.add(false);
-    Utils.showAlert(
-      MyLocalizations.of(context, 'app_name'),
-      MyLocalizations.of(context, 'save_report_ko_txt'),
-      context,
-      onPressed: () {
-        Navigator.pop(context);
-        Utils.resetReport();
-        Navigator.of(context).popUntil((r) => r.isFirst);
-      },
-      barrierDismissible: false,
     );
   }
 

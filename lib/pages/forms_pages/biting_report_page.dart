@@ -10,7 +10,6 @@ import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:provider/provider.dart';
 
-import 'adult_report_page.dart';
 import 'components/biting_form.dart';
 import 'components/location_form.dart';
 
@@ -403,14 +402,7 @@ class _BitingReportPageState extends State<BitingReportPage> {
 
                                                 if (currentPage == 2 &&
                                                     addMosquito) {
-                                                  Utils.addOtherReport(
-                                                      'adult', context);
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            AdultReportPage()),
-                                                  );
+                                                  // TODO: Remove
                                                 } else {
                                                   setState(() {
                                                     index = currentPage! + 1;

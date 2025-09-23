@@ -127,27 +127,6 @@ class Utils {
     }
   }
 
-  static void addOtherReport(String type, BuildContext context) {
-    report!.version_time = DateTime.now().toUtc().toIso8601String();
-    report!.creation_time = DateTime.now().toUtc().toIso8601String();
-
-    reportsList!.add(report);
-    report = null;
-    if (reportsList!.last!.location_choice == 'selected') {
-      createNewReport(type,
-          lat: reportsList!.last!.selected_location_lat,
-          lon: reportsList!.last!.selected_location_lon,
-          locationType: 'selected',
-          context: context);
-    } else {
-      createNewReport(type,
-          lat: reportsList!.last!.current_location_lat,
-          lon: reportsList!.last!.current_location_lon,
-          locationType: 'current',
-          context: context);
-    }
-  }
-
   static Future<void> deleteLastReport() async {
     report = null;
     report = await Report.fromJsonAsync(reportsList!.last!.toJson());
