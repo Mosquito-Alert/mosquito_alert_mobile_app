@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 
 import '../models/breeding_site_report_data.dart';
 
@@ -93,15 +94,13 @@ class _WaterQuestionPageState extends State<WaterQuestionPage> {
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: isSelected
-                              ? Theme.of(context).primaryColor
+                              ? Style.colorPrimary
                               : Colors.grey[300]!,
                           width: isSelected ? 2 : 1,
                         ),
                         borderRadius: BorderRadius.circular(12),
                         color: isSelected
-                            ? Theme.of(context)
-                                .primaryColor
-                                .withValues(alpha: 0.1)
+                            ? Style.colorPrimary.withValues(alpha: 0.1)
                             : Colors.white,
                       ),
                       child: Row(
@@ -134,7 +133,7 @@ class _WaterQuestionPageState extends State<WaterQuestionPage> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                     color: isSelected
-                                        ? Theme.of(context).primaryColor
+                                        ? Style.colorPrimary
                                         : Colors.black87,
                                   ),
                                 ),
@@ -155,7 +154,7 @@ class _WaterQuestionPageState extends State<WaterQuestionPage> {
                             Container(
                               padding: EdgeInsets.all(4),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
+                                color: Style.colorPrimary,
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
@@ -177,20 +176,21 @@ class _WaterQuestionPageState extends State<WaterQuestionPage> {
           Container(
             padding: EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.amber[50],
-              border: Border.all(color: Colors.amber[200]!),
+              color: Style.colorPrimary.withValues(alpha: 0.1),
+              border:
+                  Border.all(color: Style.colorPrimary.withValues(alpha: 0.3)),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               children: [
-                Icon(Icons.lightbulb_outline, color: Colors.amber[700]),
+                Icon(Icons.lightbulb_outline, color: Style.colorPrimary),
                 SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     '(HC) Water presence is important for mosquito breeding. Even small amounts can be significant.',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.amber[700],
+                      color: Style.colorPrimary,
                     ),
                   ),
                 ),
@@ -204,31 +204,17 @@ class _WaterQuestionPageState extends State<WaterQuestionPage> {
           Row(
             children: [
               Expanded(
-                child: OutlinedButton(
-                  onPressed: widget.onPrevious,
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Theme.of(context).primaryColor,
-                    side: BorderSide(color: Theme.of(context).primaryColor),
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: Text('(HC) Back'),
+                child: Style.outlinedButton(
+                  '(HC) Back',
+                  widget.onPrevious,
                 ),
               ),
               SizedBox(width: 12),
               Expanded(
                 flex: 2,
-                child: ElevatedButton(
-                  onPressed: _canProceed ? widget.onNext : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    disabledBackgroundColor: Colors.grey[300],
-                  ),
-                  child: Text(
-                    MyLocalizations.of(context, 'continue_txt'),
-                    style: TextStyle(fontSize: 16),
-                  ),
+                child: Style.button(
+                  MyLocalizations.of(context, 'continue_txt'),
+                  _canProceed ? widget.onNext : null,
                 ),
               ),
             ],

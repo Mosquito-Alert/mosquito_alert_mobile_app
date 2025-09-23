@@ -5,6 +5,7 @@ import 'package:mosquito_alert_app/pages/reports/shared/pages/location_selection
 import 'package:mosquito_alert_app/pages/reports/shared/pages/notes_and_submit_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/progress_indicator.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:provider/provider.dart';
 
 import 'models/bite_report_data.dart';
@@ -192,6 +193,9 @@ class _BiteReportControllerState extends State<BiteReportController> {
             onPressed: () {
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
+            style: TextButton.styleFrom(
+              foregroundColor: Style.colorPrimary,
+            ),
             child: Text('OK'),
           ),
         ],
@@ -212,6 +216,9 @@ class _BiteReportControllerState extends State<BiteReportController> {
             onPressed: () {
               Navigator.of(context).pop();
             },
+            style: TextButton.styleFrom(
+              foregroundColor: Style.colorPrimary,
+            ),
             child: Text('OK'),
           ),
         ],
@@ -248,6 +255,9 @@ class _BiteReportControllerState extends State<BiteReportController> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.grey[600],
+              ),
               child: Text('Cancel'),
             ),
             TextButton(
@@ -255,6 +265,9 @@ class _BiteReportControllerState extends State<BiteReportController> {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
+              style: TextButton.styleFrom(
+                foregroundColor: Style.colorPrimary,
+              ),
               child: Text('Exit'),
             ),
           ],

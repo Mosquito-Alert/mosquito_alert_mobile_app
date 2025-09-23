@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/forms_pages/components/camera_whatsapp.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 
 class PhotoSelector extends StatefulWidget {
   final List<File> selectedPhotos;
@@ -103,7 +104,7 @@ class _PhotoSelectorState extends State<PhotoSelector> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('(HC) Maximum ${widget.maxPhotos} photos allowed'),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Style.colorPrimary,
       ),
     );
   }
@@ -112,7 +113,7 @@ class _PhotoSelectorState extends State<PhotoSelector> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('(HC) At least ${widget.minPhotos} photo required'),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Style.colorPrimary,
       ),
     );
   }
@@ -153,9 +154,8 @@ class _PhotoSelectorState extends State<PhotoSelector> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: _hasMinimumPhotos
-                      ? Theme.of(context).primaryColor
-                      : Colors.red[700],
+                  color:
+                      _hasMinimumPhotos ? Style.colorPrimary : Colors.red[700],
                 ),
               ),
               if (!_hasMinimumPhotos)
@@ -285,7 +285,7 @@ class _PhotoSelectorState extends State<PhotoSelector> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.camera_alt, color: Theme.of(context).primaryColor),
+                  Icon(Icons.camera_alt, color: Style.colorPrimary),
                   SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -306,8 +306,7 @@ class _PhotoSelectorState extends State<PhotoSelector> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.check_circle,
-                      color: Theme.of(context).primaryColor),
+                  Icon(Icons.check_circle, color: Style.colorPrimary),
                   SizedBox(width: 8),
                   Expanded(
                     child: Text(

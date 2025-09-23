@@ -112,7 +112,11 @@ class _SettingsPageState extends State<SettingsPage> {
           child: isLoading
               ? Container(
                   height: MediaQuery.sizeOf(context).height * 0.8,
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(
+                      child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Style.colorPrimary),
+                  )),
                 )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,9 +151,12 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                           ),
                           value: isBgTrackingEnabled,
-                          activeColor: Colors.orange,
+                          activeColor: Style.colorPrimary,
                           secondary: isBgTrackingLoading
-                              ? CircularProgressIndicator()
+                              ? CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Style.colorPrimary),
+                                )
                               : null,
                           onChanged: (bool value) async {
                             if (value) {

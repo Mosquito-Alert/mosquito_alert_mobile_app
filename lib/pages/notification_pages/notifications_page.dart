@@ -153,10 +153,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
                     MyLocalizations.of(context, 'no_notifications_yet_txt'),
                   ),
                 ),
-                firstPageProgressIndicatorBuilder: (context) =>
-                    Center(child: CircularProgressIndicator()),
-                newPageProgressIndicatorBuilder: (context) =>
-                    Center(child: CircularProgressIndicator()),
+                firstPageProgressIndicatorBuilder: (context) => Center(
+                    child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Style.colorPrimary),
+                )),
+                newPageProgressIndicatorBuilder: (context) => Center(
+                    child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Style.colorPrimary),
+                )),
               ),
             );
           },

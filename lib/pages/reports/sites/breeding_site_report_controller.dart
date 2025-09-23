@@ -8,6 +8,7 @@ import 'package:mosquito_alert_app/pages/reports/shared/pages/photo_selection_pa
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/progress_indicator.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:provider/provider.dart';
 
 import 'models/breeding_site_report_data.dart';
@@ -34,22 +35,22 @@ class _BreedingSiteReportControllerState
   /// Gets the current step titles based on water status
   List<String> get _stepTitles {
     final titles = <String>[
-      '(HC) Site Type',        // 0
-      '(HC) Take Photos',      // 1
-      '(HC) Water Status',     // 2
+      '(HC) Site Type', // 0
+      '(HC) Take Photos', // 1
+      '(HC) Water Status', // 2
     ];
-    
+
     // Add larvae step only if water is present
     if (_reportData.hasWater == true) {
       titles.add('(HC) Larvae Check'); // 3
     }
-    
+
     // Always add final steps
     titles.addAll([
-      '(HC) Select Location',  // 3 or 4
-      '(HC) Notes & Submit'    // 4 or 5
+      '(HC) Select Location', // 3 or 4
+      '(HC) Notes & Submit' // 4 or 5
     ]);
-    
+
     return titles;
   }
 
@@ -85,7 +86,7 @@ class _BreedingSiteReportControllerState
       // Clear any larvae response if water is not present
       _reportData.hasLarvae = null;
     }
-    
+
     setState(() {
       _currentStep++;
     });
@@ -213,6 +214,9 @@ class _BreedingSiteReportControllerState
               Navigator.of(context).pop(); // Close dialog
               Navigator.of(context).pop(); // Return to home
             },
+            style: TextButton.styleFrom(
+              foregroundColor: Style.colorPrimary,
+            ),
             child: Text(MyLocalizations.of(context, 'ok')),
           ),
         ],
@@ -229,6 +233,9 @@ class _BreedingSiteReportControllerState
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              foregroundColor: Style.colorPrimary,
+            ),
             child: Text(MyLocalizations.of(context, 'ok')),
           ),
         ],
@@ -248,12 +255,12 @@ class _BreedingSiteReportControllerState
   Widget get _currentPage {
     // Step numbers are consistent:
     // 0: Site Type
-    // 1: Photos  
+    // 1: Photos
     // 2: Water
     // 3: Larvae (only if hasWater == true) OR Location (if hasWater == false)
     // 4: Location (if hasWater == true) OR Notes (if hasWater == false)
     // 5: Notes (only if hasWater == true)
-    
+
     switch (_currentStep) {
       case 0:
         return SiteTypeSelectionPage(
@@ -298,7 +305,7 @@ class _BreedingSiteReportControllerState
         } else {
           // Notes page (final step when no water)
           return _getNotesPage();
-        }  
+        }
       case 5:
         // Notes page (final step when water is present)
         return _getNotesPage();
@@ -338,10 +345,10 @@ class _BreedingSiteReportControllerState
   @override
   Widget build(BuildContext context) {
     final stepTitles = _stepTitles;
-    final currentTitle = _currentStep < stepTitles.length 
-        ? stepTitles[_currentStep] 
+    final currentTitle = _currentStep < stepTitles.length
+        ? stepTitles[_currentStep]
         : stepTitles.last;
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(currentTitle),

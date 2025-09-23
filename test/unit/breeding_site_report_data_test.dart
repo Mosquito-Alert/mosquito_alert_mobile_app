@@ -14,7 +14,9 @@ void main() {
       expect(reportData.isValid, false);
     });
 
-    test('should be valid when all required fields are present and water is false', () {
+    test(
+        'should be valid when all required fields are present and water is false',
+        () {
       reportData.siteType = 'storm_drain';
       reportData.photos = [File('/tmp/test.jpg')];
       reportData.hasWater = false;
@@ -24,7 +26,8 @@ void main() {
       expect(reportData.isValid, true);
     });
 
-    test('should be invalid when water is true but larvae status is not set', () {
+    test('should be invalid when water is true but larvae status is not set',
+        () {
       reportData.siteType = 'storm_drain';
       reportData.photos = [File('/tmp/test.jpg')];
       reportData.hasWater = true;

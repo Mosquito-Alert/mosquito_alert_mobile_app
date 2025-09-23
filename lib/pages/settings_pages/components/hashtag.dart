@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 class StringMultilineTags extends StatefulWidget {
@@ -62,7 +63,9 @@ class _StringMultilineTagsState extends State<StringMultilineTags> {
           child: Column(
             children: [
               if (isLoading)
-                CircularProgressIndicator()
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Style.colorPrimary),
+                )
               else
                 TextFieldTags<String>(
                   textfieldTagsController: _stringTagController,
@@ -80,16 +83,22 @@ class _StringMultilineTagsState extends State<StringMultilineTags> {
                           focusNode: inputFieldValues.focusNode,
                           decoration: InputDecoration(
                               isDense: true,
-                              border: const OutlineInputBorder(
+                              border: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 74, 137, 92),
-                                  width: 3.0,
+                                  color: Style.colorPrimary,
+                                  width: 2.0,
                                 ),
                               ),
-                              focusedBorder: const OutlineInputBorder(
+                              enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Colors.grey,
-                                  width: 3.0,
+                                  width: 1.0,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Style.colorPrimary,
+                                  width: 2.0,
                                 ),
                               ),
                               hintText: inputFieldValues.tags.isNotEmpty
@@ -121,12 +130,12 @@ class _StringMultilineTagsState extends State<StringMultilineTags> {
                                             children: inputFieldValues.tags
                                                 .map((String tag) {
                                               return Container(
-                                                decoration: const BoxDecoration(
+                                                decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.all(
                                                     Radius.circular(20.0),
                                                   ),
-                                                  color: Colors.orange,
+                                                  color: Style.colorPrimary,
                                                 ),
                                                 margin:
                                                     const EdgeInsets.symmetric(

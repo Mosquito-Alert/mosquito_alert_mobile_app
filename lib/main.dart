@@ -16,6 +16,7 @@ import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizationsDelegate.dart';
 import 'package:mosquito_alert_app/utils/ObserverUtils.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
@@ -191,8 +192,12 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Style.colorPrimary,
+          brightness: Brightness.light,
+        ),
         scaffoldBackgroundColor: Colors.white,
+        useMaterial3: true,
       ),
       navigatorKey: navigatorKey,
       navigatorObservers: <NavigatorObserver>[

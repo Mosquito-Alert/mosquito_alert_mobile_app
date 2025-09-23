@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as api;
+import 'package:mosquito_alert_app/utils/style.dart';
 
 /// Widget for selecting the environment where biting occurred
 class EnvironmentSelector extends StatelessWidget {
@@ -58,14 +59,11 @@ class EnvironmentSelector extends StatelessWidget {
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           border: Border.all(
-            color:
-                isSelected ? Theme.of(context).primaryColor : Colors.grey[300]!,
+            color: isSelected ? Style.colorPrimary : Colors.grey[300]!,
             width: isSelected ? 2 : 1,
           ),
           borderRadius: BorderRadius.circular(8),
-          color: isSelected
-              ? Theme.of(context).primaryColor.withValues(alpha: 0.05)
-              : null,
+          color: isSelected ? Style.colorPrimary.withValues(alpha: 0.05) : null,
         ),
         child: Row(
           children: [
@@ -74,15 +72,13 @@ class EnvironmentSelector extends StatelessWidget {
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? Theme.of(context).primaryColor.withValues(alpha: 0.1)
+                    ? Style.colorPrimary.withValues(alpha: 0.1)
                     : Colors.grey[100],
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
                 icon,
-                color: isSelected
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey[600],
+                color: isSelected ? Style.colorPrimary : Colors.grey[600],
                 size: 24,
               ),
             ),
@@ -99,9 +95,7 @@ class EnvironmentSelector extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
-                      color: isSelected
-                          ? Theme.of(context).primaryColor
-                          : Colors.black,
+                      color: isSelected ? Style.colorPrimary : Colors.black,
                     ),
                   ),
                   SizedBox(height: 4),
@@ -120,7 +114,7 @@ class EnvironmentSelector extends StatelessWidget {
             if (isSelected)
               Icon(
                 Icons.check_circle,
-                color: Theme.of(context).primaryColor,
+                color: Style.colorPrimary,
                 size: 24,
               )
             else

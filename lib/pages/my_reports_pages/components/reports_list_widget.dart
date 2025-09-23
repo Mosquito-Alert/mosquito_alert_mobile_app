@@ -102,7 +102,10 @@ class _MyReportsListState extends State<ReportsList> {
                                       reports[index].photos![0].photo ?? '',
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) =>
-                                      CircularProgressIndicator(),
+                                      CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Style.colorPrimary),
+                                  ),
                                   errorWidget: (context, url, error) =>
                                       Icon(Icons.error),
                                 ),

@@ -8,6 +8,7 @@ import 'package:mosquito_alert_app/pages/reports/shared/pages/photo_selection_pa
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/progress_indicator.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:provider/provider.dart';
 
 import 'models/adult_report_data.dart';
@@ -188,6 +189,9 @@ class _AdultReportControllerState extends State<AdultReportController> {
               Navigator.of(context).pop(); // Close dialog
               Navigator.of(context).pop(); // Return to home
             },
+            style: TextButton.styleFrom(
+              foregroundColor: Style.colorPrimary,
+            ),
             child: Text(MyLocalizations.of(context, 'ok')),
           ),
         ],
@@ -204,6 +208,9 @@ class _AdultReportControllerState extends State<AdultReportController> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
+            style: TextButton.styleFrom(
+              foregroundColor: Style.colorPrimary,
+            ),
             child: Text(MyLocalizations.of(context, 'ok')),
           ),
         ],

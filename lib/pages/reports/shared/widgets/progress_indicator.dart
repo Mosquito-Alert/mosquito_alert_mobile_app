@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 
 class ReportProgressIndicator extends StatelessWidget {
   final int currentStep;
@@ -41,7 +42,7 @@ class ReportProgressIndicator extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 2),
                   decoration: BoxDecoration(
                     color: isCompleted || isCurrent
-                        ? Colors.green[600]
+                        ? Style.colorPrimary
                         : Colors.grey[300],
                     borderRadius: BorderRadius.circular(2),
                   ),

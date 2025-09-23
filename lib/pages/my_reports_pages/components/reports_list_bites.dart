@@ -96,8 +96,10 @@ class _ReportsListBitesState extends State<ReportsListBites> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Style.colorPrimary),
+        ),
       );
     }
 

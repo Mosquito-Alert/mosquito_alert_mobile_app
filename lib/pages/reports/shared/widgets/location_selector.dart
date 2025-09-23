@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as api;
+import 'package:mosquito_alert_app/utils/style.dart';
 
 class LocationSelector extends StatefulWidget {
   final double? initialLatitude;
@@ -165,40 +166,13 @@ class _LocationSelectorState extends State<LocationSelector> {
         SizedBox(
           width: double.infinity,
           child: _isGettingLocation
-              ? ElevatedButton(
-                  onPressed: null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                    disabledBackgroundColor: Colors.grey[400],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.white),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Text('(HC) Getting location...'),
-                    ],
-                  ),
+              ? Style.button(
+                  '(HC) Getting location...',
+                  null,
                 )
-              : ElevatedButton.icon(
-                  onPressed: _getCurrentLocation,
-                  icon: Icon(Icons.gps_fixed),
-                  label: Text('(HC) Use Current GPS Location'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 12),
-                  ),
+              : Style.button(
+                  '(HC) Use Current GPS Location',
+                  _getCurrentLocation,
                 ),
         ),
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as api;
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/location_selector.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 
 /// Shared location selection page that can be used by any report workflow
 /// Configurable title, subtitle, and location handling through callbacks
@@ -133,31 +134,17 @@ class _LocationSelectionPageState extends State<LocationSelectionPage> {
           Row(
             children: [
               Expanded(
-                child: OutlinedButton(
-                  onPressed: widget.onPrevious,
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Theme.of(context).primaryColor,
-                    side: BorderSide(color: Theme.of(context).primaryColor),
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: Text('(HC) Back'),
+                child: Style.outlinedButton(
+                  '(HC) Back',
+                  widget.onPrevious,
                 ),
               ),
               SizedBox(width: 12),
               Expanded(
                 flex: 2,
-                child: ElevatedButton(
-                  onPressed: widget.canProceed ? widget.onNext : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    disabledBackgroundColor: Colors.grey[300],
-                  ),
-                  child: Text(
-                    MyLocalizations.of(context, 'continue_txt'),
-                    style: TextStyle(fontSize: 16),
-                  ),
+                child: Style.button(
+                  MyLocalizations.of(context, 'continue_txt'),
+                  widget.canProceed ? widget.onNext : null,
                 ),
               ),
             ],

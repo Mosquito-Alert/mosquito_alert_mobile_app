@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 
 import '../models/breeding_site_report_data.dart';
 
@@ -92,15 +93,13 @@ class _SiteTypeSelectionPageState extends State<SiteTypeSelectionPage> {
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: isSelected
-                              ? Theme.of(context).primaryColor
+                              ? Style.colorPrimary
                               : Colors.grey[300]!,
                           width: isSelected ? 2 : 1,
                         ),
                         borderRadius: BorderRadius.circular(12),
                         color: isSelected
-                            ? Theme.of(context)
-                                .primaryColor
-                                .withValues(alpha: 0.1)
+                            ? Style.colorPrimary.withValues(alpha: 0.1)
                             : Colors.white,
                       ),
                       child: Row(
@@ -146,7 +145,7 @@ class _SiteTypeSelectionPageState extends State<SiteTypeSelectionPage> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                     color: isSelected
-                                        ? Theme.of(context).primaryColor
+                                        ? Style.colorPrimary
                                         : Colors.black87,
                                   ),
                                 ),
@@ -167,7 +166,7 @@ class _SiteTypeSelectionPageState extends State<SiteTypeSelectionPage> {
                             Container(
                               padding: EdgeInsets.all(4),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
+                                color: Style.colorPrimary,
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
@@ -189,20 +188,21 @@ class _SiteTypeSelectionPageState extends State<SiteTypeSelectionPage> {
           Container(
             padding: EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.blue[50],
-              border: Border.all(color: Colors.blue[200]!),
+              color: Style.colorPrimary.withValues(alpha: 0.1),
+              border:
+                  Border.all(color: Style.colorPrimary.withValues(alpha: 0.3)),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               children: [
-                Icon(Icons.info_outline, color: Colors.blue[700]),
+                Icon(Icons.info_outline, color: Style.colorPrimary),
                 SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     '(HC) We focus on breeding sites in public spaces that may require community attention.',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.blue[700],
+                      color: Style.colorPrimary,
                     ),
                   ),
                 ),

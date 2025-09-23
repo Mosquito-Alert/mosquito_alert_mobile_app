@@ -113,13 +113,37 @@ class Style {
         backgroundColor: color ?? colorPrimary,
         foregroundColor: textColor ?? Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(3),
+          borderRadius: BorderRadius.circular(25),
         ),
       ),
       child: Text(
         text,
         style: TextStyle(
             color: textColor ?? Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w500),
+      ),
+    );
+  }
+
+  static Widget outlinedButton(text, onPressed,
+      {color, textColor, borderColor, elevation, Key? key}) {
+    return OutlinedButton(
+      key: key,
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        foregroundColor: color ?? colorPrimary,
+        side: BorderSide(color: borderColor ?? color ?? colorPrimary),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+            color: textColor ?? color ?? colorPrimary,
             fontSize: 14,
             fontWeight: FontWeight.w500),
       ),

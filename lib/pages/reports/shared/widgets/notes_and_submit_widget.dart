@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 
 class NotesAndSubmitWidget extends StatefulWidget {
   final String? initialNotes;
@@ -88,9 +89,17 @@ class _NotesAndSubmitWidgetState extends State<NotesAndSubmitWidget> {
                     maxLines: 4,
                     maxLength: 500,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Style.colorPrimary, width: 2),
+                      ),
                       hintText: widget.notesHint,
-                      labelText: '(HC) Notes',
                     ),
                     onChanged: (value) => _updateNotes(),
                   ),
@@ -103,12 +112,17 @@ class _NotesAndSubmitWidgetState extends State<NotesAndSubmitWidget> {
                       width: double.infinity,
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Colors.blue[50],
+                        color: Style.colorPrimary.withValues(alpha: 0.1),
+                        border: Border.all(
+                            color: Style.colorPrimary.withValues(alpha: 0.3)),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
                         children: [
-                          CircularProgressIndicator(),
+                          CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Style.colorPrimary),
+                          ),
                           SizedBox(height: 12),
                           Text(
                             widget.submitLoadingText,
@@ -139,49 +153,23 @@ class _NotesAndSubmitWidgetState extends State<NotesAndSubmitWidget> {
           Row(
             children: [
               Expanded(
-                child: OutlinedButton(
-                  onPressed: widget.isSubmitting ? null : widget.onPrevious,
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Theme.of(context).primaryColor,
-                    side: BorderSide(color: Theme.of(context).primaryColor),
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: Text('(HC) Back'),
+                child: Style.outlinedButton(
+                  '(HC) Back',
+                  widget.isSubmitting ? null : widget.onPrevious,
                 ),
               ),
               SizedBox(width: 12),
               Expanded(
                 flex: 2,
-                child: ElevatedButton(
-                  onPressed: widget.isSubmitting ? null : widget.onSubmit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    disabledBackgroundColor: Colors.grey[300],
-                  ),
-                  child: widget.isSubmitting
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            ),
-                            SizedBox(width: 8),
-                            Text('(HC) Submitting...'),
-                          ],
-                        )
-                      : Text(
-                          MyLocalizations.of(context, 'send_data'),
-                          style: TextStyle(fontSize: 16),
-                        ),
-                ),
+                child: widget.isSubmitting
+                    ? Style.button(
+                        '(HC) Submitting...',
+                        null,
+                      )
+                    : Style.button(
+                        MyLocalizations.of(context, 'send_data'),
+                        widget.onSubmit,
+                      ),
               ),
             ],
           ),

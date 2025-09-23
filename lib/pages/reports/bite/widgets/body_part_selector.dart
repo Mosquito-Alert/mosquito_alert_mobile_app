@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:provider/provider.dart';
 
 import '../models/bite_report_data.dart';
@@ -347,16 +348,12 @@ class BodyPartSelector extends StatelessWidget {
                 onPressed: () => Navigator.of(context).pop(),
                 child: Text('Cancel'),
               ),
-              ElevatedButton(
-                onPressed: () {
+              Style.button(
+                'Save',
+                () {
                   onChanged(tempCount);
                   Navigator.of(context).pop();
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  foregroundColor: Colors.white,
-                ),
-                child: Text('Save'),
               ),
             ],
           );
