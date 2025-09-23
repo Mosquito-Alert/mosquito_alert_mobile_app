@@ -155,27 +155,22 @@ class _HomePageState extends State<HomePage> {
     return 'what_to_do_txt_$i';
   }
 
-  Future<void> _createBiteReport() async {
-    var createReport =
-        await Utils.createNewReport('bite', context: context); // TODO: Comment?
-    loadingStream.add(false);
-    if (createReport) {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => BiteReportController()),
-      );
-    } else {
-      print('Bite report was not created');
-      loadingStream.add(false);
-    }
-  }
-
   Future<void> _createAdultReport() async {
     loadingStream.add(false);
     await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => AdultReportController(),
+      ),
+    );
+  }
+
+  Future<void> _createBiteReport() async {
+    loadingStream.add(false);
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BiteReportController(),
       ),
     );
   }

@@ -4,25 +4,15 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:in_app_review/in_app_review.dart';
-import 'package:mosquito_alert_app/api/api.dart';
-import 'package:mosquito_alert_app/app_config.dart';
-import 'package:mosquito_alert_app/models/question.dart';
-import 'package:mosquito_alert_app/models/report.dart';
-import 'package:mosquito_alert_app/providers/user_provider.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:provider/provider.dart';
-import 'package:random_string/random_string.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:uuid/uuid.dart';
 
 import 'MyLocalizations.dart';
 
@@ -35,178 +25,8 @@ class Utils {
   static LatLng? location;
   static LatLng defaultLocation = LatLng(0, 0);
 
-  //REPORTS
-  static Report? report;
-  static List<Report?>? reportsList;
-  static Report? savedAdultReport;
-
-  static void saveImgPath(File img) {
-    imagePath ??= [];
-    imagePath!
-        .add({'image': img.path, 'id': report!.version_UUID, 'imageFile': img});
-  }
-
   static void deleteImage(String? image) {
     imagePath!.removeWhere((element) => element['image'] == image);
-  }
-
-  static Future<bool> createNewReport(
-    String type, {
-    double? lat,
-    double? lon,
-    String? locationType,
-    required BuildContext context,
-  }) async {
-    var lang = await UserManager.getLanguage();
-    final userUUID =
-        Provider.of<UserProvider>(context, listen: false).user?.uuid;
-    report = Report(
-        type: type,
-        report_id: randomAlphaNumeric(4).toString(),
-        version_number: 0,
-        version_UUID: Uuid().v4(),
-        user: userUUID,
-        responses: []);
-
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    report!.package_name = packageInfo.packageName;
-    report!.package_version = 34;
-
-    if (Platform.isAndroid) {
-      var buildData = await DeviceInfoPlugin().androidInfo;
-      report!.device_manufacturer = buildData.manufacturer;
-      report!.device_model = buildData.model;
-      report!.os = 'Android';
-      report!.os_language = language.languageCode;
-      report!.os_version = buildData.version.sdkInt.toString();
-      report!.app_language = lang ?? language.languageCode;
-    } else if (Platform.isIOS) {
-      var buildData = await DeviceInfoPlugin().iosInfo;
-      report!.device_manufacturer = 'Apple';
-      report!.device_model = buildData.model;
-      report!.os = buildData.systemName;
-      report!.os_language = language.languageCode;
-      report!.os_version = buildData.systemVersion;
-      report!.app_language = lang ?? language.languageCode;
-    }
-
-    if (lat != null && lon != null) {
-      if (locationType == 'selected') {
-        report!.location_choice = 'selected';
-        report!.selected_location_lat = lat;
-        report!.selected_location_lon = lon;
-      } else {
-        report!.location_choice = 'current';
-        report!.current_location_lat = lat;
-        report!.current_location_lon = lon;
-      }
-    }
-    return true;
-  }
-
-  static void resetReport() {
-    report = null;
-    reportsList = null;
-  }
-
-  static void setEditReport(Report editReport) {
-    resetReport();
-    report = editReport;
-    report!.version_number = report!.version_number! + 1;
-    report!.version_UUID = Uuid().v4();
-
-    if (editReport.photos != null || editReport.photos!.isNotEmpty) {
-      imagePath = [];
-      editReport.photos!.forEach((element) {
-        imagePath!.add({
-          'image': '${ApiSingleton.baseUrl}/media/${element.photo}',
-          'id': editReport.version_UUID
-        });
-      });
-    }
-  }
-
-  static Future<void> deleteLastReport() async {
-    report = null;
-    report = await Report.fromJsonAsync(reportsList!.last!.toJson());
-    reportsList!.removeLast();
-    print('${jsonEncode(reportsList)}');
-    // print(reportsList);
-  }
-
-  static void setCurrentLocation(double latitude, double longitude) {
-    report!.location_choice = 'current';
-    report!.selected_location_lat = null;
-    report!.selected_location_lon = null;
-    report!.current_location_lat = latitude;
-    report!.current_location_lon = longitude;
-  }
-
-  static void setSelectedLocation(double? lat, lon) {
-    report!.location_choice = 'selected';
-    report!.current_location_lat = null;
-    report!.current_location_lon = null;
-    report!.selected_location_lat = lat;
-    report!.selected_location_lon = lon;
-  }
-
-  static void addResponse(Question? question) {
-    var index = report!.responses!
-        .indexWhere((q) => q!.question_id == question!.question_id);
-    var _responses = report!.responses;
-    _responses ??= [];
-    if (index != -1) {
-      _responses[index] = question;
-    } else {
-      _responses.add(question);
-      report!.responses = _responses;
-    }
-  }
-
-  static void deleteResonse(id) {
-    report!.responses!.removeWhere((element) => element!.question_id == id);
-  }
-
-  static Future<bool?> createReport() async {
-    if (report!.version_number! > 0) {
-      report!.version_time = DateTime.now().toUtc().toIso8601String();
-      var res = await ApiSingleton().createReport(report!);
-      if (res != null) {
-        if (res.type == 'adult') {
-          savedAdultReport = res;
-        }
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      report!.version_time = DateTime.now().toUtc().toIso8601String();
-      report!.creation_time = DateTime.now().toUtc().toIso8601String();
-      reportsList!.add(report);
-      bool? isCreated;
-      for (var i = 0; i < reportsList!.length; i++) {
-        var res = await ApiSingleton().createReport(reportsList![i]!);
-        if (res?.type == 'adult') {
-          savedAdultReport = res;
-        }
-        isCreated = res != null ? true : false;
-        if (!isCreated) {
-          await saveLocalReport(reportsList![i]!);
-        }
-      }
-
-      return isCreated;
-    }
-  }
-
-  static Future<void> saveLocalReport(Report report) async {
-    var savedReports = await UserManager.getReportList();
-    if (savedReports == null || savedReports.isEmpty) {
-      savedReports = [];
-    }
-    var reportString = json.encode(report.toJson());
-    savedReports.add(reportString);
-    await UserManager.setReportList(savedReports);
   }
 
   static Future<void> saveLocalImage(
@@ -221,62 +41,6 @@ class Utils {
     savedImages.add(imageString);
     await UserManager.setImageList(savedImages);
   }
-
-  static void syncReports() async {
-    final appConfig = await AppConfig.loadConfig();
-    if (!appConfig.useAuth) {
-      return;
-    }
-
-    List? savedReports = await UserManager.getReportList();
-    List? savedImages = await UserManager.getImageList();
-
-    await UserManager.setReportList(<String>[]);
-    await UserManager.setImageList(<String>[]);
-
-    if (savedReports != null && savedReports.isNotEmpty) {
-      bool isCreated;
-      for (var i = 0; i < savedReports.length; i++) {
-        var savedReport =
-            await Report.fromJsonAsync(json.decode(savedReports[i]));
-        isCreated = await ApiSingleton().createReport(savedReport) != null
-            ? true
-            : false;
-
-        if (!isCreated) {
-          await saveLocalReport(savedReport);
-        }
-      }
-    }
-
-    if (savedImages != null && savedImages.isNotEmpty) {
-      bool isCreated;
-      for (var i = 0; i < savedImages.length; i++) {
-        Map image = json.decode(savedImages[i]);
-        isCreated = await ApiSingleton()
-            .saveImage(image['image'], image['verison_UUID']);
-        if (!isCreated) {
-          await saveLocalImage(image['image'], image['verison_UUID']);
-        } else {
-          await File(image['image']).delete();
-        }
-      }
-    }
-  }
-
-  static Future<bool> deleteReport(r) async {
-    Report deleteReport = r;
-    deleteReport.version_time = DateTime.now().toUtc().toIso8601String();
-    deleteReport.version_number = -1;
-    deleteReport.version_UUID = Uuid().v4();
-
-    var res =
-        await ApiSingleton().createReport(deleteReport) != null ? true : false;
-    return res;
-  }
-
-  static final RegExp mailRegExp = RegExp(
-      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
 
   //Alerts
   static Future showAlert(String? title, String? text, BuildContext? context,
@@ -666,7 +430,6 @@ class Utils {
                 child: Text(MyLocalizations.of(context, 'no_show_info')),
                 onPressed: () {
                   Navigator.of(context).popUntil((r) => r.isFirst);
-                  Utils.resetReport();
                 },
               ),
             ],
@@ -727,7 +490,6 @@ class Utils {
                 child: Text(MyLocalizations.of(context, 'no_show_info')),
                 onPressed: () {
                   Navigator.of(context).popUntil((r) => r.isFirst);
-                  Utils.resetReport();
                 },
               ),
             ],
@@ -793,8 +555,10 @@ class Utils {
   }
 
   static void requestInAppReview() async {
-    var myReports = await ApiSingleton().getReportsList();
-    var numReports = myReports.length;
+    // TODO: Do with new API
+    //var myReports = await ApiSingleton().getReportsList();
+    //var numReports = myReports.length;
+    var numReports = 1;
 
     if (numReports < 3) {
       return;

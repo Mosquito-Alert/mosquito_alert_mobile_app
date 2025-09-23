@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/components/camera_whatsapp.dart';
+import 'package:mosquito_alert_app/pages/reports/shared/widgets/camera_whatsapp.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 

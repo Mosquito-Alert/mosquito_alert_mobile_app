@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
-import 'package:mosquito_alert_app/models/report.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/customModalBottomSheet.dart';
@@ -44,7 +43,7 @@ class _MyReportsListState extends State<ReportsList> {
     return formattedTime;
   }
 
-  String getTitle(BuildContext context, Report report) {
+  String getTitle(BuildContext context, var report) {
     switch (report.type) {
       case 'adult':
         return MyLocalizations.of(context, 'single_mosquito');
@@ -174,27 +173,7 @@ class _MyReportsListState extends State<ReportsList> {
     miniMapController = controller;
   }
 
-  void _deleteReport(Report report) async {
-    await FirebaseAnalytics.instance.logEvent(
-        name: 'delete_report',
-        parameters: {'report_uuid': '${report.version_UUID}'});
-    Navigator.pop(context);
-    var res = await Utils.deleteReport(report);
-    if (res) {
-      reports.removeWhere((element) => element.report_id == report.report_id);
-      setState(() {
-        reports = reports;
-      });
-    } else {
-      await Utils.showAlert(
-        MyLocalizations.of(context, 'app_name'),
-        MyLocalizations.of(context, 'save_report_ko_txt'),
-        context,
-      );
-    }
-  }
-
-  void _reportBottomSheet(Report report, BuildContext context) async {
+  void _reportBottomSheet(var report, BuildContext context) async {
     await FirebaseAnalytics.instance.logSelectContent(
         contentType: '${report.type}_report', itemId: '${report.version_UUID}');
     var hasValidLocation = report.getLocation() != null;
@@ -272,7 +251,7 @@ class _MyReportsListState extends State<ReportsList> {
                                         context, 'delete_report_title'),
                                     MyLocalizations.of(
                                         context, 'delete_report_txt'), () {
-                                  _deleteReport(report);
+                                  //_deleteReport(report); // TODO: Implement with new API
                                 }, context);
                               }
                             },
