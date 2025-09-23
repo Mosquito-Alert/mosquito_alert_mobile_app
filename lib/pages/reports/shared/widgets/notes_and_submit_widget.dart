@@ -51,81 +51,91 @@ class _NotesAndSubmitWidgetState extends State<NotesAndSubmitWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return Padding(
       padding: EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          // Notes section
-          Text(
-            '(HC) Additional Notes (Optional)',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-
-          SizedBox(height: 8),
-
-          Text(
-            '(HC) Add any additional observations or details.',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
-            ),
-          ),
-
-          SizedBox(height: 12),
-
-          TextField(
-            controller: _notesController,
-            maxLines: 4,
-            maxLength: 500,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: widget.notesHint,
-              labelText: '(HC) Notes',
-            ),
-            onChanged: (value) => _updateNotes(),
-          ),
-
-          SizedBox(height: 24),
-
-          // Submit section
-          if (widget.isSubmitting) ...[
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.blue[50],
-                borderRadius: BorderRadius.circular(12),
-              ),
+          // Scrollable content area
+          Expanded(
+            child: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 12),
+                  // Notes section
                   Text(
-                    widget.submitLoadingText,
+                    '(HC) Additional Notes (Optional)',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 4),
+
+                  SizedBox(height: 8),
+
                   Text(
-                    '(HC) Please wait while we process your report.',
+                    '(HC) Add any additional observations or details.',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey[600],
                     ),
                   ),
+
+                  SizedBox(height: 12),
+
+                  TextField(
+                    controller: _notesController,
+                    maxLines: 4,
+                    maxLength: 500,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: widget.notesHint,
+                      labelText: '(HC) Notes',
+                    ),
+                    onChanged: (value) => _updateNotes(),
+                  ),
+
+                  SizedBox(height: 24),
+
+                  // Submit section
+                  if (widget.isSubmitting) ...[
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.blue[50],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 12),
+                          Text(
+                            widget.submitLoadingText,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            '(HC) Please wait while we process your report.',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
-          ],
+          ),
 
-          // Navigation buttons
+          SizedBox(height: 16),
+
           Row(
             children: [
               Expanded(
