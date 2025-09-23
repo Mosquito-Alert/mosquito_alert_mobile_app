@@ -12,6 +12,9 @@ class BreedingSiteReportData {
   // Step 3: Water presence
   bool? hasWater; // true = yes, false = no
 
+  // Step 3.1: Larvae presence (only asked if hasWater == true)
+  bool? hasLarvae; // true = yes, false = no
+
   // Step 4: Location
   double? latitude;
   double? longitude;
@@ -29,6 +32,8 @@ class BreedingSiteReportData {
     return siteType != null &&
         photos.isNotEmpty &&
         hasWater != null &&
+        // If water is present, larvae question must be answered
+        (hasWater == false || hasLarvae != null) &&
         latitude != null &&
         longitude != null;
   }
@@ -59,11 +64,18 @@ class BreedingSiteReportData {
     return hasWater! ? 'Water present' : 'No water';
   }
 
+  /// Gets a user-friendly larvae status description
+  String get larvaeStatusDescription {
+    if (hasLarvae == null) return 'Larvae status not selected';
+    return hasLarvae! ? 'Larvae visible' : 'No larvae visible';
+  }
+
   /// Resets all data
   void reset() {
     siteType = null;
     photos.clear();
     hasWater = null;
+    hasLarvae = null;
     latitude = null;
     longitude = null;
     locationSource = api.LocationRequestSource_Enum.auto;
@@ -77,6 +89,7 @@ class BreedingSiteReportData {
     copy.siteType = siteType;
     copy.photos = List.from(photos);
     copy.hasWater = hasWater;
+    copy.hasLarvae = hasLarvae;
     copy.latitude = latitude;
     copy.longitude = longitude;
     copy.locationSource = locationSource;
