@@ -3,10 +3,10 @@ import 'dart:math';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/biting_report_page.dart';
 import 'package:mosquito_alert_app/pages/main/components/custom_card_widget.dart';
 import 'package:mosquito_alert_app/pages/map/public_map.dart';
 import 'package:mosquito_alert_app/pages/reports/adult/adult_report_controller.dart';
+import 'package:mosquito_alert_app/pages/reports/bite/bite_report_controller.dart';
 import 'package:mosquito_alert_app/pages/reports/sites/breeding_site_report_controller.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
@@ -162,7 +162,7 @@ class _HomePageState extends State<HomePage> {
     if (createReport) {
       await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => BitingReportPage()),
+        MaterialPageRoute(builder: (context) => BiteReportController()),
       );
     } else {
       print('Bite report was not created');

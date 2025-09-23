@@ -15,7 +15,6 @@ import 'package:mosquito_alert_app/api/api.dart';
 import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/models/question.dart';
 import 'package:mosquito_alert_app/models/report.dart';
-import 'package:mosquito_alert_app/pages/forms_pages/components/biting_form.dart';
 import 'package:mosquito_alert_app/providers/user_provider.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -149,115 +148,6 @@ class Utils {
     report!.current_location_lon = null;
     report!.selected_location_lat = lat;
     report!.selected_location_lon = lon;
-  }
-
-  static void addBiteResponse(String? question, String? answer,
-      {question_id, answer_id, answer_value}) {
-    if (report == null) {
-      return;
-    }
-
-    var _questions = report!.responses;
-
-    // add total bites
-
-    if (question_id == BiteQuestion.howMany.id) {
-      var currentIndex = _questions!
-          .indexWhere((question) => question!.question_id == question_id);
-      if (currentIndex == -1) {
-        _questions.add(Question(
-          question: question.toString(),
-          answer: 'N/A',
-          answer_id: answer_id,
-          question_id: question_id,
-          answer_value: '1',
-        ));
-      } else {
-        _questions[currentIndex]!.answer_value = answer_value.toString();
-      }
-    }
-
-    //increase answer_value question 2
-    if (question_id == BiteQuestion.bittenBodyPart.id) {
-      var currentIndex = _questions!
-          .indexWhere((question) => question!.answer_id == answer_id);
-      if (currentIndex == -1) {
-        _questions.add(Question(
-          question: question.toString(),
-          answer: answer.toString(),
-          answer_id: answer_id,
-          question_id: question_id,
-          answer_value: '1',
-        ));
-      } else {
-        var value = int.parse(_questions[currentIndex]!.answer_value!);
-        value = value + 1;
-        _questions[currentIndex]!.answer_value = value.toString();
-      }
-    }
-
-    //add other questions without answer_value
-    if (question_id != BiteQuestion.bittenBodyPart.id &&
-        question_id != BiteQuestion.howMany.id) {
-      if (_questions!.any((q) => q!.answer_id == answer_id)) {
-        // delete question from list
-        _questions.removeWhere((q) => q!.answer_id == answer_id);
-      } else {
-        if (_questions.any(
-            (q) => q!.question_id == question_id && q.answer_id != answer_id)) {
-          //modify question
-          var index =
-              _questions.indexWhere((q) => q!.question_id == question_id);
-          _questions[index]!.answer_id = answer_id;
-          _questions[index]!.answer = answer;
-        } else {
-          _questions.add(Question(
-            question: question.toString(),
-            answer: answer.toString(),
-            answer_id: answer_id,
-            question_id: question_id,
-          ));
-        }
-      }
-    }
-
-    if (answer_id == Answer.inside_vehicle.id) {
-      _questions!
-          .removeWhere((q) => q!.question_id == BiteQuestion.whatTime.id);
-    }
-    report!.responses = _questions;
-  }
-
-  static void resetBitingQuestion() {
-    var _questions = report!.responses!;
-
-    _questions
-        .removeWhere((q) => q!.question_id == BiteQuestion.bittenBodyPart.id);
-
-    report!.responses = _questions;
-  }
-
-  static void addAdultPartsResponse(answer, answerId, i) {
-    var _questions = report!.responses!;
-    var index = _questions
-        .indexWhere((q) => q!.answer_id! > i && q.answer_id! < i + 10);
-    if (index != -1) {
-      if (_questions[index]!.answer_id == answerId) {
-        _questions.removeAt(index);
-      } else {
-        _questions[index]!.answer_id = answerId;
-        _questions[index]!.answer = answer;
-      }
-    } else {
-      var newQuestion = Question(
-        question: 'question_7',
-        answer: answer,
-        question_id: BiteQuestion.whatDoesItLookLike.id,
-        answer_id: answerId,
-      );
-      _questions.add(newQuestion);
-    }
-    report!.responses = _questions;
   }
 
   static void addResponse(Question? question) {
