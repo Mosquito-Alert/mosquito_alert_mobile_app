@@ -32,8 +32,6 @@ class MockMyLocalizations extends MyLocalizations {
         return 'Left leg';
       case 'bite_report_bodypart_rightleg':
         return 'Right leg';
-      case 'unknown':
-        return 'Unknown';
       case 'continue_txt':
         return 'Continue';
       case 'current_location_txt':
