@@ -9,8 +9,7 @@ class AdultReportData {
   // Step 2: Location
   double? latitude;
   double? longitude;
-  LocationRequestSource_Enum locationSource =
-      LocationRequestSource_Enum.auto;
+  LocationRequestSource_Enum locationSource = LocationRequestSource_Enum.auto;
 
   // Step 3: Environment question
   String? environmentAnswer; // 'vehicle', 'indoors', 'outdoors', '', null

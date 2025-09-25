@@ -90,8 +90,8 @@ class _BiteReportControllerState extends State<BiteReportController> {
   }
 
   /// Handle location selection
-  void _updateLocation(double latitude, double longitude,
-      LocationRequestSource_Enum source) {
+  void _updateLocation(
+      double latitude, double longitude, LocationRequestSource_Enum source) {
     setState(() {
       _reportData.latitude = latitude;
       _reportData.longitude = longitude;

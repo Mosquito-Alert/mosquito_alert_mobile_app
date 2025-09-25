@@ -11,8 +11,9 @@ class LocationSelectionPage extends StatefulWidget {
   final String subtitle;
   final double? initialLatitude;
   final double? initialLongitude;
-  final Function(double latitude, double longitude,
-      LocationRequestSource_Enum source) onLocationSelected;
+  final Function(
+          double latitude, double longitude, LocationRequestSource_Enum source)
+      onLocationSelected;
   final VoidCallback onNext;
   final VoidCallback onPrevious;
   final bool canProceed;

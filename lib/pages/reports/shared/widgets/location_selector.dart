@@ -7,8 +7,9 @@ import 'package:mosquito_alert_app/utils/style.dart';
 class LocationSelector extends StatefulWidget {
   final double? initialLatitude;
   final double? initialLongitude;
-  final Function(double latitude, double longitude,
-      LocationRequestSource_Enum source) onLocationSelected;
+  final Function(
+          double latitude, double longitude, LocationRequestSource_Enum source)
+      onLocationSelected;
 
   const LocationSelector({
     Key? key,

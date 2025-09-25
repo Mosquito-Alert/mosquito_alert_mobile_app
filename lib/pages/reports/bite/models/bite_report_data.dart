@@ -52,8 +52,7 @@ class BiteReportData extends ChangeNotifier {
   // Location
   double? latitude;
   double? longitude;
-  LocationRequestSource_Enum locationSource =
-      LocationRequestSource_Enum.auto;
+  LocationRequestSource_Enum locationSource = LocationRequestSource_Enum.auto;
 
   // Environment question (where did the biting occur)
   BiteRequestEventEnvironmentEnum? eventEnvironment;

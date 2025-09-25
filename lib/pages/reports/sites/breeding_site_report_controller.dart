@@ -102,8 +102,8 @@ class _BreedingSiteReportControllerState
   }
 
   /// Handle location selection callback
-  void _onLocationSelected(double latitude, double longitude,
-      LocationRequestSource_Enum source) {
+  void _onLocationSelected(
+      double latitude, double longitude, LocationRequestSource_Enum source) {
     setState(() {
       _reportData.latitude = latitude;
       _reportData.longitude = longitude;

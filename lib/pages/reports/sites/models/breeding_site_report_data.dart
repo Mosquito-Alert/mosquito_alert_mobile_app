@@ -18,8 +18,7 @@ class BreedingSiteReportData {
   // Step 4: Location
   double? latitude;
   double? longitude;
-  LocationRequestSource_Enum locationSource =
-      LocationRequestSource_Enum.auto;
+  LocationRequestSource_Enum locationSource = LocationRequestSource_Enum.auto;
 
   // Step 5: Notes
   String? notes;
