@@ -1,7 +1,8 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:mosquito_alert_app/pages/my_reports_pages/components/reports_list_adults.dart';
 import 'package:mosquito_alert_app/pages/my_reports_pages/components/reports_list_bites.dart';
-import 'package:mosquito_alert_app/pages/my_reports_pages/components/reports_list_widget.dart';
+import 'package:mosquito_alert_app/pages/my_reports_pages/components/reports_list_sites.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
@@ -13,35 +14,14 @@ class MyReportsPage extends StatefulWidget {
 }
 
 class _MyReportsPageState extends State<MyReportsPage> {
-  late List<dynamic> adultReports;
-  late List<dynamic> siteReports;
-  bool isLoading = true;
-
   @override
   void initState() {
     super.initState();
-    loadReports();
     _logScreenView();
   }
 
   Future<void> _logScreenView() async {
     await FirebaseAnalytics.instance.logScreenView(screenName: '/my_reports');
-  }
-
-  void loadReports() async {
-    var myReports = [];
-
-    // Sort the reports by creation_time in descending order
-    myReports.sort((a, b) => b.creation_time!
-        .compareTo(a.creation_time ?? '1970-01-01T00:00:00.000000Z'));
-
-    // TODO: Set with new api
-    /*setState(() {
-      adultReports =
-          myReports.where((report) => report.type == 'adult').toList();
-      siteReports = myReports.where((report) => report.type == 'site').toList();
-      isLoading = false;
-    });*/
   }
 
   @override
@@ -92,15 +72,13 @@ class _MyReportsPageState extends State<MyReportsPage> {
               }),
           title: Text(MyLocalizations.of(context, 'your_reports_txt')),
         ),
-        body: isLoading
-            ? Center(child: CircularProgressIndicator())
-            : TabBarView(
-                children: [
-                  ReportsList(reports: adultReports),
-                  ReportsListBites(),
-                  ReportsList(reports: siteReports),
-                ],
-              ),
+        body: const TabBarView(
+          children: [
+            ReportsListAdults(),
+            ReportsListBites(),
+            ReportsListSites(),
+          ],
+        ),
       ),
     );
   }

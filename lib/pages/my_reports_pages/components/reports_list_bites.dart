@@ -33,12 +33,15 @@ class _ReportsListBitesState extends State<ReportsListBites> {
     try {
       // TODO: Handle pagination like in notifications page with infinite scrolling view
       final response = await bitesApi.listMine();
+
       final reports = response.data?.results?.toList() ?? [];
+
       setState(() {
         biteReports = reports;
         isLoading = false;
       });
     } catch (e) {
+      print('Error loading bite reports: $e');
       setState(() {
         biteReports = [];
         isLoading = false;
