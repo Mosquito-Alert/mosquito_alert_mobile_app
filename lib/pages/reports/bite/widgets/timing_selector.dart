@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mosquito_alert/mosquito_alert.dart' as api;
+import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 /// Widget for selecting when the biting occurred
 class TimingSelector extends StatelessWidget {
-  final api.BiteRequestEventMomentEnum? selectedTiming;
-  final Function(api.BiteRequestEventMomentEnum) onTimingChanged;
+  final BiteRequestEventMomentEnum? selectedTiming;
+  final Function(BiteRequestEventMomentEnum) onTimingChanged;
 
   const TimingSelector({
     Key? key,
@@ -19,7 +19,7 @@ class TimingSelector extends StatelessWidget {
       children: [
         _buildOptionTile(
           context,
-          api.BiteRequestEventMomentEnum.now,
+          BiteRequestEventMomentEnum.now,
           '(HC) Right now / Just happened',
           '(HC) The biting is happening now or just occurred',
           Icons.access_time,
@@ -27,7 +27,7 @@ class TimingSelector extends StatelessWidget {
         SizedBox(height: 12),
         _buildOptionTile(
           context,
-          api.BiteRequestEventMomentEnum.lastMorning,
+          BiteRequestEventMomentEnum.lastMorning,
           '(HC) Yesterday morning',
           '(HC) Between 6:00 AM - 12:00 PM yesterday',
           Icons.wb_sunny,
@@ -35,7 +35,7 @@ class TimingSelector extends StatelessWidget {
         SizedBox(height: 12),
         _buildOptionTile(
           context,
-          api.BiteRequestEventMomentEnum.lastMidday,
+          BiteRequestEventMomentEnum.lastMidday,
           '(HC) Yesterday midday',
           '(HC) Between 12:00 PM - 6:00 PM yesterday',
           Icons.wb_sunny_outlined,
@@ -43,7 +43,7 @@ class TimingSelector extends StatelessWidget {
         SizedBox(height: 12),
         _buildOptionTile(
           context,
-          api.BiteRequestEventMomentEnum.lastAfternoon,
+          BiteRequestEventMomentEnum.lastAfternoon,
           '(HC) Yesterday afternoon',
           '(HC) Between 6:00 PM - 9:00 PM yesterday',
           Icons.wb_twilight,
@@ -51,7 +51,7 @@ class TimingSelector extends StatelessWidget {
         SizedBox(height: 12),
         _buildOptionTile(
           context,
-          api.BiteRequestEventMomentEnum.lastNight,
+          BiteRequestEventMomentEnum.lastNight,
           '(HC) Last night',
           '(HC) Between 9:00 PM yesterday - 6:00 AM today',
           Icons.nightlight_round,
@@ -62,7 +62,7 @@ class TimingSelector extends StatelessWidget {
 
   Widget _buildOptionTile(
     BuildContext context,
-    api.BiteRequestEventMomentEnum timing,
+    BiteRequestEventMomentEnum timing,
     String title,
     String subtitle,
     IconData icon,

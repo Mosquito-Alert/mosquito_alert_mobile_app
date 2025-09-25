@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:mosquito_alert/mosquito_alert.dart' as api;
+import 'package:mosquito_alert/mosquito_alert.dart';
 
 class AdultReportData {
   // Step 1: Photos
@@ -9,8 +9,8 @@ class AdultReportData {
   // Step 2: Location
   double? latitude;
   double? longitude;
-  api.LocationRequestSource_Enum locationSource =
-      api.LocationRequestSource_Enum.auto;
+  LocationRequestSource_Enum locationSource =
+      LocationRequestSource_Enum.auto;
 
   // Step 3: Environment question
   String? environmentAnswer; // 'vehicle', 'indoors', 'outdoors', '', null
@@ -43,7 +43,7 @@ class AdultReportData {
     photos.clear();
     latitude = null;
     longitude = null;
-    locationSource = api.LocationRequestSource_Enum.auto;
+    locationSource = LocationRequestSource_Enum.auto;
     environmentAnswer = null;
     eventMoment = null;
     notes = null;

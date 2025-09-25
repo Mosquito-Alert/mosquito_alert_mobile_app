@@ -1,6 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:mosquito_alert/mosquito_alert.dart' as api;
+import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/pages/location_selection_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/pages/notes_and_submit_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/progress_indicator.dart';
@@ -21,7 +21,7 @@ class BiteReportController extends StatefulWidget {
 class _BiteReportControllerState extends State<BiteReportController> {
   late PageController _pageController;
   late BiteReportData _reportData;
-  late api.BitesApi _bitesApi;
+  late BitesApi _bitesApi;
 
   int _currentStep = 0;
   bool _isSubmitting = false;
@@ -36,7 +36,7 @@ class _BiteReportControllerState extends State<BiteReportController> {
     _reportData = BiteReportData();
 
     // Initialize API
-    final apiClient = Provider.of<api.MosquitoAlert>(context, listen: false);
+    final apiClient = Provider.of<MosquitoAlert>(context, listen: false);
     _bitesApi = apiClient.getBitesApi();
 
     _logAnalyticsEvent('bite_report_started');
@@ -76,14 +76,14 @@ class _BiteReportControllerState extends State<BiteReportController> {
   }
 
   /// Handle environment selection
-  void _updateEnvironment(api.BiteRequestEventEnvironmentEnum environment) {
+  void _updateEnvironment(BiteRequestEventEnvironmentEnum environment) {
     setState(() {
       _reportData.eventEnvironment = environment;
     });
   }
 
   /// Handle timing selection
-  void _updateTiming(api.BiteRequestEventMomentEnum moment) {
+  void _updateTiming(BiteRequestEventMomentEnum moment) {
     setState(() {
       _reportData.eventMoment = moment;
     });
@@ -91,7 +91,7 @@ class _BiteReportControllerState extends State<BiteReportController> {
 
   /// Handle location selection
   void _updateLocation(double latitude, double longitude,
-      api.LocationRequestSource_Enum source) {
+      LocationRequestSource_Enum source) {
     setState(() {
       _reportData.latitude = latitude;
       _reportData.longitude = longitude;
@@ -133,17 +133,17 @@ class _BiteReportControllerState extends State<BiteReportController> {
 
     try {
       // Create location point
-      final locationPoint = api.LocationPoint((b) => b
+      final locationPoint = LocationPoint((b) => b
         ..latitude = _reportData.latitude!
         ..longitude = _reportData.longitude!);
 
       // Create location request
-      final location = api.LocationRequest((b) => b
+      final location = LocationRequest((b) => b
         ..source_ = _reportData.locationSource
         ..point.replace(locationPoint));
 
       // Create bite counts request
-      final counts = api.BiteCountsRequest((b) => b
+      final counts = BiteCountsRequest((b) => b
         ..head = _reportData.headBites
         ..leftArm = _reportData.leftHandBites
         ..rightArm = _reportData.rightHandBites
@@ -152,7 +152,7 @@ class _BiteReportControllerState extends State<BiteReportController> {
         ..rightLeg = _reportData.rightLegBites);
 
       // Create the bite request
-      final biteRequest = api.BiteRequest((b) => b
+      final biteRequest = BiteRequest((b) => b
         ..createdAt = DateTime.now().toUtc()
         ..sentAt = DateTime.now().toUtc()
         ..location.replace(location)

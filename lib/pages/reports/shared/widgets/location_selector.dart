@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mosquito_alert/mosquito_alert.dart' as api;
+import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class LocationSelector extends StatefulWidget {
   final double? initialLatitude;
   final double? initialLongitude;
   final Function(double latitude, double longitude,
-      api.LocationRequestSource_Enum source) onLocationSelected;
+      LocationRequestSource_Enum source) onLocationSelected;
 
   const LocationSelector({
     Key? key,
@@ -85,7 +85,7 @@ class _LocationSelectorState extends State<LocationSelector> {
     widget.onLocationSelected(
       position.latitude,
       position.longitude,
-      api.LocationRequestSource_Enum.manual,
+      LocationRequestSource_Enum.manual,
     );
   }
 
@@ -141,7 +141,7 @@ class _LocationSelectorState extends State<LocationSelector> {
       widget.onLocationSelected(
         position.latitude,
         position.longitude,
-        api.LocationRequestSource_Enum.auto,
+        LocationRequestSource_Enum.auto,
       );
 
       // Move map to the GPS location

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mosquito_alert/mosquito_alert.dart' as api;
+import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/pages/reports/bite/models/bite_report_data.dart';
 import 'package:mosquito_alert_app/pages/reports/bite/widgets/body_part_selector.dart';
 import 'package:mosquito_alert_app/pages/reports/bite/widgets/environment_selector.dart';
@@ -10,8 +10,8 @@ import 'package:provider/provider.dart';
 
 /// Page for collecting bite information: counts, environment, and timing
 class BiteQuestionsPage extends StatefulWidget {
-  final Function(api.BiteRequestEventEnvironmentEnum) onEnvironmentChanged;
-  final Function(api.BiteRequestEventMomentEnum) onTimingChanged;
+  final Function(BiteRequestEventEnvironmentEnum) onEnvironmentChanged;
+  final Function(BiteRequestEventMomentEnum) onTimingChanged;
   final VoidCallback? onNext;
   final VoidCallback onPrevious;
   final bool canProceed;
