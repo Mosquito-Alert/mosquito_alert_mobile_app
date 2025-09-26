@@ -48,7 +48,7 @@ dependencies:
   camera: ^0.11.2
   flutter_sliding_up_panel: ^2.1.1
   image_picker: ^1.2.0
-  photo_gallery: ^2.2.1
+  photo_manager: ^3.5.1
   textfield_tags: ^3.0.1
   in_app_review: ^2.0.9
   firebase_analytics: ^11.4.6

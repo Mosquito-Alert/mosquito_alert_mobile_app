@@ -3,13 +3,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sliding_up_panel/flutter_sliding_up_panel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:photo_gallery/photo_gallery.dart';
+import 'package:photo_manager/photo_manager.dart';
 
 class _WhatsAppCameraController extends ChangeNotifier {
   ///
@@ -26,7 +25,7 @@ class _WhatsAppCameraController extends ChangeNotifier {
   ///
   final bool multiple;
   final selectedImages = <File>[];
-  var images = <Medium>[];
+  var images = <AssetEntity>[];
 
   Future<void> loadRecentGalleryImages(BuildContext context) async {
     if (!(await isRecentPhotosFeatureEnabled(context))) {
@@ -35,22 +34,25 @@ class _WhatsAppCameraController extends ChangeNotifier {
       return;
     }
 
-    final status = await Permission.photos.request();
-    if (status.isDenied) return;
-    if (status.isPermanentlyDenied) return;
+    final result = await PhotoManager.requestPermissionExtend();
+    if (!result.hasAccess) return;
 
     try {
-      final albums =
-          await PhotoGallery.listAlbums(mediumType: MediumType.image);
+      final List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
+        type: RequestType.image,
+        onlyAll: true,
+      );
+
       if (albums.isEmpty) return;
 
       final recentAlbum = albums.first;
-      final media = await recentAlbum.listMedia(
-        skip: 0,
-        take: 10,
+      final List<AssetEntity> recentAssets =
+          await recentAlbum.getAssetListRange(
+        start: 0,
+        end: 10,
       );
 
-      images = media.items;
+      images = recentAssets;
       notifyListeners();
     } catch (e) {
       print('Error loading gallery images: $e');
@@ -60,23 +62,6 @@ class _WhatsAppCameraController extends ChangeNotifier {
   }
 
   Future<bool> isRecentPhotosFeatureEnabled(BuildContext context) async {
-    if (!Platform.isIOS) {
-      return true;
-    }
-
-    // Disable feature only for iOS 17+ due to a crash
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-    final systemVersion = iosInfo.systemVersion;
-
-    final versionParts = systemVersion.split('.').map(int.parse).toList();
-    final majorVersion = versionParts.isNotEmpty ? versionParts[0] : 0;
-
-    if (majorVersion >= 17) {
-      // Disable feature for iOS 17+ where there's a known bug/crash
-      return false;
-    }
-
     return true;
   }
 
@@ -183,7 +168,12 @@ class _WhatsappCameraState extends State<WhatsappCamera>
     WidgetsBinding.instance.addObserver(this);
     controller = _WhatsAppCameraController(multiple: widget.multiple);
     _requestCameraPermission();
-    _loadRecentPhotosIfPermissionGranted();
+
+    // Delay the photo loading slightly to ensure proper initialization
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadRecentPhotosIfPermissionGranted();
+    });
+
     panel.addListener(() {
       if (panel.status.name == 'hidden') {
         controller.selectedImages.clear();
@@ -233,15 +223,9 @@ class _WhatsappCameraState extends State<WhatsappCamera>
   Future<void> _loadRecentPhotosIfPermissionGranted() async {
     if (!mounted) return;
 
-    final photosStatus = await Permission.photos.status;
-    if (photosStatus.isGranted) {
+    final result = await PhotoManager.requestPermissionExtend();
+    if (result.hasAccess) {
       if (mounted) {
-        controller.loadRecentGalleryImages(context);
-      }
-    } else {
-      // Request photos permission if not granted
-      final requestedStatus = await Permission.photos.request();
-      if (requestedStatus.isGranted && mounted) {
         controller.loadRecentGalleryImages(context);
         // Trigger a rebuild to show the recent photos strip immediately
         setState(() {});
@@ -419,13 +403,13 @@ class _WhatsappCameraState extends State<WhatsappCamera>
       BuildContext context, _WhatsAppCameraController controller) {
     return GestureDetector(
       onTap: () async {
-        final status = await Permission.photos.request();
-        if (status.isPermanentlyDenied) {
+        final result = await PhotoManager.requestPermissionExtend();
+        if (!result.hasAccess) {
           await openAppSettings();
           return;
         }
 
-        if (status.isGranted && mounted) {
+        if (result.hasAccess && mounted) {
           // Trigger a rebuild to show recent photos strip if it wasn't visible before
           setState(() {});
         }
@@ -450,74 +434,61 @@ class _WhatsappCameraState extends State<WhatsappCamera>
 
   Widget recentPhotosStrip(
       BuildContext context, _WhatsAppCameraController controller) {
-    return FutureBuilder<PermissionStatus>(
-      future: Permission.photos.status,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data != PermissionStatus.granted) {
-          return Container();
-        }
-
-        // Trigger loading if permission is granted but no images loaded yet
-        if (controller.images.isEmpty) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            controller.loadRecentGalleryImages(context);
-          });
-        }
-
-        return Positioned(
-          bottom: 120 + MediaQuery.of(context).padding.bottom,
-          left: 0,
-          right: 0,
-          child: Container(
-            height: 90,
-            child: AnimatedBuilder(
-              animation: controller,
-              builder: (context, _) {
-                if (controller.images.isEmpty) {
-                  return Container();
-                }
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: controller.images.length,
-                  itemBuilder: (context, index) {
-                    final medium = controller.images[index];
-                    return FutureBuilder<Widget>(
-                      future: _buildImage(context, controller, medium),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done &&
-                            snapshot.hasData) {
-                          return snapshot.data!;
-                        }
-                        return Container();
-                      },
-                    );
+    return Positioned(
+      bottom: 120 + MediaQuery.of(context).padding.bottom,
+      left: 0,
+      right: 0,
+      child: Container(
+        height: 90,
+        child: AnimatedBuilder(
+          animation: controller,
+          builder: (context, _) {
+            if (controller.images.isEmpty) {
+              return Container();
+            }
+            return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: controller.images.length,
+              itemBuilder: (context, index) {
+                final asset = controller.images[index];
+                return FutureBuilder<Widget>(
+                  future: _buildImage(context, controller, asset),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData) {
+                      return snapshot.data!;
+                    }
+                    return Container();
                   },
                 );
               },
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 
   Future<Widget> _buildImage(BuildContext context,
-      _WhatsAppCameraController controller, Medium medium) async {
-    final List<int> thumbnailData = await medium.getThumbnail(
-      width: 200,
-      height: 200,
-      highQuality: true,
+      _WhatsAppCameraController controller, AssetEntity asset) async {
+    final Uint8List? thumbnailData = await asset.thumbnailDataWithSize(
+      ThumbnailSize(200, 200),
+      quality: 80,
     );
 
-    final Uint8List thumbnail = Uint8List.fromList(thumbnailData);
+    if (thumbnailData == null) {
+      return Container();
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: GestureDetector(
         onTap: () async {
-          final file = await medium.getFile();
-          controller.captureImage(file);
-          Navigator.pop(context, controller.selectedImages);
+          final file = await asset.file;
+          if (file != null) {
+            controller.captureImage(file);
+            Navigator.pop(context, controller.selectedImages);
+          }
         },
         child: Container(
           width: 70,
@@ -528,7 +499,7 @@ class _WhatsappCameraState extends State<WhatsappCamera>
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.memory(
-              thumbnail,
+              thumbnailData,
               width: 70,
               height: 70,
               fit: BoxFit.cover,
