@@ -5,6 +5,7 @@ import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/pages/location_selection_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/pages/notes_and_submit_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/pages/photo_selection_page.dart';
+import 'package:mosquito_alert_app/pages/reports/shared/utils/InAppReviewManager.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/progress_indicator.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
@@ -177,6 +178,9 @@ class _AdultReportControllerState extends State<AdultReportController> {
   }
 
   void _showSuccessDialog() {
+    // Request in-app review after successful submission
+    InAppReviewManager.requestInAppReview(context);
+
     showDialog(
       context: context,
       barrierDismissible: false,
