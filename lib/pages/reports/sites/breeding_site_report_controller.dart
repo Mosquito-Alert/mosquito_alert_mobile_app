@@ -28,7 +28,7 @@ class BreedingSiteReportController extends StatefulWidget {
 class _BreedingSiteReportControllerState
     extends State<BreedingSiteReportController> {
   late BreedingSiteReportData _reportData;
-  late ObservationsApi _observationsApi;
+  late BreedingSitesApi _breedingSitesApi;
 
   int _currentStep = 0;
   bool _isSubmitting = false;
@@ -62,7 +62,7 @@ class _BreedingSiteReportControllerState
 
     // Initialize API
     final apiClient = Provider.of<MosquitoAlert>(context, listen: false);
-    _observationsApi = apiClient.getObservationsApi();
+    _breedingSitesApi = apiClient.getBreedingSitesApi();
 
     _logAnalyticsEvent('breeding_site_report_started');
   }
@@ -137,17 +137,16 @@ class _BreedingSiteReportControllerState
     try {
       await _logAnalyticsEvent('breeding_site_report_submit_attempt');
 
-      // Step 1: Create location point
+      // Step 1: Create location request
       final locationPoint = LocationPoint((b) => b
         ..latitude = _reportData.latitude!
         ..longitude = _reportData.longitude!);
 
-      // Step 2: Create location request
       final locationRequest = LocationRequest((b) => b
         ..source_ = _reportData.locationSource
         ..point.replace(locationPoint));
 
-      // Step 3: Process photos
+      // Step 2: Process photos
       final List<SimplePhotoRequest> photoRequests = [];
       for (final photo in _reportData.photos) {
         if (await photo.exists()) {
@@ -157,28 +156,21 @@ class _BreedingSiteReportControllerState
       }
       final photos = BuiltList<SimplePhotoRequest>(photoRequests);
 
-      // Step 4: Prepare notes
-      final notes =
-          _reportData.notes?.isNotEmpty == true ? _reportData.notes! : '';
-
-      // Step 5: Tags
+      // Step 3: Tags
       final userTags = await UserManager.getHashtags();
       final tags = userTags != null ? BuiltList<String>(userTags) : null;
 
-      // Step 6: Make API call
-      // Note: This assumes ObservationsApi can handle breeding sites too
-      // You may need to adapt this based on the actual API structure
-      // TODO: Add breeding site specific fields (siteType, hasWater) to API call
-      final response = await _observationsApi.create(
+      // Step 4: Make API call using BreedingSitesApi
+      final response = await _breedingSitesApi.create(
         createdAt: _reportData.createdAt.toUtc(),
         sentAt: DateTime.now().toUtc(),
         location: locationRequest,
         photos: photos,
-        note: notes,
-        // Add breeding site specific fields
+        note: _reportData.notes,
         tags: tags,
-        // TODO: Map breeding site specific fields to API parameters
-        // This may need adjustment based on actual API schema
+        siteType: _reportData.siteType,
+        hasWater: _reportData.hasWater,
+        hasLarvae: _reportData.hasLarvae,
       );
 
       if (response.statusCode == 201) {
