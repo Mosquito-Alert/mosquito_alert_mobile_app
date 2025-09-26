@@ -52,23 +52,19 @@ class LocationConsentScreen extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton(
-                        key: Key("rejectBackgroundTrackingBtn"),
-                        onPressed: () {
+                      child: Style.outlinedButton(
+                        MyLocalizations.of(context, "no_show_info"),
+                        () {
                           Navigator.pop(context);
                         },
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: theme.primaryColorDark,
-                          side: BorderSide(color: theme.primaryColorDark),
-                        ),
-                        child:
-                            Text(MyLocalizations.of(context, "no_show_info")),
+                        key: Key("rejectBackgroundTrackingBtn"),
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () async {
+                      child: Style.button(
+                        MyLocalizations.of(context, 'continue_txt'),
+                        () async {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -77,12 +73,6 @@ class LocationConsentScreen extends StatelessWidget {
                             ),
                           );
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: theme.primaryColorDark,
-                          foregroundColor: Colors.white,
-                        ),
-                        child:
-                            Text(MyLocalizations.of(context, 'continue_txt')),
                       ),
                     ),
                   ],
