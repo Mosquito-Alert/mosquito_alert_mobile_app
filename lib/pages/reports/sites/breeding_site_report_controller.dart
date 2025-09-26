@@ -5,11 +5,10 @@ import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/pages/location_selection_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/pages/notes_and_submit_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/pages/photo_selection_page.dart';
-import 'package:mosquito_alert_app/pages/reports/shared/utils/InAppReviewManager.dart';
+import 'package:mosquito_alert_app/pages/reports/shared/utils/report_dialogs.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/progress_indicator.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
-import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:provider/provider.dart';
 
 import 'models/breeding_site_report_data.dart';
@@ -175,68 +174,24 @@ class _BreedingSiteReportControllerState
 
       if (response.statusCode == 201) {
         await _logAnalyticsEvent('breeding_site_report_submit_success');
-        _showSuccessDialog();
+        ReportDialogs.showSuccessDialog(context);
       } else {
         await _logAnalyticsEvent('breeding_site_report_submit_error',
             parameters: {
               'status_code': response.statusCode?.toString() ?? 'unknown'
             });
-        _showErrorDialog('Server error: ${response.statusCode}');
+        ReportDialogs.showErrorDialog(
+            context, 'Server error: ${response.statusCode}');
       }
     } catch (e) {
       await _logAnalyticsEvent('breeding_site_report_submit_error',
           parameters: {'error': e.toString()});
-      _showErrorDialog('Failed to submit report: $e');
+      ReportDialogs.showErrorDialog(context, 'Failed to submit report: $e');
     } finally {
       setState(() {
         _isSubmitting = false;
       });
     }
-  }
-
-  void _showSuccessDialog() {
-    // Request in-app review after successful submission
-    InAppReviewManager.requestInAppReview(context);
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Text(MyLocalizations.of(context, 'app_name')),
-        content: Text(MyLocalizations.of(context, 'save_report_ok_txt')),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Close dialog
-              Navigator.of(context).pop(); // Return to home
-            },
-            style: TextButton.styleFrom(
-              foregroundColor: Style.colorPrimary,
-            ),
-            child: Text(MyLocalizations.of(context, 'ok')),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(MyLocalizations.of(context, 'app_name')),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            style: TextButton.styleFrom(
-              foregroundColor: Style.colorPrimary,
-            ),
-            child: Text(MyLocalizations.of(context, 'ok')),
-          ),
-        ],
-      ),
-    );
   }
 
   Future<void> _logAnalyticsEvent(String eventName,

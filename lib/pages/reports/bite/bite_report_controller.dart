@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/pages/location_selection_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/pages/notes_and_submit_page.dart';
-import 'package:mosquito_alert_app/pages/reports/shared/utils/InAppReviewManager.dart';
+import 'package:mosquito_alert_app/pages/reports/shared/utils/report_dialogs.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/progress_indicator.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
@@ -167,68 +167,18 @@ class _BiteReportControllerState extends State<BiteReportController> {
 
       if (response.statusCode == 201) {
         _logAnalyticsEvent('bite_report_submitted');
-        _showSuccessDialog();
+        ReportDialogs.showSuccessDialog(context);
       } else {
-        _showErrorDialog();
+        ReportDialogs.showErrorDialog(context);
       }
     } catch (e) {
       print('Error creating bite report: $e');
-      _showErrorDialog();
+      ReportDialogs.showErrorDialog(context);
     } finally {
       setState(() {
         _isSubmitting = false;
       });
     }
-  }
-
-  /// Show success dialog
-  void _showSuccessDialog() {
-    // TODO: Merge _showSuccessDialog() into a shared method for all types of report?
-    // Request in-app review after successful submission
-    InAppReviewManager.requestInAppReview(context);
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Text(MyLocalizations.of(context, 'app_name')),
-        content: Text(MyLocalizations.of(context, 'save_report_ok_txt')),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
-            style: TextButton.styleFrom(
-              foregroundColor: Style.colorPrimary,
-            ),
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Show error dialog
-  void _showErrorDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Text(MyLocalizations.of(context, 'app_name')),
-        content: Text(MyLocalizations.of(context, 'save_report_ko_txt')),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            style: TextButton.styleFrom(
-              foregroundColor: Style.colorPrimary,
-            ),
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    );
   }
 
   /// Log analytics event
