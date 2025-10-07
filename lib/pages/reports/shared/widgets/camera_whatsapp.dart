@@ -365,19 +365,52 @@ class _WhatsappCameraState extends State<WhatsappCamera>
       child: Align(
         alignment: Alignment.topCenter,
         child: Padding(
-          padding: const EdgeInsets.only(top: 70),
+          padding: const EdgeInsets.only(top: 70, left: 16, right: 16),
           child: Container(
-              width: 0.5 * MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.85,
+            ),
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.orange.shade100,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
                 color: Colors.orange.shade300,
-                borderRadius: BorderRadius.circular(10),
+                width: 1.0,
               ),
-              child: Center(
-                heightFactor: 1.5,
-                child: Text(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.privacy_tip_outlined,
+                  color: Colors.orange.shade700,
+                  size: 20.0,
+                ),
+                SizedBox(width: 12.0),
+                Expanded(
+                  child: Text(
                     MyLocalizations.of(context, widget.infoBadgeTextKey),
-                    style: TextStyle(color: Colors.white)),
-              )),
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      color: Colors.orange.shade800,
+                      height: 1.4,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
