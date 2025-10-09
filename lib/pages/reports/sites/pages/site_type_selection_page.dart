@@ -47,170 +47,158 @@ class _SiteTypeSelectionPageState extends State<SiteTypeSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Title
-          Text(
-            MyLocalizations.of(context, 'question_12'),
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+    return Stack(
+      children: [
+        // Background image at bottom, undistorted
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Image.asset(
+            'assets/img/bottoms/breeding_1.webp',
+            fit: BoxFit.contain,
+            alignment: Alignment.bottomCenter,
           ),
-
-          SizedBox(height: 8),
-
-          // Subtitle
-          Text(
-            '(HC) Select the type of breeding site you found:',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[600],
-            ),
-          ),
-
-          SizedBox(height: 24),
-
-          // Options
-          Expanded(
-            child: ListView.builder(
-              itemCount: _siteTypeOptions.length,
-              itemBuilder: (context, index) {
-                final option = _siteTypeOptions[index];
-                final isSelected =
-                    widget.reportData.siteType == option['value'];
-
-                return Container(
-                  margin: EdgeInsets.only(bottom: 16),
-                  child: InkWell(
-                    onTap: () => _selectSiteType(option['value']),
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: isSelected
-                              ? Style.colorPrimary
-                              : Colors.grey[300]!,
-                          width: isSelected ? 2 : 1,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                        color: isSelected
-                            ? Style.colorPrimary.withValues(alpha: 0.1)
-                            : Colors.white,
-                      ),
-                      child: Row(
-                        children: [
-                          // Image
-                          Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Colors.grey[300]!),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.asset(
-                                option['image'],
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    color: Colors.grey[200],
-                                    child: Icon(
-                                      option['icon'],
-                                      size: 30,
-                                      color: Colors.grey[500],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-
-                          SizedBox(width: 16),
-
-                          // Text content
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  MyLocalizations.of(
-                                      context, option['titleKey']),
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    color: isSelected
-                                        ? Style.colorPrimary
-                                        : Colors.black87,
-                                  ),
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  option['description'],
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[600],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          // Selection indicator
-                          if (isSelected)
-                            Container(
-                              padding: EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color: Style.colorPrimary,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-
-          // Info section
-          Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Style.colorPrimary.withValues(alpha: 0.1),
-              border:
-                  Border.all(color: Style.colorPrimary.withValues(alpha: 0.3)),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.info_outline, color: Style.colorPrimary),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    '(HC) We focus on breeding sites in public spaces that may require community attention.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Style.colorPrimary,
-                    ),
-                  ),
+        ),
+        // Main content
+        Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title
+              Text(
+                MyLocalizations.of(context, 'question_12'),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-            ),
+              ),
+
+              SizedBox(height: 8),
+
+              // Subtitle
+              Text(
+                '(HC) Select the type of breeding site you found:',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                ),
+              ),
+
+              SizedBox(height: 24),
+
+              // Options
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _siteTypeOptions.length,
+                  itemBuilder: (context, index) {
+                    final option = _siteTypeOptions[index];
+                    final isSelected =
+                        widget.reportData.siteType == option['value'];
+
+                    return Container(
+                      margin: EdgeInsets.only(bottom: 16),
+                      child: InkWell(
+                        onTap: () => _selectSiteType(option['value']),
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: isSelected
+                                  ? Style.colorPrimary
+                                  : Colors.grey[300]!,
+                              width: isSelected ? 2 : 1,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            color: isSelected
+                                ? Style.colorPrimary.withValues(alpha: 0.1)
+                                : Colors.white,
+                          ),
+                          child: Row(
+                            children: [
+                              // Image
+                              Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.grey[300]!),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.asset(
+                                    option['image'],
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        color: Colors.grey[200],
+                                        child: Icon(
+                                          option['icon'],
+                                          size: 30,
+                                          color: Colors.grey[500],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox(width: 16),
+
+                              // Text content
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      MyLocalizations.of(
+                                          context, option['titleKey']),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                        color: isSelected
+                                            ? Style.colorPrimary
+                                            : Colors.black87,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      option['description'],
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              // Selection indicator
+                              if (isSelected)
+                                Container(
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: Style.colorPrimary,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 16,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
