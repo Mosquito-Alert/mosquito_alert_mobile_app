@@ -39,6 +39,7 @@ def googlemapsKey = properties.getProperty('googlemaps.Key', System.getenv('GOOG
 android {
     namespace 'com.example.mosquito_alert_app'
     compileSdkVersion flutter.compileSdkVersion
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_21
