@@ -35,21 +35,18 @@ class _BreedingSiteReportControllerState
   /// Gets the current step titles based on water status
   List<String> get _stepTitles {
     final titles = <String>[
-      '(HC) Site Type', // 0
-      '(HC) Take Photos', // 1
-      '(HC) Water Status', // 2
+      '(HC) Site Type',
+      '(HC) Take Photos',
+      '(HC) Water Status',
     ];
 
     // Add larvae step only if water is present
     if (_reportData.hasWater == true) {
-      titles.add('(HC) Larvae Check'); // 3
+      titles.add('(HC) Larvae Check');
     }
 
     // Always add final steps
-    titles.addAll([
-      '(HC) Select Location', // 3 or 4
-      '(HC) Notes & Submit' // 4 or 5
-    ]);
+    titles.addAll(['(HC) Select Location', '(HC) Notes & Submit']);
 
     return titles;
   }

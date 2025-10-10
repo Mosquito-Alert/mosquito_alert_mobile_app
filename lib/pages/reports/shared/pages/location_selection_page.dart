@@ -41,114 +41,149 @@ class LocationSelectionPage extends StatefulWidget {
 class _LocationSelectionPageState extends State<LocationSelectionPage> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16),
+    return SafeArea(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title
-          Text(
-            widget.title,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+          // Fixed header section
+          Padding(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Title
+                Text(
+                  widget.title,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                SizedBox(height: 8),
+
+                // Subtitle
+                Text(
+                  widget.subtitle,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
             ),
           ),
 
-          SizedBox(height: 8),
-
-          // Subtitle
-          Text(
-            widget.subtitle,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[600],
-            ),
-          ),
-
-          SizedBox(height: 16),
-
-          // Location selector
+          // Scrollable content area
           Expanded(
-            child: LocationSelector(
-              initialLatitude: widget.initialLatitude,
-              initialLongitude: widget.initialLongitude,
-              onLocationSelected: widget.onLocationSelected,
-            ),
-          ),
+            child: CustomScrollView(
+              slivers: [
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 16),
 
-          SizedBox(height: 16),
-
-          // Current location info
-          if (widget.canProceed)
-            Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.green[50],
-                border: Border.all(color: Colors.green[200]!),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.location_on, color: Colors.green[700]),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '(HC) Location Selected',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.green[700],
+                      // Location selector - flexible height
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: LocationSelector(
+                            initialLatitude: widget.initialLatitude,
+                            initialLongitude: widget.initialLongitude,
+                            onLocationSelected: widget.onLocationSelected,
                           ),
                         ),
-                        if (widget.locationDescription != null)
-                          Text(
-                            widget.locationDescription!,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.green[600],
+                      ),
+
+                      // Bottom section that can scroll if needed
+                      Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Current location info
+                            if (widget.canProceed)
+                              Container(
+                                padding: EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.green[50],
+                                  border: Border.all(color: Colors.green[200]!),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.location_on,
+                                        color: Colors.green[700]),
+                                    SizedBox(width: 8),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '(HC) Location Selected',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.green[700],
+                                            ),
+                                          ),
+                                          if (widget.locationDescription !=
+                                              null)
+                                            Text(
+                                              widget.locationDescription!,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.green[600],
+                                              ),
+                                            ),
+                                          if (widget.locationSource != null)
+                                            Text(
+                                              widget.locationSource ==
+                                                      LocationRequestSource_Enum
+                                                          .auto
+                                                  ? '(HC) GPS Location'
+                                                  : '(HC) Manual Selection',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.green[600],
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                            SizedBox(height: 16),
+
+                            // Navigation buttons
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Style.outlinedButton(
+                                    '(HC) Back',
+                                    widget.onPrevious,
+                                  ),
+                                ),
+                                SizedBox(width: 12),
+                                Expanded(
+                                  flex: 2,
+                                  child: Style.button(
+                                    MyLocalizations.of(context, 'continue_txt'),
+                                    widget.canProceed ? widget.onNext : null,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        if (widget.locationSource != null)
-                          Text(
-                            widget.locationSource ==
-                                    LocationRequestSource_Enum.auto
-                                ? '(HC) GPS Location'
-                                : '(HC) Manual Selection',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.green[600],
-                            ),
-                          ),
-                      ],
-                    ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-
-          SizedBox(height: 16),
-
-          // Navigation buttons
-          Row(
-            children: [
-              Expanded(
-                child: Style.outlinedButton(
-                  '(HC) Back',
-                  widget.onPrevious,
-                ),
-              ),
-              SizedBox(width: 12),
-              Expanded(
-                flex: 2,
-                child: Style.button(
-                  MyLocalizations.of(context, 'continue_txt'),
-                  widget.canProceed ? widget.onNext : null,
-                ),
-              ),
-            ],
           ),
         ],
       ),
