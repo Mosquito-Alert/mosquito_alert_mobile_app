@@ -31,7 +31,7 @@ class _LocationSelectorState extends State<LocationSelector> {
   Set<Marker> _markers = {};
 
   // Default center (can be customized based on app needs)
-  static const LatLng _defaultCenter = LatLng(41.3874, 2.1686); // Barcelona
+  static const LatLng _defaultCenter = LatLng(0.0, 0.0); // Ocean
 
   @override
   void initState() {

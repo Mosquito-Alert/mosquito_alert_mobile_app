@@ -53,8 +53,8 @@ sdk.Bite createTestBite({
 
   // Create the location point with provided or default coordinates
   final locationPoint = sdk.LocationPoint((p) => p
-    ..latitude = latitude ?? 41.3874 // Default to Barcelona coordinates
-    ..longitude = longitude ?? 2.1686);
+    ..latitude = latitude ?? 0.0 // Default to ocean coordinates
+    ..longitude = longitude ?? 0.0);
 
   // Create the location with required source and point
   final location = sdk.Location((l) => l
