@@ -123,12 +123,12 @@ class BodyPartSelector extends StatelessWidget {
           decoration: BoxDecoration(
             // More visible borders for debugging positioning
             color: biteCount > 0
-                ? Colors.red.withValues(alpha: 0.15)
+                ? Style.colorPrimary.withValues(alpha: 0.15)
                 : Colors.blue.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
                 color: biteCount > 0
-                    ? Colors.red.withValues(alpha: 0.6)
+                    ? Style.colorPrimary.withValues(alpha: 0.6)
                     : Colors.blue.withValues(alpha: 0.4),
                 width: 2),
           ),
@@ -157,7 +157,7 @@ class BodyPartSelector extends StatelessWidget {
                     constraints: BoxConstraints(minWidth: 24, minHeight: 24),
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: Style.colorPrimary,
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.white, width: 2),
                       boxShadow: [
@@ -426,14 +426,17 @@ class BodyPartSelector extends StatelessWidget {
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.red[400]!, Colors.red[600]!],
+              colors: [
+                Style.colorPrimary.withValues(alpha: 0.8),
+                Style.colorPrimary
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.red.withValues(alpha: 0.3),
+                color: Style.colorPrimary.withValues(alpha: 0.3),
                 blurRadius: 8,
                 offset: Offset(0, 4),
               ),
@@ -501,9 +504,9 @@ class BodyPartSelector extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.red[50],
+        color: Style.colorPrimary.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.red[200]!),
+        border: Border.all(color: Style.colorPrimary.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -511,13 +514,13 @@ class BodyPartSelector extends StatelessWidget {
           Icon(
             icon,
             size: 16,
-            color: Colors.red[700],
+            color: Style.colorPrimary,
           ),
           SizedBox(width: 4),
           Text(
             '$label: $count',
             style: TextStyle(
-              color: Colors.red[700],
+              color: Style.textColor,
               fontWeight: FontWeight.w600,
               fontSize: 12,
             ),
