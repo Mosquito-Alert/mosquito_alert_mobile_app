@@ -192,11 +192,7 @@ class BodyPartSelector extends StatelessWidget {
     int currentCount,
     Function(int) onChanged,
   ) {
-    String displayName = bodyPart
-        .replaceAll('_', ' ')
-        .split(' ')
-        .map((word) => word[0].toUpperCase() + word.substring(1))
-        .join(' ');
+    String displayName = _getBodyPartTranslation(context, bodyPart);
 
     showDialog(
       context: context,
@@ -211,14 +207,15 @@ class BodyPartSelector extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 ),
                 SizedBox(width: 8),
-                Text('$displayName Bites'),
+                Text(
+                    '${displayName} ${MyLocalizations.of(context, 'plural_bite')}'),
               ],
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'How many bites on your ${displayName.toLowerCase()}?',
+                  '(HC) How many bites on your ${displayName.toLowerCase()}?',
                   style: TextStyle(fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
@@ -334,7 +331,7 @@ class BodyPartSelector extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      'Maximum 20 bites per body part',
+                      '(HC) Maximum 20 bites per body part',
                       style: TextStyle(
                         color: Colors.orange,
                         fontSize: 12,
@@ -346,10 +343,10 @@ class BodyPartSelector extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancel'),
+                child: Text(MyLocalizations.of(context, 'cancel')),
               ),
               Style.button(
-                'Save',
+                MyLocalizations.of(context, 'save'),
                 () {
                   onChanged(tempCount);
                   Navigator.of(context).pop();
@@ -379,6 +376,25 @@ class BodyPartSelector extends StatelessWidget {
     }
   }
 
+  String _getBodyPartTranslation(BuildContext context, String bodyPart) {
+    switch (bodyPart) {
+      case 'head':
+        return MyLocalizations.of(context, 'bite_report_bodypart_head');
+      case 'chest':
+        return MyLocalizations.of(context, 'question_2_answer_24');
+      case 'left_hand':
+        return MyLocalizations.of(context, 'bite_report_bodypart_leftarm');
+      case 'right_hand':
+        return MyLocalizations.of(context, 'bite_report_bodypart_rightarm');
+      case 'left_leg':
+        return MyLocalizations.of(context, 'bite_report_bodypart_leftleg');
+      case 'right_leg':
+        return MyLocalizations.of(context, 'bite_report_bodypart_rightleg');
+      default:
+        return '(HC) ${bodyPart.replaceAll('_', ' ')}';
+    }
+  }
+
   Widget _buildBiteSummary(BuildContext context, BiteReportData data) {
     final totalBites = data.headBites +
         data.chestBites +
@@ -405,7 +421,7 @@ class BodyPartSelector extends StatelessWidget {
             SizedBox(width: 8),
             Expanded(
               child: Text(
-                'Tap on body parts above to report bites',
+                '(HC) Tap on body parts above to report bites',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Colors.blue[700],
                       fontWeight: FontWeight.w500,
@@ -452,7 +468,7 @@ class BodyPartSelector extends StatelessWidget {
               ),
               SizedBox(width: 8),
               Text(
-                'Total bites: $totalBites',
+                '(HC) Total bites: $totalBites',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -466,7 +482,7 @@ class BodyPartSelector extends StatelessWidget {
 
         // Individual bite breakdown
         Text(
-          'Breakdown by body part:',
+          '(HC) Breakdown by body part:',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: Colors.grey[700],
@@ -480,20 +496,35 @@ class BodyPartSelector extends StatelessWidget {
           runSpacing: 8,
           children: [
             if (data.headBites > 0)
-              _buildBiteChip('Head', data.headBites, Icons.face),
+              _buildBiteChip(
+                  MyLocalizations.of(context, 'bite_report_bodypart_head'),
+                  data.headBites,
+                  Icons.face),
             if (data.chestBites > 0)
-              _buildBiteChip('Chest', data.chestBites, Icons.accessibility_new),
+              _buildBiteChip(
+                  MyLocalizations.of(context, 'question_2_answer_24'),
+                  data.chestBites,
+                  Icons.accessibility_new),
             if (data.leftHandBites > 0)
-              _buildBiteChip('Left Hand', data.leftHandBites, Icons.front_hand),
+              _buildBiteChip(
+                  MyLocalizations.of(context, 'bite_report_bodypart_leftarm'),
+                  data.leftHandBites,
+                  Icons.front_hand),
             if (data.rightHandBites > 0)
               _buildBiteChip(
-                  'Right Hand', data.rightHandBites, Icons.front_hand),
+                  MyLocalizations.of(context, 'bite_report_bodypart_rightarm'),
+                  data.rightHandBites,
+                  Icons.front_hand),
             if (data.leftLegBites > 0)
               _buildBiteChip(
-                  'Left Leg', data.leftLegBites, Icons.directions_walk),
+                  MyLocalizations.of(context, 'bite_report_bodypart_leftleg'),
+                  data.leftLegBites,
+                  Icons.directions_walk),
             if (data.rightLegBites > 0)
               _buildBiteChip(
-                  'Right Leg', data.rightLegBites, Icons.directions_walk),
+                  MyLocalizations.of(context, 'bite_report_bodypart_rightleg'),
+                  data.rightLegBites,
+                  Icons.directions_walk),
           ],
         ),
       ],
