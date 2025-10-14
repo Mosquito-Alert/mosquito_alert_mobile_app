@@ -26,12 +26,12 @@ class InAppReviewManager {
     final apiFetchers = [
       (
         'observations',
-        () => apiClient.getObservationsApi().listMine(pageSize: 4)
+        () => apiClient.getObservationsApi().listMine(pageSize: 1)
       ),
-      ('bites', () => apiClient.getBitesApi().listMine(pageSize: 4)),
+      ('bites', () => apiClient.getBitesApi().listMine(pageSize: 1)),
       (
         'breeding_sites',
-        () => apiClient.getBreedingSitesApi().listMine(pageSize: 4)
+        () => apiClient.getBreedingSitesApi().listMine(pageSize: 1)
       ),
     ];
 
