@@ -1014,7 +1014,7 @@ packages:
     description:
       path: "."
       ref: "0.1.23"
-      resolved-ref: "0c6b6bfe9f6b53aaab2677fcf364bdb8039273e1"
+      resolved-ref: "2d612ab9000de0653c47baa8b64a946e627a2c34"
       url: "https://github.com/Mosquito-Alert/mosquito-alert-dart-sdk.git"
     source: git
     version: "0.1.23"
