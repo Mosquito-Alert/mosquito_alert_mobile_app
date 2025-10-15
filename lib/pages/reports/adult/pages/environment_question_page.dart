@@ -39,7 +39,7 @@ class _EnvironmentQuestionPageState extends State<EnvironmentQuestionPage> {
       'value': 'outdoors',
       'titleKey': 'question_4_answer_43',
       'description': '(HC) Garden, park, street, or any outdoor space',
-      'icon': Icons.nature,
+      'icon': Icons.park,
     },
   ];
 
