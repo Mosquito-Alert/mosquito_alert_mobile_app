@@ -158,23 +158,12 @@ class _LocationSelectionPageState extends State<LocationSelectionPage> {
                             SizedBox(height: 16),
 
                             // Navigation buttons
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Style.outlinedButton(
-                                    '(HC) Back',
-                                    widget.onPrevious,
-                                  ),
-                                ),
-                                SizedBox(width: 12),
-                                Expanded(
-                                  flex: 2,
-                                  child: Style.button(
-                                    MyLocalizations.of(context, 'continue_txt'),
-                                    widget.canProceed ? widget.onNext : null,
-                                  ),
-                                ),
-                              ],
+                            SizedBox(
+                              width: double.infinity,
+                              child: Style.button(
+                                MyLocalizations.of(context, 'continue_txt'),
+                                widget.canProceed ? widget.onNext : null,
+                              ),
                             ),
                           ],
                         ),

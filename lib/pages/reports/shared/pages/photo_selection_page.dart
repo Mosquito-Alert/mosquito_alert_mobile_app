@@ -59,34 +59,13 @@ class _PhotoSelectionPageState extends State<PhotoSelectionPage> {
         // Navigation buttons
         Container(
           padding: EdgeInsets.all(16),
-          child: widget.onPrevious != null
-              ? Row(
-                  children: [
-                    // Back button (only if onPrevious is provided)
-                    Expanded(
-                      child: Style.outlinedButton(
-                        '(HC) Back',
-                        widget.onPrevious,
-                      ),
-                    ),
-                    SizedBox(width: 12),
-                    // Continue button
-                    Expanded(
-                      flex: 2,
-                      child: Style.button(
-                        MyLocalizations.of(context, 'continue_txt'),
-                        _canProceed ? widget.onNext : null,
-                      ),
-                    ),
-                  ],
-                )
-              : SizedBox(
-                  width: double.infinity,
-                  child: Style.button(
-                    MyLocalizations.of(context, 'continue_txt'),
-                    _canProceed ? widget.onNext : null,
-                  ),
-                ),
+          child: SizedBox(
+            width: double.infinity,
+            child: Style.button(
+              MyLocalizations.of(context, 'continue_txt'),
+              _canProceed ? widget.onNext : null,
+            ),
+          ),
         ),
       ],
     );

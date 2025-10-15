@@ -149,28 +149,17 @@ class _NotesAndSubmitPageState extends State<NotesAndSubmitPage> {
 
           SizedBox(height: 16),
 
-          Row(
-            children: [
-              Expanded(
-                child: Style.outlinedButton(
-                  '(HC) Back',
-                  widget.isSubmitting ? null : widget.onPrevious,
-                ),
-              ),
-              SizedBox(width: 12),
-              Expanded(
-                flex: 2,
-                child: widget.isSubmitting
-                    ? Style.button(
-                        '(HC) Submitting...',
-                        null,
-                      )
-                    : Style.button(
-                        MyLocalizations.of(context, 'send_data'),
-                        widget.onSubmit,
-                      ),
-              ),
-            ],
+          SizedBox(
+            width: double.infinity,
+            child: widget.isSubmitting
+                ? Style.button(
+                    '(HC) Submitting...',
+                    null,
+                  )
+                : Style.button(
+                    MyLocalizations.of(context, 'send_data'),
+                    widget.onSubmit,
+                  ),
           ),
         ],
       ),
