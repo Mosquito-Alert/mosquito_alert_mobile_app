@@ -9,8 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Application.dart';
 
 class UserManager {
-  static var profileUUIDs;
-
   static Future<bool> startFirstTime(context) async {
     var prefs = await SharedPreferences.getInstance();
     var firstTime = prefs.getBool('firstTime');
@@ -48,16 +46,6 @@ class UserManager {
   }
 
   //set
-  static Future<void> setSowInfoAdult(show) async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('infoCameraAdult', show);
-  }
-
-  static Future<void> setSowInfoBreeding(show) async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('infoCameraBreeding', show);
-  }
-
   static Future<void> setLanguage(language) async {
     var prefs = await SharedPreferences.getInstance();
     await prefs.setString('language', language);
@@ -66,16 +54,6 @@ class UserManager {
   static Future<void> setLanguageCountry(lngCountry) async {
     var prefs = await SharedPreferences.getInstance();
     await prefs.setString('languageCountry', lngCountry);
-  }
-
-  static Future<void> setReportList(reportList) async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('reportsList', reportList);
-  }
-
-  static Future<void> setImageList(imageList) async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('imagesList', imageList);
   }
 
   static Future<bool> setHashtags(List<String>? hashtags) async {
@@ -97,16 +75,6 @@ class UserManager {
   }
 
   //get
-  static Future<bool?> getShowInfoAdult() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('infoCameraAdult');
-  }
-
-  static Future<bool?> getShowInfoBreeding() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('infoCameraBreeding');
-  }
-
   static Future<String?> getLanguage() async {
     var prefs = await SharedPreferences.getInstance();
     return prefs.getString('language');
@@ -119,16 +87,6 @@ class UserManager {
 
   static Future<String?> getUserLocale() async {
     return '${await UserManager.getLanguage()}_${await UserManager.getLanguageCountry()}';
-  }
-
-  static Future<List<String>?> getReportList() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.getStringList('reportsList');
-  }
-
-  static Future<List<String>?> getImageList() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.getStringList('imagesList');
   }
 
   static Future<void> migrateHashtagToHashtags() async {
