@@ -242,29 +242,33 @@ class _PhotoSelectorState extends State<PhotoSelector> {
 
                   // Remove button
                   Container(
-                    margin: EdgeInsets.all(4),
+                    margin: EdgeInsets.all(3),
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: Colors.red.withValues(alpha: 0.9),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
-                          blurRadius: 2,
+                          blurRadius: 3,
                           offset: Offset(0, 1),
                         ),
                       ],
                     ),
-                    child: IconButton(
-                      onPressed: () => _removePhoto(index),
-                      icon: Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 16,
-                      ),
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(
-                        minWidth: 28,
-                        minHeight: 28,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () => _removePhoto(index),
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          width: 24,
+                          height: 24,
+                          padding: EdgeInsets.all(2),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 14,
+                          ),
+                        ),
                       ),
                     ),
                   ),
