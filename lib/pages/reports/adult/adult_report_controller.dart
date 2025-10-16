@@ -228,7 +228,7 @@ class _AdultReportControllerState extends State<AdultReportController> {
                   infoBadgeTextKey: 'one_mosquito_reminder_badge',
                 ),
                 LocationSelectionPage(
-                  title: MyLocalizations.of(context, 'question_11'),
+                  title: MyLocalizations.of(context, 'question_13'),
                   subtitle:
                       '(HC) Please indicate where you spotted the mosquito:',
                   initialLatitude: _reportData.latitude,

@@ -41,137 +41,174 @@ class LocationSelectionPage extends StatefulWidget {
 class _LocationSelectionPageState extends State<LocationSelectionPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
+    return Scaffold(
+      body: Stack(
         children: [
-          // Fixed header section
-          Padding(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Title
-                Text(
-                  widget.title,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+          // Full-screen map background (WhatsApp style)
+          LocationSelector(
+            initialLatitude: widget.initialLatitude,
+            initialLongitude: widget.initialLongitude,
+            onLocationSelected: widget.onLocationSelected,
+            autoGetLocation: true, // Enable auto-location by default
+          ),
 
-                SizedBox(height: 8),
-
-                // Subtitle
-                Text(
-                  widget.subtitle,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[600],
-                  ),
+          // Header overlay with title and subtitle
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: Container(
+                margin: EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 8,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
                 ),
-              ],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      widget.title,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      widget.subtitle,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
 
-          // Scrollable content area
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 16),
-
-                      // Location selector - flexible height
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: LocationSelector(
-                            initialLatitude: widget.initialLatitude,
-                            initialLongitude: widget.initialLongitude,
-                            onLocationSelected: widget.onLocationSelected,
-                          ),
+          // Bottom overlay with location info and navigation
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: Container(
+                margin: EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 8,
+                      offset: Offset(0, -2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Current location info
+                    if (widget.canProceed) ...[
+                      Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.green[50],
+                          border: Border.all(color: Colors.green[200]!),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                      ),
-
-                      // Bottom section that can scroll if needed
-                      Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
+                        child: Row(
                           children: [
-                            // Current location info
-                            if (widget.canProceed)
-                              Container(
-                                padding: EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: Colors.green[50],
-                                  border: Border.all(color: Colors.green[200]!),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.location_on,
-                                        color: Colors.green[700]),
-                                    SizedBox(width: 8),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '(HC) Location Selected',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.green[700],
-                                            ),
-                                          ),
-                                          if (widget.locationDescription !=
-                                              null)
-                                            Text(
-                                              widget.locationDescription!,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.green[600],
-                                              ),
-                                            ),
-                                          if (widget.locationSource != null)
-                                            Text(
-                                              widget.locationSource ==
-                                                      LocationRequestSource_Enum
-                                                          .auto
-                                                  ? '(HC) GPS Location'
-                                                  : '(HC) Manual Selection',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.green[600],
-                                              ),
-                                            ),
-                                        ],
+                            Icon(Icons.location_on, color: Colors.green[700]),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '(HC) Location Selected',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.green[700],
+                                    ),
+                                  ),
+                                  if (widget.locationDescription != null)
+                                    Text(
+                                      widget.locationDescription!,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.green[600],
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-
-                            SizedBox(height: 16),
-
-                            // Navigation buttons
-                            SizedBox(
-                              width: double.infinity,
-                              child: Style.button(
-                                MyLocalizations.of(context, 'continue_txt'),
-                                widget.canProceed ? widget.onNext : null,
+                                  if (widget.locationSource != null)
+                                    Text(
+                                      widget.locationSource ==
+                                              LocationRequestSource_Enum.auto
+                                          ? '(HC) GPS Location'
+                                          : '(HC) Manual Selection',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.green[600],
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
+                      SizedBox(height: 16),
+                    ] else ...[
+                      // Instruction text when no location selected
+                      Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.blue[50],
+                          border: Border.all(color: Colors.blue[200]!),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.info_outline, color: Colors.blue[700]),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                '(HC) Tap on the map to select a location or use the location button',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.blue[700],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16),
                     ],
-                  ),
+
+                    // Navigation button
+                    SizedBox(
+                      width: double.infinity,
+                      child: Style.button(
+                        MyLocalizations.of(context, 'continue_txt'),
+                        widget.canProceed ? widget.onNext : null,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ],

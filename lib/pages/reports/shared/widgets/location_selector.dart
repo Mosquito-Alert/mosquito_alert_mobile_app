@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
-import 'package:mosquito_alert_app/utils/style.dart';
+import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 
 class LocationSelector extends StatefulWidget {
   final double? initialLatitude;
@@ -10,12 +10,14 @@ class LocationSelector extends StatefulWidget {
   final Function(
           double latitude, double longitude, LocationRequestSource_Enum source)
       onLocationSelected;
+  final bool autoGetLocation;
 
   const LocationSelector({
     Key? key,
     this.initialLatitude,
     this.initialLongitude,
     required this.onLocationSelected,
+    this.autoGetLocation = true,
   }) : super(key: key);
 
   @override
@@ -29,14 +31,75 @@ class _LocationSelectorState extends State<LocationSelector> {
   final _latController = TextEditingController();
   final _lonController = TextEditingController();
   Set<Marker> _markers = {};
-
-  // Default center (can be customized based on app needs)
-  static const LatLng _defaultCenter = LatLng(0.0, 0.0); // Ocean
+  LatLng? _currentMapCenter;
 
   @override
   void initState() {
     super.initState();
+    _initializeMapCenter();
     _updateMapMarkers();
+
+    if (widget.autoGetLocation &&
+        widget.initialLatitude == null &&
+        widget.initialLongitude == null) {
+      _tryAutoGetLocation();
+    }
+  }
+
+  void _initializeMapCenter() {
+    if (widget.initialLatitude != null && widget.initialLongitude != null) {
+      _currentMapCenter =
+          LatLng(widget.initialLatitude!, widget.initialLongitude!);
+    }
+  }
+
+  Future<void> _tryAutoGetLocation() async {
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return;
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        return;
+      }
+
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 10),
+      );
+
+      if (mounted) {
+        setState(() {
+          _currentMapCenter = LatLng(position.latitude, position.longitude);
+          _latController.text = position.latitude.toStringAsFixed(6);
+          _lonController.text = position.longitude.toStringAsFixed(6);
+          _markers = {
+            Marker(
+              markerId: MarkerId('selected_location'),
+              position: LatLng(position.latitude, position.longitude),
+              infoWindow: InfoWindow(
+                  title: MyLocalizations.of(context, "current_location_txt")),
+            ),
+          };
+        });
+
+        widget.onLocationSelected(
+          position.latitude,
+          position.longitude,
+          LocationRequestSource_Enum.auto,
+        );
+
+        await _moveMapToLocation(position.latitude, position.longitude);
+      }
+    } catch (e) {
+      debugPrint('Auto-location failed: $e');
+      if (mounted && _currentMapCenter == null) {
+        setState(() {
+          _currentMapCenter = LatLng(50.0, 10.0);
+        });
+      }
+    }
   }
 
   void _updateMapMarkers() {
@@ -82,7 +145,6 @@ class _LocationSelectorState extends State<LocationSelector> {
       };
     });
 
-    // Notify parent of location selection
     widget.onLocationSelected(
       position.latitude,
       position.longitude,
@@ -101,26 +163,23 @@ class _LocationSelectorState extends State<LocationSelector> {
     });
 
     try {
-      // Check location services
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        throw Exception('Location services are disabled');
+        throw Exception('Location services are disabled.');
       }
 
-      // Check permissions
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          throw Exception('Location permission denied');
+          throw Exception('Location permission denied.');
         }
       }
 
       if (permission == LocationPermission.deniedForever) {
-        throw Exception('Location permission permanently denied');
+        throw Exception('Location permission permanently denied.');
       }
 
-      // Get current position
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
         timeLimit: Duration(seconds: 30),
@@ -138,14 +197,12 @@ class _LocationSelectorState extends State<LocationSelector> {
         };
       });
 
-      // Notify parent of location selection
       widget.onLocationSelected(
         position.latitude,
         position.longitude,
         LocationRequestSource_Enum.auto,
       );
 
-      // Move map to the GPS location
       await _moveMapToLocation(position.latitude, position.longitude);
     } catch (e) {
       setState(() {
@@ -158,89 +215,191 @@ class _LocationSelectorState extends State<LocationSelector> {
     }
   }
 
+  Future<void> _centerOnCurrentLocation() async {
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return;
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        return;
+      }
+
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.medium,
+        timeLimit: Duration(seconds: 10),
+      );
+
+      await _moveMapToLocation(position.latitude, position.longitude);
+    } catch (e) {
+      debugPrint('Center on location failed: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
       children: [
-        // GPS Location Button
-        SizedBox(
-          width: double.infinity,
-          child: _isGettingLocation
-              ? Style.button(
-                  '(HC) Getting location...',
-                  null,
-                )
-              : Style.button(
-                  '(HC) Use Current GPS Location',
-                  _getCurrentLocation,
-                ),
-        ),
-
-        SizedBox(height: 16),
-
-        // Map for manual selection
-        Text(
-          '(HC) Or tap on the map to select location manually:',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        SizedBox(height: 8),
-
-        // Embedded Google Map
-        Container(
-          height: 300,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey[300]!),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: GoogleMap(
-              onMapCreated: _onMapCreated,
-              onTap: _onMapTap,
-              initialCameraPosition: CameraPosition(
-                target: widget.initialLatitude != null &&
-                        widget.initialLongitude != null
-                    ? LatLng(widget.initialLatitude!, widget.initialLongitude!)
-                    : _defaultCenter,
-                zoom: 15,
-              ),
-              markers: _markers,
-              myLocationEnabled: true,
-              myLocationButtonEnabled: false,
-              zoomControlsEnabled: true,
-              mapToolbarEnabled: false,
-            ),
-          ),
-        ),
-
-        if (_locationError != null) ...[
-          SizedBox(height: 12),
-          Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.red[50],
-              border: Border.all(color: Colors.red[200]!),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.error_outline, color: Colors.red),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    _locationError!,
-                    style: TextStyle(color: Colors.red[700]),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        _buildGoogleMap(),
+        _buildLocationButton(),
+        _buildCenterButton(),
+        _buildErrorOverlay(),
       ],
+    );
+  }
+
+  Widget _buildGoogleMap() {
+    return GoogleMap(
+      onMapCreated: _onMapCreated,
+      onTap: _onMapTap,
+      initialCameraPosition: CameraPosition(
+        target: _currentMapCenter ?? LatLng(50.0, 10.0),
+        zoom: 15,
+      ),
+      markers: _markers,
+      myLocationEnabled: true,
+      myLocationButtonEnabled: false,
+      zoomControlsEnabled: false,
+      mapToolbarEnabled: false,
+      compassEnabled: true,
+      rotateGesturesEnabled: true,
+      scrollGesturesEnabled: true,
+      tiltGesturesEnabled: true,
+      zoomGesturesEnabled: true,
+    );
+  }
+
+  Widget _buildLocationButton() {
+    return Positioned(
+      top: 120,
+      right: 16,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.2),
+              blurRadius: 6,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: _isGettingLocation ? null : _getCurrentLocation,
+            borderRadius: BorderRadius.circular(30),
+            child: Container(
+              width: 48,
+              height: 48,
+              child: _isGettingLocation
+                  ? Center(
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.grey[600]!),
+                        ),
+                      ),
+                    )
+                  : Icon(
+                      Icons.my_location,
+                      color: Colors.grey[700],
+                      size: 24,
+                    ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCenterButton() {
+    return Positioned(
+      top: 176,
+      right: 16,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.2),
+              blurRadius: 6,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: _centerOnCurrentLocation,
+            borderRadius: BorderRadius.circular(30),
+            child: Container(
+              width: 48,
+              height: 48,
+              child: Icon(
+                Icons.center_focus_strong,
+                color: Colors.grey[700],
+                size: 24,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorOverlay() {
+    if (_locationError == null) {
+      return SizedBox.shrink();
+    }
+
+    return Positioned(
+      bottom: 16,
+      left: 16,
+      right: 16,
+      child: Container(
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.red[50],
+          border: Border.all(color: Colors.red[200]!),
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.error_outline, color: Colors.red),
+            SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                _locationError!,
+                style: TextStyle(color: Colors.red[700]),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.close, color: Colors.red),
+              onPressed: () {
+                setState(() {
+                  _locationError = null;
+                });
+              },
+              constraints: BoxConstraints(),
+              padding: EdgeInsets.zero,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
