@@ -62,29 +62,6 @@ class _ReportsListBitesState extends State<ReportsListBites> {
     return DateFormat('yyyy-MM-dd HH:mm').format(report.createdAt.toLocal());
   }
 
-  String _getTitle(BuildContext context, Bite report) {
-    final totalBites = _getTotalBiteCount(report.counts);
-
-    if (totalBites == 0) {
-      return MyLocalizations.of(context, 'no_bites');
-    } else if (totalBites == 1) {
-      return '1 ${MyLocalizations.of(context, 'single_bite').toLowerCase()}';
-    } else {
-      return '$totalBites ${MyLocalizations.of(context, 'plural_bite').toLowerCase()}';
-    }
-  }
-
-  int _getTotalBiteCount(BiteCounts counts) {
-    final head = (counts.head ?? 0).round();
-    final chest = (counts.chest ?? 0).round();
-    final leftArm = (counts.leftArm ?? 0).round();
-    final rightArm = (counts.rightArm ?? 0).round();
-    final leftLeg = (counts.leftLeg ?? 0).round();
-    final rightLeg = (counts.rightLeg ?? 0).round();
-
-    return head + chest + leftArm + rightArm + leftLeg + rightLeg;
-  }
-
   String _getBiteLocations(BiteCounts counts) {
     final locations = <String>[];
 
@@ -129,6 +106,8 @@ class _ReportsListBitesState extends State<ReportsListBites> {
       );
     }
 
+    final formatters = _ReportFormatters(context);
+
     return ListView.builder(
       itemCount: biteReports.length,
       itemBuilder: (context, index) {
@@ -141,7 +120,7 @@ class _ReportsListBitesState extends State<ReportsListBites> {
           elevation: 4.0,
           margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
           child: ListTile(
-            title: Text(_getTitle(context, report)),
+            title: Text(formatters.formatTitle(report)),
             subtitle: RichText(
               text: TextSpan(
                 children: [
@@ -235,7 +214,7 @@ class _ReportFormatters {
   _ReportFormatters(this.context);
 
   String formatTitle(Bite report) {
-    final totalBites = _getTotalBiteCount(report.counts);
+    final totalBites = report.counts.total;
 
     if (totalBites == 0) {
       return MyLocalizations.of(context, 'no_bites');
@@ -244,17 +223,6 @@ class _ReportFormatters {
     } else {
       return '$totalBites ${MyLocalizations.of(context, 'plural_bite').toLowerCase()}';
     }
-  }
-
-  int _getTotalBiteCount(BiteCounts counts) {
-    final head = (counts.head ?? 0).round();
-    final chest = (counts.chest ?? 0).round();
-    final leftArm = (counts.leftArm ?? 0).round();
-    final rightArm = (counts.rightArm ?? 0).round();
-    final leftLeg = (counts.leftLeg ?? 0).round();
-    final rightLeg = (counts.rightLeg ?? 0).round();
-
-    return head + chest + leftArm + rightArm + leftLeg + rightLeg;
   }
 
   String formatDetailedDateTime(Bite report) {
