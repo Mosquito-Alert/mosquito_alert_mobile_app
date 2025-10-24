@@ -8,7 +8,6 @@ import 'package:mosquito_alert_app/pages/reports/shared/pages/notes_and_submit_p
 import 'package:mosquito_alert_app/pages/reports/shared/pages/photo_selection_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/utils/report_dialogs.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/progress_indicator.dart';
-import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:provider/provider.dart';
 
@@ -224,9 +223,6 @@ class _AdultReportControllerState extends State<AdultReportController> {
                   infoBadgeTextKey: 'one_mosquito_reminder_badge',
                 ),
                 LocationSelectionPage(
-                  title: MyLocalizations.of(context, 'question_13'),
-                  subtitle:
-                      '(HC) Please indicate where you spotted the mosquito:',
                   initialLatitude: _reportData.latitude,
                   initialLongitude: _reportData.longitude,
                   onLocationSelected: _onLocationSelected,

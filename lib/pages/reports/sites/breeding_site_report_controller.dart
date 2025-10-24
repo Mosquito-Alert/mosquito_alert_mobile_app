@@ -8,7 +8,6 @@ import 'package:mosquito_alert_app/pages/reports/shared/pages/notes_and_submit_p
 import 'package:mosquito_alert_app/pages/reports/shared/pages/photo_selection_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/utils/report_dialogs.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/progress_indicator.dart';
-import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:provider/provider.dart';
 
@@ -261,8 +260,6 @@ class _BreedingSiteReportControllerState
 
   Widget _getLocationPage() {
     return LocationSelectionPage(
-      title: MyLocalizations.of(context, 'question_16'),
-      subtitle: '(HC) Please indicate where the breeding site is located:',
       initialLatitude: _reportData.latitude,
       initialLongitude: _reportData.longitude,
       onLocationSelected: _onLocationSelected,

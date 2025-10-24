@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
-import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 
 class LocationSelector extends StatefulWidget {
   final double? initialLatitude;
@@ -54,52 +53,12 @@ class _LocationSelectorState extends State<LocationSelector> {
   }
 
   Future<void> _tryAutoGetLocation() async {
-    try {
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) return;
-
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        return;
-      }
-
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-        timeLimit: Duration(seconds: 10),
-      );
-
-      if (mounted) {
-        setState(() {
-          _currentMapCenter = LatLng(position.latitude, position.longitude);
-          _latController.text = position.latitude.toStringAsFixed(6);
-          _lonController.text = position.longitude.toStringAsFixed(6);
-          _markers = {
-            Marker(
-              markerId: MarkerId('selected_location'),
-              position: LatLng(position.latitude, position.longitude),
-              infoWindow: InfoWindow(
-                  title: MyLocalizations.of(context, "current_location_txt")),
-            ),
-          };
-        });
-
-        widget.onLocationSelected(
-          position.latitude,
-          position.longitude,
-          LocationRequestSource_Enum.auto,
-        );
-
-        await _moveMapToLocation(position.latitude, position.longitude);
-      }
-    } catch (e) {
-      debugPrint('Auto-location failed: $e');
-      if (mounted && _currentMapCenter == null) {
-        setState(() {
-          _currentMapCenter = LatLng(50.0, 10.0);
-        });
-      }
-    }
+    await _fetchLocation(
+      showLoading: false,
+      requestPermission: false,
+      timeout: const Duration(seconds: 10),
+      fallbackCenterOnError: true,
+    );
   }
 
   void _updateMapMarkers() {
@@ -156,44 +115,61 @@ class _LocationSelectorState extends State<LocationSelector> {
     _mapController = controller;
   }
 
-  Future<void> _getCurrentLocation() async {
-    setState(() {
-      _isGettingLocation = true;
-      _locationError = null;
-    });
+  Future<void> _fetchLocation({
+    bool showLoading = false,
+    bool requestPermission = false,
+    Duration timeout = const Duration(seconds: 10),
+    bool fallbackCenterOnError = false,
+  }) async {
+    if (showLoading) {
+      setState(() {
+        _isGettingLocation = true;
+        _locationError = null;
+      });
+    }
 
     try {
+      // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        throw Exception('Location services are disabled.');
+        if (showLoading) throw Exception('Location services are disabled.');
+        return;
       }
 
+      // Check or request permissions if necessary
       LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
+      if (permission == LocationPermission.denied && requestPermission) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          throw Exception('Location permission denied.');
+          if (showLoading) throw Exception('Location permission denied.');
+          return;
         }
       }
 
       if (permission == LocationPermission.deniedForever) {
-        throw Exception('Location permission permanently denied.');
+        if (showLoading)
+          throw Exception('Location permission permanently denied.');
+        return;
       }
 
+      // Get current position
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
-        timeLimit: Duration(seconds: 30),
+        timeLimit: timeout,
       );
 
+      if (!mounted) return;
+
       setState(() {
+        _currentMapCenter = LatLng(position.latitude, position.longitude);
         _latController.text = position.latitude.toStringAsFixed(6);
         _lonController.text = position.longitude.toStringAsFixed(6);
         _markers = {
           Marker(
-            markerId: MarkerId('selected_location'),
+            markerId: const MarkerId('selected_location'),
             position: LatLng(position.latitude, position.longitude),
-            infoWindow: InfoWindow(title: '(HC) Current Location'),
-          ),
+            infoWindow: const InfoWindow(title: '(HC) Selected Location'),
+          )
         };
       });
 
@@ -205,36 +181,26 @@ class _LocationSelectorState extends State<LocationSelector> {
 
       await _moveMapToLocation(position.latitude, position.longitude);
     } catch (e) {
-      setState(() {
-        _locationError = e.toString();
-      });
+      debugPrint('Location fetch failed: $e');
+      if (showLoading) {
+        setState(() => _locationError = e.toString());
+      }
+      if (fallbackCenterOnError && mounted && _currentMapCenter == null) {
+        setState(() => _currentMapCenter = const LatLng(0, 0));
+      }
     } finally {
-      setState(() {
-        _isGettingLocation = false;
-      });
+      if (showLoading) {
+        setState(() => _isGettingLocation = false);
+      }
     }
   }
 
-  Future<void> _centerOnCurrentLocation() async {
-    try {
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) return;
-
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        return;
-      }
-
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.medium,
-        timeLimit: Duration(seconds: 10),
-      );
-
-      await _moveMapToLocation(position.latitude, position.longitude);
-    } catch (e) {
-      debugPrint('Center on location failed: $e');
-    }
+  Future<void> _getCurrentLocation() async {
+    await _fetchLocation(
+      showLoading: true,
+      requestPermission: true,
+      timeout: const Duration(seconds: 30),
+    );
   }
 
   @override
@@ -243,7 +209,6 @@ class _LocationSelectorState extends State<LocationSelector> {
       children: [
         _buildGoogleMap(),
         _buildLocationButton(),
-        _buildCenterButton(),
         _buildErrorOverlay(),
       ],
     );
@@ -254,7 +219,7 @@ class _LocationSelectorState extends State<LocationSelector> {
       onMapCreated: _onMapCreated,
       onTap: _onMapTap,
       initialCameraPosition: CameraPosition(
-        target: _currentMapCenter ?? LatLng(50.0, 10.0),
+        target: _currentMapCenter ?? LatLng(0, 0),
         zoom: 15,
       ),
       markers: _markers,
@@ -272,7 +237,7 @@ class _LocationSelectorState extends State<LocationSelector> {
 
   Widget _buildLocationButton() {
     return Positioned(
-      top: 120,
+      top: 16,
       right: 16,
       child: Container(
         decoration: BoxDecoration(
@@ -311,42 +276,6 @@ class _LocationSelectorState extends State<LocationSelector> {
                       color: Colors.grey[700],
                       size: 24,
                     ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCenterButton() {
-    return Positioned(
-      top: 176,
-      right: 16,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
-              blurRadius: 6,
-              offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: _centerOnCurrentLocation,
-            borderRadius: BorderRadius.circular(30),
-            child: Container(
-              width: 48,
-              height: 48,
-              child: Icon(
-                Icons.center_focus_strong,
-                color: Colors.grey[700],
-                size: 24,
-              ),
             ),
           ),
         ),

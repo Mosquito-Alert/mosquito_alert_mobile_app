@@ -283,8 +283,6 @@ class _BiteReportControllerState extends State<BiteReportController> {
 
                     // Step 2: Location selection
                     LocationSelectionPage(
-                      title: '(HC) Select Location',
-                      subtitle: '(HC) Where did the biting occur?',
                       initialLatitude: _reportData.latitude,
                       initialLongitude: _reportData.longitude,
                       onLocationSelected: _updateLocation,

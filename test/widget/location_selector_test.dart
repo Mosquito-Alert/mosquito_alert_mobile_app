@@ -23,7 +23,6 @@ void main() {
 
       expect(find.byType(GoogleMap), findsOneWidget);
       expect(find.byIcon(Icons.my_location), findsOneWidget);
-      expect(find.byIcon(Icons.center_focus_strong), findsOneWidget);
       expect(locationSelected, false);
     });
   });
