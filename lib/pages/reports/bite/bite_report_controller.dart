@@ -133,15 +133,11 @@ class _BiteReportControllerState extends State<BiteReportController> {
     });
 
     try {
-      // Create location point
-      final locationPoint = LocationPoint((b) => b
-        ..latitude = _reportData.latitude!
-        ..longitude = _reportData.longitude!);
-
       // Create location request
       final location = LocationRequest((b) => b
         ..source_ = _reportData.locationSource
-        ..point.replace(locationPoint));
+        ..point.latitude = _reportData.latitude!
+        ..point.longitude = _reportData.longitude!);
 
       // Create bite counts request
       final counts = BiteCountsRequest((b) => b

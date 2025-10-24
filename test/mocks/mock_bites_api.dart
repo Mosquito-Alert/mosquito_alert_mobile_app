@@ -57,6 +57,7 @@ class MockBitesApi extends sdk.BitesApi {
     DateTime? createdAtBefore,
     DateTime? receivedAtAfter,
     DateTime? receivedAtBefore,
+    String? search,
     String? shortId,
     DateTime? updatedAtAfter,
     DateTime? updatedAtBefore,

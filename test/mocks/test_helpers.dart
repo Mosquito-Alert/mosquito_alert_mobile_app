@@ -52,7 +52,7 @@ sdk.Bite createTestBite({
   final creationTime = createdAt ?? now;
 
   // Create the location point with provided or default coordinates
-  final locationPoint = sdk.LocationPoint((p) => p
+  final locationPoint = sdk.Point((p) => p
     ..latitude = latitude ?? 0.0 // Default to ocean coordinates
     ..longitude = longitude ?? 0.0);
 
