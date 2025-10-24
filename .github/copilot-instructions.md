@@ -242,13 +242,13 @@ The repository uses GitHub Actions that run:
 ## Performance Notes
 
 ### Expected Command Times
-- `fvm flutter pub get`: 2-5 minutes
-- `fvm flutter analyze`: 1-3 minutes  
-- `fvm flutter test`: 2-5 minutes
-- `fvm flutter build appbundle`: 5-15 minutes
-- `fvm flutter build ios`: 8-20 minutes
-- `pod install`: 3-8 minutes
-- Integration tests: 10-20 minutes
-- Full CI pipeline: 25-45 minutes
+- `fvm flutter pub get`: 0-2 minutes
+- `fvm flutter analyze`: 0-1 minutes  
+- `fvm flutter test`: 0-1 minutes
+- `fvm flutter build appbundle`: 3-10 minutes
+- `fvm flutter build ios`: 3-10 minutes
+- `pod install`: 1-3 minutes
+- Integration tests: 3-10 minutes
+- Full CI pipeline: 10-20 minutes
 
 **REMEMBER**: NEVER CANCEL any build or test commands. Use appropriate timeouts and wait for completion.
