@@ -59,35 +59,30 @@ class _ReportsListBitesState extends State<ReportsListBites> {
   }
 
   String _formatCreationTime(Bite report) {
-    return DateFormat('yyyy-MM-dd HH:mm').format(report.createdAt.toLocal());
+    return DateFormat('yyyy-MM-dd HH:mm').format(report.createdAtLocal);
   }
 
-  String _getBiteLocations(BiteCounts counts) {
-    final locations = <String>[];
-
-    final bodyParts = [
-      {'count': counts.head as num?, 'key': 'bite_report_bodypart_head'},
-      {'count': counts.chest as num?, 'key': 'bite_report_bodypart_chest'},
-      {'count': counts.leftArm as num?, 'key': 'bite_report_bodypart_leftarm'},
-      {
-        'count': counts.rightArm as num?,
-        'key': 'bite_report_bodypart_rightarm'
-      },
-      {'count': counts.leftLeg as num?, 'key': 'bite_report_bodypart_leftleg'},
-      {
-        'count': counts.rightLeg as num?,
-        'key': 'bite_report_bodypart_rightleg'
-      },
-    ];
-
-    for (final part in bodyParts) {
-      final count = (part['count'] as num?)?.toInt();
-      if (count != null && count > 0) {
-        locations.add(MyLocalizations.of(context, part['key'] as String));
-      }
+  Future<String> _getLocationDescription(Bite report) async {
+    // First try: display name from backend
+    final displayName = report.location.displayName;
+    if (displayName != null && displayName.isNotEmpty) {
+      return displayName;
     }
 
-    return locations.join(', ');
+    // Second try: geocoding service
+    final point = report.location.point;
+    try {
+      final cityName =
+          await Utils.getCityNameFromCoords(point.latitude, point.longitude);
+      if (cityName != null && cityName.isNotEmpty) {
+        return cityName;
+      }
+    } catch (e) {
+      // Continue to fallback
+    }
+
+    // Final fallback: coordinates
+    return '${point.latitude.toStringAsFixed(3)}, ${point.longitude.toStringAsFixed(3)}';
   }
 
   @override
@@ -121,35 +116,55 @@ class _ReportsListBitesState extends State<ReportsListBites> {
           margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
           child: ListTile(
             title: Text(formatters.formatTitle(report)),
-            subtitle: RichText(
-              text: TextSpan(
-                children: [
-                  ...[
-                    const WidgetSpan(
-                      child: Icon(Icons.place_outlined,
-                          size: 16, color: Colors.grey),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.place_outlined,
+                        size: 16, color: Colors.grey),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: FutureBuilder<String>(
+                        future: _getLocationDescription(report),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              snapshot.data!,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.grey,
+                              ),
+                            );
+                          }
+                          return const Text(
+                            '...',
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.grey,
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                    TextSpan(
-                      text: ' ${_getBiteLocations(report.counts)}\n',
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    const Icon(Icons.calendar_today,
+                        size: 16, color: Colors.grey),
+                    const SizedBox(width: 4),
+                    Text(
+                      _formatCreationTime(report),
                       style: const TextStyle(
                         fontWeight: FontWeight.normal,
                         color: Colors.grey,
                       ),
                     ),
                   ],
-                  const WidgetSpan(
-                    child: Icon(Icons.calendar_today,
-                        size: 16, color: Colors.grey),
-                  ),
-                  TextSpan(
-                    text: ' ${_formatCreationTime(report)}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
             isThreeLine: true,
             onTap: () => _reportBottomSheet(report, context),
@@ -172,6 +187,7 @@ class _ReportsListBitesState extends State<ReportsListBites> {
         report: report,
         onDelete: () => _deleteReport(report),
         formatters: _ReportFormatters(context),
+        getLocationDescription: _getLocationDescription,
       ),
     );
   }
@@ -226,7 +242,7 @@ class _ReportFormatters {
   }
 
   String formatDetailedDateTime(Bite report) {
-    final localTime = report.createdAt.toLocal();
+    final localTime = report.createdAtLocal;
     final dateString =
         DateFormat('EEEE, dd MMMM yyyy', Utils.language.languageCode)
             .format(localTime);
@@ -244,11 +260,13 @@ class _BiteReportDetailSheet extends StatelessWidget {
   final Bite report;
   final VoidCallback onDelete;
   final _ReportFormatters formatters;
+  final Future<String> Function(Bite) getLocationDescription;
 
   const _BiteReportDetailSheet({
     required this.report,
     required this.onDelete,
     required this.formatters,
+    required this.getLocationDescription,
   });
 
   @override
@@ -284,7 +302,11 @@ class _BiteReportDetailSheet extends StatelessWidget {
                 onDelete: onDelete,
               ),
               const SizedBox(height: 20),
-              _ReportLocationWidget(report: report, formatters: formatters),
+              _ReportLocationWidget(
+                report: report,
+                formatters: formatters,
+                getLocationDescription: getLocationDescription,
+              ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10.0),
                 child: Divider(),
@@ -401,10 +423,12 @@ class _ReportHeaderWidget extends StatelessWidget {
 class _ReportLocationWidget extends StatelessWidget {
   final Bite report;
   final _ReportFormatters formatters;
+  final Future<String> Function(Bite) getLocationDescription;
 
   const _ReportLocationWidget({
     required this.report,
     required this.formatters,
+    required this.getLocationDescription,
   });
 
   @override
@@ -420,9 +444,20 @@ class _ReportLocationWidget extends StatelessWidget {
                 fontSize: 14,
               ),
               const SizedBox(height: 4),
-              Style.body(
-                '(${formatters.formatLocationCoordinates(report)})',
-                fontSize: 12,
+              FutureBuilder<String>(
+                future: getLocationDescription(report),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Style.body(
+                      snapshot.data!,
+                      fontSize: 12,
+                    );
+                  }
+                  return Style.body(
+                    '(${formatters.formatLocationCoordinates(report)})',
+                    fontSize: 12,
+                  );
+                },
               ),
             ],
           ),
