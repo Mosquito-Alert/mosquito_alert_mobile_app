@@ -60,7 +60,7 @@ class _BreedingSiteReportControllerState
     final apiClient = Provider.of<MosquitoAlert>(context, listen: false);
     _breedingSitesApi = apiClient.getBreedingSitesApi();
 
-    _logAnalyticsEvent('breeding_site_report_started');
+    _logAnalyticsEvent('start_report');
   }
 
   @override
@@ -129,10 +129,9 @@ class _BreedingSiteReportControllerState
     setState(() {
       _isSubmitting = true;
     });
+    await _logAnalyticsEvent('submit_report');
 
     try {
-      await _logAnalyticsEvent('breeding_site_report_submit_attempt');
-
       // Step 1: Create location request
       final locationRequest = LocationRequest((b) => b
         ..source_ = _reportData.locationSource
@@ -166,19 +165,12 @@ class _BreedingSiteReportControllerState
       );
 
       if (response.statusCode == 201) {
-        await _logAnalyticsEvent('breeding_site_report_submit_success');
         ReportDialogs.showSuccessDialog(context);
       } else {
-        await _logAnalyticsEvent('breeding_site_report_submit_error',
-            parameters: {
-              'status_code': response.statusCode?.toString() ?? 'unknown'
-            });
         ReportDialogs.showErrorDialog(
             context, 'Server error: ${response.statusCode}');
       }
     } catch (e) {
-      await _logAnalyticsEvent('breeding_site_report_submit_error',
-          parameters: {'error': e.toString()});
       ReportDialogs.showErrorDialog(context, 'Failed to submit report: $e');
     } finally {
       setState(() {
@@ -187,11 +179,12 @@ class _BreedingSiteReportControllerState
     }
   }
 
-  Future<void> _logAnalyticsEvent(String eventName,
-      {Map<String, Object>? parameters}) async {
+  Future<void> _logAnalyticsEvent(
+    String eventName,
+  ) async {
     await FirebaseAnalytics.instance.logEvent(
       name: eventName,
-      parameters: parameters ?? {},
+      parameters: {'type': 'breeding_site'},
     );
   }
 
@@ -212,6 +205,7 @@ class _BreedingSiteReportControllerState
           onNext: _nextStep,
         );
       case 1:
+        _logAnalyticsEvent('report_add_photo');
         return PhotoSelectionPage(
           photos: _reportData.photos,
           onPhotosChanged: _onPhotosChanged,
@@ -224,6 +218,7 @@ class _BreedingSiteReportControllerState
           infoBadgeTextKey: 'camera_info_breeding_txt_02',
         );
       case 2:
+        _logAnalyticsEvent('report_add_has_water');
         return WaterQuestionPage(
           reportData: _reportData,
           onNext: _nextStepAfterWater,
@@ -233,6 +228,7 @@ class _BreedingSiteReportControllerState
         // This step depends on water status
         if (_reportData.hasWater == true) {
           // Show larvae question
+          _logAnalyticsEvent('report_add_has_larvae');
           return LarvaeQuestionPage(
             reportData: _reportData,
             onNext: _nextStep,
@@ -259,6 +255,7 @@ class _BreedingSiteReportControllerState
   }
 
   Widget _getLocationPage() {
+    _logAnalyticsEvent('report_add_location');
     return LocationSelectionPage(
       initialLatitude: _reportData.latitude,
       initialLongitude: _reportData.longitude,
@@ -272,6 +269,7 @@ class _BreedingSiteReportControllerState
   }
 
   Widget _getNotesPage() {
+    _logAnalyticsEvent('report_add_note');
     return NotesAndSubmitPage(
       initialNotes: _reportData.notes,
       onNotesChanged: _onNotesChanged,

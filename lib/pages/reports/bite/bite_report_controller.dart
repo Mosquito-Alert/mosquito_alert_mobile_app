@@ -26,6 +26,13 @@ class _BiteReportControllerState extends State<BiteReportController> {
   int _currentStep = 0;
   bool _isSubmitting = false;
 
+  // Define the events to log
+  final List<String> _pageEvents = [
+    'report_add_bites',
+    'report_add_location',
+    'report_add_note',
+  ];
+
   List<String> get _stepTitles =>
       ['(HC) Bite Information', '(HC) Select Location', '(HC) Notes & Submit'];
 
@@ -39,7 +46,7 @@ class _BiteReportControllerState extends State<BiteReportController> {
     final apiClient = Provider.of<MosquitoAlert>(context, listen: false);
     _bitesApi = apiClient.getBitesApi();
 
-    _logAnalyticsEvent('bite_report_started');
+    _logAnalyticsEvent('start_report');
   }
 
   @override
@@ -58,7 +65,6 @@ class _BiteReportControllerState extends State<BiteReportController> {
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
-      _logAnalyticsEvent('bite_report_step_${_currentStep + 1}');
     }
   }
 
@@ -72,6 +78,13 @@ class _BiteReportControllerState extends State<BiteReportController> {
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
+    }
+  }
+
+  void _onPageChanged(int index) async {
+    // Check if the index is valid and log the event
+    if (index >= 0 && index < _pageEvents.length) {
+      await _logAnalyticsEvent(_pageEvents[index]);
     }
   }
 
@@ -132,6 +145,8 @@ class _BiteReportControllerState extends State<BiteReportController> {
     });
 
     try {
+      await _logAnalyticsEvent('submit_report');
+
       // Create location request
       final location = LocationRequest((b) => b
         ..source_ = _reportData.locationSource
@@ -161,7 +176,6 @@ class _BiteReportControllerState extends State<BiteReportController> {
       final response = await _bitesApi.create(biteRequest: biteRequest);
 
       if (response.statusCode == 201) {
-        _logAnalyticsEvent('bite_report_submitted');
         ReportDialogs.showSuccessDialog(context);
       } else {
         ReportDialogs.showErrorDialog(context);
@@ -176,9 +190,8 @@ class _BiteReportControllerState extends State<BiteReportController> {
     }
   }
 
-  /// Log analytics event
-  void _logAnalyticsEvent(String eventName) {
-    FirebaseAnalytics.instance.logEvent(
+  Future<void> _logAnalyticsEvent(String eventName) async {
+    await FirebaseAnalytics.instance.logEvent(
       name: eventName,
       parameters: {'type': 'bite'},
     );
@@ -235,6 +248,7 @@ class _BiteReportControllerState extends State<BiteReportController> {
               Expanded(
                 child: PageView(
                   controller: _pageController,
+                  onPageChanged: _onPageChanged,
                   physics: NeverScrollableScrollPhysics(), // Disable swipe
                   children: [
                     // Step 1: Bite questions

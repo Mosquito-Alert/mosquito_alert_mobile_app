@@ -29,6 +29,14 @@ class _AdultReportControllerState extends State<AdultReportController> {
   int _currentStep = 0;
   bool _isSubmitting = false;
 
+  // Define the events to log
+  final List<String> _pageEvents = [
+    'report_add_photo',
+    'report_add_location',
+    'report_add_environment',
+    'report_add_note',
+  ];
+
   List<String> get _stepTitles => [
         '(HC) Take Photos',
         '(HC) Select Location',
@@ -46,7 +54,7 @@ class _AdultReportControllerState extends State<AdultReportController> {
     final apiClient = Provider.of<MosquitoAlert>(context, listen: false);
     _observationsApi = apiClient.getObservationsApi();
 
-    _logAnalyticsEvent('adult_report_started');
+    _logAnalyticsEvent('start_report');
   }
 
   @override
@@ -56,7 +64,7 @@ class _AdultReportControllerState extends State<AdultReportController> {
   }
 
   /// Navigate to next step
-  void _nextStep() {
+  Future<void> _nextStep() async {
     if (_currentStep < _stepTitles.length - 1) {
       setState(() {
         _currentStep++;
@@ -78,6 +86,13 @@ class _AdultReportControllerState extends State<AdultReportController> {
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
+    }
+  }
+
+  void _onPageChanged(int index) async {
+    // Check if the index is valid and log the event
+    if (index >= 0 && index < _pageEvents.length) {
+      await _logAnalyticsEvent(_pageEvents[index]);
     }
   }
 
@@ -114,7 +129,7 @@ class _AdultReportControllerState extends State<AdultReportController> {
     });
 
     try {
-      await _logAnalyticsEvent('adult_report_submit_attempt');
+      await _logAnalyticsEvent('submit_report');
 
       // Step 1: Create location request
       final locationRequest = LocationRequest((b) => b
@@ -152,18 +167,12 @@ class _AdultReportControllerState extends State<AdultReportController> {
       );
 
       if (response.statusCode == 201) {
-        await _logAnalyticsEvent('adult_report_submit_success');
         ReportDialogs.showSuccessDialog(context);
       } else {
-        await _logAnalyticsEvent('adult_report_submit_error', parameters: {
-          'status_code': response.statusCode?.toString() ?? 'unknown'
-        });
         ReportDialogs.showErrorDialog(
             context, 'Server error: ${response.statusCode}');
       }
     } catch (e) {
-      await _logAnalyticsEvent('adult_report_submit_error',
-          parameters: {'error': e.toString()});
       ReportDialogs.showErrorDialog(context, 'Failed to submit report: $e');
     } finally {
       setState(() {
@@ -172,11 +181,10 @@ class _AdultReportControllerState extends State<AdultReportController> {
     }
   }
 
-  Future<void> _logAnalyticsEvent(String eventName,
-      {Map<String, Object>? parameters}) async {
+  Future<void> _logAnalyticsEvent(String eventName) async {
     await FirebaseAnalytics.instance.logEvent(
       name: eventName,
-      parameters: parameters ?? {},
+      parameters: {'type': 'adult'},
     );
   }
 
@@ -208,6 +216,7 @@ class _AdultReportControllerState extends State<AdultReportController> {
           Expanded(
             child: PageView(
               controller: _pageController,
+              onPageChanged: _onPageChanged,
               physics:
                   NeverScrollableScrollPhysics(), // Disable swipe navigation
               children: [
