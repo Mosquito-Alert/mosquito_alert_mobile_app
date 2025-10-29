@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import '../models/bite_report_data.dart';
 
 class BodyPartSelector extends StatelessWidget {
+  final maxBiteCountPerPart = 20;
+
   const BodyPartSelector({super.key});
 
   @override
@@ -17,13 +19,10 @@ class BodyPartSelector extends StatelessWidget {
           children: [
             Text(
               MyLocalizations.of(context, 'question_2'),
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 24),
             _buildVisualBodySelector(context, data),
-            const SizedBox(height: 24),
-            _buildBiteSummary(context, data),
           ],
         );
       },
@@ -152,7 +151,7 @@ class BodyPartSelector extends StatelessWidget {
               if (biteCount > 0)
                 Positioned(
                   top: -2,
-                  right: -2,
+                  right: 2,
                   child: Container(
                     constraints: BoxConstraints(minWidth: 24, minHeight: 24),
                     padding: const EdgeInsets.all(6),
@@ -299,7 +298,7 @@ class BodyPartSelector extends StatelessWidget {
                         color: Colors.transparent,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(24),
-                          onTap: tempCount < 20
+                          onTap: tempCount < maxBiteCountPerPart
                               ? () {
                                   setState(() {
                                     tempCount++;
@@ -310,7 +309,7 @@ class BodyPartSelector extends StatelessWidget {
                             width: 48,
                             height: 48,
                             decoration: BoxDecoration(
-                              color: tempCount < 20
+                              color: tempCount < maxBiteCountPerPart
                                   ? Theme.of(context).primaryColor
                                   : Colors.grey[300],
                               shape: BoxShape.circle,
@@ -327,11 +326,11 @@ class BodyPartSelector extends StatelessWidget {
                   ),
                 ),
 
-                if (tempCount >= 20)
+                if (tempCount >= maxBiteCountPerPart)
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      '(HC) Maximum 20 bites per body part',
+                      '(HC) Maximum $maxBiteCountPerPart bites per body part',
                       style: TextStyle(
                         color: Colors.orange,
                         fontSize: 12,
@@ -393,171 +392,5 @@ class BodyPartSelector extends StatelessWidget {
       default:
         return '(HC) ${bodyPart.replaceAll('_', ' ')}';
     }
-  }
-
-  Widget _buildBiteSummary(BuildContext context, BiteReportData data) {
-    final totalBites = data.headBites +
-        data.chestBites +
-        data.leftHandBites +
-        data.rightHandBites +
-        data.leftLegBites +
-        data.rightLegBites;
-
-    if (totalBites == 0) {
-      return Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.blue[50],
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.blue[200]!),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              Icons.touch_app,
-              color: Colors.blue[600],
-              size: 20,
-            ),
-            SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                '(HC) Tap on body parts above to report bites',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.blue[700],
-                      fontWeight: FontWeight.w500,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return Column(
-      children: [
-        // Total bites card
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Style.colorPrimary.withValues(alpha: 0.8),
-                Style.colorPrimary
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Style.colorPrimary.withValues(alpha: 0.3),
-                blurRadius: 8,
-                offset: Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.bug_report,
-                color: Colors.white,
-                size: 24,
-              ),
-              SizedBox(width: 8),
-              Text(
-                '(HC) Total bites: $totalBites',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-            ],
-          ),
-        ),
-
-        const SizedBox(height: 16),
-
-        // Individual bite breakdown
-        Text(
-          '(HC) Breakdown by body part:',
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[700],
-              ),
-        ),
-
-        const SizedBox(height: 8),
-
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            if (data.headBites > 0)
-              _buildBiteChip(
-                  MyLocalizations.of(context, 'bite_report_bodypart_head'),
-                  data.headBites,
-                  Icons.face),
-            if (data.chestBites > 0)
-              _buildBiteChip(
-                  MyLocalizations.of(context, 'question_2_answer_24'),
-                  data.chestBites,
-                  Icons.accessibility_new),
-            if (data.leftHandBites > 0)
-              _buildBiteChip(
-                  MyLocalizations.of(context, 'bite_report_bodypart_leftarm'),
-                  data.leftHandBites,
-                  Icons.front_hand),
-            if (data.rightHandBites > 0)
-              _buildBiteChip(
-                  MyLocalizations.of(context, 'bite_report_bodypart_rightarm'),
-                  data.rightHandBites,
-                  Icons.front_hand),
-            if (data.leftLegBites > 0)
-              _buildBiteChip(
-                  MyLocalizations.of(context, 'bite_report_bodypart_leftleg'),
-                  data.leftLegBites,
-                  Icons.directions_walk),
-            if (data.rightLegBites > 0)
-              _buildBiteChip(
-                  MyLocalizations.of(context, 'bite_report_bodypart_rightleg'),
-                  data.rightLegBites,
-                  Icons.directions_walk),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBiteChip(String label, int count, IconData icon) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Style.colorPrimary.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Style.colorPrimary.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: 16,
-            color: Style.colorPrimary,
-          ),
-          SizedBox(width: 4),
-          Text(
-            '$label: $count',
-            style: TextStyle(
-              color: Style.textColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

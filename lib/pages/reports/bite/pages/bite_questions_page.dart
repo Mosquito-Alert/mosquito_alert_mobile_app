@@ -39,15 +39,6 @@ class _BiteQuestionsPageState extends State<BiteQuestionsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title
-              Text(
-                '(HC) Bite Information',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
               // Scrollable content
               Expanded(
                 child: SingleChildScrollView(
