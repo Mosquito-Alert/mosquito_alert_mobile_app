@@ -1,6 +1,9 @@
 .fvm/*
 !.fvm/fvm_config.json
 .vscode/settings.json
+# exclude all .env files from source control
+*.env
+lib/env/env.g.dart
 
 # Miscellaneous
 *.class

@@ -12,6 +12,15 @@ jobs:
 
     - uses: kuhnroyal/flutter-fvm-config-action/setup@v3
 
+    - name: Create .env file
+      run: |
+        echo "OLD_PASSWORD=CHANGE_ME_TO_A_STRONG_PASSWORD" > .env
+
+    - name: Generate env.g.dart
+      run: |
+        dart run build_runner clean
+        dart run build_runner build --delete-conflicting-outputs
+
     - name: Statically analyze the Dart code for any errors/warnings/info, treating all as errors
       run: flutter analyze
 

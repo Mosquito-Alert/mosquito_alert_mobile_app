@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/app_config.dart';
+import 'package:mosquito_alert_app/env/env.dart';
 import 'package:mosquito_alert_app/pages/info_pages/info_page_webview.dart';
 import 'package:mosquito_alert_app/pages/main/home_page.dart';
 import 'package:mosquito_alert_app/pages/my_reports_pages/my_reports_page.dart';
@@ -27,6 +28,7 @@ import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainVC extends StatefulWidget {
   const MainVC({key});
@@ -129,6 +131,18 @@ class _MainVCState extends State<MainVC>
     return true;
   }
 
+  void _showErrorSnackBar(String message) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
   Future<bool> initAuth() async {
     final appConfig = await AppConfig.loadConfig();
     if (!appConfig.useAuth) {
@@ -139,6 +153,22 @@ class _MainVCState extends State<MainVC>
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final deviceProvider = Provider.of<DeviceProvider>(context, listen: false);
+
+    // Migrate old auth system if needed
+    final prefs = await SharedPreferences.getInstance();
+    final String? oldUsername = prefs.getString('uuid');
+    if (oldUsername != null) {
+      try {
+        await authProvider.login(
+            username: oldUsername, password: Env.oldPassword);
+        await authProvider.changePassword(
+            password: Utils.getRandomPassword(10));
+        await prefs.remove('uuid');
+      } catch (e) {
+        // TODO: If error is 5xx we should retry later.
+        print('Error during migration login: $e');
+      }
+    }
 
     String? username = authProvider.username;
     String? password = authProvider.password;
@@ -151,15 +181,7 @@ class _MainVCState extends State<MainVC>
         username = guestRegistration.username;
       } catch (e) {
         print('Error creating guest user: $e');
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Failed to create user: $e'),
-              backgroundColor: Colors.red,
-              duration: Duration(seconds: 3),
-            ),
-          );
-        }
+        _showErrorSnackBar('Failed to create user: $e');
         return false;
       }
     }
@@ -176,15 +198,7 @@ class _MainVCState extends State<MainVC>
           await userProvider.fetchUser();
         } catch (e) {
           print('Error logging in: $e');
-          if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Login failed: $e'),
-                backgroundColor: Colors.red,
-                duration: Duration(seconds: 3),
-              ),
-            );
-          }
+          _showErrorSnackBar('Login failed: $e');
           return false;
         }
       }

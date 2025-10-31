@@ -8,6 +8,11 @@ Mosquito Alert is a mobile phone application that is part of a larger citizen sc
 ![Mosquito_Alert](https://user-images.githubusercontent.com/30580652/162627346-7018489f-7525-40ca-a3f6-b0dd59b519f3.png)
 
 ## How to compile the app
+
+Ask for the `.env` file to any of our mobile developers, paste in the root folder and run:
+- `dart run build_runner clean`
+- `dart run build_runner build --delete-conflicting-outputs`
+
 ### Android
 #### Requirements
 - Java 21 (And set it to JAVA_HOME on Windows or shell config on macOS)

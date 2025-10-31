@@ -95,6 +95,27 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<void> changePassword({required String password}) async {
+    try {
+      final PasswordChangeRequest changePasswordRequest =
+          PasswordChangeRequest((b) => b..password = password);
+
+      final Response<void> response = await authApi.changePassword(
+          passwordChangeRequest: changePasswordRequest);
+
+      if (response.statusCode == 204) {
+        await _setPassword(password: password);
+        return;
+      } else {
+        throw Exception(
+            'Change password failed: Server responded with status ${response.statusCode}');
+      }
+    } catch (e) {
+      print("Change password failed: $e");
+      rethrow;
+    }
+  }
+
   Future<void> login(
       {required String username,
       required String password,
