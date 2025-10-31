@@ -259,16 +259,15 @@ class _AdultReportControllerState extends State<AdultReportController> {
                   NeverScrollableScrollPhysics(), // Disable swipe navigation
               children: [
                 PhotoSelectionPage(
-                  photos: _reportData.photos,
-                  onPhotosChanged: _onPhotosChanged,
-                  onNext: _nextStep,
-                  // No onPrevious for adult reports (first step)
-                  maxPhotos: 3,
-                  minPhotos: 1,
-                  titleKey: 'bs_info_adult_title',
-                  subtitleKey: 'ensure_single_mosquito_photos',
-                  infoBadgeTextKey: 'one_mosquito_reminder_badge',
-                ),
+                    photos: _reportData.photos,
+                    onPhotosChanged: _onPhotosChanged,
+                    onNext: _nextStep,
+                    // No onPrevious for adult reports (first step)
+                    maxPhotos: 3,
+                    minPhotos: 1,
+                    infoBadgeTextKey: 'one_mosquito_reminder_badge',
+                    thumbnailText:
+                        '(HC) Photos of the same mosquito from different angles.'),
                 LocationSelectionPage(
                   initialLatitude: _reportData.latitude,
                   initialLongitude: _reportData.longitude,

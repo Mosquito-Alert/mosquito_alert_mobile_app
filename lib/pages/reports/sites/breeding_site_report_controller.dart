@@ -221,9 +221,9 @@ class _BreedingSiteReportControllerState
           onPrevious: _previousStep,
           maxPhotos: 3,
           minPhotos: 1,
-          titleKey: 'bs_info_adult_title',
-          subtitleKey: 'camera_info_breeding_txt_01',
           infoBadgeTextKey: 'camera_info_breeding_txt_02',
+          thumbnailText:
+              '(HC) Photos of the same breeding site from different angles.',
         );
       case 2:
         _logAnalyticsEvent('report_add_has_water');
