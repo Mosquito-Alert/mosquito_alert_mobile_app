@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/camera_whatsapp.dart';
@@ -6,7 +6,7 @@ import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class PhotoSelector extends StatefulWidget {
-  final List<File> selectedPhotos;
+  final List<Uint8List> selectedPhotos;
   final VoidCallback onPhotosChanged;
   final int maxPhotos;
   final int minPhotos;
@@ -57,7 +57,7 @@ class _PhotoSelectorState extends State<PhotoSelector> {
       });
     }
 
-    final List<File>? newFiles = await Navigator.push(
+    final List<Uint8List>? newFiles = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => WhatsappCamera(
@@ -72,7 +72,7 @@ class _PhotoSelectorState extends State<PhotoSelector> {
     }
   }
 
-  void _addPhotos(List<File> newFiles) {
+  void _addPhotos(List<Uint8List> newFiles) {
     final availableSlots = widget.maxPhotos - widget.selectedPhotos.length;
     final photosToAdd = newFiles.take(availableSlots).toList();
 
@@ -233,7 +233,7 @@ class _PhotoSelectorState extends State<PhotoSelector> {
                     width: double.infinity,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: Image.file(
+                      child: Image.memory(
                         photo,
                         fit: BoxFit.cover,
                       ),

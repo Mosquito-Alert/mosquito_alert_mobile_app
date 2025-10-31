@@ -1,10 +1,10 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:mosquito_alert/mosquito_alert.dart';
 
 class AdultReportData {
   // Step 1: Photos
-  List<File> photos = [];
+  List<Uint8List> photos = [];
 
   // Step 2: Location
   double? latitude;

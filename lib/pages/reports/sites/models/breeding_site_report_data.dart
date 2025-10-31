@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:mosquito_alert/mosquito_alert.dart';
 
@@ -7,7 +7,7 @@ class BreedingSiteReportData {
   String? siteType; // 'storm_drain' or 'other'
 
   // Step 2: Photos
-  List<File> photos = [];
+  List<Uint8List> photos = [];
 
   // Step 3: Water presence
   bool? hasWater; // true = yes, false = no

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/photo_selector.dart';
@@ -8,7 +8,7 @@ import 'package:mosquito_alert_app/utils/style.dart';
 /// Shared photo selection page that can be used by any report workflow
 /// Configurable PhotoSelector properties and navigation through callbacks
 class PhotoSelectionPage extends StatefulWidget {
-  final List<File> photos;
+  final List<Uint8List> photos;
   final VoidCallback onPhotosChanged;
   final VoidCallback onNext;
   final VoidCallback?

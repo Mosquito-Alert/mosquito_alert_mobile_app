@@ -1,6 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mosquito_alert_app/pages/reports/sites/models/breeding_site_report_data.dart';
-import 'dart:io';
 
 void main() {
   group('BreedingSiteReportData', () {
@@ -16,9 +17,11 @@ void main() {
 
     test(
         'should be valid when all required fields are present and water is false',
-        () {
+        () async {
+      final Uint8List bytes = Uint8List.fromList(List.generate(10, (i) => i));
+
       reportData.siteType = 'storm_drain';
-      reportData.photos = [File('/tmp/test.jpg')];
+      reportData.photos = [bytes];
       reportData.hasWater = false;
       reportData.latitude = 40.7128;
       reportData.longitude = -74.0060;
@@ -27,9 +30,11 @@ void main() {
     });
 
     test('should be invalid when water is true but larvae status is not set',
-        () {
+        () async {
+      final Uint8List bytes = Uint8List.fromList(List.generate(10, (i) => i));
+
       reportData.siteType = 'storm_drain';
-      reportData.photos = [File('/tmp/test.jpg')];
+      reportData.photos = [bytes];
       reportData.hasWater = true;
       reportData.latitude = 40.7128;
       reportData.longitude = -74.0060;
@@ -38,9 +43,12 @@ void main() {
       expect(reportData.isValid, false);
     });
 
-    test('should be valid when water is true and larvae status is set', () {
+    test('should be valid when water is true and larvae status is set',
+        () async {
+      final Uint8List bytes = Uint8List.fromList(List.generate(10, (i) => i));
+
       reportData.siteType = 'storm_drain';
-      reportData.photos = [File('/tmp/test.jpg')];
+      reportData.photos = [bytes];
       reportData.hasWater = true;
       reportData.hasLarvae = true;
       reportData.latitude = 40.7128;
