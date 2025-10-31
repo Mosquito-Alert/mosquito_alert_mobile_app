@@ -176,7 +176,12 @@ class _BiteReportControllerState extends State<BiteReportController> {
       final response = await _bitesApi.create(biteRequest: biteRequest);
 
       if (response.statusCode == 201) {
-        ReportDialogs.showSuccessDialog(context);
+        ReportDialogs.showSuccessDialog(
+          context,
+          onOkPressed: () {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+        );
       } else {
         ReportDialogs.showErrorDialog(context);
       }

@@ -165,7 +165,12 @@ class _BreedingSiteReportControllerState
       );
 
       if (response.statusCode == 201) {
-        ReportDialogs.showSuccessDialog(context);
+        ReportDialogs.showSuccessDialog(
+          context,
+          onOkPressed: () {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          },
+        );
       } else {
         ReportDialogs.showErrorDialog(
             context, 'Server error: ${response.statusCode}');

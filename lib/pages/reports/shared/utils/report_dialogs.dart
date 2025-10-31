@@ -5,7 +5,10 @@ import 'package:mosquito_alert_app/utils/style.dart';
 
 /// Dialog utilities for report functionality
 class ReportDialogs {
-  static Future<void> showSuccessDialog(BuildContext context) {
+  static Future<void> showSuccessDialog(
+    BuildContext context, {
+    required VoidCallback onOkPressed,
+  }) {
     // Request in-app review after successful submission
     InAppReviewManager.requestInAppReview(context);
 
@@ -17,9 +20,7 @@ class ReportDialogs {
         content: Text(MyLocalizations.of(context, 'save_report_ok_txt')),
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
+            onPressed: onOkPressed,
             style: TextButton.styleFrom(
               foregroundColor: Style.colorPrimary,
             ),

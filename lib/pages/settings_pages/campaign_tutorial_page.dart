@@ -5,10 +5,6 @@ import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class CampaignTutorialPage extends StatefulWidget {
-  final bool? fromReport;
-
-  CampaignTutorialPage({this.fromReport});
-
   @override
   _CampaignTutorialPageState createState() => _CampaignTutorialPageState();
 }
@@ -38,11 +34,7 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_outlined),
           onPressed: () {
-            if (widget.fromReport != null && widget.fromReport!) {
-              Navigator.popUntil(context, (route) => route.isFirst);
-            } else {
-              Navigator.pop(context);
-            }
+            Navigator.pop(context);
           },
         ),
         title: Style.title(
@@ -57,7 +49,9 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
         showSkipBtn: false,
         renderNextBtn: renderNextBtn(),
         renderDoneBtn: renderDoneBtn(),
-        onDonePress: onDonePress,
+        onDonePress: () {
+          Navigator.pop(context);
+        },
         doneButtonStyle: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(
                 Style.colorPrimary.withValues(alpha: 0.2)),
@@ -91,13 +85,6 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
               'assets/img/sendmodule/fg_module_00${idx + 1}.webp'));
     }
     return slides;
-  }
-
-  void onDonePress() {
-    Navigator.pop(context);
-    if (widget.fromReport != null && widget.fromReport!) {
-      Navigator.popUntil(context, (route) => route.isFirst);
-    }
   }
 
   Widget renderNextBtn() {
