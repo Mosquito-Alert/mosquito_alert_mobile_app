@@ -26,7 +26,7 @@ dependencies:
   device_info_plus: ^11.3.0
   package_info_plus: ^9.0.0
   intro_slider: ^3.0.10
-  permission_handler: ^11.4.0
+  permission_handler: ^12.0.1
   language_picker: ^0.4.5
   overlay_support: ^2.1.0
 
