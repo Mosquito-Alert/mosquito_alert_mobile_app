@@ -89,7 +89,7 @@ class _BiteReportControllerState extends State<BiteReportController> {
   }
 
   /// Handle environment selection
-  void _updateEnvironment(BiteRequestEventEnvironmentEnum environment) {
+  void _updateEnvironment(BiteRequestEventEnvironmentEnum? environment) {
     setState(() {
       _reportData.eventEnvironment = environment;
     });
@@ -124,9 +124,7 @@ class _BiteReportControllerState extends State<BiteReportController> {
   bool get _canProceed {
     switch (_currentStep) {
       case 0: // Bite questions step
-        return _reportData.hasValidBiteCounts &&
-            _reportData.hasValidEnvironment &&
-            _reportData.hasValidTiming;
+        return _reportData.hasValidBiteCounts && _reportData.hasValidTiming;
       case 1: // Location step
         return _reportData.hasValidLocation;
       case 2: // Notes step (always optional)
@@ -168,7 +166,7 @@ class _BiteReportControllerState extends State<BiteReportController> {
         ..sentAt = DateTime.now().toUtc()
         ..location.replace(location)
         ..note = _reportData.notes
-        ..eventEnvironment = _reportData.eventEnvironment!
+        ..eventEnvironment = _reportData.eventEnvironment
         ..eventMoment = _reportData.eventMoment!
         ..counts.replace(counts));
 

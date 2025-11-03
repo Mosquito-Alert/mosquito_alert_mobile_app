@@ -81,7 +81,6 @@ class BiteReportData extends ChangeNotifier {
     return totalBites > 0 &&
         latitude != null &&
         longitude != null &&
-        eventEnvironment != null &&
         eventMoment != null;
   }
 
@@ -101,11 +100,6 @@ class BiteReportData extends ChangeNotifier {
   /// Checks if location step is complete
   bool get hasValidLocation {
     return latitude != null && longitude != null;
-  }
-
-  /// Checks if environment question is answered
-  bool get hasValidEnvironment {
-    return eventEnvironment != null;
   }
 
   /// Checks if timing question is answered

@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 /// Page for collecting bite information: counts, environment, and timing
 class BiteQuestionsPage extends StatefulWidget {
-  final Function(BiteRequestEventEnvironmentEnum) onEnvironmentChanged;
+  final Function(BiteRequestEventEnvironmentEnum?) onEnvironmentChanged;
   final Function(BiteRequestEventMomentEnum) onTimingChanged;
   final VoidCallback? onNext;
   final VoidCallback onPrevious;

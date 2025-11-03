@@ -196,7 +196,8 @@ class _AdultReportControllerState extends State<AdultReportController> {
                 Dialogs.showAlertCampaign(
                   context,
                   campaign,
-                  (context) => Navigator.of(context).popUntil((route) => route.isFirst),
+                  (context) =>
+                      Navigator.of(context).popUntil((route) => route.isFirst),
                 );
               } else {
                 Navigator.of(context).popUntil((route) => route.isFirst);

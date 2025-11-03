@@ -21,7 +21,6 @@ class TimingSelector extends StatelessWidget {
           context,
           BiteRequestEventMomentEnum.now,
           '(HC) Right now / Just happened',
-          '(HC) The biting is happening now or just occurred',
           Icons.access_time,
         ),
         SizedBox(height: 12),
@@ -29,7 +28,6 @@ class TimingSelector extends StatelessWidget {
           context,
           BiteRequestEventMomentEnum.lastMorning,
           '(HC) Yesterday morning',
-          '(HC) Between 6:00 AM - 12:00 PM yesterday',
           Icons.wb_sunny,
         ),
         SizedBox(height: 12),
@@ -37,7 +35,6 @@ class TimingSelector extends StatelessWidget {
           context,
           BiteRequestEventMomentEnum.lastMidday,
           '(HC) Yesterday midday',
-          '(HC) Between 12:00 PM - 6:00 PM yesterday',
           Icons.wb_sunny_outlined,
         ),
         SizedBox(height: 12),
@@ -45,7 +42,6 @@ class TimingSelector extends StatelessWidget {
           context,
           BiteRequestEventMomentEnum.lastAfternoon,
           '(HC) Yesterday afternoon',
-          '(HC) Between 6:00 PM - 9:00 PM yesterday',
           Icons.wb_twilight,
         ),
         SizedBox(height: 12),
@@ -53,7 +49,6 @@ class TimingSelector extends StatelessWidget {
           context,
           BiteRequestEventMomentEnum.lastNight,
           '(HC) Last night',
-          '(HC) Between 9:00 PM yesterday - 6:00 AM today',
           Icons.nightlight_round,
         ),
       ],
@@ -64,7 +59,6 @@ class TimingSelector extends StatelessWidget {
     BuildContext context,
     BiteRequestEventMomentEnum timing,
     String title,
-    String subtitle,
     IconData icon,
   ) {
     final bool isSelected = selectedTiming == timing;
@@ -103,26 +97,13 @@ class TimingSelector extends StatelessWidget {
 
             // Text content
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: isSelected ? Style.colorPrimary : Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ],
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: isSelected ? Style.colorPrimary : Colors.black,
+                ),
               ),
             ),
 
