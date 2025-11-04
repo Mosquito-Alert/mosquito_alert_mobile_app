@@ -106,147 +106,150 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Scaffold(
       key: key,
-      body: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.all(15),
-          child: isLoading
-              ? Container(
-                  height: MediaQuery.sizeOf(context).height * 0.8,
-                  child: Center(
-                      child: CircularProgressIndicator(
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(Style.colorPrimary),
-                  )),
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SettingsMenuWidget(
-                          MyLocalizations.of(context, 'select_language_txt'),
-                          () {
-                        _openLanguagePickerDialog();
-                      }),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(bottom: 12.0, top: 12.0),
-                        decoration: BoxDecoration(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.all(15),
+            child: isLoading
+                ? Container(
+                    height: MediaQuery.sizeOf(context).height * 0.8,
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Style.colorPrimary),
+                    )),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SettingsMenuWidget(
+                            MyLocalizations.of(context, 'select_language_txt'),
+                            () {
+                          _openLanguagePickerDialog();
+                        }),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          padding:
+                              const EdgeInsets.only(bottom: 12.0, top: 12.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.white,
+                              border: Border.all(
+                                  color: Colors.black.withValues(alpha: 0.1))),
+                          child: SwitchListTile(
+                            title: Style.body(MyLocalizations.of(
+                                context, 'background_tracking_title')),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                MyLocalizations.of(
+                                    context, 'background_tracking_subtitle'),
+                                style: const TextStyle(fontSize: 11),
+                              ),
+                            ),
+                            value: isBgTrackingEnabled,
+                            activeColor: Style.colorPrimary,
+                            secondary: isBgTrackingLoading
+                                ? CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Style.colorPrimary),
+                                  )
+                                : null,
+                            onChanged: (bool value) async {
+                              if (value) {
+                                setState(() {
+                                  isBgTrackingLoading = true;
+                                  isBgTrackingEnabled = true;
+                                });
+                                await BackgroundTracking.start(shouldRun: true)
+                                    .whenComplete(() {
+                                  setState(() {
+                                    isBgTrackingLoading = false;
+                                  });
+                                });
+                              } else {
+                                setState(() {
+                                  isBgTrackingEnabled = false;
+                                });
+                                await BackgroundTracking.stop();
+                              }
+                              bool trackingStatus =
+                                  await BackgroundTracking.isEnabled();
+                              setState(() {
+                                isBgTrackingEnabled = trackingStatus;
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                             color: Colors.white,
                             border: Border.all(
-                                color: Colors.black.withValues(alpha: 0.1))),
-                        child: SwitchListTile(
-                          title: Style.body(MyLocalizations.of(
-                              context, 'background_tracking_title')),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              MyLocalizations.of(
-                                  context, 'background_tracking_subtitle'),
-                              style: const TextStyle(fontSize: 11),
-                            ),
+                                color: Colors.black.withValues(alpha: 0.1)),
                           ),
-                          value: isBgTrackingEnabled,
-                          activeColor: Style.colorPrimary,
-                          secondary: isBgTrackingLoading
-                              ? CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Style.colorPrimary),
-                                )
-                              : null,
-                          onChanged: (bool value) async {
-                            if (value) {
-                              setState(() {
-                                isBgTrackingLoading = true;
-                                isBgTrackingEnabled = true;
-                              });
-                              await BackgroundTracking.start(shouldRun: true)
-                                  .whenComplete(() {
-                                setState(() {
-                                  isBgTrackingLoading = false;
-                                });
-                              });
-                            } else {
-                              setState(() {
-                                isBgTrackingEnabled = false;
-                              });
-                              await BackgroundTracking.stop();
-                            }
-                            bool trackingStatus =
-                                await BackgroundTracking.isEnabled();
-                            setState(() {
-                              isBgTrackingEnabled = trackingStatus;
-                            });
-                          },
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.white,
-                          border: Border.all(
-                              color: Colors.black.withValues(alpha: 0.1)),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: ExpansionTile(
-                                initiallyExpanded: numTagsAdded! > 0,
-                                title: Row(
-                                  children: [
-                                    Style.body(
-                                      MyLocalizations.of(context,
-                                          'auto_tagging_settings_title'),
-                                    ),
-                                    Spacer(flex: 1),
-                                    if (numTagsAdded! > 0)
-                                      Container(
-                                        margin:
-                                            const EdgeInsets.only(left: 8.0),
-                                        padding: const EdgeInsets.all(4.0),
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.grey,
-                                        ),
-                                        child: Text(
-                                          '$numTagsAdded',
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12.0,
-                                            fontWeight: FontWeight.bold,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: ExpansionTile(
+                                  initiallyExpanded: numTagsAdded! > 0,
+                                  title: Row(
+                                    children: [
+                                      Style.body(
+                                        MyLocalizations.of(context,
+                                            'auto_tagging_settings_title'),
+                                      ),
+                                      Spacer(flex: 1),
+                                      if (numTagsAdded! > 0)
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(left: 8.0),
+                                          padding: const EdgeInsets.all(4.0),
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.grey,
+                                          ),
+                                          child: Text(
+                                            '$numTagsAdded',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
+                                    ],
+                                  ),
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15.0),
+                                      child: Text(
+                                        MyLocalizations.of(context,
+                                            'enable_auto_hashtag_text'),
+                                        style: TextStyle(
+                                            fontSize: 11,
+                                            color: Colors.grey[600]),
                                       ),
+                                    ),
+                                    StringMultilineTags(
+                                        updateTagsNum: updateTagsNum),
                                   ],
                                 ),
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15.0),
-                                    child: Text(
-                                      MyLocalizations.of(
-                                          context, 'enable_auto_hashtag_text'),
-                                      style: TextStyle(
-                                          fontSize: 11,
-                                          color: Colors.grey[600]),
-                                    ),
-                                  ),
-                                  StringMultilineTags(
-                                      updateTagsNum: updateTagsNum),
-                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ]),
+                            ],
+                          ),
+                        )
+                      ]),
+          ),
         ),
       ),
     );

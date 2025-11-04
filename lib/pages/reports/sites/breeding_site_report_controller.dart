@@ -308,20 +308,22 @@ class _BreedingSiteReportControllerState
                 onPressed: () => Navigator.of(context).pop(),
               ),
       ),
-      body: Column(
-        children: [
-          // Progress indicator
-          ReportProgressIndicator(
-            currentStep: _currentStep,
-            totalSteps: stepTitles.length,
-            stepTitles: stepTitles,
-          ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Progress indicator
+            ReportProgressIndicator(
+              currentStep: _currentStep,
+              totalSteps: stepTitles.length,
+              stepTitles: stepTitles,
+            ),
 
-          // Main content
-          Expanded(
-            child: _currentPage,
-          ),
-        ],
+            // Main content
+            Expanded(
+              child: _currentPage,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -109,61 +109,65 @@ class _NotificationsPageState extends State<NotificationsPage> {
           fontSize: 16,
         ),
       ),
-      body: Container(
-        margin: EdgeInsets.all(12),
-        child: PagingListener<int, sdk.Notification>(
-          controller: _pagingController,
-          builder: (context, state, fetchNextPage) {
-            return PagedListView<int, sdk.Notification>(
-              state: state,
-              fetchNextPage: fetchNextPage,
-              padding: const EdgeInsets.only(top: 4, bottom: 12),
-              builderDelegate: PagedChildBuilderDelegate<sdk.Notification>(
-                itemBuilder: (context, notification, index) {
-                  return Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    color:
-                        notification.isRead ? Colors.grey[200] : Colors.white,
-                    child: ListTile(
-                      contentPadding: EdgeInsets.all(12),
-                      onTap: () {
-                        _showNotificationBottomSheet(context, notification);
-                      },
-                      title: Text(
-                        notification.message.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: notification.isRead
-                              ? Colors.black54
-                              : Colors.black,
-                        ),
+      body: SafeArea(
+        child: Container(
+          margin: EdgeInsets.all(12),
+          child: PagingListener<int, sdk.Notification>(
+            controller: _pagingController,
+            builder: (context, state, fetchNextPage) {
+              return PagedListView<int, sdk.Notification>(
+                state: state,
+                fetchNextPage: fetchNextPage,
+                padding: const EdgeInsets.only(top: 4, bottom: 12),
+                builderDelegate: PagedChildBuilderDelegate<sdk.Notification>(
+                  itemBuilder: (context, notification, index) {
+                    return Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      subtitle: Text(
-                          _parseHtmlString(notification.message.body),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis),
+                      color:
+                          notification.isRead ? Colors.grey[200] : Colors.white,
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(12),
+                        onTap: () {
+                          _showNotificationBottomSheet(context, notification);
+                        },
+                        title: Text(
+                          notification.message.title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: notification.isRead
+                                ? Colors.black54
+                                : Colors.black,
+                          ),
+                        ),
+                        subtitle: Text(
+                            _parseHtmlString(notification.message.body),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis),
+                      ),
+                    );
+                  },
+                  noItemsFoundIndicatorBuilder: (context) => Center(
+                    child: Style.body(
+                      MyLocalizations.of(context, 'no_notifications_yet_txt'),
                     ),
-                  );
-                },
-                noItemsFoundIndicatorBuilder: (context) => Center(
-                  child: Style.body(
-                    MyLocalizations.of(context, 'no_notifications_yet_txt'),
                   ),
+                  firstPageProgressIndicatorBuilder: (context) => Center(
+                      child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Style.colorPrimary),
+                  )),
+                  newPageProgressIndicatorBuilder: (context) => Center(
+                      child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Style.colorPrimary),
+                  )),
                 ),
-                firstPageProgressIndicatorBuilder: (context) => Center(
-                    child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Style.colorPrimary),
-                )),
-                newPageProgressIndicatorBuilder: (context) => Center(
-                    child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Style.colorPrimary),
-                )),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

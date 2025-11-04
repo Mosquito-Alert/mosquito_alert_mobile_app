@@ -280,10 +280,12 @@ class _MainVCState extends State<MainVC>
                   }))
         ],
       ),
-      body: Center(
-        child: isLoading
-            ? CircularProgressIndicator()
-            : _widgetOptions[_selectedIndex],
+      body: SafeArea(
+        child: Center(
+          child: isLoading
+              ? CircularProgressIndicator()
+              : _widgetOptions[_selectedIndex],
+        ),
       ),
       onDrawerChanged: (isOpened) async {
         await _onDrawerChanged(isOpened);
