@@ -33,7 +33,7 @@ class _PublicMapState extends State<PublicMap> {
         ),
       );
 
-    _controller.loadRequest(Uri.parse('https://map.mosquitoalert.com'));
+    _controller.loadRequest(Uri.parse('https://map.mosquitoalert.com/en'));
   }
 
   Future<void> _logScreenView() async {
