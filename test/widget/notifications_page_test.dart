@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as sdk;
 import 'package:mosquito_alert_app/pages/notification_pages/notifications_page.dart';
+import 'package:mosquito_alert_app/pages/notification_pages/notification_detail_page.dart';
 import 'package:mosquito_alert_app/services/analytics_service.dart';
 import 'package:provider/provider.dart';
 
@@ -9,21 +10,19 @@ import 'package:provider/provider.dart';
 import '../mocks/mocks.dart';
 
 Widget createTestWidget({
-  int? notificationId,
   MockMosquitoAlert? mockClient,
 }) {
-  return MaterialApp(
-    home: Provider<sdk.MosquitoAlert>(
-      create: (_) => mockClient ?? MockMosquitoAlert(),
-      child: NotificationsPage(
-        notificationId: notificationId,
+  return Provider<sdk.MosquitoAlert>(
+    create: (_) => mockClient ?? MockMosquitoAlert(),
+    child: MaterialApp(
+      home: NotificationsPage(
         analyticsService: MockAnalyticsService(),
       ),
+      localizationsDelegates: const [
+        MockMyLocalizationsDelegate(),
+      ],
+      supportedLocales: const [Locale('en')],
     ),
-    localizationsDelegates: const [
-      MockMyLocalizationsDelegate(),
-    ],
-    supportedLocales: const [Locale('en')],
   );
 }
 
@@ -156,8 +155,8 @@ void main() {
       // Check for the Scaffold which contains the app structure
       expect(find.byType(Scaffold), findsOneWidget);
 
-      // With empty notifications, no Card widgets should be present
-      expect(find.byType(Card), findsNothing);
+      // With empty notifications, no ListTile widgets should be present
+      expect(find.byType(ListTile), findsNothing);
     });
 
     testWidgets('should display read notifications with grey background',
@@ -182,13 +181,14 @@ void main() {
       await tester.pumpAndSettle();
 
       // Then - Check proper color coding
-      expect(find.byType(Card), findsNWidgets(2));
+      expect(find.byType(ListTile), findsNWidgets(2));
 
-      final cards = tester.widgetList<Card>(find.byType(Card)).toList();
-      // First card (read) should have grey background
-      expect(cards[0].color, equals(Colors.grey[200]));
-      // Second card (unread) should have white background
-      expect(cards[1].color, equals(Colors.white));
+      final listTiles =
+          tester.widgetList<ListTile>(find.byType(ListTile)).toList();
+      // First tile (read) should have white background
+      expect(listTiles[0].tileColor, equals(Colors.white));
+      // Second tile (unread) should have grey background
+      expect(listTiles[1].tileColor, equals(Colors.grey[200]));
     });
 
     testWidgets('should mark notification as read when tapped',
@@ -206,21 +206,24 @@ void main() {
       await tester.pumpWidget(createTestWidget(mockClient: mockClient));
       await tester.pumpAndSettle();
 
-      // Then - Verify initial state (white background for unread)
-      Card card = tester.widget<Card>(find.byType(Card));
-      expect(card.color, equals(Colors.white));
+      // Then - Verify initial state (grey background for unread)
+      ListTile listTile = tester.widget<ListTile>(find.byType(ListTile));
+      expect(listTile.tileColor, equals(Colors.grey[200]));
 
       // When - Tap the notification
       await tester.tap(find.byType(ListTile));
       await tester.pumpAndSettle();
 
-      // Close the bottom sheet
-      await tester.tapAt(const Offset(50, 50)); // Tap outside bottom sheet
+      // Verify that we navigated to the detail page
+      expect(find.byType(NotificationDetailPage), findsOneWidget);
+
+      // Navigate back using the back button or system back
+      await tester.pageBack();
       await tester.pumpAndSettle();
 
-      // Then - Notification should now be marked as read (grey background)
-      card = tester.widget<Card>(find.byType(Card));
-      expect(card.color, equals(Colors.grey[200]));
+      // Then - Notification should now be marked as read (white background)
+      listTile = tester.widget<ListTile>(find.byType(ListTile));
+      expect(listTile.tileColor, equals(Colors.white));
     });
 
     testWidgets('should handle API errors gracefully',
@@ -236,7 +239,7 @@ void main() {
       expect(find.byType(NotificationsPage), findsOneWidget);
       expect(find.byType(AppBar), findsOneWidget);
       // No cards should be displayed when API returns empty
-      expect(find.byType(Card), findsNothing);
+      expect(find.byType(ListTile), findsNothing);
     });
   });
 }

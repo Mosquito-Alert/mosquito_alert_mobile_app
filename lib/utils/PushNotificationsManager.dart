@@ -4,11 +4,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:mosquito_alert_app/app_config.dart';
+import 'package:mosquito_alert_app/pages/notification_pages/notification_detail_page.dart';
 import 'package:mosquito_alert_app/utils/MessageNotification.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 import '../main.dart';
-import '../pages/notification_pages/notifications_page.dart';
 
 class PushNotificationsManager {
   PushNotificationsManager._();
@@ -57,19 +57,26 @@ class PushNotificationsManager {
       return MessageNotification(
         title: title,
         message: msg,
-        onTap: () {
+        onTap: () async {
           OverlaySupportEntry.of(context)!.dismiss();
           if (notifId == null) {
             print('Notification ID is null, not navigating.');
             return;
           }
+
+          final BuildContext? ctx = navigatorKey.currentContext;
+          if (ctx == null) {
+            print('Navigator context not ready.');
+            return;
+          }
+          final notificationDetailPage = await NotificationDetailPage.fromId(
+            context: ctx,
+            notificationId: notifId,
+          );
           Navigator.push(
-            context,
+            ctx,
             MaterialPageRoute(
-                builder: (context) => NotificationsPage(
-                      notificationId: notifId,
-                    ),
-                fullscreenDialog: true),
+                builder: (_) => notificationDetailPage, fullscreenDialog: true),
           );
         },
       );
@@ -90,16 +97,21 @@ class PushNotificationsManager {
       return;
     }
 
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Navigator.push(
-        navigatorKey.currentContext!,
-        MaterialPageRoute(
-            builder: (context) => NotificationsPage(
-                  notificationId: notifId,
-                ),
-            fullscreenDialog: true),
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      final ctx = navigatorKey.currentContext;
+      if (ctx == null) {
+        print('Navigator context not available yet.');
+        return;
+      }
+      final notificationDetailPage = await NotificationDetailPage.fromId(
+        context: ctx,
+        notificationId: notifId,
       );
-      ;
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(
+            builder: (_) => notificationDetailPage, fullscreenDialog: true),
+      );
     });
   }
 }

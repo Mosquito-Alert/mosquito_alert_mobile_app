@@ -2,24 +2,22 @@ import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:html/parser.dart' show parse;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:intl/intl.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as sdk;
+import 'package:mosquito_alert_app/pages/notification_pages/notification_detail_page.dart';
 import 'package:mosquito_alert_app/services/analytics_service.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
-import 'package:mosquito_alert_app/utils/customModalBottomSheet.dart';
+import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationsPage extends StatefulWidget {
-  final int? notificationId;
   final AnalyticsService? analyticsService;
 
   const NotificationsPage({
     Key? key,
-    this.notificationId,
     this.analyticsService,
   }) : super(key: key);
 
@@ -28,6 +26,8 @@ class NotificationsPage extends StatefulWidget {
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
+  String languageCode = 'en';
+
   bool _isLastPage = false;
   static const _pageSize = 20;
   late final _pagingController =
@@ -57,29 +57,13 @@ class _NotificationsPageState extends State<NotificationsPage> {
         Provider.of<sdk.MosquitoAlert>(context, listen: false);
     notificationsApi = apiClient.getNotificationsApi();
     _analyticsService = widget.analyticsService ?? FirebaseAnalyticsService();
+    initLanguage();
     _logScreenView();
     loadingStream.add(true);
-
-    if (widget.notificationId != null) {
-      // Delay until the first frame is rendered
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        final notification =
-            await fetchNotificationById(widget.notificationId!);
-        if (notification != null && mounted) {
-          _showNotificationBottomSheet(context, notification);
-        }
-      });
-    }
   }
 
-  Future<sdk.Notification?> fetchNotificationById(int id) async {
-    try {
-      final response = await notificationsApi.retrieve(id: id);
-      return response.data;
-    } catch (e) {
-      // Handle error if needed
-      return null;
-    }
+  Future<void> initLanguage() async {
+    languageCode = await UserManager.getLanguage() ?? 'en';
   }
 
   @override
@@ -101,53 +85,94 @@ class _NotificationsPageState extends State<NotificationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Style.title(
-          MyLocalizations.of(context, 'notifications_title'),
-          fontSize: 16,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          flexibleSpace: FlexibleSpaceBar(
+            centerTitle: true,
+            title: Text(MyLocalizations.of(context, 'notifications_title'),
+                style: TextStyle(color: Colors.black87)),
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: Container(
-          margin: EdgeInsets.all(12),
+        body: SafeArea(
           child: PagingListener<int, sdk.Notification>(
             controller: _pagingController,
             builder: (context, state, fetchNextPage) {
               return PagedListView<int, sdk.Notification>(
                 state: state,
                 fetchNextPage: fetchNextPage,
-                padding: const EdgeInsets.only(top: 4, bottom: 12),
                 builderDelegate: PagedChildBuilderDelegate<sdk.Notification>(
                   itemBuilder: (context, notification, index) {
-                    return Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      color:
-                          notification.isRead ? Colors.grey[200] : Colors.white,
-                      child: ListTile(
-                        contentPadding: EdgeInsets.all(12),
+                    return Column(children: [
+                      ListTile(
                         onTap: () {
-                          _showNotificationBottomSheet(context, notification);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => NotificationDetailPage(
+                                  notification: notification,
+                                  onNotificationUpdated: (notification) {
+                                    // Update the notification in the paging controller
+                                    // See: https://github.com/EdsonBueno/infinite_scroll_pagination/issues/389
+                                    _pagingController.mapItems(
+                                        (sdk.Notification item) =>
+                                            item.id == notification.id
+                                                ? notification
+                                                : item);
+                                  }),
+                            ),
+                          );
                         },
-                        title: Text(
-                          notification.message.title,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: notification.isRead
-                                ? Colors.black54
-                                : Colors.black,
+                        tileColor: notification.isRead
+                            ? Colors.white
+                            : Colors.grey[200],
+                        titleTextStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: notification.isRead
+                              ? Colors.black54
+                              : Colors.black,
+                        ),
+                        isThreeLine: true,
+                        trailing: Text(timeago.format(notification.createdAt,
+                            locale: languageCode + '_short')),
+                        title: Text.rich(
+                          TextSpan(
+                            children: [
+                              if (!notification.isRead) ...[
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.middle,
+                                  child: Container(
+                                    width: 8,
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                ),
+                                const WidgetSpan(child: SizedBox(width: 8)),
+                              ],
+                              TextSpan(
+                                text: notification.message.title,
+                                style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         subtitle: Text(
                             _parseHtmlString(notification.message.body),
-                            maxLines: 1,
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis),
                       ),
-                    );
+                      // Add a divider after each tile
+                      const Divider(
+                          height: 1, thickness: 0.2, color: Colors.grey),
+                    ]);
                   },
                   noItemsFoundIndicatorBuilder: (context) => Center(
                     child: Style.body(
@@ -168,91 +193,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
               );
             },
           ),
-        ),
-      ),
-    );
-  }
-
-  void _showNotificationBottomSheet(
-      BuildContext context, sdk.Notification notification) async {
-    await _analyticsService.logSelectContent(
-        contentType: 'notification', itemId: '${notification.id}');
-
-    if (!notification.isRead) {
-      await markNotificationAsRead(notification);
-    }
-
-    CustomShowModalBottomSheet.customShowModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SafeArea(
-            bottom: false,
-            child: Container(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.8,
-              ),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  )),
-              child: Container(
-                margin:
-                    EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 10),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Style.titleMedium(notification.message.title),
-                      Style.bodySmall(
-                          DateFormat('dd-MM-yyyy HH:mm')
-                              .format(notification.createdAt.toLocal()),
-                          color: Colors.grey),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      html.Html(
-                        data: notification.message.body
-                            .replaceAll('<p><a', '<a')
-                            .replaceAll('</a></p>', '</a>'),
-                        style: {
-                          '*': html.Style(
-                            padding: html.HtmlPaddings.zero,
-                            margin: html.Margins.zero,
-                          ),
-                        },
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        });
-  }
-
-  Future<void> markNotificationAsRead(sdk.Notification notification) async {
-    if (notification.isRead) return;
-
-    sdk.PatchedNotificationRequest patchedNotificationRequest =
-        sdk.PatchedNotificationRequest((b) => b..isRead = true);
-    final response = await notificationsApi.partialUpdate(
-        id: notification.id,
-        patchedNotificationRequest: patchedNotificationRequest);
-
-    final sdk.Notification? newNotification = response.data;
-    if (newNotification == null || response.statusCode != 200) {
-      print('Failed to update notification: No data returned');
-      return;
-    }
-
-    // Update the notification in the paging controller
-    // See: https://github.com/EdsonBueno/infinite_scroll_pagination/issues/389
-    _pagingController.mapItems((sdk.Notification item) =>
-        item.id == newNotification.id ? newNotification : item);
+        ));
   }
 }
