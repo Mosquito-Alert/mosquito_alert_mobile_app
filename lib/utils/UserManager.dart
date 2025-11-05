@@ -50,7 +50,8 @@ class UserManager {
   static Future<void> setLanguage(language) async {
     var prefs = await SharedPreferences.getInstance();
     // NOTE: this is important for DateFormat to work correctly
-    Intl.defaultLocale = language;
+    Intl.defaultLocale = Intl.verifiedLocale(language, DateFormat.localeExists,
+        onFailure: (newLocale) => 'en');
     await prefs.setString('language', language);
   }
 
