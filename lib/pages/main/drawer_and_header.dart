@@ -253,6 +253,7 @@ class _MainVCState extends State<MainVC>
         ),
         actions: <Widget>[
           badges.Badge(
+              ignorePointer: true,
               position: badges.BadgePosition.topEnd(top: 0, end: 3),
               showBadge: unreadNotifications > 0,
               badgeContent: Text(
