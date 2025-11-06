@@ -167,8 +167,8 @@ class _AdultReportControllerState extends State<AdultReportController> {
         location: locationRequest,
         photos: photosRequest,
         note: notes,
-        eventEnvironment: _reportData.environmentAnswer ?? '',
-        eventMoment: _reportData.eventMoment ?? 'now',
+        eventEnvironment: _reportData.environmentAnswer?.name ?? '',
+        eventMoment: _reportData.eventMoment?.name ?? null,
         tags: tags,
       );
 
@@ -277,7 +277,6 @@ class _AdultReportControllerState extends State<AdultReportController> {
                   onPrevious: _previousStep,
                   canProceed: _reportData.latitude != null &&
                       _reportData.longitude != null,
-                  locationDescription: _reportData.locationDescription,
                   locationSource: _reportData.locationSource,
                 ),
                 EnvironmentQuestionPage(

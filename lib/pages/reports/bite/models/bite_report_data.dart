@@ -84,14 +84,6 @@ class BiteReportData extends ChangeNotifier {
         eventMoment != null;
   }
 
-  /// Gets a user-friendly location description
-  String get locationDescription {
-    if (latitude != null && longitude != null) {
-      return '${latitude!.toStringAsFixed(4)}, ${longitude!.toStringAsFixed(4)}';
-    }
-    return 'No location selected';
-  }
-
   /// Checks if bite counts step is complete
   bool get hasValidBiteCounts {
     return totalBites > 0;

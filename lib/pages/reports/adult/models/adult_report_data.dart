@@ -12,10 +12,11 @@ class AdultReportData {
   LocationRequestSource_Enum locationSource = LocationRequestSource_Enum.auto;
 
   // Step 3: Environment question
-  String? environmentAnswer; // 'vehicle', 'indoors', 'outdoors', '', null
+  ObservationEventEnvironmentEnum?
+      environmentAnswer; // 'vehicle', 'indoors', 'outdoors', '', null
 
   // Step 4: Event timing (when the mosquito was found)
-  String?
+  ObservationEventMomentEnum?
       eventMoment; // 'now', 'last_morning', 'last_midday', 'last_afternoon', 'last_night', '', null,
 
   // Step 5: Notes
@@ -27,14 +28,6 @@ class AdultReportData {
   /// Validates if the report data is complete enough to submit
   bool get isValid {
     return photos.isNotEmpty && latitude != null && longitude != null;
-  }
-
-  /// Gets a user-friendly location description
-  String get locationDescription {
-    if (latitude != null && longitude != null) {
-      return '${latitude!.toStringAsFixed(4)}, ${longitude!.toStringAsFixed(4)}';
-    }
-    return 'No location selected';
   }
 
   /// Resets all data

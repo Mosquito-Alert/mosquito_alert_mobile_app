@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
@@ -24,26 +25,26 @@ class EnvironmentQuestionPage extends StatefulWidget {
 class _EnvironmentQuestionPageState extends State<EnvironmentQuestionPage> {
   final List<Map<String, dynamic>> _environmentOptions = [
     {
-      'value': 'vehicle',
+      'value': ObservationEventEnvironmentEnum.vehicle,
       'titleKey': 'question_4_answer_41',
       'description': '(HC) Car, bus, train, or any other vehicle',
       'icon': Icons.directions_car,
     },
     {
-      'value': 'indoors',
+      'value': ObservationEventEnvironmentEnum.indoors,
       'titleKey': 'question_4_answer_42',
       'description': '(HC) House, office, shop, or any indoor space',
       'icon': Icons.home,
     },
     {
-      'value': 'outdoors',
+      'value': ObservationEventEnvironmentEnum.outdoors,
       'titleKey': 'question_4_answer_43',
       'description': '(HC) Garden, park, street, or any outdoor space',
       'icon': Icons.park,
     },
   ];
 
-  void _selectOption(String value) {
+  void _selectOption(ObservationEventEnvironmentEnum value) {
     setState(() {
       widget.reportData.environmentAnswer = value;
     });

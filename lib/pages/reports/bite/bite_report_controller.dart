@@ -271,7 +271,6 @@ class _BiteReportControllerState extends State<BiteReportController> {
                       onNext: _nextStep,
                       onPrevious: _previousStep,
                       canProceed: _canProceed,
-                      locationDescription: _reportData.locationDescription,
                       locationSource: _reportData.locationSource,
                     ),
 

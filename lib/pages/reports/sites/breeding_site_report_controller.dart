@@ -271,7 +271,6 @@ class _BreedingSiteReportControllerState
       onNext: _nextStep,
       onPrevious: _previousStep,
       canProceed: _reportData.latitude != null && _reportData.longitude != null,
-      locationDescription: _reportData.locationDescription,
       locationSource: _reportData.locationSource,
     );
   }

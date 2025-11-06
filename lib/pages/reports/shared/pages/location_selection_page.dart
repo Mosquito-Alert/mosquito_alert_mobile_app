@@ -15,7 +15,6 @@ class LocationSelectionPage extends StatefulWidget {
   final VoidCallback onNext;
   final VoidCallback onPrevious;
   final bool canProceed;
-  final String? locationDescription;
   final LocationRequestSource_Enum? locationSource;
 
   const LocationSelectionPage({
@@ -26,7 +25,6 @@ class LocationSelectionPage extends StatefulWidget {
     required this.onNext,
     required this.onPrevious,
     required this.canProceed,
-    this.locationDescription,
     this.locationSource,
   }) : super(key: key);
 
