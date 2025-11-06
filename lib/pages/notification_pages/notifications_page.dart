@@ -95,6 +95,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
           ),
         ),
         body: SafeArea(
+            child: RefreshIndicator(
+          onRefresh: () async {
+            _pagingController.refresh();
+          },
           child: PagingListener<int, sdk.Notification>(
             controller: _pagingController,
             builder: (context, state, fetchNextPage) {
@@ -193,6 +197,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
               );
             },
           ),
-        ));
+        )));
   }
 }
