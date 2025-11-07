@@ -64,7 +64,7 @@ void main() {
       await pumpAndSettleIgnoringFirebaseException(tester);
 
       // Then - Verify bite reports are displayed as cards
-      expect(find.byType(Card), findsNWidgets(2));
+      expect(find.byType(ListTile), findsNWidgets(2));
 
       // Verify specific bite content is displayed
       expect(find.text('3 bites'), findsOneWidget);
@@ -87,7 +87,7 @@ void main() {
       expect(find.byType(ReportsListBites), findsOneWidget);
 
       // No cards should be displayed
-      expect(find.byType(Card), findsNothing);
+      expect(find.byType(ListTile), findsNothing);
 
       // Should display localized "no reports yet" message
       // Get the localized text from the mock localizations
@@ -116,7 +116,7 @@ void main() {
       await pumpAndSettleIgnoringFirebaseException(tester);
 
       // Then - Verify single bite is displayed correctly
-      expect(find.byType(Card), findsOneWidget);
+      expect(find.byType(ListTile), findsOneWidget);
       expect(find.text('1 bite'), findsOneWidget);
     });
 
@@ -143,12 +143,9 @@ void main() {
       await pumpAndSettleIgnoringFirebaseException(tester);
 
       // Then - Verify cards are displayed correctly
-      expect(find.byType(Card), findsNWidgets(2));
+      expect(find.byType(ListTile), findsNWidgets(2));
       expect(find.text('2 bites'), findsOneWidget);
       expect(find.text('3 bites'), findsOneWidget);
-
-      // Verify cards have proper tap behavior
-      expect(find.byType(ListTile), findsNWidgets(2));
     });
   });
 }
