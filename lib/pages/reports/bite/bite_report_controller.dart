@@ -1,6 +1,8 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
+import 'package:mosquito_alert_app/pages/reports/bite/pages/moment_question_page.dart';
+import 'package:mosquito_alert_app/pages/reports/shared/pages/environment_question_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/pages/location_selection_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/pages/notes_and_submit_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/utils/report_dialogs.dart';
@@ -29,12 +31,19 @@ class _BiteReportControllerState extends State<BiteReportController> {
   // Define the events to log
   final List<String> _pageEvents = [
     'report_add_bites',
+    'report_add_environment',
+    'report_add_moment',
     'report_add_location',
     'report_add_note',
   ];
 
-  List<String> get _stepTitles =>
-      ['(HC) Bite Information', '(HC) Select Location', '(HC) Notes & Submit'];
+  List<String> get _stepTitles => [
+        '(HC) Bite Information',
+        '(HC) Select Environment',
+        '(HC) Select Moment',
+        '(HC) Select Location',
+        '(HC) Notes & Submit'
+      ];
 
   @override
   void initState() {
@@ -118,20 +127,6 @@ class _BiteReportControllerState extends State<BiteReportController> {
       _reportData.notes =
           (notes?.trim().isEmpty ?? true) ? null : notes!.trim();
     });
-  }
-
-  /// Check if current step is complete
-  bool get _canProceed {
-    switch (_currentStep) {
-      case 0: // Bite questions step
-        return _reportData.hasValidBiteCounts && _reportData.hasValidTiming;
-      case 1: // Location step
-        return _reportData.hasValidLocation;
-      case 2: // Notes step (always optional)
-        return true;
-      default:
-        return false;
-    }
   }
 
   /// Submit the bite report
@@ -258,23 +253,43 @@ class _BiteReportControllerState extends State<BiteReportController> {
                     BiteQuestionsPage(
                       onEnvironmentChanged: _updateEnvironment,
                       onTimingChanged: _updateTiming,
-                      onNext: _canProceed ? _nextStep : null,
+                      onNext: _nextStep,
                       onPrevious: _previousStep,
-                      canProceed: _canProceed,
                     ),
-
-                    // Step 2: Location selection
+                    // Step 2: Environment questions
+                    EnvironmentQuestionPage(
+                        title: MyLocalizations.of(context, "question_4"),
+                        allowNullOption: true,
+                        onNext: (value) {
+                          setState(() {
+                            _reportData.eventEnvironment = value != null
+                                ? BiteRequestEventEnvironmentEnum.valueOf(value)
+                                : null;
+                          });
+                          _nextStep();
+                        },
+                        onPrevious: _previousStep),
+                    // Step 3: Moment questions
+                    EventMomentPage(
+                        onNext: (value) {
+                          setState(() {
+                            _reportData.eventMoment = value;
+                          });
+                          _nextStep();
+                        },
+                        onPrevious: _previousStep),
+                    // Step 4: Location selection
                     LocationSelectionPage(
                       initialLatitude: _reportData.latitude,
                       initialLongitude: _reportData.longitude,
                       onLocationSelected: _updateLocation,
                       onNext: _nextStep,
                       onPrevious: _previousStep,
-                      canProceed: _canProceed,
+                      canProceed: _reportData.hasValidLocation,
                       locationSource: _reportData.locationSource,
                     ),
 
-                    // Step 3: Notes and submit
+                    // Step 5: Notes and submit
                     NotesAndSubmitPage(
                       initialNotes: _reportData.notes ?? '',
                       onNotesChanged: _updateNotes,

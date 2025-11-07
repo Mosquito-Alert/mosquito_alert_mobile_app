@@ -206,8 +206,7 @@ class BodyPartSelector extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 ),
                 SizedBox(width: 8),
-                Text(
-                    '${displayName} ${MyLocalizations.of(context, 'plural_bite')}'),
+                Text(displayName),
               ],
             ),
             content: Column(
