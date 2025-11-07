@@ -156,21 +156,23 @@ class _MainVCState extends State<MainVC>
 
     // Migrate old auth system if needed
     final prefs = await SharedPreferences.getInstance();
-    final String? oldUsername = prefs.getString('uuid');
-    if (oldUsername != null) {
+    String? username = prefs.getString('uuid');
+    if (username != null) {
       try {
-        await authProvider.login(
-            username: oldUsername, password: Env.oldPassword);
+        await authProvider.login(username: username, password: Env.oldPassword);
         await authProvider.changePassword(
             password: Utils.getRandomPassword(10));
-        await prefs.remove('uuid');
-      } catch (e) {
-        // TODO: If error is 5xx we should retry later.
-        print('Error during migration login: $e');
+      } on DioException catch (e) {
+        if (e.response?.statusCode != null && e.response!.statusCode! >= 500) {
+          // Server error during migration, skip migration to avoid creating duplicate guest user
+          _showErrorSnackBar('Unable to connect to server. Please try again later.');
+          return false;
+        }
       }
+      await prefs.remove('uuid');
     }
 
-    String? username = authProvider.username;
+    username = authProvider.username;
     String? password = authProvider.password;
     if (username == null && password == null) {
       // Create a guest user

@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
@@ -75,75 +74,39 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<GuestRegistration> createGuestUser({required String password}) async {
-    final GuestRegistrationRequest guestRegistrationRequest =
+    final guestRegistrationRequest =
         GuestRegistrationRequest((b) => b..password = password);
-    try {
-      final Response<GuestRegistration> response = await authApi.signupGuest(
-          guestRegistrationRequest: guestRegistrationRequest);
+    final response = await authApi.signupGuest(
+        guestRegistrationRequest: guestRegistrationRequest);
 
-      if (response.statusCode == 201 && response.data != null) {
-        return response.data!;
-      } else {
-        throw Exception(
-          'Failed to create guest user: StatusCode=${response.statusCode}, '
-          'Username=${response.data?.username}',
-        );
-      }
-    } catch (e) {
-      print('Error creating user: $e');
-      rethrow;
-    }
+    return response.data!;
   }
 
   Future<void> changePassword({required String password}) async {
-    try {
-      final PasswordChangeRequest changePasswordRequest =
-          PasswordChangeRequest((b) => b..password = password);
+    final changePasswordRequest =
+        PasswordChangeRequest((b) => b..password = password);
 
-      final Response<void> response = await authApi.changePassword(
-          passwordChangeRequest: changePasswordRequest);
+    await authApi.changePassword(passwordChangeRequest: changePasswordRequest);
 
-      if (response.statusCode == 204) {
-        await _setPassword(password: password);
-        return;
-      } else {
-        throw Exception(
-            'Change password failed: Server responded with status ${response.statusCode}');
-      }
-    } catch (e) {
-      print("Change password failed: $e");
-      rethrow;
-    }
+    await _setPassword(password: password);
   }
 
   Future<void> login(
       {required String username,
       required String password,
       Device? device}) async {
-    try {
-      final AppUserTokenObtainPairRequest request =
-          AppUserTokenObtainPairRequest((b) => b
-            ..username = username
-            ..password = password
-            ..deviceId = device?.deviceId ?? _deviceId);
+    final request = AppUserTokenObtainPairRequest((b) => b
+      ..username = username
+      ..password = password
+      ..deviceId = device?.deviceId ?? _deviceId);
 
-      final Response<AppUserTokenObtainPair> response =
-          await authApi.obtainToken(appUserTokenObtainPairRequest: request);
+    final response =
+        await authApi.obtainToken(appUserTokenObtainPairRequest: request);
 
-      if (response.statusCode == 200 && response.data != null) {
-        _setUsername(username: username);
-        _setPassword(password: password);
-        _setDeviceId(deviceId: device?.deviceId);
-        setAccessToken(accessToken: response.data!.access);
-        setRefreshToken(refreshToken: response.data!.refresh);
-        return;
-      } else {
-        throw Exception(
-            'Login failed: Server responded with status ${response.statusCode}');
-      }
-    } catch (e) {
-      print("Login failed: $e");
-      rethrow;
-    }
+    _setUsername(username: username);
+    _setPassword(password: password);
+    _setDeviceId(deviceId: device?.deviceId);
+    setAccessToken(accessToken: response.data!.access);
+    setRefreshToken(refreshToken: response.data!.refresh);
   }
 }
