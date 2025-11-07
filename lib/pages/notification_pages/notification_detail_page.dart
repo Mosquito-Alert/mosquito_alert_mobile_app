@@ -4,6 +4,7 @@ import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:mosquito_alert/mosquito_alert.dart' as sdk;
 import 'package:provider/provider.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
+import 'package:mosquito_alert_app/utils/html_parser.dart';
 
 class NotificationDetailPage extends StatefulWidget {
   final sdk.Notification notification;
@@ -115,7 +116,7 @@ class _NotificationDetailPageState extends State<NotificationDetailPage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: html.Html(
-          data: body,
+          data: prepareHtmlBody(body),
           style: {
             '*': html.Style(
               padding: html.HtmlPaddings.zero,

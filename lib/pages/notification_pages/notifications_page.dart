@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
-import 'package:html/parser.dart' show parse;
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as sdk;
 import 'package:mosquito_alert_app/pages/notification_pages/notification_detail_page.dart';
 import 'package:mosquito_alert_app/services/analytics_service.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
+import 'package:mosquito_alert_app/utils/html_parser.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -74,12 +74,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   Future<void> _logScreenView() async {
     await _analyticsService.logScreenView(screenName: '/notifications');
-  }
-
-  String _parseHtmlString(String htmlString) {
-    final document = parse(htmlString);
-    final String parsedString = document.body?.text ?? '';
-    return parsedString.trim();
   }
 
   @override
@@ -168,10 +162,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        subtitle: Text(
-                            _parseHtmlString(notification.message.body),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis),
+                        subtitle: Text(getHtmlText(notification.message.body),
+                            maxLines: 2, overflow: TextOverflow.ellipsis),
                       ),
                       // Add a divider after each tile
                       const Divider(
