@@ -26,8 +26,6 @@ class UserProvider extends ChangeNotifier {
       print('Error getting user: $e');
       user = null;
       rethrow;
-    } finally {
-      notifyListeners();
     }
   }
 
