@@ -41,7 +41,7 @@ class _MainVCState extends State<MainVC>
     with RouteAware, WidgetsBindingObserver {
   int _selectedIndex = 0;
   int unreadNotifications = 0;
-  var packageInfo;
+  PackageInfo? packageInfo;
   String? userUuid;
   bool isLoading = true;
 
@@ -49,6 +49,7 @@ class _MainVCState extends State<MainVC>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    getPackageInfo();
     _startAsyncTasks();
   }
 
@@ -96,12 +97,11 @@ class _MainVCState extends State<MainVC>
             Provider.of<DeviceProvider>(context, listen: false);
         await deviceProvider.updateFcmToken(fcmToken);
       });
+      await _fetchNotificationCount();
     }
     setState(() {
       isLoading = !initSuccess;
     });
-    await _fetchNotificationCount();
-    await getPackageInfo();
   }
 
   Future<void> _fetchNotificationCount() async {
@@ -123,12 +123,11 @@ class _MainVCState extends State<MainVC>
     });
   }
 
-  Future<bool> getPackageInfo() async {
+  Future<void> getPackageInfo() async {
     PackageInfo _packageInfo = await PackageInfo.fromPlatform();
     setState(() {
       packageInfo = _packageInfo;
     });
-    return true;
   }
 
   void _showErrorSnackBar(String message) {
@@ -375,7 +374,7 @@ class _MainVCState extends State<MainVC>
                   padding: const EdgeInsets.only(bottom: 20.0),
                   child: Text(
                     packageInfo != null
-                        ? 'version ${packageInfo.version} (build ${packageInfo.buildNumber})'
+                        ? 'version ${packageInfo!.version} (build ${packageInfo!.buildNumber})'
                         : '',
                     style: TextStyle(
                       color: Colors.grey,
