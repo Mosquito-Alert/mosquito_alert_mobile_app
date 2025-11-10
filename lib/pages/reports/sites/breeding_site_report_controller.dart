@@ -25,36 +25,119 @@ class BreedingSiteReportController extends StatefulWidget {
       _BreedingSiteReportControllerState();
 }
 
+class PageParameter {
+  final String title;
+  final String logEvent;
+  final VoidCallback onPrevious;
+  final bool Function() isShown;
+  final Widget widget;
+
+  PageParameter({
+    required this.title,
+    required this.logEvent,
+    required this.onPrevious,
+    required this.isShown,
+    required this.widget,
+  });
+}
+
 class _BreedingSiteReportControllerState
     extends State<BreedingSiteReportController> {
+  late PageController _pageController;
   late BreedingSiteReportData _reportData;
   late BreedingSitesApi _breedingSitesApi;
 
   int _currentStep = 0;
   bool _isSubmitting = false;
 
-  /// Gets the current step titles based on water status
-  List<String> get _stepTitles {
-    final titles = <String>[
-      '(HC) Site Type',
-      '(HC) Take Photos',
-      '(HC) Water Status',
+  List<PageParameter> get _pageParameters {
+    return [
+      PageParameter(
+        title: '(HC) Site Type',
+        logEvent: 'report_add_site_type',
+        onPrevious: () => null,
+        isShown: () => true,
+        widget: SiteTypeSelectionPage(
+          reportData: _reportData,
+          onNext: _nextStep,
+        ),
+      ),
+      PageParameter(
+        title: '(HC) Take Photos',
+        logEvent: 'report_add_photo',
+        onPrevious: () => null,
+        isShown: () => true,
+        widget: PhotoSelectionPage(
+          photos: _reportData.photos,
+          onPhotosChanged: _onPhotosChanged,
+          onNext: _nextStep,
+          onPrevious: _previousStep,
+          maxPhotos: 3,
+          minPhotos: 1,
+          infoBadgeTextKey: 'camera_info_breeding_txt_02',
+          thumbnailText:
+              '(HC) Photos of the same breeding site from different angles.',
+        ),
+      ),
+      PageParameter(
+        title: '(HC) Water Status',
+        logEvent: 'report_add_has_water',
+        onPrevious: () => null,
+        isShown: () => true,
+        widget: WaterQuestionPage(
+          reportData: _reportData,
+          onNext: _nextStep,
+          onPrevious: _previousStep,
+        ),
+      ),
+      PageParameter(
+        title: '(HC) Larvae Check',
+        logEvent: 'report_add_has_larvae',
+        onPrevious: () => _reportData.hasLarvae = null,
+        isShown: () => _reportData.hasWater == true,
+        widget: LarvaeQuestionPage(
+          reportData: _reportData,
+          onNext: _nextStep,
+          onPrevious: _previousStep,
+        ),
+      ),
+      PageParameter(
+        title: '(HC) Select Location',
+        logEvent: 'report_add_location',
+        onPrevious: () => null,
+        isShown: () => true,
+        widget: LocationSelectionPage(
+          initialLatitude: _reportData.latitude,
+          initialLongitude: _reportData.longitude,
+          onLocationSelected: _onLocationSelected,
+          onNext: _nextStep,
+          onPrevious: _previousStep,
+          canProceed:
+              _reportData.latitude != null && _reportData.longitude != null,
+          locationSource: _reportData.locationSource,
+        ),
+      ),
+      PageParameter(
+        title: '(HC) Notes & Submit',
+        logEvent: 'report_add_note',
+        onPrevious: () => null,
+        isShown: () => true,
+        widget: NotesAndSubmitPage(
+          initialNotes: _reportData.notes,
+          onNotesChanged: _onNotesChanged,
+          onSubmit: _submitReport,
+          onPrevious: _previousStep,
+          isSubmitting: _isSubmitting,
+          submitLoadingText: '(HC) Submitting your breeding site report...',
+        ),
+      ),
     ];
-
-    // Add larvae step only if water is present
-    if (_reportData.hasWater == true) {
-      titles.add('(HC) Larvae Check');
-    }
-
-    // Always add final steps
-    titles.addAll(['(HC) Select Location', '(HC) Notes & Submit']);
-
-    return titles;
   }
 
   @override
   void initState() {
     super.initState();
+    _pageController = PageController();
     _reportData = BreedingSiteReportData();
 
     // Initialize API
@@ -66,36 +149,47 @@ class _BreedingSiteReportControllerState
 
   @override
   void dispose() {
+    _pageController.dispose();
     super.dispose();
   }
 
-  /// Navigate to next step
-  void _nextStep() {
-    if (_currentStep < _stepTitles.length - 1) {
+  Future<void> _nextStep() async {
+    if (_currentStep < _pageParameters.length - 1) {
       setState(() {
         _currentStep++;
       });
+      await _pageController.animateToPage(
+        _currentStep,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
     }
-  }
-
-  /// Navigate to next step after water question, handling conditional larvae question
-  void _nextStepAfterWater() {
-    if (_reportData.hasWater == false) {
-      // Clear any larvae response if water is not present
-      _reportData.hasLarvae = null;
-    }
-
-    setState(() {
-      _currentStep++;
-    });
   }
 
   /// Navigate to previous step
-  void _previousStep() {
+  Future<void> _previousStep() async {
     if (_currentStep > 0) {
+      _pageParameters[_currentStep].onPrevious();
       setState(() {
         _currentStep--;
       });
+      await _pageController.animateToPage(
+        _currentStep,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _onPageChanged(int index) async {
+    // Update current step to match the page
+    setState(() {
+      _currentStep = index;
+    });
+
+    // Check if the index is valid and log the event
+    if (index >= 0 && index < _pageParameters.length) {
+      await _logAnalyticsEvent(_pageParameters[index].logEvent);
     }
   }
 
@@ -130,9 +224,10 @@ class _BreedingSiteReportControllerState
     setState(() {
       _isSubmitting = true;
     });
-    await _logAnalyticsEvent('submit_report');
 
     try {
+      await _logAnalyticsEvent('submit_report');
+
       // Step 1: Create location request
       final locationRequest = LocationRequest((b) => b
         ..source_ = _reportData.locationSource
@@ -196,132 +291,57 @@ class _BreedingSiteReportControllerState
     );
   }
 
-  /// Gets the current page widget based on the current step
-  Widget get _currentPage {
-    // Step numbers are consistent:
-    // 0: Site Type
-    // 1: Photos
-    // 2: Water
-    // 3: Larvae (only if hasWater == true) OR Location (if hasWater == false)
-    // 4: Location (if hasWater == true) OR Notes (if hasWater == false)
-    // 5: Notes (only if hasWater == true)
-
-    switch (_currentStep) {
-      case 0:
-        return SiteTypeSelectionPage(
-          reportData: _reportData,
-          onNext: _nextStep,
-        );
-      case 1:
-        _logAnalyticsEvent('report_add_photo');
-        return PhotoSelectionPage(
-          photos: _reportData.photos,
-          onPhotosChanged: _onPhotosChanged,
-          onNext: _nextStep,
-          onPrevious: _previousStep,
-          maxPhotos: 3,
-          minPhotos: 1,
-          infoBadgeTextKey: 'camera_info_breeding_txt_02',
-          thumbnailText:
-              '(HC) Photos of the same breeding site from different angles.',
-        );
-      case 2:
-        _logAnalyticsEvent('report_add_has_water');
-        return WaterQuestionPage(
-          reportData: _reportData,
-          onNext: _nextStepAfterWater,
-          onPrevious: _previousStep,
-        );
-      case 3:
-        // This step depends on water status
-        if (_reportData.hasWater == true) {
-          // Show larvae question
-          _logAnalyticsEvent('report_add_has_larvae');
-          return LarvaeQuestionPage(
-            reportData: _reportData,
-            onNext: _nextStep,
-            onPrevious: _previousStep,
-          );
-        } else {
-          // Skip to location
-          return _getLocationPage();
-        }
-      case 4:
-        if (_reportData.hasWater == true) {
-          // Location page after larvae
-          return _getLocationPage();
-        } else {
-          // Notes page (final step when no water)
-          return _getNotesPage();
-        }
-      case 5:
-        // Notes page (final step when water is present)
-        return _getNotesPage();
-      default:
-        return Container();
+  void _handleBackPressed() {
+    if (_currentStep > 0) {
+      _previousStep();
+    } else {
+      Navigator.of(context).pop();
     }
-  }
-
-  Widget _getLocationPage() {
-    _logAnalyticsEvent('report_add_location');
-    return LocationSelectionPage(
-      initialLatitude: _reportData.latitude,
-      initialLongitude: _reportData.longitude,
-      onLocationSelected: _onLocationSelected,
-      onNext: _nextStep,
-      onPrevious: _previousStep,
-      canProceed: _reportData.latitude != null && _reportData.longitude != null,
-      locationSource: _reportData.locationSource,
-    );
-  }
-
-  Widget _getNotesPage() {
-    _logAnalyticsEvent('report_add_note');
-    return NotesAndSubmitPage(
-      initialNotes: _reportData.notes,
-      onNotesChanged: _onNotesChanged,
-      onSubmit: _submitReport,
-      onPrevious: _previousStep,
-      isSubmitting: _isSubmitting,
-      submitLoadingText: '(HC) Submitting your breeding site report...',
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final stepTitles = _stepTitles;
-    final currentTitle = _currentStep < stepTitles.length
-        ? stepTitles[_currentStep]
-        : stepTitles.last;
+    final _pages = _pageParameters.where((param) => param.isShown()).toList();
+    final titles = _pages.map<String>((param) => param.title).toList();
+    final widgets = _pages.map<Widget>((param) => param.widget).toList();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(currentTitle),
-        leading: _currentStep > 0
-            ? IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: _previousStep,
-              )
-            : IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) {
+        if (!didPop) {
+          _handleBackPressed();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(titles[_currentStep]),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: _handleBackPressed,
+          ),
+        ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              // Progress indicator
+              ReportProgressIndicator(
+                currentStep: _currentStep,
+                totalSteps: titles.length,
+                stepTitles: titles,
               ),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Progress indicator
-            ReportProgressIndicator(
-              currentStep: _currentStep,
-              totalSteps: stepTitles.length,
-              stepTitles: stepTitles,
-            ),
 
-            // Main content
-            Expanded(
-              child: _currentPage,
-            ),
-          ],
+              // Main content
+              Expanded(
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: _onPageChanged,
+                  physics:
+                      NeverScrollableScrollPhysics(), // Disable swipe navigation
+                  children: widgets,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
