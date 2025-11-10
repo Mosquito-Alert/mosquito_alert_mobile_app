@@ -4,7 +4,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
@@ -87,21 +86,20 @@ class _MainVCState extends State<MainVC>
   }
 
   void _startAsyncTasks() async {
+    setState(() {
+      isLoading = true;
+    });
     await UserManager.startFirstTime(context);
-    bool initSuccess = await initAuth();
-    await PushNotificationsManager.init();
-    if (initSuccess) {
-      await initBackgroundTracking();
-      FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async {
-        final deviceProvider =
-            Provider.of<DeviceProvider>(context, listen: false);
-        await deviceProvider.updateFcmToken(fcmToken);
-      });
+    bool initAuthSuccess = await initAuth();
+    setState(() {
+      isLoading = false;
+    });
+    if (initAuthSuccess) {
       await _fetchNotificationCount();
     }
-    setState(() {
-      isLoading = !initSuccess;
-    });
+    await initBackgroundTracking();
+    final deviceProvider = context.read<DeviceProvider>();
+    await PushNotificationsManager.init(provider: deviceProvider);
   }
 
   Future<void> _fetchNotificationCount() async {
@@ -118,6 +116,7 @@ class _MainVCState extends State<MainVC>
       print('Failed to fetch notification count: $e');
       debugPrintStack(stackTrace: stackTrace);
     }
+    if (!mounted) return;
     setState(() {
       unreadNotifications = count;
     });
@@ -214,6 +213,7 @@ class _MainVCState extends State<MainVC>
     } catch (e) {
       print('Error registering device: $e');
     }
+
     return true;
   }
 
@@ -245,6 +245,7 @@ class _MainVCState extends State<MainVC>
 
   @override
   Widget build(BuildContext context) {
+    final User? user = context.watch<UserProvider>().user;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -275,6 +276,7 @@ class _MainVCState extends State<MainVC>
               child: IconButton(
                   icon: Icon(Icons.notifications_none),
                   onPressed: () {
+                    if (isLoading || user == null) return;
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -287,7 +289,9 @@ class _MainVCState extends State<MainVC>
         child: Center(
           child: isLoading
               ? CircularProgressIndicator()
-              : _widgetOptions[_selectedIndex],
+              : user == null
+                  ? _retryPage()
+                  : _widgetOptions[_selectedIndex],
         ),
       ),
       onDrawerChanged: (isOpened) async {
@@ -312,34 +316,30 @@ class _MainVCState extends State<MainVC>
                               MaterialPageRoute(
                                   settings: RouteSettings(name: '/user_score'),
                                   builder: (context) => InfoPageInWebview(
-                                      "${MyLocalizations.of(context, 'url_point_1')}$userUuid")),
+                                      "${MyLocalizations.of(context, 'url_point_1')}/${user?.uuid ?? 'not_found'}")),
                             );
                           },
                           child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('assets/img/points_box.webp'),
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image:
+                                      AssetImage('assets/img/points_box.webp'),
+                                ),
                               ),
-                            ),
-                            child: Consumer<UserProvider>(
-                              builder: (context, userProvider, _) {
-                                return Center(
-                                  child: AutoSizeText(
-                                    userProvider.userScore.toString(),
-                                    maxLines: 1,
-                                    maxFontSize: 26,
-                                    minFontSize: 16,
-                                    style: TextStyle(
-                                        color: Color(0xFF4B3D04),
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 24),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
+                              child: Center(
+                                child: AutoSizeText(
+                                  (user?.score.value ?? 0).toString(),
+                                  maxLines: 1,
+                                  maxFontSize: 26,
+                                  minFontSize: 16,
+                                  style: TextStyle(
+                                      color: Color(0xFF4B3D04),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 24),
+                                ),
+                              )),
                         ),
 
                         SizedBox(width: 12),
@@ -354,7 +354,7 @@ class _MainVCState extends State<MainVC>
                                 style: TextStyle(fontSize: 22),
                               ),
                             ),
-                            _uuidWithClipboard(),
+                            _uuidWithClipboard(user),
                           ],
                         )
                       ],
@@ -389,52 +389,67 @@ class _MainVCState extends State<MainVC>
     );
   }
 
-  Widget _uuidWithClipboard() {
-    return Consumer<UserProvider>(
-      builder: (context, userProvider, _) {
-        String uuid = userProvider.user?.uuid ?? '';
-        if (uuid.isEmpty) {
-          // Don't show anything if UUID is not available
-          return SizedBox.shrink();
-        }
-        return Row(
-          children: [
-            Text(
-              'ID: ',
-              style: TextStyle(
-                color: Colors.black.withValues(alpha: 0.7),
-                fontSize: 8,
-              ),
+  Widget _retryPage() {
+    return Center(
+      key: Key("retryPage"),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('(HC) Loading failed. Please try again.'),
+          SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              _startAsyncTasks();
+            },
+            child: Text('(HC) Retry'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _uuidWithClipboard(User? user) {
+    String uuid = user?.uuid ?? '';
+    if (uuid.isEmpty) {
+      // Don't show anything if UUID is not available
+      return SizedBox.shrink();
+    }
+    return Row(
+      children: [
+        Text(
+          'ID: ',
+          style: TextStyle(
+            color: Colors.black.withValues(alpha: 0.7),
+            fontSize: 8,
+          ),
+        ),
+        Container(
+          width: 150,
+          child: Text(
+            uuid,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 8,
             ),
-            Container(
-              width: 150,
-              child: Text(
-                uuid,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 8,
-                ),
+          ),
+        ),
+        GestureDetector(
+          child: Icon(
+            Icons.copy_rounded,
+            size: 12,
+          ),
+          onTap: () {
+            Clipboard.setData(ClipboardData(text: uuid));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                    MyLocalizations.of(context, 'copied_to_clipboard_success')),
               ),
-            ),
-            GestureDetector(
-              child: Icon(
-                Icons.copy_rounded,
-                size: 12,
-              ),
-              onTap: () {
-                Clipboard.setData(ClipboardData(text: uuid));
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(MyLocalizations.of(
-                        context, 'copied_to_clipboard_success')),
-                  ),
-                );
-              },
-            )
-          ],
-        );
-      },
+            );
+          },
+        )
+      ],
     );
   }
 

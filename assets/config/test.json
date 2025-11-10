@@ -1,4 +1,4 @@
 {
-    "baseUrl": "https://apidev.mosquitoalert.com/v1",
+    "baseUrl": "https://api.example/v1",
     "useAuth": false
 }

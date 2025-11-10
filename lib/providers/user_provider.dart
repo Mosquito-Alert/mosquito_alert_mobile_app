@@ -10,8 +10,6 @@ class UserProvider extends ChangeNotifier {
   User? _user;
   User? get user => _user;
 
-  int get userScore => _user?.score.value ?? 0;
-
   set user(User? newUser) {
     _user = newUser;
     _setFirebaseUserId(newUser);

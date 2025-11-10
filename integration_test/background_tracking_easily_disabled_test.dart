@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:mosquito_alert_app/main.dart' as app;
-import 'package:mosquito_alert_app/pages/main/components/custom_card_widget.dart';
 
 Future<void> waitForWidget(
   WidgetTester tester,
@@ -53,10 +52,10 @@ void main() {
       await tester.ensureVisible(rejectBtn);
       await tester.tap(rejectBtn);
 
-      // Home page
-      final homePageButtons = find.byType(CustomCard);
-      await waitForWidget(tester, homePageButtons);
-      expect(homePageButtons, findsNWidgets(4));
+      // Retry page
+      final retryPage = find.byKey(Key("retryPage"));
+      await waitForWidget(tester, retryPage);
+      expect(retryPage, findsOneWidget);
     });
   });
 }
