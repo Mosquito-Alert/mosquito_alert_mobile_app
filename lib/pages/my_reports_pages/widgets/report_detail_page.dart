@@ -274,6 +274,7 @@ class ReportDetailPage extends StatelessWidget {
                             rotateGesturesEnabled: true,
                           )),
                     )),
+                const SizedBox(height: 20),
               ]))
             ])));
   }
