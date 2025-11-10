@@ -164,7 +164,8 @@ class _MainVCState extends State<MainVC>
       } on DioException catch (e) {
         if (e.response?.statusCode != null && e.response!.statusCode! >= 500) {
           // Server error during migration, skip migration to avoid creating duplicate guest user
-          _showErrorSnackBar('Unable to connect to server. Please try again later.');
+          _showErrorSnackBar(
+              'Unable to connect to server. Please try again later.');
           return false;
         }
       }

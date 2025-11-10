@@ -13,6 +13,7 @@ class ReportDetailPage extends StatelessWidget {
   final Future<void> Function(dynamic report) onTapDelete;
   final Map<IconData, String>? extraListTileMap;
   final Widget Function(dynamic report)? topBarBackgroundBuilder;
+  final Widget Function()? cardBuilder;
 
   const ReportDetailPage({
     super.key,
@@ -21,6 +22,7 @@ class ReportDetailPage extends StatelessWidget {
     required this.onTapDelete,
     this.extraListTileMap,
     this.topBarBackgroundBuilder,
+    this.cardBuilder,
   });
 
   Future<bool?> showDeleteDialog(BuildContext context) {
@@ -171,6 +173,13 @@ class ReportDetailPage extends StatelessWidget {
                             ),
                           ])),
               ),
+              SliverToBoxAdapter(
+                  child: cardBuilder != null
+                      ? Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16, right: 16, top: 8),
+                          child: cardBuilder!.call())
+                      : const SizedBox.shrink()),
               SliverList(
                   delegate: SliverChildListDelegate(<Widget>[
                 ListTile(
