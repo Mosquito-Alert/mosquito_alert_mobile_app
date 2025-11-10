@@ -233,7 +233,8 @@ class _BiteReportControllerState extends State<BiteReportController> {
             ),
             centerTitle: true,
           ),
-          body: Column(
+          body: SafeArea(
+              child: Column(
             children: [
               // Progress indicator
               ReportProgressIndicator(
@@ -301,7 +302,7 @@ class _BiteReportControllerState extends State<BiteReportController> {
                 ),
               ),
             ],
-          ),
+          )),
         ),
       ),
     );

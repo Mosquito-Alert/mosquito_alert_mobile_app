@@ -51,7 +51,8 @@ class _NotesAndSubmitPageState extends State<NotesAndSubmitPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return SafeArea(
+        child: Padding(
       padding: EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,6 +164,6 @@ class _NotesAndSubmitPageState extends State<NotesAndSubmitPage> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

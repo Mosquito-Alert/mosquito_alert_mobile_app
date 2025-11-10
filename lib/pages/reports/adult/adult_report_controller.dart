@@ -243,7 +243,8 @@ class _AdultReportControllerState extends State<AdultReportController> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
       ),
-      body: Column(
+      body: SafeArea(
+          child: Column(
         children: [
           // Progress indicator
           ReportProgressIndicator(
@@ -305,7 +306,7 @@ class _AdultReportControllerState extends State<AdultReportController> {
             ),
           ),
         ],
-      ),
+      )),
     );
   }
 }

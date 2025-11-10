@@ -44,7 +44,8 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
             ),
             fontSize: 16),
       ),
-      body: IntroSlider(
+      body: SafeArea(
+          child: IntroSlider(
         slides: initSlides(),
         showSkipBtn: false,
         renderNextBtn: renderNextBtn(),
@@ -68,7 +69,7 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
         prevButtonStyle: ButtonStyle(
             foregroundColor: WidgetStateProperty.all(Style.colorPrimary),
             overlayColor: WidgetStateProperty.all(Style.colorPrimary)),
-      ),
+      )),
     );
   }
 

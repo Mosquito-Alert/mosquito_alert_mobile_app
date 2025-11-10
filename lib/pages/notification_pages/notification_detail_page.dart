@@ -113,16 +113,20 @@ class _NotificationDetailPageState extends State<NotificationDetailPage> {
                   ]),
             ),
           )),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: html.Html(
-          data: prepareHtmlBody(body),
-          style: {
-            '*': html.Style(
-              padding: html.HtmlPaddings.zero,
-              margin: html.Margins.zero,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: SelectionArea(
+            child: html.Html(
+              data: prepareHtmlBody(body),
+              style: {
+                '*': html.Style(
+                  padding: html.HtmlPaddings.zero,
+                  margin: html.Margins.zero,
+                ),
+              },
             ),
-          },
+          ),
         ),
       ),
     );

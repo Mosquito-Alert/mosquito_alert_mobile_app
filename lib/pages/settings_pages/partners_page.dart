@@ -96,29 +96,31 @@ class _PartnersPageState extends State<PartnersPage> {
             title: Style.title(MyLocalizations.of(context, 'partners_txt'),
                 fontSize: 16),
           ),
-          body: Column(
-            children: [
-              Expanded(
-                child: StreamBuilder<List<Marker>>(
-                  stream: markersStream.stream,
-                  initialData: [],
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<Marker>> snapshot) {
-                    return GoogleMap(
-                      onMapCreated: _onMapCreated,
-                      mapToolbarEnabled: false,
-                      myLocationButtonEnabled: false,
-                      initialCameraPosition: CameraPosition(
-                        // Address: St 2188, 91347 Aufseß, Germany
-                        target: LatLng(49.895268, 11.2773223),
-                        zoom: 3.5,
-                      ),
-                      markers: Set<Marker>.of(snapshot.data!),
-                    );
-                  },
+          body: SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: StreamBuilder<List<Marker>>(
+                    stream: markersStream.stream,
+                    initialData: [],
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<Marker>> snapshot) {
+                      return GoogleMap(
+                        onMapCreated: _onMapCreated,
+                        mapToolbarEnabled: false,
+                        myLocationButtonEnabled: false,
+                        initialCameraPosition: CameraPosition(
+                          // Address: St 2188, 91347 Aufseß, Germany
+                          target: LatLng(49.895268, 11.2773223),
+                          zoom: 3.5,
+                        ),
+                        markers: Set<Marker>.of(snapshot.data!),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         Positioned.fill(
