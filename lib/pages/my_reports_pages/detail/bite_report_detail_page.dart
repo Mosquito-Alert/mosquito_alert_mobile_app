@@ -2,6 +2,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/pages/my_reports_pages/widgets/report_detail_page.dart';
+import 'package:mosquito_alert_app/pages/reports/bite/models/bite_report_data.dart';
+import 'package:mosquito_alert_app/pages/reports/bite/widgets/body_part_selector.dart';
 import 'package:mosquito_alert_app/utils/report_formatter.dart';
 import 'package:provider/provider.dart';
 
@@ -19,10 +21,17 @@ class BiteReportDetailPage extends StatefulWidget {
 
 class _BiteReportDetailPageState extends State<BiteReportDetailPage> {
   late BitesApi bitesApi;
+  BiteReportData biteReportData = BiteReportData();
 
   @override
   void initState() {
     super.initState();
+    biteReportData.headBites = widget.bite.counts.head ?? 0;
+    biteReportData.leftHandBites = widget.bite.counts.leftArm ?? 0;
+    biteReportData.rightHandBites = widget.bite.counts.rightArm ?? 0;
+    biteReportData.chestBites = widget.bite.counts.chest ?? 0;
+    biteReportData.leftLegBites = widget.bite.counts.leftLeg ?? 0;
+    biteReportData.rightLegBites = widget.bite.counts.rightLeg ?? 0;
     _logScreenView();
     _initializeApi();
   }
@@ -71,10 +80,26 @@ class _BiteReportDetailPageState extends State<BiteReportDetailPage> {
     }
 
     return ReportDetailPage(
-      report: widget.bite,
-      title: biteWidgets.buildTitleText(),
-      onTapDelete: (bite) => _deleteReport(bite: bite),
-      extraListTileMap: extraListTileMap,
-    );
+        report: widget.bite,
+        title: biteWidgets.buildTitleText(),
+        onTapDelete: (bite) => _deleteReport(bite: bite),
+        extraListTileMap: extraListTileMap,
+        topBarBackgroundBuilder: (report) => LayoutBuilder(
+              builder: (context, constraints) {
+                return Container(
+                    color: Colors.white,
+                    child: SafeArea(
+                        child: Center(
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: BodyPartSelector.buildVisualBodySelector(
+                          context,
+                          biteReportData,
+                          isEditable: false,
+                        ),
+                      ),
+                    )));
+              },
+            ));
   }
 }

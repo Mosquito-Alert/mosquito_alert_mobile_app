@@ -22,14 +22,17 @@ class BodyPartSelector extends StatelessWidget {
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
-            _buildVisualBodySelector(context, data),
+            buildVisualBodySelector(context, data,
+                maxBiteCountPerPart: maxBiteCountPerPart),
           ],
         );
       },
     );
   }
 
-  Widget _buildVisualBodySelector(BuildContext context, BiteReportData data) {
+  static Widget buildVisualBodySelector(
+      BuildContext context, BiteReportData data,
+      {int maxBiteCountPerPart = 20, bool isEditable = true}) {
     return Center(
       child: Container(
         width: 320,
@@ -53,6 +56,8 @@ class BodyPartSelector extends StatelessWidget {
               data,
               'head',
               data.headBites,
+              maxBiteCountPerPart,
+              isEditable,
               (value) => data.headBites = value,
               const Rect.fromLTWH(0.35, 0.05, 0.3, 0.15),
             ),
@@ -61,6 +66,8 @@ class BodyPartSelector extends StatelessWidget {
               data,
               'chest',
               data.chestBites,
+              maxBiteCountPerPart,
+              isEditable,
               (value) => data.chestBites = value,
               const Rect.fromLTWH(0.375, 0.25, 0.25, 0.3),
             ),
@@ -69,6 +76,8 @@ class BodyPartSelector extends StatelessWidget {
               data,
               'left_hand',
               data.leftHandBites,
+              maxBiteCountPerPart,
+              isEditable,
               (value) => data.leftHandBites = value,
               const Rect.fromLTWH(0.05, 0.3, 0.25, 0.2),
             ),
@@ -77,6 +86,8 @@ class BodyPartSelector extends StatelessWidget {
               data,
               'right_hand',
               data.rightHandBites,
+              maxBiteCountPerPart,
+              isEditable,
               (value) => data.rightHandBites = value,
               const Rect.fromLTWH(0.75, 0.3, 0.25, 0.2),
             ),
@@ -85,6 +96,8 @@ class BodyPartSelector extends StatelessWidget {
               data,
               'left_leg',
               data.leftLegBites,
+              maxBiteCountPerPart,
+              isEditable,
               (value) => data.leftLegBites = value,
               const Rect.fromLTWH(0.25, 0.55, 0.25, 0.4),
             ),
@@ -93,6 +106,8 @@ class BodyPartSelector extends StatelessWidget {
               data,
               'right_leg',
               data.rightLegBites,
+              maxBiteCountPerPart,
+              isEditable,
               (value) => data.rightLegBites = value,
               const Rect.fromLTWH(0.5, 0.55, 0.25, 0.4),
             ),
@@ -102,11 +117,13 @@ class BodyPartSelector extends StatelessWidget {
     );
   }
 
-  Widget _buildBodyPartOverlay(
+  static Widget _buildBodyPartOverlay(
     BuildContext context,
     BiteReportData data,
     String bodyPart,
     int biteCount,
+    int maxAllowedBite,
+    bool isEditable,
     Function(int) onChanged,
     Rect relativeRect,
   ) {
@@ -116,25 +133,31 @@ class BodyPartSelector extends StatelessWidget {
       width: relativeRect.width * 320,
       height: relativeRect.height * 480,
       child: GestureDetector(
-        onTap: () =>
-            _showBodyPartDialog(context, bodyPart, biteCount, onChanged),
+        onTap: () => isEditable
+            ? _showBodyPartDialog(
+                context, bodyPart, biteCount, maxAllowedBite, onChanged)
+            : null,
         child: Container(
           decoration: BoxDecoration(
             // More visible borders for debugging positioning
             color: biteCount > 0
                 ? Style.colorPrimary.withValues(alpha: 0.15)
-                : Colors.blue.withValues(alpha: 0.1),
+                : isEditable
+                    ? Colors.blue.withValues(alpha: 0.1)
+                    : Colors.grey.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
                 color: biteCount > 0
                     ? Style.colorPrimary.withValues(alpha: 0.6)
-                    : Colors.blue.withValues(alpha: 0.4),
+                    : isEditable
+                        ? Colors.blue.withValues(alpha: 0.4)
+                        : Colors.grey.withValues(alpha: 0.4),
                 width: 2),
           ),
           child: Stack(
             children: [
               // Subtle tap indicator when no bites
-              if (biteCount == 0)
+              if (isEditable && biteCount == 0)
                 Positioned.fill(
                   child: Container(
                     decoration: BoxDecoration(
@@ -185,10 +208,11 @@ class BodyPartSelector extends StatelessWidget {
     );
   }
 
-  void _showBodyPartDialog(
+  static void _showBodyPartDialog(
     BuildContext context,
     String bodyPart,
     int currentCount,
+    int maxAllowedBite,
     Function(int) onChanged,
   ) {
     String displayName = _getBodyPartTranslation(context, bodyPart);
@@ -297,7 +321,7 @@ class BodyPartSelector extends StatelessWidget {
                         color: Colors.transparent,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(24),
-                          onTap: tempCount < maxBiteCountPerPart
+                          onTap: tempCount < maxAllowedBite
                               ? () {
                                   setState(() {
                                     tempCount++;
@@ -308,7 +332,7 @@ class BodyPartSelector extends StatelessWidget {
                             width: 48,
                             height: 48,
                             decoration: BoxDecoration(
-                              color: tempCount < maxBiteCountPerPart
+                              color: tempCount < maxAllowedBite
                                   ? Theme.of(context).primaryColor
                                   : Colors.grey[300],
                               shape: BoxShape.circle,
@@ -325,11 +349,11 @@ class BodyPartSelector extends StatelessWidget {
                   ),
                 ),
 
-                if (tempCount >= maxBiteCountPerPart)
+                if (tempCount >= maxAllowedBite)
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      '(HC) Maximum $maxBiteCountPerPart bites per body part',
+                      '(HC) Maximum $maxAllowedBite bites per body part',
                       style: TextStyle(
                         color: Colors.orange,
                         fontSize: 12,
@@ -357,7 +381,7 @@ class BodyPartSelector extends StatelessWidget {
     );
   }
 
-  IconData _getBodyPartIcon(String bodyPart) {
+  static IconData _getBodyPartIcon(String bodyPart) {
     switch (bodyPart) {
       case 'head':
         return Icons.face;
@@ -374,7 +398,7 @@ class BodyPartSelector extends StatelessWidget {
     }
   }
 
-  String _getBodyPartTranslation(BuildContext context, String bodyPart) {
+  static String _getBodyPartTranslation(BuildContext context, String bodyPart) {
     switch (bodyPart) {
       case 'head':
         return MyLocalizations.of(context, 'bite_report_bodypart_head');
