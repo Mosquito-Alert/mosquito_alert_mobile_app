@@ -34,26 +34,29 @@ class _EnvironmentQuestionPageState extends State<EnvironmentQuestionPage> {
       {
         'value': ObservationEventEnvironmentEnum.vehicle.name,
         'titleKey': 'question_4_answer_41',
-        'description': '(HC) Car, bus, train, or any other vehicle',
+        // 'description': '(HC) Car, bus, train, or any other vehicle',
+        'description': null,
         'icon': Icons.directions_car,
       },
       {
         'value': ObservationEventEnvironmentEnum.indoors.name,
         'titleKey': 'question_4_answer_42',
-        'description': '(HC) House, office, shop, or any indoor space',
+        // 'description': '(HC) House, office, shop, or any indoor space',
+        'description': null,
         'icon': Icons.home,
       },
       {
         'value': ObservationEventEnvironmentEnum.outdoors.name,
         'titleKey': 'question_4_answer_43',
-        'description': '(HC) Garden, park, street, or any outdoor space',
+        // 'description': '(HC) Garden, park, street, or any outdoor space',
+        'description': null,
         'icon': Icons.park,
       },
       if (widget.allowNullOption)
         {
           'value': null,
           'titleKey': 'question_4_answer_44',
-          'description': null,
+          // 'description': null,
           'icon': Icons.help_outline,
         },
     ];
@@ -69,44 +72,20 @@ class _EnvironmentQuestionPageState extends State<EnvironmentQuestionPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Question
-              Card(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.quiz, color: Style.colorPrimary),
-                          SizedBox(width: 8),
-                          Text(
-                            '(HC) Environment Question',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        widget.title,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        '(HC) This information helps researchers understand mosquito behavior and habitat preferences.',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
+              Text(
+                widget.title,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                MyLocalizations.of(
+                    context, 'this-information-helps-researchers'),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
                 ),
               ),
 

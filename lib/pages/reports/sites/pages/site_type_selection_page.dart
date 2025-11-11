@@ -23,15 +23,12 @@ class _SiteTypeSelectionPageState extends State<SiteTypeSelectionPage> {
     {
       'value': 'storm_drain',
       'titleKey': 'question_12_answer_121', // Storm drain
-      'description':
-          '(HC) Storm drain, sewer grate, or similar drainage system',
       'icon': Icons.water,
       'image': 'assets/img/ic_imbornal.webp',
     },
     {
       'value': 'other',
       'titleKey': 'question_12_answer_122', // Other
-      'description': '(HC) Other type of breeding site in public space',
       'icon': Icons.location_on,
       'image': 'assets/img/ic_other_site.webp',
     },
@@ -70,17 +67,6 @@ class _SiteTypeSelectionPageState extends State<SiteTypeSelectionPage> {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              SizedBox(height: 8),
-
-              // Subtitle
-              Text(
-                '(HC) Select the type of breeding site you found:',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
                 ),
               ),
 
@@ -159,14 +145,6 @@ class _SiteTypeSelectionPageState extends State<SiteTypeSelectionPage> {
                                         color: isSelected
                                             ? Style.colorPrimary
                                             : Colors.black87,
-                                      ),
-                                    ),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      option['description'],
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey[600],
                                       ),
                                     ),
                                   ],

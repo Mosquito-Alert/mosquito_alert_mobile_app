@@ -37,14 +37,6 @@ class _BiteReportControllerState extends State<BiteReportController> {
     'report_add_note',
   ];
 
-  List<String> get _stepTitles => [
-        '(HC) Bite Information',
-        '(HC) Select Environment',
-        '(HC) Select Moment',
-        '(HC) Select Location',
-        '(HC) Notes & Submit'
-      ];
-
   @override
   void initState() {
     super.initState();
@@ -66,15 +58,13 @@ class _BiteReportControllerState extends State<BiteReportController> {
 
   /// Navigate to next step
   void _nextStep() {
-    if (_currentStep < _stepTitles.length - 1) {
-      setState(() {
-        _currentStep++;
-      });
-      _pageController.nextPage(
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
+    setState(() {
+      _currentStep++;
+    });
+    _pageController.nextPage(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   /// Navigate to previous step
@@ -206,6 +196,56 @@ class _BiteReportControllerState extends State<BiteReportController> {
 
   @override
   Widget build(BuildContext context) {
+    final _pages = [
+      // Step 1: Bite questions
+      BiteQuestionsPage(
+        onEnvironmentChanged: _updateEnvironment,
+        onTimingChanged: _updateTiming,
+        onNext: _nextStep,
+        onPrevious: _previousStep,
+      ),
+      // Step 2: Environment questions
+      EnvironmentQuestionPage(
+          title: MyLocalizations.of(context, "question_4"),
+          allowNullOption: true,
+          onNext: (value) {
+            setState(() {
+              _reportData.eventEnvironment = value != null
+                  ? BiteRequestEventEnvironmentEnum.valueOf(value)
+                  : null;
+            });
+            _nextStep();
+          },
+          onPrevious: _previousStep),
+      // Step 3: Moment questions
+      EventMomentPage(
+          onNext: (value) {
+            setState(() {
+              _reportData.eventMoment = value;
+            });
+            _nextStep();
+          },
+          onPrevious: _previousStep),
+      // Step 4: Location selection
+      LocationSelectionPage(
+        initialLatitude: _reportData.latitude,
+        initialLongitude: _reportData.longitude,
+        onLocationSelected: _updateLocation,
+        onNext: _nextStep,
+        onPrevious: _previousStep,
+        canProceed: _reportData.hasValidLocation,
+        locationSource: _reportData.locationSource,
+      ),
+
+      // Step 5: Notes and submit
+      NotesAndSubmitPage(
+        initialNotes: _reportData.notes ?? '',
+        onNotesChanged: _updateNotes,
+        onSubmit: _submitReport,
+        onPrevious: _previousStep,
+        isSubmitting: _isSubmitting,
+      ),
+    ];
     return ChangeNotifierProvider.value(
       value: _reportData,
       child: PopScope(
@@ -232,77 +272,20 @@ class _BiteReportControllerState extends State<BiteReportController> {
               ),
             ),
             centerTitle: true,
-          ),
-          body: SafeArea(
-              child: Column(
-            children: [
-              // Progress indicator
-              ReportProgressIndicator(
+            bottom: PreferredSize(
+              child: ReportProgressIndicator(
                 currentStep: _currentStep,
-                totalSteps: _stepTitles.length,
-                stepTitles: _stepTitles,
+                totalSteps: _pages.length,
               ),
-
-              // Page view content
-              Expanded(
-                child: PageView(
-                  controller: _pageController,
-                  onPageChanged: _onPageChanged,
-                  physics: NeverScrollableScrollPhysics(), // Disable swipe
-                  children: [
-                    // Step 1: Bite questions
-                    BiteQuestionsPage(
-                      onEnvironmentChanged: _updateEnvironment,
-                      onTimingChanged: _updateTiming,
-                      onNext: _nextStep,
-                      onPrevious: _previousStep,
-                    ),
-                    // Step 2: Environment questions
-                    EnvironmentQuestionPage(
-                        title: MyLocalizations.of(context, "question_4"),
-                        allowNullOption: true,
-                        onNext: (value) {
-                          setState(() {
-                            _reportData.eventEnvironment = value != null
-                                ? BiteRequestEventEnvironmentEnum.valueOf(value)
-                                : null;
-                          });
-                          _nextStep();
-                        },
-                        onPrevious: _previousStep),
-                    // Step 3: Moment questions
-                    EventMomentPage(
-                        onNext: (value) {
-                          setState(() {
-                            _reportData.eventMoment = value;
-                          });
-                          _nextStep();
-                        },
-                        onPrevious: _previousStep),
-                    // Step 4: Location selection
-                    LocationSelectionPage(
-                      initialLatitude: _reportData.latitude,
-                      initialLongitude: _reportData.longitude,
-                      onLocationSelected: _updateLocation,
-                      onNext: _nextStep,
-                      onPrevious: _previousStep,
-                      canProceed: _reportData.hasValidLocation,
-                      locationSource: _reportData.locationSource,
-                    ),
-
-                    // Step 5: Notes and submit
-                    NotesAndSubmitPage(
-                      initialNotes: _reportData.notes ?? '',
-                      onNotesChanged: _updateNotes,
-                      onSubmit: _submitReport,
-                      onPrevious: _previousStep,
-                      isSubmitting: _isSubmitting,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )),
+              preferredSize: Size.fromHeight(0),
+            ),
+          ),
+          body: PageView(
+            controller: _pageController,
+            onPageChanged: _onPageChanged,
+            physics: NeverScrollableScrollPhysics(), // Disable swipe
+            children: _pages,
+          ),
         ),
       ),
     );

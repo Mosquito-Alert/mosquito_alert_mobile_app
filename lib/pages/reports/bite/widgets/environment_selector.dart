@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
+import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 /// Widget for selecting the environment where biting occurred
@@ -20,28 +21,28 @@ class EnvironmentSelector extends StatelessWidget {
         _buildOptionTile(
           context,
           BiteRequestEventEnvironmentEnum.indoors,
-          '(HC) Indoors',
+          MyLocalizations.of(context, 'question_13_answer_132'),
           Icons.home,
         ),
         SizedBox(height: 12),
         _buildOptionTile(
           context,
           BiteRequestEventEnvironmentEnum.outdoors,
-          '(HC) Outdoors',
+          MyLocalizations.of(context, 'question_13_answer_133'),
           Icons.park,
         ),
         SizedBox(height: 12),
         _buildOptionTile(
           context,
           BiteRequestEventEnvironmentEnum.vehicle,
-          '(HC) In a Vehicle',
+          MyLocalizations.of(context, 'question_13_answer_131'),
           Icons.directions_car,
         ),
         SizedBox(height: 12),
         _buildOptionTile(
           context,
           null, // null represents "I don't know"
-          '(HC) I don\'t know',
+          MyLocalizations.of(context, 'question_4_answer_44'),
           Icons.help_outline,
         ),
       ],

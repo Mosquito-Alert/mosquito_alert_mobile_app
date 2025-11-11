@@ -395,13 +395,13 @@ class _MainVCState extends State<MainVC>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('(HC) Loading failed. Please try again.'),
+          Text(MyLocalizations.of(context, 'loading_failed_try_again')),
           SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
               _startAsyncTasks();
             },
-            child: Text('(HC) Retry'),
+            child: Text(MyLocalizations.of(context, 'retry')),
           ),
         ],
       ),

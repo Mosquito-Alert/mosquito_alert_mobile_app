@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/camera_whatsapp.dart';
+import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 
 class PhotoSelector extends StatefulWidget {
@@ -42,12 +43,6 @@ class _PhotoSelectorState extends State<PhotoSelector> {
   }
 
   Future<void> _pickPhoto() async {
-    // Check if we can add more photos
-    if (widget.selectedPhotos.length >= widget.maxPhotos) {
-      _showMaxPhotosAlert();
-      return;
-    }
-
     // Mark as requested if this is the initial photo request
     if (!_hasRequestedInitialPhoto && widget.selectedPhotos.isEmpty) {
       setState(() {
@@ -83,10 +78,6 @@ class _PhotoSelectorState extends State<PhotoSelector> {
     });
 
     widget.onPhotosChanged();
-
-    if (newFiles.length > availableSlots) {
-      _showMaxPhotosAlert();
-    }
   }
 
   void _removePhoto(int index) {
@@ -107,15 +98,6 @@ class _PhotoSelectorState extends State<PhotoSelector> {
     setState(() {
       _previewedPhotoIndex = index;
     });
-  }
-
-  void _showMaxPhotosAlert() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('(HC) Maximum ${widget.maxPhotos} photos allowed'),
-        backgroundColor: Style.colorPrimary,
-      ),
-    );
   }
 
   bool get _canAddMore => widget.selectedPhotos.length < widget.maxPhotos;
@@ -144,7 +126,7 @@ class _PhotoSelectorState extends State<PhotoSelector> {
                     )
                   : Center(
                       child: Text(
-                        '(HC) No photo selected',
+                        MyLocalizations.of(context, 'no-photo-selected'),
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                     ),

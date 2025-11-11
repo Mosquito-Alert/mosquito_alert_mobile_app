@@ -21,23 +21,6 @@ class LarvaeQuestionPage extends StatefulWidget {
 }
 
 class _LarvaeQuestionPageState extends State<LarvaeQuestionPage> {
-  final List<Map<String, dynamic>> _larvaeOptions = [
-    {
-      'value': true,
-      'titleKey': 'question_10_answer_101', // Yes
-      'description': '(HC) Mosquito larvae are visible in the water',
-      'icon': Icons.bug_report,
-      'color': Colors.red,
-    },
-    {
-      'value': false,
-      'titleKey': 'question_10_answer_102', // No
-      'description': '(HC) No mosquito larvae visible in the water',
-      'icon': Icons.bug_report_outlined,
-      'color': Colors.grey,
-    },
-  ];
-
   void _selectLarvaeStatus(bool hasLarvae) {
     setState(() {
       widget.reportData.hasLarvae = hasLarvae;
@@ -46,6 +29,20 @@ class _LarvaeQuestionPageState extends State<LarvaeQuestionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> _larvaeOptions = [
+      {
+        'value': true,
+        'titleKey': 'question_10_answer_101', // Yes
+        'icon': Icons.bug_report,
+        'color': Colors.red,
+      },
+      {
+        'value': false,
+        'titleKey': 'question_10_answer_102', // No
+        'icon': Icons.bug_report_outlined,
+        'color': Colors.grey,
+      },
+    ];
     return Stack(
       children: [
         // Background image at bottom, undistorted
@@ -69,17 +66,6 @@ class _LarvaeQuestionPageState extends State<LarvaeQuestionPage> {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              SizedBox(height: 8),
-
-              // Subtitle
-              Text(
-                '(HC) Please indicate if you can see mosquito larvae in the water:',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
                 ),
               ),
 
@@ -149,14 +135,6 @@ class _LarvaeQuestionPageState extends State<LarvaeQuestionPage> {
                                         color: isSelected
                                             ? Style.colorPrimary
                                             : Colors.black87,
-                                      ),
-                                    ),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      option['description'],
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey[600],
                                       ),
                                     ),
                                   ],

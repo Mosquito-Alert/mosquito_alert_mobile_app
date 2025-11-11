@@ -8,6 +8,7 @@ import 'package:mosquito_alert_app/pages/reports/shared/pages/notes_and_submit_p
 import 'package:mosquito_alert_app/pages/reports/shared/pages/photo_selection_page.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/utils/report_dialogs.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/progress_indicator.dart';
+import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -26,14 +27,14 @@ class BreedingSiteReportController extends StatefulWidget {
 }
 
 class PageParameter {
-  final String title;
+  final String titleKey;
   final String logEvent;
   final VoidCallback onPrevious;
   final bool Function() isShown;
   final Widget widget;
 
   PageParameter({
-    required this.title,
+    required this.titleKey,
     required this.logEvent,
     required this.onPrevious,
     required this.isShown,
@@ -53,7 +54,7 @@ class _BreedingSiteReportControllerState
   List<PageParameter> get _pageParameters {
     return [
       PageParameter(
-        title: '(HC) Site Type',
+        titleKey: 'single_breeding_site',
         logEvent: 'report_add_site_type',
         onPrevious: () => null,
         isShown: () => true,
@@ -63,7 +64,7 @@ class _BreedingSiteReportControllerState
         ),
       ),
       PageParameter(
-        title: '(HC) Take Photos',
+        titleKey: 'photos',
         logEvent: 'report_add_photo',
         onPrevious: () => null,
         isShown: () => true,
@@ -76,11 +77,11 @@ class _BreedingSiteReportControllerState
           minPhotos: 1,
           infoBadgeTextKey: 'camera_info_breeding_txt_02',
           thumbnailText:
-              '(HC) Photos of the same breeding site from different angles.',
+              MyLocalizations.of(context, 'photos-of-same-breeding-site'),
         ),
       ),
       PageParameter(
-        title: '(HC) Water Status',
+        titleKey: 'water-check',
         logEvent: 'report_add_has_water',
         onPrevious: () => null,
         isShown: () => true,
@@ -91,7 +92,7 @@ class _BreedingSiteReportControllerState
         ),
       ),
       PageParameter(
-        title: '(HC) Larvae Check',
+        titleKey: 'larvae-check',
         logEvent: 'report_add_has_larvae',
         onPrevious: () => _reportData.hasLarvae = null,
         isShown: () => _reportData.hasWater == true,
@@ -102,7 +103,7 @@ class _BreedingSiteReportControllerState
         ),
       ),
       PageParameter(
-        title: '(HC) Select Location',
+        titleKey: 'select-location',
         logEvent: 'report_add_location',
         onPrevious: () => null,
         isShown: () => true,
@@ -118,7 +119,7 @@ class _BreedingSiteReportControllerState
         ),
       ),
       PageParameter(
-        title: '(HC) Notes & Submit',
+        titleKey: 'notes',
         logEvent: 'report_add_note',
         onPrevious: () => null,
         isShown: () => true,
@@ -128,7 +129,6 @@ class _BreedingSiteReportControllerState
           onSubmit: _submitReport,
           onPrevious: _previousStep,
           isSubmitting: _isSubmitting,
-          submitLoadingText: '(HC) Submitting your breeding site report...',
         ),
       ),
     ];
@@ -302,7 +302,9 @@ class _BreedingSiteReportControllerState
   @override
   Widget build(BuildContext context) {
     final _pages = _pageParameters.where((param) => param.isShown()).toList();
-    final titles = _pages.map<String>((param) => param.title).toList();
+    final titles = _pages
+        .map<String>((param) => MyLocalizations.of(context, param.titleKey))
+        .toList();
     final widgets = _pages.map<Widget>((param) => param.widget).toList();
 
     return PopScope(
@@ -319,29 +321,19 @@ class _BreedingSiteReportControllerState
             icon: Icon(Icons.arrow_back),
             onPressed: _handleBackPressed,
           ),
-        ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              // Progress indicator
-              ReportProgressIndicator(
-                currentStep: _currentStep,
-                totalSteps: titles.length,
-                stepTitles: titles,
-              ),
-
-              // Main content
-              Expanded(
-                child: PageView(
-                  controller: _pageController,
-                  onPageChanged: _onPageChanged,
-                  physics:
-                      NeverScrollableScrollPhysics(), // Disable swipe navigation
-                  children: widgets,
-                ),
-              ),
-            ],
+          bottom: PreferredSize(
+            child: ReportProgressIndicator(
+              currentStep: _currentStep,
+              totalSteps: titles.length,
+            ),
+            preferredSize: Size.fromHeight(0),
           ),
+        ),
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: _onPageChanged,
+          physics: NeverScrollableScrollPhysics(), // Disable swipe navigation
+          children: widgets,
         ),
       ),
     );

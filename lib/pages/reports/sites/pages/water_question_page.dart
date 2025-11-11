@@ -25,14 +25,12 @@ class _WaterQuestionPageState extends State<WaterQuestionPage> {
     {
       'value': true,
       'titleKey': 'question_10_answer_101', // Yes
-      'description': '(HC) Water is present in the breeding site',
       'icon': Icons.water_drop,
       'color': Colors.blue,
     },
     {
       'value': false,
       'titleKey': 'question_10_answer_102', // No
-      'description': '(HC) No water visible in the breeding site',
       'icon': Icons.water_drop_outlined,
       'color': Colors.grey,
     },
@@ -69,17 +67,6 @@ class _WaterQuestionPageState extends State<WaterQuestionPage> {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              SizedBox(height: 8),
-
-              // Subtitle
-              Text(
-                '(HC) Please indicate if you can see water in the breeding site:',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
                 ),
               ),
 
@@ -149,14 +136,6 @@ class _WaterQuestionPageState extends State<WaterQuestionPage> {
                                         color: isSelected
                                             ? Style.colorPrimary
                                             : Colors.black87,
-                                      ),
-                                    ),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      option['description'],
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey[600],
                                       ),
                                     ),
                                   ],

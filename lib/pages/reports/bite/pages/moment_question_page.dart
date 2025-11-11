@@ -38,6 +38,16 @@ class _EventMomentPageState extends State<EventMomentPage> {
                 ),
               ),
               const SizedBox(height: 16),
+              Text(
+                MyLocalizations.of(
+                    context, 'this-information-helps-researchers'),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
+              ),
+
+              SizedBox(height: 20),
 
               // Main selection
               Row(

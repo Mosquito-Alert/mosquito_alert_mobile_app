@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
+import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 
 class LocationSelector extends StatefulWidget {
   final double? initialLatitude;
@@ -70,7 +71,8 @@ class _LocationSelectorState extends State<LocationSelector> {
           Marker(
             markerId: MarkerId('selected_location'),
             position: LatLng(widget.initialLatitude!, widget.initialLongitude!),
-            infoWindow: InfoWindow(title: '(HC) Selected Location'),
+            infoWindow: InfoWindow(
+                title: MyLocalizations.of(context, 'registered_location_txt')),
           ),
         };
       });
@@ -99,7 +101,8 @@ class _LocationSelectorState extends State<LocationSelector> {
         Marker(
           markerId: MarkerId('selected_location'),
           position: position,
-          infoWindow: InfoWindow(title: '(HC) Selected Location'),
+          infoWindow: InfoWindow(
+              title: MyLocalizations.of(context, 'registered_location_txt')),
         ),
       };
     });
@@ -168,7 +171,8 @@ class _LocationSelectorState extends State<LocationSelector> {
           Marker(
             markerId: const MarkerId('selected_location'),
             position: LatLng(position.latitude, position.longitude),
-            infoWindow: const InfoWindow(title: '(HC) Selected Location'),
+            infoWindow: InfoWindow(
+                title: MyLocalizations.of(context, 'registered_location_txt')),
           )
         };
       });

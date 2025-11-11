@@ -5,6 +5,15 @@ import 'package:provider/provider.dart';
 
 import '../models/bite_report_data.dart';
 
+enum BodyPartEnum {
+  head,
+  chest,
+  leftHand,
+  rightHand,
+  leftLeg,
+  rightLeg,
+}
+
 class BodyPartSelector extends StatelessWidget {
   final maxBiteCountPerPart = 20;
 
@@ -54,7 +63,7 @@ class BodyPartSelector extends StatelessWidget {
             _buildBodyPartOverlay(
               context,
               data,
-              'head',
+              BodyPartEnum.head,
               data.headBites,
               maxBiteCountPerPart,
               isEditable,
@@ -64,7 +73,7 @@ class BodyPartSelector extends StatelessWidget {
             _buildBodyPartOverlay(
               context,
               data,
-              'chest',
+              BodyPartEnum.chest,
               data.chestBites,
               maxBiteCountPerPart,
               isEditable,
@@ -74,7 +83,7 @@ class BodyPartSelector extends StatelessWidget {
             _buildBodyPartOverlay(
               context,
               data,
-              'left_hand',
+              BodyPartEnum.leftHand,
               data.leftHandBites,
               maxBiteCountPerPart,
               isEditable,
@@ -84,7 +93,7 @@ class BodyPartSelector extends StatelessWidget {
             _buildBodyPartOverlay(
               context,
               data,
-              'right_hand',
+              BodyPartEnum.rightHand,
               data.rightHandBites,
               maxBiteCountPerPart,
               isEditable,
@@ -94,7 +103,7 @@ class BodyPartSelector extends StatelessWidget {
             _buildBodyPartOverlay(
               context,
               data,
-              'left_leg',
+              BodyPartEnum.leftLeg,
               data.leftLegBites,
               maxBiteCountPerPart,
               isEditable,
@@ -104,7 +113,7 @@ class BodyPartSelector extends StatelessWidget {
             _buildBodyPartOverlay(
               context,
               data,
-              'right_leg',
+              BodyPartEnum.rightLeg,
               data.rightLegBites,
               maxBiteCountPerPart,
               isEditable,
@@ -120,7 +129,7 @@ class BodyPartSelector extends StatelessWidget {
   static Widget _buildBodyPartOverlay(
     BuildContext context,
     BiteReportData data,
-    String bodyPart,
+    BodyPartEnum bodyPart,
     int biteCount,
     int maxAllowedBite,
     bool isEditable,
@@ -210,7 +219,7 @@ class BodyPartSelector extends StatelessWidget {
 
   static void _showBodyPartDialog(
     BuildContext context,
-    String bodyPart,
+    BodyPartEnum bodyPart,
     int currentCount,
     int maxAllowedBite,
     Function(int) onChanged,
@@ -237,7 +246,7 @@ class BodyPartSelector extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '(HC) How many bites on your ${displayName.toLowerCase()}?',
+                  MyLocalizations.of(context, 'indicate_number_mosquito_bites'),
                   style: TextStyle(fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
@@ -353,7 +362,8 @@ class BodyPartSelector extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      '(HC) Maximum $maxAllowedBite bites per body part',
+                      MyLocalizations.of(
+                          context, 'reached_maximum_allowed_mosquito_bites'),
                       style: TextStyle(
                         color: Colors.orange,
                         fontSize: 12,
@@ -381,39 +391,36 @@ class BodyPartSelector extends StatelessWidget {
     );
   }
 
-  static IconData _getBodyPartIcon(String bodyPart) {
+  static IconData _getBodyPartIcon(BodyPartEnum bodyPart) {
     switch (bodyPart) {
-      case 'head':
+      case BodyPartEnum.head:
         return Icons.face;
-      case 'chest':
+      case BodyPartEnum.chest:
         return Icons.accessibility_new;
-      case 'left_hand':
-      case 'right_hand':
+      case BodyPartEnum.leftHand:
+      case BodyPartEnum.rightHand:
         return Icons.front_hand;
-      case 'left_leg':
-      case 'right_leg':
+      case BodyPartEnum.leftLeg:
+      case BodyPartEnum.rightLeg:
         return Icons.directions_walk;
-      default:
-        return Icons.touch_app;
     }
   }
 
-  static String _getBodyPartTranslation(BuildContext context, String bodyPart) {
+  static String _getBodyPartTranslation(
+      BuildContext context, BodyPartEnum bodyPart) {
     switch (bodyPart) {
-      case 'head':
+      case BodyPartEnum.head:
         return MyLocalizations.of(context, 'bite_report_bodypart_head');
-      case 'chest':
+      case BodyPartEnum.chest:
         return MyLocalizations.of(context, 'question_2_answer_24');
-      case 'left_hand':
+      case BodyPartEnum.leftHand:
         return MyLocalizations.of(context, 'bite_report_bodypart_leftarm');
-      case 'right_hand':
+      case BodyPartEnum.rightHand:
         return MyLocalizations.of(context, 'bite_report_bodypart_rightarm');
-      case 'left_leg':
+      case BodyPartEnum.leftLeg:
         return MyLocalizations.of(context, 'bite_report_bodypart_leftleg');
-      case 'right_leg':
+      case BodyPartEnum.rightLeg:
         return MyLocalizations.of(context, 'bite_report_bodypart_rightleg');
-      default:
-        return '(HC) ${bodyPart.replaceAll('_', ' ')}';
     }
   }
 }

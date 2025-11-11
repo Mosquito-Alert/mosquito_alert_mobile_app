@@ -200,10 +200,11 @@ class ReportDetailPage extends StatelessWidget {
                     future: ReportUtils.formatLocationWithCity(report),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Text('(HC) Loading...');
+                        return Text(
+                            MyLocalizations.of(context, 'loading') + '...');
                       } else {
-                        final location =
-                            snapshot.data ?? '(HC) Unknown location';
+                        final location = snapshot.data ??
+                            MyLocalizations.of(context, 'unknown_location');
                         return Text(location);
                       }
                     },

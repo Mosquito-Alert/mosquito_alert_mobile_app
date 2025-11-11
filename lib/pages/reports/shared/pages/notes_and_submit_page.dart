@@ -10,7 +10,6 @@ class NotesAndSubmitPage extends StatefulWidget {
   final VoidCallback onSubmit;
   final VoidCallback onPrevious;
   final bool isSubmitting;
-  final String submitLoadingText;
 
   const NotesAndSubmitPage({
     Key? key,
@@ -19,7 +18,6 @@ class NotesAndSubmitPage extends StatefulWidget {
     required this.onSubmit,
     required this.onPrevious,
     required this.isSubmitting,
-    this.submitLoadingText = '(HC) Submitting your report...',
   }) : super(key: key);
 
   @override
@@ -65,20 +63,13 @@ class _NotesAndSubmitPageState extends State<NotesAndSubmitPage> {
                 children: [
                   // Notes section
                   Text(
-                    '(HC) Additional Notes (Optional)',
+                    MyLocalizations.of(context, 'notes') +
+                        ' (' +
+                        MyLocalizations.of(context, 'optional') +
+                        ')',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  SizedBox(height: 8),
-
-                  Text(
-                    '(HC) Add any additional observations or details.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
                     ),
                   ),
 
@@ -125,18 +116,10 @@ class _NotesAndSubmitPageState extends State<NotesAndSubmitPage> {
                           ),
                           SizedBox(height: 12),
                           Text(
-                            widget.submitLoadingText,
+                            MyLocalizations.of(context, 'loading'),
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            '(HC) Please wait while we process your report.',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
                             ),
                           ),
                         ],
@@ -151,17 +134,11 @@ class _NotesAndSubmitPageState extends State<NotesAndSubmitPage> {
           SizedBox(height: 16),
 
           SizedBox(
-            width: double.infinity,
-            child: widget.isSubmitting
-                ? Style.button(
-                    '(HC) Submitting...',
-                    null,
-                  )
-                : Style.button(
-                    MyLocalizations.of(context, 'send_data'),
-                    widget.onSubmit,
-                  ),
-          ),
+              width: double.infinity,
+              child: Style.button(
+                MyLocalizations.of(context, 'send_data'),
+                widget.isSubmitting ? null : widget.onSubmit,
+              )),
         ],
       ),
     ));

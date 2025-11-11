@@ -135,10 +135,11 @@ class _GroupedReportListViewState extends State<GroupedReportListView> {
                   return FutureBuilder<String>(
                     future: ReportUtils.formatLocationWithCity(item),
                     builder: (context, snapshot) {
-                      final subtitle =
-                          snapshot.connectionState == ConnectionState.waiting
-                              ? '(HC) Loading...'
-                              : (snapshot.data ?? '(HC) Unknown location');
+                      final subtitle = snapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? MyLocalizations.of(context, 'loading') + '...'
+                          : (snapshot.data ??
+                              MyLocalizations.of(context, 'unknown_location'));
 
                       return ListTile(
                         title: widget.titleBuilder(item),
