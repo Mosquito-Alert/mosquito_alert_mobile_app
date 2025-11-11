@@ -224,6 +224,14 @@ class _AdultReportControllerState extends State<AdultReportController> {
     );
   }
 
+  void _handleBackPressed() {
+    if (_currentStep > 0) {
+      _previousStep();
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _stepTitles = _stepTitlesTextKeys
@@ -231,73 +239,81 @@ class _AdultReportControllerState extends State<AdultReportController> {
           (key) => MyLocalizations.of(context, key),
         )
         .toList();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_stepTitles[_currentStep]),
-        leading: _currentStep > 0
-            ? IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: _previousStep,
-              )
-            : IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-        bottom: PreferredSize(
-          child: ReportProgressIndicator(
-            currentStep: _currentStep,
-            totalSteps: _stepTitles.length,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) {
+        if (!didPop) {
+          _handleBackPressed();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_stepTitles[_currentStep]),
+          leading: _currentStep > 0
+              ? IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: _previousStep,
+                )
+              : IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+          bottom: PreferredSize(
+            child: ReportProgressIndicator(
+              currentStep: _currentStep,
+              totalSteps: _stepTitles.length,
+            ),
+            preferredSize: Size.fromHeight(0),
           ),
-          preferredSize: Size.fromHeight(0),
         ),
-      ),
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: _onPageChanged,
-        physics: NeverScrollableScrollPhysics(), // Disable swipe navigation
-        children: [
-          PhotoSelectionPage(
-            photos: _reportData.photos,
-            onPhotosChanged: _onPhotosChanged,
-            onNext: _nextStep,
-            // No onPrevious for adult reports (first step)
-            maxPhotos: 3,
-            minPhotos: 1,
-            infoBadgeTextKey: 'one_mosquito_reminder_badge',
-            thumbnailText:
-                MyLocalizations.of(context, 'ensure_single_mosquito_photos'),
-          ),
-          LocationSelectionPage(
-            initialLatitude: _reportData.latitude,
-            initialLongitude: _reportData.longitude,
-            onLocationSelected: _onLocationSelected,
-            onNext: _nextStep,
-            onPrevious: _previousStep,
-            canProceed:
-                _reportData.latitude != null && _reportData.longitude != null,
-            locationSource: _reportData.locationSource,
-          ),
-          EnvironmentQuestionPage(
-            title: MyLocalizations.of(context, "question_13"),
-            allowNullOption: false,
-            onNext: (value) {
-              setState(() {
-                _reportData.environmentAnswer = value != null
-                    ? ObservationEventEnvironmentEnum.valueOf(value)
-                    : null;
-              });
-              _nextStep();
-            },
-            onPrevious: _previousStep,
-          ),
-          NotesAndSubmitPage(
-            initialNotes: _reportData.notes,
-            onNotesChanged: _onNotesChanged,
-            onSubmit: _submitReport,
-            onPrevious: _previousStep,
-            isSubmitting: _isSubmitting,
-          ),
-        ],
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: _onPageChanged,
+          physics: NeverScrollableScrollPhysics(), // Disable swipe navigation
+          children: [
+            PhotoSelectionPage(
+              photos: _reportData.photos,
+              onPhotosChanged: _onPhotosChanged,
+              onNext: _nextStep,
+              // No onPrevious for adult reports (first step)
+              maxPhotos: 3,
+              minPhotos: 1,
+              infoBadgeTextKey: 'one_mosquito_reminder_badge',
+              thumbnailText:
+                  MyLocalizations.of(context, 'ensure_single_mosquito_photos'),
+            ),
+            LocationSelectionPage(
+              initialLatitude: _reportData.latitude,
+              initialLongitude: _reportData.longitude,
+              onLocationSelected: _onLocationSelected,
+              onNext: _nextStep,
+              onPrevious: _previousStep,
+              canProceed:
+                  _reportData.latitude != null && _reportData.longitude != null,
+              locationSource: _reportData.locationSource,
+            ),
+            EnvironmentQuestionPage(
+              title: MyLocalizations.of(context, "question_13"),
+              allowNullOption: false,
+              onNext: (value) {
+                setState(() {
+                  _reportData.environmentAnswer = value != null
+                      ? ObservationEventEnvironmentEnum.valueOf(value)
+                      : null;
+                });
+                _nextStep();
+              },
+              onPrevious: _previousStep,
+            ),
+            NotesAndSubmitPage(
+              initialNotes: _reportData.notes,
+              onNotesChanged: _onNotesChanged,
+              onSubmit: _submitReport,
+              onPrevious: _previousStep,
+              isSubmitting: _isSubmitting,
+            ),
+          ],
+        ),
       ),
     );
   }
