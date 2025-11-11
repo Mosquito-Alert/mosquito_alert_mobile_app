@@ -392,18 +392,21 @@ class _MainVCState extends State<MainVC>
   Widget _retryPage() {
     return Center(
       key: Key("retryPage"),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(MyLocalizations.of(context, 'loading_failed_try_again')),
-          SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              _startAsyncTasks();
-            },
-            child: Text(MyLocalizations.of(context, 'retry')),
-          ),
-        ],
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(MyLocalizations.of(context, 'loading_failed_try_again')),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                _startAsyncTasks();
+              },
+              child: Text(MyLocalizations.of(context, 'retry')),
+            ),
+          ],
+        ),
       ),
     );
   }
