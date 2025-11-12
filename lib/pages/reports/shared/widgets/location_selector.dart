@@ -37,13 +37,18 @@ class _LocationSelectorState extends State<LocationSelector> {
   void initState() {
     super.initState();
     _initializeMapCenter();
-    _updateMapMarkers();
 
     if (widget.autoGetLocation &&
         widget.initialLatitude == null &&
         widget.initialLongitude == null) {
       _tryAutoGetLocation();
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _updateMapMarkers();
   }
 
   void _initializeMapCenter() {
@@ -338,6 +343,7 @@ class _LocationSelectorState extends State<LocationSelector> {
 
   @override
   void dispose() {
+    _mapController?.dispose();
     _latController.dispose();
     _lonController.dispose();
     super.dispose();
