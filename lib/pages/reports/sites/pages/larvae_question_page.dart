@@ -33,13 +33,13 @@ class _LarvaeQuestionPageState extends State<LarvaeQuestionPage> {
       {
         'value': true,
         'titleKey': 'question_10_answer_101', // Yes
-        'icon': Icons.bug_report,
+        'icon': Icons.grain,
         'color': Colors.red,
       },
       {
         'value': false,
         'titleKey': 'question_10_answer_102', // No
-        'icon': Icons.bug_report_outlined,
+        'icon': Icons.grain_outlined,
         'color': Colors.grey,
       },
     ];

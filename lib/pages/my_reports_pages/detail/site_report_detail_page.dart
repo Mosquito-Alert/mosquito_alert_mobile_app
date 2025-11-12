@@ -74,7 +74,7 @@ class _SiteReportDetailPageState extends State<SiteReportDetailPage> {
             ? MyLocalizations.of(context, 'yes')
             : MyLocalizations.of(context, 'no')
       ].join(' '),
-      Icons.bug_report: [
+      Icons.grain: [
         MyLocalizations.of(context, 'question_17'),
         hasLarvae
             ? MyLocalizations.of(context, 'yes')
