@@ -12,7 +12,7 @@ class ReportDetailPage extends StatelessWidget {
   final Text title;
   final Future<void> Function(dynamic report) onTapDelete;
   final Map<IconData, String>? extraListTileMap;
-  final Widget Function(dynamic report)? topBarBackgroundBuilder;
+  final Widget? Function(dynamic report)? topBarBackgroundBuilder;
   final Widget Function()? cardBuilder;
 
   const ReportDetailPage({
@@ -84,13 +84,14 @@ class ReportDetailPage extends StatelessWidget {
       report.location.point.latitude,
       report.location.point.longitude,
     );
+    final topBarBackground = topBarBackgroundBuilder?.call(report);
     return Scaffold(
         body: SafeArea(
             top: false,
             child: CustomScrollView(slivers: [
               SliverAppBar(
                 titleSpacing: 0,
-                expandedHeight: topBarBackgroundBuilder != null ? 250.0 : 0.0,
+                expandedHeight: topBarBackground != null ? 250.0 : 0.0,
                 floating: true,
                 pinned: true,
                 snap: true,
@@ -131,10 +132,10 @@ class ReportDetailPage extends StatelessWidget {
                               color: Colors.white,
                             ) ??
                             const TextStyle(color: Colors.white)),
-                    background: topBarBackgroundBuilder == null
+                    background: topBarBackground == null
                         ? null
                         : Stack(fit: StackFit.expand, children: [
-                            topBarBackgroundBuilder!.call(report),
+                            topBarBackground,
                             Positioned(
                               bottom: 0,
                               left: 0,

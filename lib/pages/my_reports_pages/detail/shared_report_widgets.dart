@@ -57,9 +57,13 @@ class ReportDetailWidgets {
     );
   }
 
-  static Widget buildPhotoCarousel({
+  static Widget? buildPhotoCarousel({
     required dynamic report,
   }) {
+    if (report.photos.isEmpty) {
+      return null;
+    }
+
     return CarouselView(
       scrollDirection: Axis.horizontal,
       itemExtent: double.infinity,
