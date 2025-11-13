@@ -10,23 +10,24 @@ class ReportDetailWidgets {
   static Widget buildLeadingImage({
     required dynamic report,
   }) {
+    const double size = 40.0;
     final photos = report.photos;
+
+    Widget placeholderIcon(IconData icon) => Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey[400]!, width: 2),
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.grey[50],
+          ),
+          alignment: Alignment.center,
+          child: Icon(icon, size: 20, color: Colors.grey[600]),
+        );
 
     if (photos.isEmpty) {
       // Fallback to default icon
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[400]!, width: 2),
-          borderRadius: BorderRadius.circular(15),
-          color: Colors.grey[50],
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Icon(Icons.hide_image, size: 30, color: Colors.grey[600]),
-          ],
-        ),
-      );
+      return placeholderIcon(Icons.hide_image);
     }
 
     // Use the first photo from the report
@@ -34,25 +35,11 @@ class ReportDetailWidgets {
       borderRadius: BorderRadius.circular(8),
       child: CachedNetworkImage(
         imageUrl: photos.first.url,
-        width: 40,
-        height: 40,
+        width: size,
+        height: size,
         fit: BoxFit.cover,
-        placeholder: (context, url) => Container(
-          color: Colors.grey.withValues(alpha: 0.3),
-          child: Icon(
-            Icons.photo_camera,
-            size: 20,
-            color: Colors.grey,
-          ),
-        ),
-        errorWidget: (context, url, error) => Container(
-          color: Colors.grey.withValues(alpha: 0.3),
-          child: Icon(
-            Icons.hide_image,
-            size: 20,
-            color: Colors.grey,
-          ),
-        ),
+        placeholder: (context, url) => placeholderIcon(Icons.photo_camera),
+        errorWidget: (context, url, error) => placeholderIcon(Icons.hide_image),
       ),
     );
   }
