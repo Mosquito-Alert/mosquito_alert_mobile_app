@@ -41,7 +41,6 @@ class _MainVCState extends State<MainVC>
   int _selectedIndex = 0;
   int unreadNotifications = 0;
   PackageInfo? packageInfo;
-  String? userUuid;
   bool isLoading = true;
 
   @override
