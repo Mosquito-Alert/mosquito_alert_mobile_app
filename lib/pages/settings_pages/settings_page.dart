@@ -292,8 +292,7 @@ class _SettingsPageState extends State<SettingsPage> {
     final locale = Locale(languageCode, countryCode);
 
     Utils.language = locale;
-    UserManager.setLanguage(languageCode);
-    UserManager.setLanguageCountry(countryCode);
+    UserManager.setLocale(locale);
     application.onLocaleChanged(locale);
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);

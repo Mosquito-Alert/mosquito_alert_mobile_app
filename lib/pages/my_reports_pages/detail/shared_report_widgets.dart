@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:mosquito_alert_app/utils/UserManager.dart';
 
 /// Shared widgets for report detail pages
 class ReportDetailWidgets {
@@ -132,10 +131,6 @@ class ReportUtils {
     // 3. Fallback: Reverse geocoding from coordinates
     final point = report.location.point;
     try {
-      var locale = await UserManager.getUserLocale();
-      if (locale != null) {
-        await setLocaleIdentifier(locale);
-      }
       final placemarks =
           await placemarkFromCoordinates(point.latitude, point.longitude);
       if (placemarks.isNotEmpty) {
