@@ -16,7 +16,6 @@ import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizationsDelegate.dart';
 import 'package:mosquito_alert_app/utils/ObserverUtils.dart';
-import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
@@ -54,6 +53,7 @@ Future<void> main({String env = 'prod'}) async {
 
   authProvider.setApiClient(apiClient);
   final userProvider = UserProvider(apiClient: apiClient);
+  await userProvider.init();
   final deviceProvider = await DeviceProvider.create(apiClient: apiClient);
 
   final appConfig = await AppConfig.loadConfig();
@@ -142,38 +142,8 @@ void callbackDispatcher() {
   });
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-
-  // Helper to access state from anywhere
-  static _MyAppState? of(BuildContext context) =>
-      context.findAncestorStateOfType<_MyAppState>();
-}
-
-class _MyAppState extends State<MyApp> {
-  Locale? _locale;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadLocale();
-  }
-
-  Future<void> _loadLocale() async {
-    Locale? _locale = await UserManager.getLocale();
-    if (_locale != null) {
-      setLocale(_locale);
-    }
-  }
-
-  void setLocale(Locale locale) {
-    UserManager.setLocale(locale);
-    if (!mounted) return;
-    setState(() {
-      _locale = locale;
-    });
-  }
+class MyApp extends StatelessWidget {
+  MyApp({Key? key}) : super(key: key);
 
   static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(
     analytics: FirebaseAnalytics.instance,
@@ -268,7 +238,7 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      locale: _locale,
+      locale: context.watch<UserProvider>().locale,
       supportedLocales: MyLocalizations.supportedLocales,
     ));
   }

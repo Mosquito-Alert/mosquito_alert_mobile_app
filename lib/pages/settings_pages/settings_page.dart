@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:language_picker/language_picker.dart';
 import 'package:language_picker/languages.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
-import 'package:mosquito_alert_app/main.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/hashtag.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/settings_menu_widget.dart';
 import 'package:mosquito_alert_app/providers/user_provider.dart';
@@ -294,28 +293,11 @@ class _SettingsPageState extends State<SettingsPage> {
     final countryCode = isoCodeParts.length > 1 ? isoCodeParts[1] : null;
     final locale = Locale(languageCode, countryCode);
 
-    MyApp.of(context)?.setLocale(locale);
-
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final userUuid = userProvider.user?.uuid;
-
-    if (userUuid == null) return;
-
     try {
-      final localeEnum = PatchedUserRequestLocaleEnum.values.firstWhere(
-          (e) => e.name == languageCode,
-          orElse: () => PatchedUserRequestLocaleEnum.en);
-
-      final patchedUserRequest =
-          PatchedUserRequest((b) => b..locale = localeEnum);
-
-      await usersApi.partialUpdate(
-        uuid: userUuid,
-        patchedUserRequest: patchedUserRequest,
-      );
+      userProvider.locale = locale;
     } catch (e) {
-      print('Error updating language to server: $e');
-
+      print('Error setting locale: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Could not update language on server.'),

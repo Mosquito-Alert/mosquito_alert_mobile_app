@@ -1,14 +1,9 @@
 import 'dart:async';
 
-import 'package:geocoding/geocoding.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:mosquito_alert_app/main.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/consent_form.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/location_consent_screen/background_tracking_explanation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import 'package:country_codes/country_codes.dart';
 
 class UserManager {
   static Future<void> startFirstTime(context) async {
@@ -16,10 +11,6 @@ class UserManager {
     var firstTime = prefs.getBool('firstTime');
 
     if (firstTime == null || !firstTime) {
-      // Setting first to phone locale
-      MyApp.of(context)
-          ?.setLocale(WidgetsBinding.instance.platformDispatcher.locale);
-
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => ConsentForm(),
@@ -27,42 +18,6 @@ class UserManager {
       );
       await prefs.setBool('firstTime', true);
     }
-  }
-
-  static Future<Locale?> getLocale() async {
-    final String? languageCode = await getLanguage();
-    final String? countryCode = await getLanguageCountry();
-
-    if (languageCode == null) return null;
-
-    return Locale(languageCode, countryCode);
-  }
-
-  //set
-  static Future<void> setLocale(Locale locale) async {
-    final String languageCode = locale.languageCode;
-    final String? countryCode = locale.countryCode;
-
-    final String localeIdentifier =
-        countryCode != null ? '${languageCode}_$countryCode' : languageCode;
-    await setLocaleIdentifier(localeIdentifier); // From geolocator.
-    await _setLanguage(languageCode);
-    await CountryCodes.init(locale);
-    await _setLanguageCountry(countryCode ?? '');
-  }
-
-  static Future<void> _setLanguage(String language) async {
-    var prefs = await SharedPreferences.getInstance();
-    // NOTE: this is important for DateFormat to work correctly
-    Intl.defaultLocale = Intl.verifiedLocale(language, DateFormat.localeExists,
-        onFailure: (newLocale) => 'en');
-    timeago.setDefaultLocale(language + "_short"); // From timeage package.
-    await prefs.setString('language', language);
-  }
-
-  static Future<void> _setLanguageCountry(String lngCountry) async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setString('languageCountry', lngCountry);
   }
 
   static Future<bool> setHashtags(List<String>? hashtags) async {
@@ -84,16 +39,6 @@ class UserManager {
   }
 
   //get
-  static Future<String?> getLanguage() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.getString('language');
-  }
-
-  static Future<String?> getLanguageCountry() async {
-    var prefs = await SharedPreferences.getInstance();
-    return prefs.getString('languageCountry');
-  }
-
   static Future<void> migrateHashtagToHashtags() async {
     final prefs = await SharedPreferences.getInstance();
 

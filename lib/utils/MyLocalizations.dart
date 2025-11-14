@@ -3,19 +3,29 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:geocoding/geocoding.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:country_codes/country_codes.dart';
+import 'package:intl/intl.dart';
 
 class MyLocalizations {
   final Locale locale;
   static Map<dynamic, dynamic> _localisedValues = {};
   static Map<dynamic, dynamic> _englishValues = {};
 
+  static bool _timeagoInitialized = false;
+
   MyLocalizations(this.locale) {
     _loadTranslations(locale);
     _loadEnglishTranslations();
-    _localeMessages.forEach((key, value) {
-      timeago.setLocaleMessages(key, value);
-    });
+    if (!_timeagoInitialized) {
+      _localeMessages.forEach((key, value) {
+        timeago.setLocaleMessages(key, value);
+      });
+      _timeagoInitialized = true;
+    }
+
+    _setLibraries(locale);
   }
 
   static List<Locale> supportedLocales = [
@@ -92,6 +102,23 @@ class MyLocalizations {
 
   static List<String> languages() =>
       supportedLocales.map((locale) => locale.languageCode).toSet().toList();
+
+  Future<void> _setLibraries(Locale locale) async {
+    // For geolocator.
+    setLocaleIdentifier(locale.toString());
+
+    // Date formatting
+    Intl.defaultLocale = Intl.verifiedLocale(
+      locale.languageCode,
+      DateFormat.localeExists,
+      onFailure: (_) => 'en',
+    );
+
+    // Timeago formatting
+    timeago.setDefaultLocale('${locale.languageCode}_short');
+
+    await CountryCodes.init(locale);
+  }
 
   Future<void> _loadEnglishTranslations() async {
     var jsonContent = await rootBundle.loadString('assets/language/en_US.json');
