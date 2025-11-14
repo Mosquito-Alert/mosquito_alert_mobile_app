@@ -12,7 +12,7 @@ class MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {
 
   @override
   bool isSupported(Locale locale) =>
-      application.supportedLocales().contains(locale);
+      application.supportedLocales().any((l) => l.languageCode == locale.languageCode);
 
   @override
   Future<MyLocalizations> load(Locale locale) async {
