@@ -3,23 +3,102 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:timeago/timeago.dart' as timeago;
+
 class MyLocalizations {
-  Locale locale;
+  final Locale locale;
   static Map<dynamic, dynamic> _localisedValues = {};
   static Map<dynamic, dynamic> _englishValues = {};
 
   MyLocalizations(this.locale) {
-    locale = locale;
+    _loadTranslations(locale);
     _loadEnglishTranslations();
+    _localeMessages.forEach((key, value) {
+      timeago.setLocaleMessages(key, value);
+    });
   }
 
-  static Future<void> _loadEnglishTranslations() async {
+  static List<Locale> supportedLocales = [
+    Locale('bg', 'BG'),
+    Locale('bn', 'BD'),
+    Locale('ca', 'ES'),
+    Locale('de', 'DE'),
+    Locale('el', 'GR'),
+    Locale('en', 'US'),
+    Locale('es', 'ES'),
+    Locale('es', 'UY'),
+    Locale('eu', 'ES'),
+    Locale('fr', 'FR'),
+    Locale('gl', 'ES'),
+    Locale('hr', 'HR'),
+    Locale('hu', 'HU'),
+    Locale('it', 'IT'),
+    Locale('lb', 'LU'),
+    Locale('mk', 'MK'),
+    Locale('nl', 'NL'),
+    Locale('pt', 'PT'),
+    Locale('ro', 'RO'),
+    Locale('sl', 'SI'),
+    Locale('sq', 'AL'),
+    Locale('sr', 'RS'),
+    Locale('sv', 'SE'),
+    Locale('tr', 'TR'),
+  ];
+
+  final Map<String, timeago.LookupMessages> _localeMessages = {
+    // 'bg',
+    'bn': timeago.BnMessages(),
+    'bn_short': timeago.BnShortMessages(),
+    'ca': timeago.CaMessages(),
+    'ca_short': timeago.CaShortMessages(),
+    'de': timeago.DeMessages(),
+    'de_short': timeago.DeShortMessages(),
+    'el': timeago.GrMessages(),
+    'el_short': timeago.GrShortMessages(),
+    'en': timeago.EnMessages(),
+    'en_short': timeago.EnShortMessages(),
+    'es': timeago.EsMessages(),
+    'es_short': timeago.EsShortMessages(),
+    'fr': timeago.FrMessages(),
+    'fr_short': timeago.FrShortMessages(),
+    'hr': timeago.HrMessages(),
+    'hr_short': timeago.HrMessages(),
+    'hu': timeago.HuMessages(),
+    'hu_short': timeago.HuShortMessages(),
+    'it': timeago.ItMessages(),
+    'it_short': timeago.ItShortMessages(),
+    'lb': timeago.DeMessages(),
+    'lb_short': timeago.DeShortMessages(),
+    // 'mk': ,
+    'nl': timeago.NlMessages(),
+    'nl_short': timeago.NlShortMessages(),
+    'pt': timeago.PtBrMessages(),
+    'pt_short': timeago.PtBrShortMessages(),
+    'ro': timeago.RoMessages(),
+    'ro_short': timeago.RoShortMessages(),
+    'ru': timeago.RuMessages(),
+    'ru_short': timeago.RuShortMessages(),
+    // 'sl': ,
+    // 'sq': ,
+    'sr': timeago.SrMessages(),
+    'sr_short': timeago.SrShortMessages(),
+    'sv': timeago.SvMessages(),
+    'sv_short': timeago.SvShortMessages(),
+    'tr': timeago.TrMessages(),
+    'tr_short': timeago.TrShortMessages(),
+    'zh': timeago.ZhCnMessages(),
+    'zh_short': timeago.ZhCnMessages(),
+  };
+
+  static List<String> languages() =>
+      supportedLocales.map((locale) => locale.languageCode).toSet().toList();
+
+  Future<void> _loadEnglishTranslations() async {
     var jsonContent = await rootBundle.loadString('assets/language/en_US.json');
     _englishValues = json.decode(jsonContent);
   }
 
-  static Future<MyLocalizations> loadTranslations(Locale locale) async {
-    var appTranslations = MyLocalizations(locale);
+  Future<void> _loadTranslations(Locale locale) async {
     String? jsonContent;
     final regionFilename =
         'assets/language/${locale.languageCode}_${locale.countryCode}.json';
@@ -29,35 +108,11 @@ class MyLocalizations {
       jsonContent = await rootBundle.loadString(regionFilename);
     } catch (_) {
       // If not found, load the language from any region
-      final supportedLanguages = [
-        'bg_BG',
-        'bn_BD',
-        'ca_ES',
-        'de_DE',
-        'el_GR',
-        'en_US',
-        'es_ES',
-        'es_UY',
-        'eu_ES',
-        'fr_FR',
-        'gl_ES',
-        'hr_HR',
-        'hu_HU',
-        'it_IT',
-        'lb_LU',
-        'mk_MK',
-        'nl_NL',
-        'pt_PT',
-        'ro_RO',
-        'sl_SI',
-        'sq_AL',
-        'sr_RS',
-        'sv_SE',
-        'tr_TR',
-      ];
+      final selectedLocale = supportedLocales
+          .firstWhere((lang) => lang.languageCode == locale.languageCode);
 
-      final code = supportedLanguages
-          .firstWhere((lang) => lang.startsWith(locale.languageCode));
+      final code =
+          '${selectedLocale.languageCode}_${selectedLocale.countryCode}';
 
       try {
         jsonContent =
@@ -69,7 +124,6 @@ class MyLocalizations {
     }
 
     _localisedValues = json.decode(jsonContent);
-    return appTranslations;
   }
 
   String translate(String? key) {

@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:language_picker/language_picker.dart';
 import 'package:language_picker/languages.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
+import 'package:mosquito_alert_app/main.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/hashtag.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/settings_menu_widget.dart';
 import 'package:mosquito_alert_app/providers/user_provider.dart';
-import 'package:mosquito_alert_app/utils/Application.dart';
 import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
-import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:country_codes/country_codes.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage();
@@ -29,35 +29,6 @@ class _SettingsPageState extends State<SettingsPage> {
   late int? numTagsAdded;
   bool isLoading = true;
   late UsersApi usersApi;
-
-  final languageCodes = [
-    Language('bg_BG', 'Bulgarian', 'Bulgarian'),
-    Language('bn_BD', 'Bengali', 'Bengali'),
-    Language('ca_ES', 'Catalan', 'Catalan'),
-    Language('de_DE', 'German', 'German'),
-    Language('el_GR', 'Greek', 'Greek'),
-    Language('en_US', 'English', 'English'),
-    Language('es_ES', 'Spanish', 'Spanish'),
-    Language('es_UY', 'Spanish (Uruguay)', 'Spanish (Uruguay)'),
-    Language('eu_ES', 'Basque', 'Basque'),
-    Language('fr_FR', 'French', 'French'),
-    Language('gl_ES', 'Galician', 'Galician'),
-    Language('hr_HR', 'Croatian', 'Croatian'),
-    Language('hu_HU', 'Hungarian', 'Hungarian'),
-    Language('it_IT', 'Italian', 'Italian'),
-    Language(
-        'lb_LU', 'Luxembourgish (Luxembourg)', 'Luxembourgish (Luxembourg)'),
-    Language('mk_MK', 'Macedonian (Former Yugoslav Republic of Macedonia)',
-        'Macedonian (Former Yugoslav Republic of Macedonia)'),
-    Language('nl_NL', 'Dutch', 'Dutch'),
-    Language('pt_PT', 'Protuguese', 'Protuguese'),
-    Language('ro_RO', 'Romanian', 'Romanian'),
-    Language('sl_SI', 'Slovenian (Slovenia)', 'Slovenian (Slovenia)'),
-    Language('sq_AL', 'Albanian', 'Albanian'),
-    Language('sr_RS', 'Serbian', 'Serbian'),
-    Language('sv_SE', 'Swedish', 'Swedish'),
-    Language('tr_TR', 'Turkish (Turkey)', 'Turkish (Turkey)'),
-  ];
 
   @override
   void initState() {
@@ -255,18 +226,54 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  List<Language> _getLanguages() {
+    // Collect all locales grouped by languageCode
+    final Map<String, List<Locale>> grouped = {};
+
+    for (final locale in MyLocalizations.supportedLocales) {
+      grouped.putIfAbsent(locale.languageCode, () => []).add(locale);
+    }
+
+    final List<Language> result = [];
+
+    for (final entry in grouped.entries) {
+      final languageCode = entry.key;
+      final locales = entry.value;
+
+      // Base language
+      final _tempBaseLanguage = Language.fromIsoCode(languageCode);
+      final baseLanguage = Language(
+          _tempBaseLanguage.isoCode,
+          _tempBaseLanguage.name,
+          _tempBaseLanguage.nativeName.split(',').first); // Clean native name
+
+      // If there's only one locale per language, just use the base language
+      if (locales.length == 1) {
+        result.add(baseLanguage);
+      } else {
+        // Duplicate language codes → append country name to nativeName
+        for (final locale in locales) {
+          final details = CountryCodes.detailsForLocale(locale);
+
+          result.add(Language(
+            baseLanguage.isoCode,
+            baseLanguage.name,
+            "${baseLanguage.nativeName} (${details.name})",
+          ));
+        }
+      }
+    }
+
+    return result;
+  }
+
   void _openLanguagePickerDialog() => showDialog(
         context: context,
         builder: (context) => Theme(
             data: Theme.of(context).copyWith(primaryColor: Style.colorPrimary),
             child: LanguagePickerDialog(
-                languages: languageCodes
-                    .map((language) => Language(
-                        language.isoCode,
-                        MyLocalizations.of(context, language.isoCode),
-                        language.nativeName))
-                    .toList()
-                  ..sort((a, b) => a.name.compareTo(b.name)),
+                languages: _getLanguages()
+                  ..sort((a, b) => a.nativeName.compareTo(b.nativeName)),
                 titlePadding: const EdgeInsets.all(8.0),
                 searchCursorColor: Style.colorPrimary,
                 searchInputDecoration: InputDecoration(
@@ -277,11 +284,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   await _selectLanguage(language);
                 },
                 itemBuilder: (Language language) {
-                  return Row(
-                    children: <Widget>[
-                      Text(MyLocalizations.of(context, language.isoCode)),
-                    ],
-                  );
+                  return Text(language.nativeName);
                 })),
       );
 
@@ -291,9 +294,7 @@ class _SettingsPageState extends State<SettingsPage> {
     final countryCode = isoCodeParts.length > 1 ? isoCodeParts[1] : null;
     final locale = Locale(languageCode, countryCode);
 
-    Utils.language = locale;
-    UserManager.setLocale(locale);
-    application.onLocaleChanged(locale);
+    MyApp.of(context)?.setLocale(locale);
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final userUuid = userProvider.user?.uuid;

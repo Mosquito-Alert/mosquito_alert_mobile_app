@@ -3,40 +3,39 @@ import 'dart:async';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:mosquito_alert_app/main.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/consent_form.dart';
-import 'package:mosquito_alert_app/utils/Utils.dart';
+import 'package:mosquito_alert_app/pages/settings_pages/location_consent_screen/background_tracking_explanation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'Application.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:country_codes/country_codes.dart';
 
 class UserManager {
-  static Future<bool> startFirstTime(context) async {
+  static Future<void> startFirstTime(context) async {
     var prefs = await SharedPreferences.getInstance();
     var firstTime = prefs.getBool('firstTime');
 
     if (firstTime == null || !firstTime) {
+      // Setting first to phone locale
+      MyApp.of(context)
+          ?.setLocale(WidgetsBinding.instance.platformDispatcher.locale);
+
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => ConsentForm(),
         ),
       );
-
       await prefs.setBool('firstTime', true);
-
-      await setLocale(Utils.language);
-    } else {
-      var languageCode = await getLanguage();
-      var countryCode = await getLanguageCountry();
-      if (languageCode != null && countryCode != null) {
-        Utils.language = Locale(languageCode, countryCode);
-      } else {
-        Utils.getLanguage();
-      }
     }
+  }
 
-    application.onLocaleChanged(Utils.language);
+  static Future<Locale?> getLocale() async {
+    final String? languageCode = await getLanguage();
+    final String? countryCode = await getLanguageCountry();
 
-    return true;
+    if (languageCode == null) return null;
+
+    return Locale(languageCode, countryCode);
   }
 
   //set
@@ -48,6 +47,7 @@ class UserManager {
         countryCode != null ? '${languageCode}_$countryCode' : languageCode;
     await setLocaleIdentifier(localeIdentifier); // From geolocator.
     await _setLanguage(languageCode);
+    await CountryCodes.init(locale);
     await _setLanguageCountry(countryCode ?? '');
   }
 
@@ -56,6 +56,7 @@ class UserManager {
     // NOTE: this is important for DateFormat to work correctly
     Intl.defaultLocale = Intl.verifiedLocale(language, DateFormat.localeExists,
         onFailure: (newLocale) => 'en');
+    timeago.setDefaultLocale(language + "_short"); // From timeage package.
     await prefs.setString('language', language);
   }
 

@@ -12,14 +12,16 @@ import 'package:mosquito_alert_app/providers/auth_provider.dart';
 import 'package:mosquito_alert_app/providers/device_provider.dart';
 import 'package:mosquito_alert_app/providers/notification_provider.dart';
 import 'package:mosquito_alert_app/services/api_service.dart';
-import 'package:mosquito_alert_app/utils/Application.dart';
 import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
+import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizationsDelegate.dart';
 import 'package:mosquito_alert_app/utils/ObserverUtils.dart';
+import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:country_codes/country_codes.dart';
 
 import 'providers/user_provider.dart';
 
@@ -40,6 +42,8 @@ Future<void> main({String env = 'prod'}) async {
   } catch (err) {
     print('$err');
   }
+
+  await CountryCodes.init();
 
   final authProvider = AuthProvider();
   await authProvider.init();
@@ -140,13 +144,36 @@ void callbackDispatcher() {
 
 class MyApp extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 
-  static void setLocale(BuildContext context) {}
+  // Helper to access state from anywhere
+  static _MyAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>();
 }
 
 class _MyAppState extends State<MyApp> {
-  MyLocalizationsDelegate _newLocaleDelegate = MyLocalizationsDelegate();
+  Locale? _locale;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocale();
+  }
+
+  Future<void> _loadLocale() async {
+    Locale? _locale = await UserManager.getLocale();
+    if (_locale != null) {
+      setLocale(_locale);
+    }
+  }
+
+  void setLocale(Locale locale) {
+    UserManager.setLocale(locale);
+    if (!mounted) return;
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(
     analytics: FirebaseAnalytics.instance,
@@ -154,24 +181,6 @@ class _MyAppState extends State<MyApp> {
       return route is PageRoute && route.settings.name != '/';
     },
   );
-
-  @override
-  void initState() {
-    super.initState();
-
-    application.onLocaleChanged = onLocaleChange;
-  }
-
-  void onLocaleChange(Locale locale) {
-    setState(() {
-      _newLocaleDelegate = MyLocalizationsDelegate(newLocale: locale);
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -252,14 +261,15 @@ class _MyAppState extends State<MyApp> {
         observer,
         ObserverUtils.routeObserver
       ],
-      home: MainVC(),
+      home: const MainVC(),
       localizationsDelegates: [
-        _newLocaleDelegate,
+        MyLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: application.supportedLocales(),
+      locale: _locale,
+      supportedLocales: MyLocalizations.supportedLocales,
     ));
   }
 }
