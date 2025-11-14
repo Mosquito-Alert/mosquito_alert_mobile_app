@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as sdk;
 import 'package:mosquito_alert_app/pages/notification_pages/notifications_page.dart';
 import 'package:mosquito_alert_app/pages/notification_pages/notification_detail_page.dart';
+import 'package:mosquito_alert_app/providers/notification_provider.dart';
 import 'package:mosquito_alert_app/services/analytics_service.dart';
 import 'package:provider/provider.dart';
 
@@ -12,8 +13,9 @@ import '../mocks/mocks.dart';
 Widget createTestWidget({
   MockMosquitoAlert? mockClient,
 }) {
-  return Provider<sdk.MosquitoAlert>(
-    create: (_) => mockClient ?? MockMosquitoAlert(),
+  return ChangeNotifierProvider<NotificationProvider>(
+    create: (_) =>
+        NotificationProvider(apiClient: mockClient ?? MockMosquitoAlert()),
     child: MaterialApp(
       home: NotificationsPage(
         analyticsService: MockAnalyticsService(),

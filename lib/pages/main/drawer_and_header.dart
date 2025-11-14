@@ -18,6 +18,7 @@ import 'package:mosquito_alert_app/pages/settings_pages/info_page.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/settings_page.dart';
 import 'package:mosquito_alert_app/providers/auth_provider.dart';
 import 'package:mosquito_alert_app/providers/device_provider.dart';
+import 'package:mosquito_alert_app/providers/notification_provider.dart';
 import 'package:mosquito_alert_app/providers/user_provider.dart';
 import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
@@ -39,13 +40,15 @@ class MainVC extends StatefulWidget {
 class _MainVCState extends State<MainVC>
     with RouteAware, WidgetsBindingObserver {
   int _selectedIndex = 0;
-  int unreadNotifications = 0;
   PackageInfo? packageInfo;
   bool isLoading = true;
+
+  late final NotificationProvider notificationProvider;
 
   @override
   void initState() {
     super.initState();
+    notificationProvider = context.read<NotificationProvider>();
     WidgetsBinding.instance.addObserver(this);
     getPackageInfo();
     _startAsyncTasks();
@@ -64,17 +67,11 @@ class _MainVCState extends State<MainVC>
     ObserverUtils.routeObserver.subscribe(this, ModalRoute.of(context)!);
   }
 
-  @override
-  void didPopNext() {
-    // Called when returning from another page
-    _fetchNotificationCount();
-  }
-
   // Called when app lifecycle state changes
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _fetchNotificationCount();
+      notificationProvider.fetchUnreadNotificationsCount();
     }
   }
 
@@ -94,31 +91,15 @@ class _MainVCState extends State<MainVC>
       isLoading = false;
     });
     if (initAuthSuccess) {
-      await _fetchNotificationCount();
+      unawaited(
+        Future(() async {
+          await notificationProvider.refresh();
+        }),
+      );
     }
     await initBackgroundTracking();
     final deviceProvider = context.read<DeviceProvider>();
     await PushNotificationsManager.init(provider: deviceProvider);
-  }
-
-  Future<void> _fetchNotificationCount() async {
-    int count = 0;
-    try {
-      MosquitoAlert apiClient =
-          Provider.of<MosquitoAlert>(context, listen: false);
-      NotificationsApi notificationsApi = apiClient.getNotificationsApi();
-
-      final Response<PaginatedNotificationList> response =
-          await notificationsApi.listMine(isRead: false, pageSize: 1);
-      count = response.data?.count ?? 0;
-    } catch (e, stackTrace) {
-      print('Failed to fetch notification count: $e');
-      debugPrintStack(stackTrace: stackTrace);
-    }
-    if (!mounted) return;
-    setState(() {
-      unreadNotifications = count;
-    });
   }
 
   Future<void> getPackageInfo() async {
@@ -245,6 +226,8 @@ class _MainVCState extends State<MainVC>
   @override
   Widget build(BuildContext context) {
     final User? user = context.watch<UserProvider>().user;
+    final unreadNotifications =
+        context.watch<NotificationProvider>().unreadNotificationsCount;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

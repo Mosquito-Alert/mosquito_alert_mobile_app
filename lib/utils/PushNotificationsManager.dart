@@ -6,8 +6,10 @@ import 'package:flutter/scheduler.dart';
 import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/pages/notification_pages/notification_detail_page.dart';
 import 'package:mosquito_alert_app/providers/device_provider.dart';
+import 'package:mosquito_alert_app/providers/notification_provider.dart';
 import 'package:mosquito_alert_app/utils/MessageNotification.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
 
 import '../main.dart';
 
@@ -57,6 +59,18 @@ class PushNotificationsManager {
 
     int? notifId = int.tryParse(message.data['id'].toString());
 
+    if (notifId != null) {
+      final ctx = navigatorKey.currentContext;
+      if (ctx != null) {
+        final notificationProvider = ctx.read<NotificationProvider>();
+        unawaited(
+          Future(() async {
+            await notificationProvider.refresh();
+          }),
+        );
+      }
+    }
+
     showOverlayNotification((context) {
       return MessageNotification(
         title: title,
@@ -68,14 +82,13 @@ class PushNotificationsManager {
             return;
           }
 
-          final BuildContext? ctx = navigatorKey.currentContext;
-          if (ctx == null) {
-            print('Navigator context not ready.');
-            return;
-          }
+          final ctx = navigatorKey.currentContext;
+          if (ctx == null) return;
+
           final notificationDetailPage = await NotificationDetailPage.fromId(
             context: ctx,
             notificationId: notifId,
+            refresh: true,
           );
           Navigator.push(
             ctx,

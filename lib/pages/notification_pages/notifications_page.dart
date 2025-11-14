@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as sdk;
 import 'package:mosquito_alert_app/pages/notification_pages/notification_detail_page.dart';
+import 'package:mosquito_alert_app/providers/notification_provider.dart';
 import 'package:mosquito_alert_app/services/analytics_service.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
@@ -27,49 +27,24 @@ class NotificationsPage extends StatefulWidget {
 
 class _NotificationsPageState extends State<NotificationsPage> {
   String languageCode = 'en';
-
-  bool _isLastPage = false;
-  static const _pageSize = 20;
-  late final _pagingController =
-      PagingController<int, sdk.Notification>(getNextPageKey: (state) {
-    return _isLastPage ? null : state.nextIntPageKey;
-  }, fetchPage: (pageKey) async {
-    final response = await notificationsApi.listMine(
-      page: pageKey,
-      pageSize: _pageSize,
-      orderBy: BuiltList<String>(["-created_at"]),
-    );
-    final data = response.data;
-    if (data == null) return [];
-    _isLastPage = data.next == null;
-
-    return data.results?.toList() ?? [];
-  });
-
-  StreamController<bool> loadingStream = StreamController<bool>.broadcast();
-  late sdk.NotificationsApi notificationsApi;
   late AnalyticsService _analyticsService;
 
   @override
   void initState() {
     super.initState();
-    sdk.MosquitoAlert apiClient =
-        Provider.of<sdk.MosquitoAlert>(context, listen: false);
-    notificationsApi = apiClient.getNotificationsApi();
     _analyticsService = widget.analyticsService ?? FirebaseAnalyticsService();
     initLanguage();
     _logScreenView();
-    loadingStream.add(true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = context.read<NotificationProvider>();
+      if (provider.notifications.isEmpty) {
+        provider.fetchNextPage();
+      }
+    });
   }
 
   Future<void> initLanguage() async {
     languageCode = await UserManager.getLanguage() ?? 'en';
-  }
-
-  @override
-  void dispose() {
-    _pagingController.dispose();
-    super.dispose();
   }
 
   Future<void> _logScreenView() async {
@@ -91,14 +66,21 @@ class _NotificationsPageState extends State<NotificationsPage> {
         body: SafeArea(
             child: RefreshIndicator(
           onRefresh: () async {
-            _pagingController.refresh();
+            // Call the provider's refresh method
+            final provider = context.read<NotificationProvider>();
+            await provider.refresh();
           },
-          child: PagingListener<int, sdk.Notification>(
-            controller: _pagingController,
-            builder: (context, state, fetchNextPage) {
+          child: Consumer<NotificationProvider>(
+            builder: (context, provider, _) {
               return PagedListView<int, sdk.Notification>(
-                state: state,
-                fetchNextPage: fetchNextPage,
+                state: PagingState(
+                  pages: [provider.notifications],
+                  keys: [1],
+                  hasNextPage: provider.hasMoreNotifications,
+                  isLoading: provider.isLoading,
+                  error: provider.errorMessage,
+                ),
+                fetchNextPage: provider.fetchNextPage,
                 builderDelegate: PagedChildBuilderDelegate<sdk.Notification>(
                   itemBuilder: (context, notification, index) {
                     return Column(children: [
@@ -107,16 +89,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => NotificationDetailPage(
-                                  notification: notification,
-                                  onNotificationUpdated: (notification) {
-                                    // Update the notification in the paging controller
-                                    // See: https://github.com/EdsonBueno/infinite_scroll_pagination/issues/389
-                                    _pagingController.mapItems(
-                                        (sdk.Notification item) =>
-                                            item.id == notification.id
-                                                ? notification
-                                                : item);
-                                  }),
+                                notification: notification,
+                              ),
                             ),
                           );
                         },
