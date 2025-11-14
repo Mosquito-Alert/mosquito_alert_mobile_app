@@ -2,6 +2,7 @@ import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 
 import 'MyLocalizations.dart';
+import 'Application.dart';
 import 'package:flutter/material.dart';
 
 class MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {
@@ -10,29 +11,8 @@ class MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {
   const MyLocalizationsDelegate({this.newLocale});
 
   @override
-  bool isSupported(Locale locale) => [
-        'bg',
-        'ca',
-        'de',
-        'el',
-        'en',
-        'es',
-        'fr',
-        'hr',
-        'hu',
-        'it',
-        'lb',
-        'mk',
-        'nl',
-        'pt',
-        'ro',
-        'ru',
-        'sl',
-        'sq',
-        'sr',
-        'tr',
-        'zh',
-      ].contains('${locale.languageCode}');
+  bool isSupported(Locale locale) =>
+      application.supportedLocales().any((l) => l.languageCode == locale.languageCode);
 
   @override
   Future<MyLocalizations> load(Locale locale) async {
