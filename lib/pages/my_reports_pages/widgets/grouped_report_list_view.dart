@@ -30,7 +30,7 @@ class SectionHeader {
 
   SectionHeader(this.date);
 
-  String get formattedDate => DateFormat('dd MMMM yyyy').format(date);
+  String get formattedDate => DateFormat('d MMMM yyyy').format(date);
 }
 
 class _GroupedReportListViewState extends State<GroupedReportListView> {
