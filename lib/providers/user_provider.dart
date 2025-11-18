@@ -15,10 +15,11 @@ class UserProvider extends ChangeNotifier {
     final localeString = prefs.getString('locale');
 
     if (localeString != null) {
-      final parts = localeString.split('_');
+      final parts = localeString.split(RegExp('[-_]'));
       this.locale = Locale.fromSubtags(
         languageCode: parts.isNotEmpty ? parts[0] : 'en',
-        countryCode: parts.length == 2 ? parts[1] : null,
+        scriptCode: parts.length == 3 ? parts[1] : null,
+        countryCode: parts.length >= 2 ? parts[parts.length - 1] : null,
       );
     }
   }
