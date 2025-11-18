@@ -96,10 +96,12 @@ class _SettingsPageState extends State<SettingsPage> {
                           height: 10,
                         ),
                         SettingsMenuWidget(
-                            MyLocalizations.of(context, 'select_language_txt'),
-                            () {
-                          _openLanguagePickerDialog();
-                        }),
+                          MyLocalizations.of(context, 'select_language_txt'),
+                          _openLanguagePickerDialog,
+                          trailingText: _localeToLanguage(
+                                  Provider.of<UserProvider>(context).locale)
+                              .nativeName,
+                        ),
                         const SizedBox(
                           height: 10,
                         ),
@@ -225,42 +227,29 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  Language _localeToLanguage(Locale locale) {
+    final _tempBaseLanguage = Language.fromIsoCode(locale.languageCode);
+    final _numDuplicatedLanguages = MyLocalizations.supportedLocales
+        .where((l) => l.languageCode == locale.languageCode)
+        .length;
+
+    return Language(
+        _tempBaseLanguage.isoCode +
+            (locale.countryCode != null && locale.countryCode!.isNotEmpty
+                ? "_" + locale.countryCode!
+                : ""),
+        _tempBaseLanguage.name,
+        _tempBaseLanguage.nativeName.split(',').first +
+            (_numDuplicatedLanguages > 1 && locale.countryCode != null
+                ? " (${CountryCodes.detailsForLocale(locale).name})"
+                : "")); // Clean native name
+  }
+
   List<Language> _getLanguages() {
-    // Collect all locales grouped by languageCode
-    final Map<String, List<Locale>> grouped = {};
-
-    for (final locale in MyLocalizations.supportedLocales) {
-      grouped.putIfAbsent(locale.languageCode, () => []).add(locale);
-    }
-
     final List<Language> result = [];
 
-    for (final entry in grouped.entries) {
-      final languageCode = entry.key;
-      final locales = entry.value;
-
-      // Base language
-      final _tempBaseLanguage = Language.fromIsoCode(languageCode);
-      final baseLanguage = Language(
-          _tempBaseLanguage.isoCode,
-          _tempBaseLanguage.name,
-          _tempBaseLanguage.nativeName.split(',').first); // Clean native name
-
-      // If there's only one locale per language, just use the base language
-      if (locales.length == 1) {
-        result.add(baseLanguage);
-      } else {
-        // Duplicate language codes → append country name to nativeName
-        for (final locale in locales) {
-          final details = CountryCodes.detailsForLocale(locale);
-
-          result.add(Language(
-            baseLanguage.isoCode,
-            baseLanguage.name,
-            "${baseLanguage.nativeName} (${details.name})",
-          ));
-        }
-      }
+    for (final locale in MyLocalizations.supportedLocales) {
+      result.add(_localeToLanguage(locale));
     }
 
     return result;
