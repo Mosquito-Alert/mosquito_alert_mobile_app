@@ -12,6 +12,20 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
+
+    // Migrate old locale format if necessary
+    final language = prefs.getString('language');
+    final country = prefs.getString('languageCountry');
+    if (language != null) {
+      String localeString = language;
+      if (country != null) {
+        localeString += '_$country';
+      }
+      await prefs.setString('locale', localeString);
+      await prefs.remove('language');
+      await prefs.remove('languageCountry');
+    }
+
     final localeString = prefs.getString('locale');
 
     if (localeString != null) {
