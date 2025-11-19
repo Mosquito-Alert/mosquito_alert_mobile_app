@@ -241,7 +241,16 @@ class _SettingsPageState extends State<SettingsPage> {
         _tempBaseLanguage.name,
         _tempBaseLanguage.nativeName.split(',').first +
             (_numDuplicatedLanguages > 1 && locale.countryCode != null
-                ? " (${CountryCodes.detailsForLocale(locale).name})"
+                ? (() {
+                    try {
+                      final details = CountryCodes.detailsForLocale(locale);
+                      return details != null && details.name != null
+                          ? " (${details.name})"
+                          : "";
+                    } catch (e) {
+                      return "";
+                    }
+                  })()
                 : "")); // Clean native name
   }
 
