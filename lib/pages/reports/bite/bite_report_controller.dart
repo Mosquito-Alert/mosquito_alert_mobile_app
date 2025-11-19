@@ -1,3 +1,4 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
@@ -8,6 +9,7 @@ import 'package:mosquito_alert_app/pages/reports/shared/pages/notes_and_submit_p
 import 'package:mosquito_alert_app/pages/reports/shared/utils/report_dialogs.dart';
 import 'package:mosquito_alert_app/pages/reports/shared/widgets/progress_indicator.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:provider/provider.dart';
 
 import 'models/bite_report_data.dart';
@@ -135,6 +137,8 @@ class _BiteReportControllerState extends State<BiteReportController> {
         ..leftLeg = _reportData.leftLegBites
         ..rightLeg = _reportData.rightLegBites);
 
+      final userTags = await UserManager.getHashtags();
+
       // Create the bite request
       final biteRequest = BiteRequest((b) => b
         ..createdAt = DateTime.now().toUtc()
@@ -143,6 +147,7 @@ class _BiteReportControllerState extends State<BiteReportController> {
         ..note = _reportData.notes
         ..eventEnvironment = _reportData.eventEnvironment
         ..eventMoment = _reportData.eventMoment!
+        ..tags = userTags != null ? ListBuilder<String>(userTags) : null
         ..counts.replace(counts));
 
       // Submit the request
