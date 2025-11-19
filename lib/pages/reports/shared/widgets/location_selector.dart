@@ -7,18 +7,17 @@ import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 class LocationSelector extends StatefulWidget {
   final double? initialLatitude;
   final double? initialLongitude;
-  final Function(
-          double latitude, double longitude, LocationRequestSource_Enum source)
-      onLocationSelected;
-  final bool autoGetLocation;
+  final Function(double? latitude, double? longitude,
+      LocationRequestSource_Enum? source) onLocationChanged;
+  final Function(bool isLoading)? onLoadingChanged;
 
-  const LocationSelector({
-    Key? key,
-    this.initialLatitude,
-    this.initialLongitude,
-    required this.onLocationSelected,
-    this.autoGetLocation = true,
-  }) : super(key: key);
+  const LocationSelector(
+      {Key? key,
+      required this.onLocationChanged,
+      this.initialLatitude,
+      this.initialLongitude,
+      this.onLoadingChanged})
+      : super(key: key);
 
   @override
   _LocationSelectorState createState() => _LocationSelectorState();
@@ -28,60 +27,26 @@ class _LocationSelectorState extends State<LocationSelector> {
   GoogleMapController? _mapController;
   bool _isGettingLocation = false;
   String? _locationError;
-  final _latController = TextEditingController();
-  final _lonController = TextEditingController();
-  Set<Marker> _markers = {};
-  LatLng? _currentMapCenter;
+  LatLng? position = null;
+  static const LatLng defaultPosition = LatLng(0, 0);
 
   @override
   void initState() {
     super.initState();
-    _initializeMapCenter();
-
-    if (widget.autoGetLocation &&
-        widget.initialLatitude == null &&
-        widget.initialLongitude == null) {
-      _tryAutoGetLocation();
-    }
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _updateMapMarkers();
-  }
-
-  void _initializeMapCenter() {
     if (widget.initialLatitude != null && widget.initialLongitude != null) {
-      _currentMapCenter =
-          LatLng(widget.initialLatitude!, widget.initialLongitude!);
+      position = LatLng(widget.initialLatitude!, widget.initialLongitude!);
+    } else {
+      _tryAutoGetLocation();
     }
   }
 
   Future<void> _tryAutoGetLocation() async {
     await _fetchLocation(
-      showLoading: false,
+      showLoading: true,
       requestPermission: false,
       timeout: const Duration(seconds: 10),
       fallbackCenterOnError: true,
     );
-  }
-
-  void _updateMapMarkers() {
-    if (widget.initialLatitude != null && widget.initialLongitude != null) {
-      setState(() {
-        _latController.text = widget.initialLatitude!.toStringAsFixed(6);
-        _lonController.text = widget.initialLongitude!.toStringAsFixed(6);
-        _markers = {
-          Marker(
-            markerId: MarkerId('selected_location'),
-            position: LatLng(widget.initialLatitude!, widget.initialLongitude!),
-            infoWindow: InfoWindow(
-                title: MyLocalizations.of(context, 'registered_location_txt')),
-          ),
-        };
-      });
-    }
   }
 
   Future<void> _moveMapToLocation(double latitude, double longitude) async {
@@ -97,32 +62,6 @@ class _LocationSelectorState extends State<LocationSelector> {
     }
   }
 
-  void _onMapTap(LatLng position) {
-    setState(() {
-      _latController.text = position.latitude.toStringAsFixed(6);
-      _lonController.text = position.longitude.toStringAsFixed(6);
-
-      _markers = {
-        Marker(
-          markerId: MarkerId('selected_location'),
-          position: position,
-          infoWindow: InfoWindow(
-              title: MyLocalizations.of(context, 'registered_location_txt')),
-        ),
-      };
-    });
-
-    widget.onLocationSelected(
-      position.latitude,
-      position.longitude,
-      LocationRequestSource_Enum.manual,
-    );
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    _mapController = controller;
-  }
-
   Future<void> _fetchLocation({
     bool showLoading = false,
     bool requestPermission = false,
@@ -133,6 +72,9 @@ class _LocationSelectorState extends State<LocationSelector> {
       setState(() {
         _isGettingLocation = true;
         _locationError = null;
+      });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onLoadingChanged?.call(_isGettingLocation);
       });
     }
 
@@ -166,23 +108,7 @@ class _LocationSelectorState extends State<LocationSelector> {
         timeLimit: timeout,
       );
 
-      if (!mounted) return;
-
-      setState(() {
-        _currentMapCenter = LatLng(position.latitude, position.longitude);
-        _latController.text = position.latitude.toStringAsFixed(6);
-        _lonController.text = position.longitude.toStringAsFixed(6);
-        _markers = {
-          Marker(
-            markerId: const MarkerId('selected_location'),
-            position: LatLng(position.latitude, position.longitude),
-            infoWindow: InfoWindow(
-                title: MyLocalizations.of(context, 'registered_location_txt')),
-          )
-        };
-      });
-
-      widget.onLocationSelected(
+      widget.onLocationChanged(
         position.latitude,
         position.longitude,
         LocationRequestSource_Enum.auto,
@@ -194,12 +120,14 @@ class _LocationSelectorState extends State<LocationSelector> {
       if (showLoading) {
         setState(() => _locationError = e.toString());
       }
-      if (fallbackCenterOnError && mounted && _currentMapCenter == null) {
-        setState(() => _currentMapCenter = const LatLng(0, 0));
-      }
     } finally {
       if (showLoading) {
-        setState(() => _isGettingLocation = false);
+        setState(() {
+          _isGettingLocation = false;
+        });
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          widget.onLoadingChanged?.call(_isGettingLocation);
+        });
       }
     }
   }
@@ -217,6 +145,7 @@ class _LocationSelectorState extends State<LocationSelector> {
     return Stack(
       children: [
         _buildGoogleMap(),
+        _buildCenterMarker(),
         _buildLocationButton(),
         _buildErrorOverlay(),
       ],
@@ -225,22 +154,42 @@ class _LocationSelectorState extends State<LocationSelector> {
 
   Widget _buildGoogleMap() {
     return GoogleMap(
-      onMapCreated: _onMapCreated,
-      onTap: _onMapTap,
+      onMapCreated: (GoogleMapController controller) {
+        _mapController = controller;
+        if (position == null) {
+          widget.onLocationChanged(defaultPosition.latitude,
+              defaultPosition.longitude, LocationRequestSource_Enum.manual);
+        }
+      },
       initialCameraPosition: CameraPosition(
-        target: _currentMapCenter ?? LatLng(0, 0),
+        target: position ?? defaultPosition,
         zoom: 15,
       ),
-      markers: _markers,
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
       mapToolbarEnabled: false,
       compassEnabled: true,
-      rotateGesturesEnabled: true,
+      rotateGesturesEnabled: false,
       scrollGesturesEnabled: true,
-      tiltGesturesEnabled: true,
+      tiltGesturesEnabled: false,
       zoomGesturesEnabled: true,
+      onCameraMove: (position) {
+        widget.onLocationChanged(
+          position.target.latitude,
+          position.target.longitude,
+          LocationRequestSource_Enum.manual,
+        );
+      },
+    );
+  }
+
+  Widget _buildCenterMarker() {
+    return const Center(
+      child: FractionalTranslation(
+        translation: Offset(0, -0.5),
+        child: Icon(Icons.place, size: 48, color: Colors.red),
+      ),
     );
   }
 
@@ -248,43 +197,53 @@ class _LocationSelectorState extends State<LocationSelector> {
     return Positioned(
       top: 16,
       right: 16,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
+      child: Material(
+        key: Key("myLocationButton"),
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: _isGettingLocation ? null : _getCurrentLocation,
           borderRadius: BorderRadius.circular(30),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
-              blurRadius: 6,
-              offset: Offset(0, 2),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  blurRadius: 6,
+                  offset: Offset(0, 2),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: _isGettingLocation ? null : _getCurrentLocation,
-            borderRadius: BorderRadius.circular(30),
-            child: Container(
-              width: 48,
-              height: 48,
-              child: _isGettingLocation
-                  ? Center(
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: _isGettingLocation
+                      ? CircularProgressIndicator(
                           strokeWidth: 2,
                           valueColor:
                               AlwaysStoppedAnimation<Color>(Colors.grey[600]!),
+                        )
+                      : Icon(
+                          Icons.my_location,
+                          color: Colors.grey[700],
+                          size: 24,
                         ),
-                      ),
-                    )
-                  : Icon(
-                      Icons.my_location,
-                      color: Colors.grey[700],
-                      size: 24,
-                    ),
+                ),
+                SizedBox(width: 8),
+                Text(
+                  MyLocalizations.of(context, "no_reports_yet_txt"),
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -344,8 +303,6 @@ class _LocationSelectorState extends State<LocationSelector> {
   @override
   void dispose() {
     _mapController?.dispose();
-    _latController.dispose();
-    _lonController.dispose();
     super.dispose();
   }
 }

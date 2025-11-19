@@ -110,12 +110,15 @@ class _BreedingSiteReportControllerState
         widget: LocationSelectionPage(
           initialLatitude: _reportData.latitude,
           initialLongitude: _reportData.longitude,
-          onLocationSelected: _onLocationSelected,
-          onNext: _nextStep,
-          onPrevious: _previousStep,
-          canProceed:
-              _reportData.latitude != null && _reportData.longitude != null,
-          locationSource: _reportData.locationSource,
+          initialSource: _reportData.locationSource,
+          onNext: (latitude, longitude, source) {
+            setState(() {
+              _reportData.latitude = latitude;
+              _reportData.longitude = longitude;
+              _reportData.locationSource = source;
+            });
+            _nextStep();
+          },
         ),
       ),
       PageParameter(
@@ -191,16 +194,6 @@ class _BreedingSiteReportControllerState
     if (index >= 0 && index < _pageParameters.length) {
       await _logAnalyticsEvent(_pageParameters[index].logEvent);
     }
-  }
-
-  /// Handle location selection callback
-  void _onLocationSelected(
-      double latitude, double longitude, LocationRequestSource_Enum source) {
-    setState(() {
-      _reportData.latitude = latitude;
-      _reportData.longitude = longitude;
-      _reportData.locationSource = source;
-    });
   }
 
   /// Handle photo selection callback

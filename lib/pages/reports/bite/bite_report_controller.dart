@@ -101,16 +101,6 @@ class _BiteReportControllerState extends State<BiteReportController> {
     });
   }
 
-  /// Handle location selection
-  void _updateLocation(
-      double latitude, double longitude, LocationRequestSource_Enum source) {
-    setState(() {
-      _reportData.latitude = latitude;
-      _reportData.longitude = longitude;
-      _reportData.locationSource = source;
-    });
-  }
-
   /// Handle notes update
   void _updateNotes(String? notes) {
     setState(() {
@@ -230,11 +220,15 @@ class _BiteReportControllerState extends State<BiteReportController> {
       LocationSelectionPage(
         initialLatitude: _reportData.latitude,
         initialLongitude: _reportData.longitude,
-        onLocationSelected: _updateLocation,
-        onNext: _nextStep,
-        onPrevious: _previousStep,
-        canProceed: _reportData.hasValidLocation,
-        locationSource: _reportData.locationSource,
+        initialSource: _reportData.locationSource,
+        onNext: (latitude, longitude, source) {
+          setState(() {
+            _reportData.latitude = latitude;
+            _reportData.longitude = longitude;
+            _reportData.locationSource = source;
+          });
+          _nextStep();
+        },
       ),
 
       // Step 5: Notes and submit
