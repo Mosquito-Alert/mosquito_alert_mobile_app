@@ -9,23 +9,17 @@ import 'package:mosquito_alert_app/utils/style.dart';
 class LocationSelectionPage extends StatefulWidget {
   final double? initialLatitude;
   final double? initialLongitude;
+  final LocationRequestSource_Enum? initialSource;
   final Function(
           double latitude, double longitude, LocationRequestSource_Enum source)
-      onLocationSelected;
-  final VoidCallback onNext;
-  final VoidCallback onPrevious;
-  final bool canProceed;
-  final LocationRequestSource_Enum? locationSource;
+      onNext;
 
   const LocationSelectionPage({
     Key? key,
     this.initialLatitude,
     this.initialLongitude,
-    required this.onLocationSelected,
+    this.initialSource,
     required this.onNext,
-    required this.onPrevious,
-    required this.canProceed,
-    this.locationSource,
   }) : super(key: key);
 
   @override
@@ -33,17 +27,40 @@ class LocationSelectionPage extends StatefulWidget {
 }
 
 class _LocationSelectionPageState extends State<LocationSelectionPage> {
+  late double? _latitude;
+  late double? _longitude;
+  late LocationRequestSource_Enum? _source;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _latitude = widget.initialLatitude;
+    _longitude = widget.initialLongitude;
+    _source = widget.initialSource;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Full-screen map background (WhatsApp style)
+          // Full-screen map background
           LocationSelector(
             initialLatitude: widget.initialLatitude,
             initialLongitude: widget.initialLongitude,
-            onLocationSelected: widget.onLocationSelected,
-            autoGetLocation: true, // Enable auto-location by default
+            onLocationChanged: (latitude, longitude, source) {
+              setState(() {
+                _latitude = latitude;
+                _longitude = longitude;
+                _source = source;
+              });
+            },
+            onLoadingChanged: (isLoading) {
+              setState(() {
+                _isLoading = isLoading;
+              });
+            },
           ),
 
           // Bottom overlay with location info and navigation
@@ -58,7 +75,14 @@ class _LocationSelectionPageState extends State<LocationSelectionPage> {
                   width: double.infinity,
                   child: Style.button(
                     MyLocalizations.of(context, 'continue_txt'),
-                    widget.canProceed ? widget.onNext : null,
+                    _isLoading ||
+                            (_latitude == null ||
+                                _longitude == null ||
+                                _source == null)
+                        ? null
+                        : () {
+                            widget.onNext(_latitude!, _longitude!, _source!);
+                          },
                   ),
                 ),
               ),
