@@ -23,10 +23,8 @@ class UserProvider extends ChangeNotifier {
     final oldLang = prefs.getString('language');
     final oldCountry = prefs.getString('languageCountry');
     if (oldLang != null) {
-      final migratedLocale =
-          oldCountry != null ? '${oldLang}_${oldCountry}' : oldLang;
-
-      await prefs.setString('locale', migratedLocale);
+      await prefs.setString(
+          'locale', Locale(oldLang, oldCountry).toLanguageTag());
       await prefs.remove('language');
       await prefs.remove('languageCountry');
     }
