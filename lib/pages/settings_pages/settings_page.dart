@@ -253,13 +253,9 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   List<Language> _getLanguages() {
-    final List<Language> result = [];
-
-    for (final locale in MyLocalizations.supportedLocales) {
-      result.add(_localeToLanguage(locale));
-    }
-
-    return result;
+    return MyLocalizations.supportedLocales
+        .map((locale) => _localeToLanguage(locale))
+        .toList();
   }
 
   void _openLanguagePickerDialog() => showDialog(
