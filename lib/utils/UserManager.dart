@@ -4,7 +4,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/consent_form.dart';
-import 'package:mosquito_alert_app/pages/settings_pages/location_consent_screen/background_tracking_explanation.dart';
 import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,12 +24,6 @@ class UserManager {
       await prefs.setBool('firstTime', true);
 
       await setLocale(Utils.language);
-
-      await Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => LocationConsentScreen(),
-        ),
-      );
     } else {
       var languageCode = await getLanguage();
       var countryCode = await getLanguageCountry();

@@ -63,7 +63,8 @@ class LocationConsentScreen extends StatelessWidget {
                     child: Style.outlinedButton(
                       MyLocalizations.of(context, "no_show_info"),
                       () {
-                        Navigator.pop(context);
+                        // Return to home view (first in stack)
+                        Navigator.popUntil(context, (route) => route.isFirst);
                       },
                       key: Key("rejectBackgroundTrackingBtn"),
                     ),
