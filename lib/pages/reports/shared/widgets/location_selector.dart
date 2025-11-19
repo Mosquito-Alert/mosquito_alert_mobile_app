@@ -27,7 +27,8 @@ class _LocationSelectorState extends State<LocationSelector> {
   GoogleMapController? _mapController;
   bool _isGettingLocation = false;
   String? _locationError;
-  LatLng? position = null;
+  LatLng? position;
+  LocationRequestSource_Enum? _locationSource;
   static const LatLng defaultPosition = LatLng(0, 0);
 
   @override
@@ -35,6 +36,7 @@ class _LocationSelectorState extends State<LocationSelector> {
     super.initState();
     if (widget.initialLatitude != null && widget.initialLongitude != null) {
       position = LatLng(widget.initialLatitude!, widget.initialLongitude!);
+      _locationSource = LocationRequestSource_Enum.manual;
     } else {
       _tryAutoGetLocation();
     }
@@ -103,18 +105,15 @@ class _LocationSelectorState extends State<LocationSelector> {
       }
 
       // Get current position
-      Position position = await Geolocator.getCurrentPosition(
+      Position newPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
         timeLimit: timeout,
       );
 
-      widget.onLocationChanged(
-        position.latitude,
-        position.longitude,
-        LocationRequestSource_Enum.auto,
-      );
+      position = LatLng(newPosition.latitude, newPosition.longitude);
+      _locationSource = LocationRequestSource_Enum.auto;
 
-      await _moveMapToLocation(position.latitude, position.longitude);
+      await _moveMapToLocation(newPosition.latitude, newPosition.longitude);
     } catch (e) {
       debugPrint('Location fetch failed: $e');
       if (showLoading) {
@@ -174,12 +173,21 @@ class _LocationSelectorState extends State<LocationSelector> {
       scrollGesturesEnabled: true,
       tiltGesturesEnabled: false,
       zoomGesturesEnabled: true,
-      onCameraMove: (position) {
-        widget.onLocationChanged(
-          position.target.latitude,
-          position.target.longitude,
-          LocationRequestSource_Enum.manual,
-        );
+      onCameraMoveStarted: () {
+        widget.onLocationChanged(null, null, null);
+      },
+      onCameraMove: (newPosition) {
+        position = newPosition.target;
+        _locationSource = LocationRequestSource_Enum.manual;
+      },
+      onCameraIdle: () {
+        if (position != null) {
+          widget.onLocationChanged(
+            position!.latitude,
+            position!.longitude,
+            _locationSource,
+          );
+        }
       },
     );
   }
@@ -236,7 +244,7 @@ class _LocationSelectorState extends State<LocationSelector> {
                 ),
                 SizedBox(width: 8),
                 Text(
-                  MyLocalizations.of(context, "no_reports_yet_txt"),
+                  MyLocalizations.of(context, "current_location_txt"),
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 14,
