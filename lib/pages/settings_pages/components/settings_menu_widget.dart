@@ -4,8 +4,10 @@ import 'package:mosquito_alert_app/utils/style.dart';
 class SettingsMenuWidget extends StatelessWidget {
   final String? text;
   final Function onTap;
+  final String? trailingText;
 
-  SettingsMenuWidget(this.text, this.onTap);
+  const SettingsMenuWidget(this.text, this.onTap,
+      {this.trailingText, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +21,26 @@ class SettingsMenuWidget extends StatelessWidget {
           onTap();
         },
         title: Style.body(text),
-        trailing: const Icon(
-          Icons.arrow_forward_ios,
-          color: Colors.black,
-          size: 18,
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (trailingText != null)
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: Text(
+                  trailingText!,
+                  style: const TextStyle(
+                    color: Colors.black54,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.black,
+              size: 18,
+            ),
+          ],
         ),
       ),
     );

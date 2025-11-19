@@ -6,14 +6,13 @@ import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/hashtag.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/components/settings_menu_widget.dart';
 import 'package:mosquito_alert_app/providers/user_provider.dart';
-import 'package:mosquito_alert_app/utils/Application.dart';
 import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 import 'package:mosquito_alert_app/utils/UserManager.dart';
-import 'package:mosquito_alert_app/utils/Utils.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:country_codes/country_codes.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage();
@@ -29,35 +28,6 @@ class _SettingsPageState extends State<SettingsPage> {
   late int? numTagsAdded;
   bool isLoading = true;
   late UsersApi usersApi;
-
-  final languageCodes = [
-    Language('bg_BG', 'Bulgarian', 'Bulgarian'),
-    Language('bn_BD', 'Bengali', 'Bengali'),
-    Language('ca_ES', 'Catalan', 'Catalan'),
-    Language('de_DE', 'German', 'German'),
-    Language('el_GR', 'Greek', 'Greek'),
-    Language('en_US', 'English', 'English'),
-    Language('es_ES', 'Spanish', 'Spanish'),
-    Language('es_UY', 'Spanish (Uruguay)', 'Spanish (Uruguay)'),
-    Language('eu_ES', 'Basque', 'Basque'),
-    Language('fr_FR', 'French', 'French'),
-    Language('gl_ES', 'Galician', 'Galician'),
-    Language('hr_HR', 'Croatian', 'Croatian'),
-    Language('hu_HU', 'Hungarian', 'Hungarian'),
-    Language('it_IT', 'Italian', 'Italian'),
-    Language(
-        'lb_LU', 'Luxembourgish (Luxembourg)', 'Luxembourgish (Luxembourg)'),
-    Language('mk_MK', 'Macedonian (Former Yugoslav Republic of Macedonia)',
-        'Macedonian (Former Yugoslav Republic of Macedonia)'),
-    Language('nl_NL', 'Dutch', 'Dutch'),
-    Language('pt_PT', 'Protuguese', 'Protuguese'),
-    Language('ro_RO', 'Romanian', 'Romanian'),
-    Language('sl_SI', 'Slovenian (Slovenia)', 'Slovenian (Slovenia)'),
-    Language('sq_AL', 'Albanian', 'Albanian'),
-    Language('sr_RS', 'Serbian', 'Serbian'),
-    Language('sv_SE', 'Swedish', 'Swedish'),
-    Language('tr_TR', 'Turkish (Turkey)', 'Turkish (Turkey)'),
-  ];
 
   @override
   void initState() {
@@ -126,10 +96,12 @@ class _SettingsPageState extends State<SettingsPage> {
                           height: 10,
                         ),
                         SettingsMenuWidget(
-                            MyLocalizations.of(context, 'select_language_txt'),
-                            () {
-                          _openLanguagePickerDialog();
-                        }),
+                          MyLocalizations.of(context, 'select_language_txt'),
+                          _openLanguagePickerDialog,
+                          trailingText: _localeToLanguage(
+                                  Provider.of<UserProvider>(context).locale)
+                              .nativeName,
+                        ),
                         const SizedBox(
                           height: 10,
                         ),
@@ -255,18 +227,44 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  Language _localeToLanguage(Locale locale) {
+    final _tempBaseLanguage = Language.fromIsoCode(locale.languageCode);
+    final _numDuplicatedLanguages = MyLocalizations.supportedLocales
+        .where((l) => l.languageCode == locale.languageCode)
+        .length;
+
+    return Language(
+        _tempBaseLanguage.isoCode +
+            (locale.countryCode != null && locale.countryCode!.isNotEmpty
+                ? "_" + locale.countryCode!
+                : ""),
+        _tempBaseLanguage.name,
+        _tempBaseLanguage.nativeName.split(',').first +
+            (_numDuplicatedLanguages > 1 && locale.countryCode != null
+                ? (() {
+                    try {
+                      final details = CountryCodes.detailsForLocale(locale);
+                      return details.name != null ? " (${details.name})" : "";
+                    } catch (e) {
+                      return "";
+                    }
+                  })()
+                : "")); // Clean native name
+  }
+
+  List<Language> _getLanguages() {
+    return MyLocalizations.supportedLocales
+        .map((locale) => _localeToLanguage(locale))
+        .toList();
+  }
+
   void _openLanguagePickerDialog() => showDialog(
         context: context,
         builder: (context) => Theme(
             data: Theme.of(context).copyWith(primaryColor: Style.colorPrimary),
             child: LanguagePickerDialog(
-                languages: languageCodes
-                    .map((language) => Language(
-                        language.isoCode,
-                        MyLocalizations.of(context, language.isoCode),
-                        language.nativeName))
-                    .toList()
-                  ..sort((a, b) => a.name.compareTo(b.name)),
+                languages: _getLanguages()
+                  ..sort((a, b) => a.nativeName.compareTo(b.nativeName)),
                 titlePadding: const EdgeInsets.all(8.0),
                 searchCursorColor: Style.colorPrimary,
                 searchInputDecoration: InputDecoration(
@@ -277,11 +275,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   await _selectLanguage(language);
                 },
                 itemBuilder: (Language language) {
-                  return Row(
-                    children: <Widget>[
-                      Text(MyLocalizations.of(context, language.isoCode)),
-                    ],
-                  );
+                  return Text(language.nativeName);
                 })),
       );
 
@@ -291,30 +285,11 @@ class _SettingsPageState extends State<SettingsPage> {
     final countryCode = isoCodeParts.length > 1 ? isoCodeParts[1] : null;
     final locale = Locale(languageCode, countryCode);
 
-    Utils.language = locale;
-    UserManager.setLocale(locale);
-    application.onLocaleChanged(locale);
-
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final userUuid = userProvider.user?.uuid;
-
-    if (userUuid == null) return;
-
     try {
-      final localeEnum = PatchedUserRequestLocaleEnum.values.firstWhere(
-          (e) => e.name == languageCode,
-          orElse: () => PatchedUserRequestLocaleEnum.en);
-
-      final patchedUserRequest =
-          PatchedUserRequest((b) => b..locale = localeEnum);
-
-      await usersApi.partialUpdate(
-        uuid: userUuid,
-        patchedUserRequest: patchedUserRequest,
-      );
+      userProvider.locale = locale;
     } catch (e) {
-      print('Error updating language to server: $e');
-
+      print('Error setting locale: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Could not update language on server.'),

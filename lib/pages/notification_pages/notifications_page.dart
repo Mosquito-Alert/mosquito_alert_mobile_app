@@ -7,7 +7,6 @@ import 'package:mosquito_alert_app/pages/notification_pages/notification_detail_
 import 'package:mosquito_alert_app/providers/notification_provider.dart';
 import 'package:mosquito_alert_app/services/analytics_service.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
-import 'package:mosquito_alert_app/utils/UserManager.dart';
 import 'package:mosquito_alert_app/utils/html_parser.dart';
 import 'package:mosquito_alert_app/utils/style.dart';
 import 'package:provider/provider.dart';
@@ -26,14 +25,12 @@ class NotificationsPage extends StatefulWidget {
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
-  String languageCode = 'en';
   late AnalyticsService _analyticsService;
 
   @override
   void initState() {
     super.initState();
     _analyticsService = widget.analyticsService ?? FirebaseAnalyticsService();
-    initLanguage();
     _logScreenView();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = context.read<NotificationProvider>();
@@ -41,10 +38,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
         provider.fetchNextPage();
       }
     });
-  }
-
-  Future<void> initLanguage() async {
-    languageCode = await UserManager.getLanguage() ?? 'en';
   }
 
   Future<void> _logScreenView() async {
@@ -105,8 +98,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                               : Colors.black,
                         ),
                         isThreeLine: true,
-                        trailing: Text(timeago.format(notification.createdAt,
-                            locale: languageCode + '_short')),
+                        trailing: Text(timeago.format(notification.createdAt)),
                         title: Text.rich(
                           TextSpan(
                             children: [

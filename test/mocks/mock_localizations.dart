@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 
 // Mock MyLocalizations for testing
-class MockMyLocalizations extends MyLocalizations {
-  MockMyLocalizations() : super(const Locale('en'));
+class MockMyLocalizations implements MyLocalizations {
+  @override
+  final Locale locale = const Locale('en');
+
+  MockMyLocalizations() : super();
 
   @override
   String translate(String? key) {
