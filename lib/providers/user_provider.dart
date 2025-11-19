@@ -1,41 +1,51 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
+import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider extends ChangeNotifier {
   final UsersApi usersApi;
 
-  UserProvider({required MosquitoAlert apiClient})
-      : usersApi = apiClient.getUsersApi();
+  UserProvider._(this.usersApi);
 
-  Future<void> init() async {
+  static Future<UserProvider> create({required MosquitoAlert apiClient}) async {
+    final provider = UserProvider._(apiClient.getUsersApi());
+    await provider._initLanguage();
+    return provider;
+  }
+
+  Future<void> _initLanguage() async {
     final prefs = await SharedPreferences.getInstance();
 
     // Migrate old locale format if necessary
-    final language = prefs.getString('language');
-    final country = prefs.getString('languageCountry');
-    if (language != null) {
-      String localeString = language;
-      if (country != null) {
-        localeString += '_$country';
-      }
-      await prefs.setString('locale', localeString);
+    final oldLang = prefs.getString('language');
+    final oldCountry = prefs.getString('languageCountry');
+    if (oldLang != null) {
+      final migratedLocale =
+          oldCountry != null ? '${oldLang}_${oldCountry}' : oldLang;
+
+      await prefs.setString('locale', migratedLocale);
       await prefs.remove('language');
       await prefs.remove('languageCountry');
     }
 
-    final localeString = prefs.getString('locale');
+    final storedLocale = prefs.getString('locale');
 
-    if (localeString != null) {
-      final parts = localeString.split(RegExp('[-_]'));
-      this.locale = Locale.fromSubtags(
-        languageCode: parts.isNotEmpty ? parts[0] : 'en',
-        scriptCode: parts.length == 3 ? parts[1] : null,
-        countryCode: parts.length >= 2 ? parts[parts.length - 1] : null,
-      );
+    if (storedLocale == null || storedLocale.trim().isEmpty) {
+      // Use system locale as default
+      this.locale = WidgetsBinding.instance.platformDispatcher.locale;
+      return;
     }
+
+    final parts = storedLocale.split(RegExp('[-_]'));
+
+    this.locale = Locale.fromSubtags(
+      languageCode: parts.isNotEmpty ? parts[0] : 'en',
+      scriptCode: parts.length == 3 ? parts[1] : null,
+      countryCode: parts.length >= 2 ? parts[parts.length - 1] : null,
+    );
   }
 
   User? _user;
@@ -48,54 +58,63 @@ class UserProvider extends ChangeNotifier {
   }
 
   Locale? _locale;
-  Locale get locale =>
-      _locale ?? WidgetsBinding.instance.platformDispatcher.locale;
+  Locale get locale => _locale ?? MyLocalizations.defaultFallbackLocale;
 
   set locale(Locale locale) {
-    if (_locale == locale) return; // Prevent unnecessary work
-    _locale = locale;
+    Locale resolvedLocale = MyLocalizations.resolveLocale(locale);
+
+    if (_locale == resolvedLocale) return; // Prevent unnecessary work
+    _locale = resolvedLocale;
     notifyListeners();
-    _applyLocale(locale);
+    _persistAndSyncLocale(resolvedLocale);
   }
 
-  Future<void> _applyLocale(Locale locale) async {
+  Future<void> _persistAndSyncLocale(Locale locale) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('locale', locale.toLanguageTag());
 
-    if (this.user == null) return;
+    if (this.user == null) return; // no sync possible yet
+
+    await _syncUserLocale(locale);
+  }
+
+  Future<void> _syncUserLocale(Locale locale) async {
+    final newCode = locale.languageCode.toLowerCase();
+
+    // If already the same, skip API call
+    if (user?.languageIso == newCode) return;
 
     final localeEnum = PatchedUserRequestLocaleEnum.values.firstWhere(
-        (e) => e.name == locale.languageCode,
-        orElse: () => PatchedUserRequestLocaleEnum.en);
+      (e) => e.name == newCode,
+      orElse: () => PatchedUserRequestLocaleEnum.en,
+    );
 
-    final patchedUserRequest =
-        PatchedUserRequest((b) => b..locale = localeEnum);
+    final req = PatchedUserRequest((b) => b..locale = localeEnum);
 
     try {
       final response = await usersApi.partialUpdate(
         uuid: user!.uuid,
-        patchedUserRequest: patchedUserRequest,
+        patchedUserRequest: req,
       );
-      this.user = response.data;
+      this.user = response.data!;
     } catch (e) {
-      print('Error updating user locale: $e');
+      debugPrint('Error updating user locale: $e');
     }
   }
 
   Future<void> fetchUser() async {
     try {
       final response = await usersApi.retrieveMine();
-      this.user = response.data;
+      this.user = response.data!;
     } catch (e) {
       print('Error getting user: $e');
       this.user = null;
       rethrow;
     }
 
+    // Ensure backend locale matches selected locale
     try {
-      if (this.user?.languageIso != this.locale.languageCode) {
-        await _applyLocale(this.locale);
-      }
+      await _syncUserLocale(locale);
     } catch (_) {
       print('Error changing user locale');
     }

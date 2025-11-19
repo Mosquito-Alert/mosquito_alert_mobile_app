@@ -52,8 +52,7 @@ Future<void> main({String env = 'prod'}) async {
   final MosquitoAlert apiClient = apiService.client;
 
   authProvider.setApiClient(apiClient);
-  final userProvider = UserProvider(apiClient: apiClient);
-  await userProvider.init();
+  final userProvider = await UserProvider.create(apiClient: apiClient);
   final deviceProvider = await DeviceProvider.create(apiClient: apiClient);
 
   final appConfig = await AppConfig.loadConfig();
@@ -95,7 +94,7 @@ void callbackDispatcher() {
 
     authProvider.setApiClient(apiClient);
 
-    final userProvider = UserProvider(apiClient: apiClient);
+    final userProvider = await UserProvider.create(apiClient: apiClient);
     final deviceProvider = await DeviceProvider.create(apiClient: apiClient);
     String? username = authProvider.username;
     String? password = authProvider.password;
