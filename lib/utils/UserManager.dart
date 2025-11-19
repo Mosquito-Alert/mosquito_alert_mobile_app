@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/pages/settings_pages/consent_form.dart';
-import 'package:mosquito_alert_app/pages/settings_pages/location_consent_screen/background_tracking_explanation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserManager {
