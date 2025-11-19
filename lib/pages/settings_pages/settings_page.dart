@@ -244,9 +244,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ? (() {
                     try {
                       final details = CountryCodes.detailsForLocale(locale);
-                      return details != null && details.name != null
-                          ? " (${details.name})"
-                          : "";
+                      return details.name != null ? " (${details.name})" : "";
                     } catch (e) {
                       return "";
                     }
