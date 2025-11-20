@@ -214,7 +214,8 @@ class ReportDetailPage extends StatelessWidget {
                 ListTile(
                     leading:
                         Icon(Icons.calendar_month, color: Style.colorPrimary),
-                    title: Text(DateFormat('EEE, yyyy-MM-dd HH:mm')
+                    title: Text(DateFormat.yMMMEd()
+                        .add_Hm()
                         .format(report.createdAtLocal))),
                 // Add extra tiles
                 if (extraListTileMap != null)
