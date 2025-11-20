@@ -31,6 +31,9 @@ class _LocationSelectorState extends State<LocationSelector> {
   LocationRequestSource_Enum? _locationSource;
   static const LatLng defaultPosition = LatLng(0, 0);
 
+  bool _isUserGesture = false;
+  bool _ignoreNextCameraEvent = false;
+
   @override
   void initState() {
     super.initState();
@@ -51,21 +54,9 @@ class _LocationSelectorState extends State<LocationSelector> {
     );
   }
 
-  Future<void> _moveMapToLocation(double latitude, double longitude) async {
-    if (_mapController != null) {
-      await _mapController!.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: LatLng(latitude, longitude),
-            zoom: 16.0,
-          ),
-        ),
-      );
-    }
-  }
-
   Future<void> _fetchLocation({
     bool showLoading = false,
+    bool showError = false,
     bool requestPermission = false,
     Duration timeout = const Duration(seconds: 10),
     bool fallbackCenterOnError = false,
@@ -84,8 +75,7 @@ class _LocationSelectorState extends State<LocationSelector> {
       // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        if (showLoading) throw Exception('Location services are disabled.');
-        return;
+        throw Exception('Location services are disabled.');
       }
 
       // Check or request permissions if necessary
@@ -93,15 +83,12 @@ class _LocationSelectorState extends State<LocationSelector> {
       if (permission == LocationPermission.denied && requestPermission) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          if (showLoading) throw Exception('Location permission denied.');
-          return;
+          throw Exception('Location permission denied.');
         }
       }
 
       if (permission == LocationPermission.deniedForever) {
-        if (showLoading)
-          throw Exception('Location permission permanently denied.');
-        return;
+        throw Exception('Location permission permanently denied.');
       }
 
       // Get current position
@@ -113,10 +100,20 @@ class _LocationSelectorState extends State<LocationSelector> {
       position = LatLng(newPosition.latitude, newPosition.longitude);
       _locationSource = LocationRequestSource_Enum.auto;
 
-      await _moveMapToLocation(newPosition.latitude, newPosition.longitude);
+      if (_mapController != null) {
+        _ignoreNextCameraEvent = true; // Mark next camera move as programmatic
+        await _mapController!.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(newPosition.latitude, newPosition.longitude),
+              zoom: 16.0,
+            ),
+          ),
+        );
+      }
     } catch (e) {
       debugPrint('Location fetch failed: $e');
-      if (showLoading) {
+      if (showError) {
         setState(() => _locationError = e.toString());
       }
     } finally {
@@ -134,6 +131,7 @@ class _LocationSelectorState extends State<LocationSelector> {
   Future<void> _getCurrentLocation() async {
     await _fetchLocation(
       showLoading: true,
+      showError: true,
       requestPermission: true,
       timeout: const Duration(seconds: 30),
     );
@@ -174,13 +172,17 @@ class _LocationSelectorState extends State<LocationSelector> {
       tiltGesturesEnabled: false,
       zoomGesturesEnabled: true,
       onCameraMoveStarted: () {
+        _isUserGesture = !_ignoreNextCameraEvent;
         widget.onLocationChanged(null, null, null);
       },
       onCameraMove: (newPosition) {
         position = newPosition.target;
-        _locationSource = LocationRequestSource_Enum.manual;
+        if (_isUserGesture) {
+          _locationSource = LocationRequestSource_Enum.manual;
+        }
       },
       onCameraIdle: () {
+        _ignoreNextCameraEvent = false;
         if (position != null) {
           widget.onLocationChanged(
             position!.latitude,
@@ -265,7 +267,7 @@ class _LocationSelectorState extends State<LocationSelector> {
     }
 
     return Positioned(
-      bottom: 16,
+      top: 16,
       left: 16,
       right: 16,
       child: Container(
