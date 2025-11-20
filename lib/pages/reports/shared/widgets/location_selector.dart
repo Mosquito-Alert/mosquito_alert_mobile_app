@@ -30,6 +30,8 @@ class _LocationSelectorState extends State<LocationSelector> {
   LatLng? position;
   LocationRequestSource_Enum? _locationSource;
   static const LatLng defaultPosition = LatLng(0, 0);
+  Position? phonePosition;
+  static const double minDistanceLocationManual = 50.0; // in meters
 
   bool _isUserGesture = false;
   bool _ignoreNextCameraEvent = false;
@@ -91,13 +93,14 @@ class _LocationSelectorState extends State<LocationSelector> {
         throw Exception('Location permission permanently denied.');
       }
 
-      // Get current position
-      Position newPosition = await Geolocator.getCurrentPosition(
+      // Get current position && update state variable
+      phonePosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
         timeLimit: timeout,
       );
 
-      position = LatLng(newPosition.latitude, newPosition.longitude);
+      // Update state variables.
+      position = LatLng(phonePosition!.latitude, phonePosition!.longitude);
       _locationSource = LocationRequestSource_Enum.auto;
 
       if (_mapController != null) {
@@ -105,7 +108,7 @@ class _LocationSelectorState extends State<LocationSelector> {
         await _mapController!.animateCamera(
           CameraUpdate.newCameraPosition(
             CameraPosition(
-              target: LatLng(newPosition.latitude, newPosition.longitude),
+              target: position!,
               zoom: 16.0,
             ),
           ),
@@ -184,6 +187,20 @@ class _LocationSelectorState extends State<LocationSelector> {
       onCameraIdle: () {
         _ignoreNextCameraEvent = false;
         if (position != null) {
+          // If user moved manually, check if final position is still close to GPS
+          if (_isUserGesture && phonePosition != null) {
+            final distance = Geolocator.distanceBetween(
+              phonePosition!.latitude,
+              phonePosition!.longitude,
+              position!.latitude,
+              position!.longitude,
+            );
+
+            if (distance <= minDistanceLocationManual) {
+              _locationSource = LocationRequestSource_Enum.auto;
+            }
+          }
+
           widget.onLocationChanged(
             position!.latitude,
             position!.longitude,
