@@ -57,7 +57,7 @@ class _NotificationDetailPageState extends State<NotificationDetailPage> {
 
   String get formattedDate {
     final date = _notification.createdAt.toLocal();
-    return DateFormat('MMM d, yyyy • h:mm a').format(date);
+    return DateFormat.yMMMd().addPattern('•').add_jm().format(date);
   }
 
   @override
