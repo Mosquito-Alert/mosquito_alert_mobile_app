@@ -22,8 +22,8 @@ class ApiService {
         options: options,
         getAccessToken: () async => authProvider.accessToken ?? '',
         getRefreshToken: () async => authProvider.refreshToken ?? '',
-        onTokenUpdateCallback: (newAccessToken) {
-          authProvider.setAccessToken(accessToken: newAccessToken);
+        onTokenUpdateCallback: (newAccessToken) async {
+          await authProvider.setAccessToken(accessToken: newAccessToken);
         }));
 
     _client = MosquitoAlert(dio: _dio);
