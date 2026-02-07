@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
@@ -36,6 +38,9 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
   int _offlineFixes = 0;
   InternetStatus? _internetStatus;
   String? _lastActionMessage;
+  String? _dnsResult;
+  String? _tcpResult;
+  String? _pingResult;
 
   @override
   void initState() {
@@ -89,6 +94,46 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
       _offlineFixes = fixes;
       _internetStatus = internetStatus;
     });
+  }
+
+  Future<void> _testDns() async {
+    try {
+      final host = Uri.parse(_baseUrl).host;
+      final addresses = await InternetAddress.lookup(host);
+      _dnsResult = addresses.map((a) => a.address).join(', ');
+    } catch (e) {
+      _dnsResult = 'DNS error: $e';
+    }
+    if (mounted) setState(() {});
+  }
+
+  Future<void> _testTcp() async {
+    try {
+      final host = Uri.parse(_baseUrl).host;
+      final socket = await Socket.connect(host, 443,
+          timeout: const Duration(seconds: 5));
+      socket.destroy();
+      _tcpResult = 'TCP 443: OK';
+    } catch (e) {
+      _tcpResult = 'TCP 443 error: $e';
+    }
+    if (mounted) setState(() {});
+  }
+
+  Future<void> _testPing() async {
+    try {
+      final uri = Uri.parse(_baseUrl).resolve('ping');
+      final client = HttpClient();
+      client.findProxy = (_) => 'DIRECT';
+      final request = await client.getUrl(uri);
+      final response = await request.close();
+      _pingResult = 'Ping status: ${response.statusCode}';
+      await response.drain();
+      client.close();
+    } catch (e) {
+      _pingResult = 'Ping error: $e';
+    }
+    if (mounted) setState(() {});
   }
 
   Future<void> _triggerSync() async {
@@ -186,6 +231,18 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
                 child: const Text('Refresh'),
               ),
               ElevatedButton(
+                onPressed: _testDns,
+                child: const Text('Test DNS'),
+              ),
+              ElevatedButton(
+                onPressed: _testTcp,
+                child: const Text('Test TCP 443'),
+              ),
+              ElevatedButton(
+                onPressed: _testPing,
+                child: const Text('Test /ping'),
+              ),
+              ElevatedButton(
                 onPressed: _triggerSync,
                 child: const Text('Sync Now'),
               ),
@@ -205,6 +262,21 @@ class _DiagnosticsPageState extends State<DiagnosticsPage> {
               _lastActionMessage!,
               style: const TextStyle(color: Colors.black54),
             ),
+          ],
+          if (_dnsResult != null) ...[
+            const SizedBox(height: 12),
+            Text('DNS: $_dnsResult',
+                style: const TextStyle(color: Colors.black54)),
+          ],
+          if (_tcpResult != null) ...[
+            const SizedBox(height: 8),
+            Text('TCP: $_tcpResult',
+                style: const TextStyle(color: Colors.black54)),
+          ],
+          if (_pingResult != null) ...[
+            const SizedBox(height: 8),
+            Text('Ping: $_pingResult',
+                style: const TextStyle(color: Colors.black54)),
           ],
           if (kDebugMode) ...[
             const SizedBox(height: 16),

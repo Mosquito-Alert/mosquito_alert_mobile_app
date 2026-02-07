@@ -71,6 +71,8 @@ which can surface as `SocketException: Connection refused`.
 For troubleshooting, a debug‑only Diagnostics screen is available in Settings.
 It shows base URL, auth state, pending outbox counts, and provides quick actions
 to trigger sync and user fetch.
+It also includes **DNS**, **TCP 443**, and **/ping** tests to distinguish DNS,
+transport, and HTTP failures directly on device.
 
 ## Minimal flow (pseudocode)
 ```
