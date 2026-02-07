@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/features/onboarding/presentation/pages/location_consent_page.dart';
 import 'package:mosquito_alert_app/features/onboarding/presentation/pages/terms_page.dart';
+import 'package:mosquito_alert_app/features/auth/data/auth_repository.dart';
 import 'package:provider/provider.dart';
 
 import '../state/onboarding_provider.dart';
@@ -35,18 +36,28 @@ class OnboardingFlowPage extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (navigatorContext) => LocationConsentPage(
                     onCompleted: () async {
+                      bool createdGuest = false;
                       try {
                         await onCompleted?.call();
-                      } catch (e) {
+                        createdGuest = true;
+                      } catch (_) {
+                        // Allow onboarding to complete offline and retry later.
+                        await AuthRepository.setNeedsGuestAccount(true);
+                      }
+
+                      if (createdGuest) {
+                        await AuthRepository.setNeedsGuestAccount(false);
+                      } else {
                         ScaffoldMessenger.of(navigatorContext).showSnackBar(
-                          SnackBar(
-                            content: Text(e.toString()),
-                            backgroundColor: Colors.red,
-                            duration: const Duration(seconds: 4),
+                          const SnackBar(
+                            content: Text(
+                              'Offline. We will finish setup when you are online.',
+                            ),
+                            duration: Duration(seconds: 4),
                           ),
                         );
-                        return;
                       }
+
                       await provider.completeOnboarding();
                     },
                   ),

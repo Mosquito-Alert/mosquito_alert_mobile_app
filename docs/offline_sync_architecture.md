@@ -43,6 +43,16 @@ A new `OutboxSyncController`:
 The existing per‑item icons (e.g., cloud‑off) continue to represent queued items.
 The global “Offline mode” banner is removed to avoid false negatives.
 
+### ✅ Background tracking uses the same outbox semantics
+Background tracking uses `FixesRepository.create(...)`, which enqueues items
+and retries later if the immediate send fails. No UI is required for background
+fixes; they are treated as “queue‑and‑retry.”
+
+### ✅ Onboarding is not blocked by offline auth
+Guest account creation is now **deferred** if it fails due to network issues.
+Onboarding completes, and the app will retry guest creation when connectivity
+returns. This prevents the “Turn on location” step from blocking offline users.
+
 ## Minimal flow (pseudocode)
 ```
 onAppStart:

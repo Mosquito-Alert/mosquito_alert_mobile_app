@@ -15,6 +15,7 @@ class AuthRepository {
   static const _passwordKey = 'password';
   static const _deviceIdKey = 'device_id';
   static const _autoChangePasswordKey = 'auto_change_password';
+  static const _needsGuestAccountKey = 'needs_guest_account';
 
   final AuthApi _authApi;
 
@@ -33,6 +34,16 @@ class AuthRepository {
 
   static Future<void> setAccessToken(String accessToken) async {
     await _storage.write(key: _accessTokenKey, value: accessToken);
+  }
+
+  static Future<void> setNeedsGuestAccount(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_needsGuestAccountKey, value);
+  }
+
+  static Future<bool> getNeedsGuestAccount() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_needsGuestAccountKey) ?? false;
   }
 
   Future<void> createGuestAccount() async {

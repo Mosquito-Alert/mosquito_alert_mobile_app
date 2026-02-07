@@ -118,9 +118,19 @@ Future<void> main({String env = 'prod'}) async {
           await authProvider.restoreSession();
         } catch (e) {
           print('Error auto logging in: $e');
-          return;
+        }
+
+        if (!authProvider.isAuthenticated &&
+            await AuthRepository.getNeedsGuestAccount()) {
+          try {
+            await authProvider.createGuestAccount();
+            await AuthRepository.setNeedsGuestAccount(false);
+          } catch (e) {
+            print('Error creating guest account: $e');
+          }
         }
       }
+
       await syncController.triggerSync();
     }
   });
