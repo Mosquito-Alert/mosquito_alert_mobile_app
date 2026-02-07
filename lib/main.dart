@@ -66,6 +66,17 @@ Future<void> main({String env = 'prod'}) async {
   final ApiService apiService = ApiService(baseUrl: config.baseUrl);
   final apiClient = apiService.client;
 
+  // Connectivity checks should not depend on authentication state.
+  // Use a separate Dio instance without interceptors to avoid token refresh
+  // failures being misclassified as "offline".
+  final connectivityDio = Dio(
+    BaseOptions(
+      baseUrl: apiClient.dio.options.baseUrl,
+      connectTimeout: const Duration(milliseconds: 5000),
+      receiveTimeout: const Duration(milliseconds: 5000),
+    ),
+  );
+
   final deviceRepository = await DeviceRepository.create(apiClient: apiClient);
   final authRepository = AuthRepository(
     apiClient: apiClient,
@@ -116,13 +127,11 @@ Future<void> main({String env = 'prod'}) async {
     ],
     customConnectivityCheck: (option) async {
       try {
-        // Use a raw Dio call for the connectivity check.
-        // The generated SDK layer may throw non-Dio exceptions for non-2xx
-        // responses, which would incorrectly classify the device as offline.
         final baseUrl = apiClient.dio.options.baseUrl;
-        final pingUri = Uri.parse(baseUrl).resolve('ping');
+        final normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : '$baseUrl/';
+        final pingUri = Uri.parse('${normalizedBaseUrl}ping');
 
-        final response = await apiClient.dio.getUri(
+        final response = await connectivityDio.getUri(
           pingUri,
           options: Options(
             validateStatus: (_) => true, // never throw on status code
