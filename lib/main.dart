@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +9,7 @@ import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/app.dart';
 import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_service.dart';
+import 'package:mosquito_alert_app/core/outbox/outbox_sync_controller.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_sync_manager.dart';
 import 'package:mosquito_alert_app/core/utils/InAppReviewManager.dart';
 import 'package:mosquito_alert_app/features/auth/data/auth_repository.dart';
@@ -50,9 +49,6 @@ Future<void> main({String env = 'prod'}) async {
 
   await AppConfig.setEnvironment(env);
   final config = await AppConfig.loadConfig();
-  if (kDebugMode) {
-    debugPrint('[AppConfig] env=$env baseUrl=${config.baseUrl}');
-  }
 
   try {
     await Firebase.initializeApp();
@@ -69,17 +65,6 @@ Future<void> main({String env = 'prod'}) async {
 
   final ApiService apiService = ApiService(baseUrl: config.baseUrl);
   final apiClient = apiService.client;
-
-  // Connectivity checks should not depend on authentication state.
-  // Use a separate Dio instance without interceptors to avoid token refresh
-  // failures being misclassified as "offline".
-  final connectivityDio = Dio(
-    BaseOptions(
-      baseUrl: apiClient.dio.options.baseUrl,
-      connectTimeout: const Duration(milliseconds: 5000),
-      receiveTimeout: const Duration(milliseconds: 5000),
-    ),
-  );
 
   final deviceRepository = await DeviceRepository.create(apiClient: apiClient);
   final authRepository = AuthRepository(
@@ -118,63 +103,14 @@ Future<void> main({String env = 'prod'}) async {
     breedingSiteRepository,
     fixesRepository,
   ]);
+  final syncController = OutboxSyncController(syncManager);
 
   await TrackingService.configure(repository: fixesRepository);
 
-  // Auto-sync when online
-  final apiConnection = InternetConnection.createInstance(
-    useDefaultOptions: false,
-    enableStrictCheck: true,
-    customCheckOptions: [
-      // NOTE: this is dummy, all the logic is in customConnectivityCheck
-      InternetCheckOption(uri: Uri.parse(apiClient.dio.options.baseUrl)),
-    ],
-    customConnectivityCheck: (option) async {
-      try {
-        final baseUrl = apiClient.dio.options.baseUrl;
-        final normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : '$baseUrl/';
-        final pingUri = Uri.parse('${normalizedBaseUrl}ping');
+  // Auto-sync on startup, then use connectivity changes as hints to retry.
+  syncController.triggerSync();
 
-        if (kDebugMode) {
-          debugPrint('[Connectivity] ping -> $pingUri');
-        }
-
-        final response = await connectivityDio.getUri(
-          pingUri,
-          options: Options(
-            validateStatus: (_) => true, // never throw on status code
-            responseType: ResponseType.plain,
-          ),
-        );
-
-        final statusCode = response.statusCode;
-        if (kDebugMode) {
-          debugPrint('[Connectivity] ping status=$statusCode');
-        }
-        return InternetCheckResult(
-          option: option,
-          isSuccess: statusCode != null && statusCode > 0,
-        );
-      } on DioException catch (e) {
-        // If Dio has a response, we reached the server even if it was an error.
-        final statusCode = e.response?.statusCode;
-        if (kDebugMode) {
-          debugPrint(
-            '[Connectivity] DioException uri=${e.requestOptions.uri} type=${e.type} status=$statusCode error=${e.error}',
-          );
-        }
-        return InternetCheckResult(
-          option: option,
-          isSuccess: statusCode != null && statusCode > 0,
-        );
-      } catch (_) {
-        if (kDebugMode) {
-          debugPrint('[Connectivity] Unknown error during ping');
-        }
-        return InternetCheckResult(option: option, isSuccess: false);
-      }
-    },
-  );
+  final apiConnection = InternetConnection.createInstance();
   apiConnection.onStatusChange.listen((status) async {
     if (status == InternetStatus.connected) {
       if (!authProvider.isAuthenticated) {
@@ -185,7 +121,7 @@ Future<void> main({String env = 'prod'}) async {
           return;
         }
       }
-      await syncManager.syncAll();
+      await syncController.triggerSync();
     }
   });
 
@@ -221,7 +157,7 @@ Future<void> main({String env = 'prod'}) async {
         ),
         ChangeNotifierProvider<FixesProvider>(create: (_) => FixesProvider()),
       ],
-      child: MyApp(apiConnection: apiConnection),
+      child: MyApp(),
     ),
   );
 }

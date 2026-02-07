@@ -1,8 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:mosquito_alert_app/core/widgets/offline_banner.dart';
 import 'package:mosquito_alert_app/features/auth/presentation/state/auth_provider.dart';
 import 'package:mosquito_alert_app/features/onboarding/data/onboarding_repository.dart';
 import 'package:mosquito_alert_app/features/onboarding/presentation/pages/onboarding_flow_page.dart';
@@ -19,26 +17,17 @@ import 'features/user/presentation/state/user_provider.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class AppShell extends StatelessWidget {
-  const AppShell({super.key, required this.apiConnection, required this.child});
-
-  final InternetConnection apiConnection;
+  const AppShell({super.key, required this.child});
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        OfflineBanner(connection: apiConnection),
-        Expanded(child: child),
-      ],
-    );
+    return child;
   }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.apiConnection});
-
-  final InternetConnection apiConnection;
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +114,7 @@ class MyApp extends StatelessWidget {
             ),
           ],
           builder: (context, child) {
-            return AppShell(apiConnection: apiConnection, child: child!);
+            return AppShell(child: child!);
           },
           home: Consumer<OnboardingProvider>(
             builder: (context, onboardingProvider, child) {

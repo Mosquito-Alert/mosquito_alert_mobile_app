@@ -58,7 +58,7 @@ mixin OutboxMixin<
     }
   }
 
-  Future<void> syncRepository() async {
+  Future<bool> syncRepository() async {
     final items = itemBox.values
         .where((e) => e.localId != null)
         .map(
@@ -89,5 +89,15 @@ mixin OutboxMixin<
         // Do nothing
       }
     }
+
+    final pendingItemCount = itemBox.values
+        .where((e) => e.localId != null)
+        .length;
+    final pendingOutboxCount = outbox
+        .getAll()
+        .where((i) => i.repository == repoName)
+        .length;
+
+    return pendingItemCount + pendingOutboxCount > 0;
   }
 }

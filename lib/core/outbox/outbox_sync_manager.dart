@@ -5,9 +5,15 @@ class OutboxSyncManager {
 
   OutboxSyncManager(this._repositories);
 
-  Future<void> syncAll() async {
+  Future<bool> syncAll() async {
+    bool hasPending = false;
     for (final repo in _repositories) {
-      await repo.syncRepository();
+      final repoHasPending = await repo.syncRepository();
+      if (repoHasPending) {
+        hasPending = true;
+      }
     }
+
+    return hasPending;
   }
 }
