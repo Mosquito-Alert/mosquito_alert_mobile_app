@@ -1,6 +1,7 @@
 import 'package:hive_ce/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
+import 'package:dio/dio.dart';
 
 class UserRepository {
   static const String itemBoxName = 'user';
@@ -27,14 +28,32 @@ class UserRepository {
   }
 
   Future<User> fetchUser() async {
-    final response = await _usersApi.retrieveMine();
-    final networkUser = response.data!;
-    try {
-      await _box.putAt(0, networkUser);
-    } on IndexError {
-      await _box.add(networkUser);
+    int attempts = 0;
+    Duration delay = const Duration(seconds: 1);
+    while (true) {
+      try {
+        final response = await _usersApi.retrieveMine();
+        final networkUser = response.data!;
+        try {
+          await _box.putAt(0, networkUser);
+        } on IndexError {
+          await _box.add(networkUser);
+        }
+        return networkUser;
+      } on DioException catch (e) {
+        final isTransient =
+            e.type == DioExceptionType.connectionError ||
+            e.type == DioExceptionType.connectionTimeout ||
+            e.type == DioExceptionType.receiveTimeout ||
+            e.type == DioExceptionType.sendTimeout;
+        if (!isTransient || attempts >= 2) {
+          rethrow;
+        }
+        await Future.delayed(delay);
+        delay *= 2;
+        attempts++;
+      }
     }
-    return networkUser;
   }
 
   Future<User> updateLocale(Locale locale) async {

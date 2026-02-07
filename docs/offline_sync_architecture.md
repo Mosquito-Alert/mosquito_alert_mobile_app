@@ -57,10 +57,20 @@ returns. This prevents the “Turn on location” step from blocking offline use
 If the user profile cannot be fetched and guest creation is deferred, the app
 continues into the main UI instead of showing the “loading failed” retry page.
 
+### ✅ Transient network retries for auth/user fetch
+Guest account creation and user profile fetch now retry a few times on transient
+network errors (connection refused/timeouts). This reduces false failures under
+flaky connectivity without blocking the UI.
+
 ### ✅ Network requests bypass system proxies (robust connectivity)
 The API client now uses **direct sockets** (no system proxy/PAC). This avoids
 cases where iOS proxies/content filters allow Safari but block app traffic,
 which can surface as `SocketException: Connection refused`.
+
+### ✅ Temporary diagnostics screen (dev only)
+For troubleshooting, a debug‑only Diagnostics screen is available in Settings.
+It shows base URL, auth state, pending outbox counts, and provides quick actions
+to trigger sync and user fetch.
 
 ## Minimal flow (pseudocode)
 ```

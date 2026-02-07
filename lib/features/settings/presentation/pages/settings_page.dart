@@ -9,8 +9,10 @@ import 'package:mosquito_alert_app/core/widgets/tags_text_field.dart';
 import 'package:mosquito_alert_app/features/user/presentation/state/user_provider.dart';
 import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
+import 'package:mosquito_alert_app/features/settings/presentation/pages/diagnostics_page.dart';
 import 'package:provider/provider.dart';
 import 'package:country_codes/country_codes.dart';
+import 'package:flutter/foundation.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage();
@@ -197,6 +199,29 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
+                  if (kDebugMode) ...[
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.bug_report_outlined,
+                        color: Colors.black,
+                      ),
+                      title: const Text('Diagnostics'),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.black,
+                        size: 16,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const DiagnosticsPage(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
           ],
         ),
       ),

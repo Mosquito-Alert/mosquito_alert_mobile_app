@@ -14,7 +14,7 @@ class ApiService {
   static MosquitoAlert _buildClient(String baseUrl) {
     final BaseOptions options = BaseOptions(
       baseUrl: baseUrl,
-      connectTimeout: const Duration(milliseconds: 5000),
+      connectTimeout: const Duration(milliseconds: 15000),
       // A lower receiveTimeout causes a timeout on the notifications endpoint
       receiveTimeout: const Duration(milliseconds: 10000),
     );

@@ -49,11 +49,30 @@ class AuthRepository {
   Future<void> createGuestAccount() async {
     final password = getRandomPassword(10);
     final request = GuestRegistrationRequest((b) => b..password = password);
-    final response = await _authApi.signupGuest(
-      guestRegistrationRequest: request,
-    );
-    final username = response.data!.username;
-    return login(username: username, password: password);
+
+    int attempts = 0;
+    Duration delay = const Duration(seconds: 1);
+    while (true) {
+      try {
+        final response = await _authApi.signupGuest(
+          guestRegistrationRequest: request,
+        );
+        final username = response.data!.username;
+        return login(username: username, password: password);
+      } on DioException catch (e) {
+        final isTransient =
+            e.type == DioExceptionType.connectionError ||
+            e.type == DioExceptionType.connectionTimeout ||
+            e.type == DioExceptionType.receiveTimeout ||
+            e.type == DioExceptionType.sendTimeout;
+        if (!isTransient || attempts >= 2) {
+          rethrow;
+        }
+        await Future.delayed(delay);
+        delay *= 2;
+        attempts++;
+      }
+    }
   }
 
   // -------- LOGIN --------
