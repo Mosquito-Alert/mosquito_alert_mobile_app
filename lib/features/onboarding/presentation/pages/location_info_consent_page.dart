@@ -28,6 +28,16 @@ class _LocationInfoConsentPageState extends State<LocationInfoConsentPage> {
       await widget.onCompleted?.call();
       final fixesProvider = context.read<FixesProvider>();
       await fixesProvider.enableTracking(runImmediately: true);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      }
     } finally {
       if (mounted) {
         setState(() {

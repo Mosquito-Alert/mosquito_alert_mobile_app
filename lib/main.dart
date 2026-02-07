@@ -116,17 +116,24 @@ Future<void> main({String env = 'prod'}) async {
     ],
     customConnectivityCheck: (option) async {
       try {
-        final pingApi = apiClient.getPingApi();
-        final response = await pingApi.retrieve();
+        // Use a raw Dio call for the connectivity check.
+        // The generated SDK layer may throw non-Dio exceptions for non-2xx
+        // responses, which would incorrectly classify the device as offline.
+        final baseUrl = apiClient.dio.options.baseUrl;
+        final pingUri = Uri.parse(baseUrl).resolve('ping');
 
-        // Consider the device "online" if the server is reachable.
-        // The ping endpoint can legitimately return 204, but in some environments
-        // it may return other codes; a 4xx still indicates connectivity.
-        final statusCode = response.statusCode ?? 0;
+        final response = await apiClient.dio.getUri(
+          pingUri,
+          options: Options(
+            validateStatus: (_) => true, // never throw on status code
+            responseType: ResponseType.plain,
+          ),
+        );
 
+        final statusCode = response.statusCode;
         return InternetCheckResult(
           option: option,
-          isSuccess: statusCode >= 200 && statusCode < 500,
+          isSuccess: statusCode != null && statusCode > 0,
         );
       } on DioException catch (e) {
         // If Dio has a response, we reached the server even if it was an error.
