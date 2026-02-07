@@ -53,6 +53,10 @@ Guest account creation is now **deferred** if it fails due to network issues.
 Onboarding completes, and the app will retry guest creation when connectivity
 returns. This prevents the “Turn on location” step from blocking offline users.
 
+### ✅ Layout no longer blocks on user fetch when offline
+If the user profile cannot be fetched and guest creation is deferred, the app
+continues into the main UI instead of showing the “loading failed” retry page.
+
 ## Minimal flow (pseudocode)
 ```
 onAppStart:

@@ -4,6 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/app.dart';
 import 'package:mosquito_alert_app/app_config.dart';
+import 'package:mosquito_alert_app/features/auth/data/auth_repository.dart';
 import 'package:mosquito_alert_app/features/auth/presentation/state/auth_provider.dart';
 import 'package:mosquito_alert_app/features/fixes/presentation/state/fixes_provider.dart';
 import 'package:mosquito_alert_app/features/fixes/services/tracking_service.dart';
@@ -29,6 +30,7 @@ class _LayoutPageState extends State<LayoutPage> with WidgetsBindingObserver {
   int _selectedDrawerIndex = 0;
 
   late final NotificationProvider notificationProvider;
+  bool _allowOfflineAccess = false;
 
   @override
   void initState() {
@@ -82,9 +84,13 @@ class _LayoutPageState extends State<LayoutPage> with WidgetsBindingObserver {
       try {
         await userProvider.fetchUser();
       } catch (_) {
+        // Allow app to continue if guest creation is deferred due to offline.
+        _allowOfflineAccess = await AuthRepository.getNeedsGuestAccount();
         return;
       }
     }
+
+    _allowOfflineAccess = await AuthRepository.getNeedsGuestAccount();
   }
 
   Future<void> _initTrackingService() async {
@@ -167,7 +173,7 @@ class _LayoutPageState extends State<LayoutPage> with WidgetsBindingObserver {
       body: SafeArea(
         child: userProvider.isLoading || authProvider.isLoading
             ? Center(child: CircularProgressIndicator())
-            : userProvider.user == null
+            : userProvider.user == null && !_allowOfflineAccess
             ? _retryPage()
             : drawerItems[_selectedDrawerIndex].destination,
       ),
