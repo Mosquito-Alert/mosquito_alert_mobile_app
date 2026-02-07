@@ -4,6 +4,8 @@ import 'package:mosquito_alert_app/features/fixes/services/permissions_manager.d
 import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 import 'package:provider/provider.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 class LocationInfoConsentPage extends StatefulWidget {
   final Future<void> Function()? onCompleted;
@@ -29,10 +31,23 @@ class _LocationInfoConsentPageState extends State<LocationInfoConsentPage> {
       final fixesProvider = context.read<FixesProvider>();
       await fixesProvider.enableTracking(runImmediately: true);
     } catch (e) {
+      if (kDebugMode) {
+        if (e is DioException) {
+          debugPrint(
+            '[Tracking enable] DioException uri=${e.requestOptions.uri} type=${e.type} status=${e.response?.statusCode} error=${e.error}',
+          );
+        } else {
+          debugPrint('[Tracking enable] Error: $e');
+        }
+      }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(e.toString()),
+            content: Text(
+              e is DioException && e.requestOptions.uri.host.isNotEmpty
+                  ? 'Connection error contacting ${e.requestOptions.uri.host}'
+                  : e.toString(),
+            ),
             backgroundColor: Colors.red,
             duration: const Duration(seconds: 4),
           ),

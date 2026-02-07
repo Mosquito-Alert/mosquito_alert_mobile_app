@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,9 @@ Future<void> main({String env = 'prod'}) async {
 
   await AppConfig.setEnvironment(env);
   final config = await AppConfig.loadConfig();
+  if (kDebugMode) {
+    debugPrint('[AppConfig] env=$env baseUrl=${config.baseUrl}');
+  }
 
   try {
     await Firebase.initializeApp();
@@ -131,6 +135,10 @@ Future<void> main({String env = 'prod'}) async {
         final normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl : '$baseUrl/';
         final pingUri = Uri.parse('${normalizedBaseUrl}ping');
 
+        if (kDebugMode) {
+          debugPrint('[Connectivity] ping -> $pingUri');
+        }
+
         final response = await connectivityDio.getUri(
           pingUri,
           options: Options(
@@ -140,6 +148,9 @@ Future<void> main({String env = 'prod'}) async {
         );
 
         final statusCode = response.statusCode;
+        if (kDebugMode) {
+          debugPrint('[Connectivity] ping status=$statusCode');
+        }
         return InternetCheckResult(
           option: option,
           isSuccess: statusCode != null && statusCode > 0,
@@ -147,11 +158,19 @@ Future<void> main({String env = 'prod'}) async {
       } on DioException catch (e) {
         // If Dio has a response, we reached the server even if it was an error.
         final statusCode = e.response?.statusCode;
+        if (kDebugMode) {
+          debugPrint(
+            '[Connectivity] DioException uri=${e.requestOptions.uri} type=${e.type} status=$statusCode error=${e.error}',
+          );
+        }
         return InternetCheckResult(
           option: option,
           isSuccess: statusCode != null && statusCode > 0,
         );
       } catch (_) {
+        if (kDebugMode) {
+          debugPrint('[Connectivity] Unknown error during ping');
+        }
         return InternetCheckResult(option: option, isSuccess: false);
       }
     },
