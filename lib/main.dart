@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:ui';
 
+import 'package:dio/dio.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -117,9 +119,21 @@ Future<void> main({String env = 'prod'}) async {
         final pingApi = apiClient.getPingApi();
         final response = await pingApi.retrieve();
 
+        // Consider the device "online" if the server is reachable.
+        // The ping endpoint can legitimately return 204, but in some environments
+        // it may return other codes; a 4xx still indicates connectivity.
+        final statusCode = response.statusCode ?? 0;
+
         return InternetCheckResult(
           option: option,
-          isSuccess: response.statusCode == 204,
+          isSuccess: statusCode >= 200 && statusCode < 500,
+        );
+      } on DioException catch (e) {
+        // If Dio has a response, we reached the server even if it was an error.
+        final statusCode = e.response?.statusCode;
+        return InternetCheckResult(
+          option: option,
+          isSuccess: statusCode != null && statusCode > 0,
         );
       } catch (_) {
         return InternetCheckResult(option: option, isSuccess: false);
@@ -179,6 +193,9 @@ Future<void> main({String env = 'prod'}) async {
 
 @pragma('vm:entry-point') // Mandatory if the App is using Flutter 3.1+
 void callbackDispatcher() {
+  WidgetsFlutterBinding.ensureInitialized();
+  DartPluginRegistrant.ensureInitialized();
+
   Workmanager().executeTask((task, inputData) async {
     try {
       await Firebase.initializeApp();
