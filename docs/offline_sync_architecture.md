@@ -57,6 +57,11 @@ returns. This prevents the “Turn on location” step from blocking offline use
 If the user profile cannot be fetched and guest creation is deferred, the app
 continues into the main UI instead of showing the “loading failed” retry page.
 
+### ✅ Network requests bypass system proxies (robust connectivity)
+The API client now uses **direct sockets** (no system proxy/PAC). This avoids
+cases where iOS proxies/content filters allow Safari but block app traffic,
+which can surface as `SocketException: Connection refused`.
+
 ## Minimal flow (pseudocode)
 ```
 onAppStart:

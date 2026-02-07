@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
+import 'dart:io';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert/src/auth/jwt_auth.dart';
 import 'package:mosquito_alert_app/features/auth/data/auth_repository.dart';
@@ -18,6 +20,17 @@ class ApiService {
     );
 
     final Dio dio = Dio(options);
+
+    // Ensure we bypass any system proxy/PAC that can cause connection refused
+    // for app traffic on iOS. This makes network behavior more robust and
+    // consistent with direct socket connectivity.
+    dio.httpClientAdapter = IOHttpClientAdapter(
+      createHttpClient: () {
+        final client = HttpClient();
+        client.findProxy = (uri) => 'DIRECT';
+        return client;
+      },
+    );
 
     dio.interceptors.add(
       JwtAuthInterceptor(
