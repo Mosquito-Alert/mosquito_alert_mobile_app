@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:mosquito_alert/mosquito_alert.dart';
+import 'package:mosquito_alert_app/core/outbox/outbox_sync_manager.dart';
 import 'package:mosquito_alert_app/core/widgets/offline_banner.dart';
 import 'package:mosquito_alert_app/features/auth/presentation/state/auth_provider.dart';
 import 'package:mosquito_alert_app/features/onboarding/data/onboarding_repository.dart';
@@ -19,26 +23,107 @@ import 'features/user/presentation/state/user_provider.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class AppShell extends StatelessWidget {
-  const AppShell({super.key, required this.apiConnection, required this.child});
+  const AppShell({
+    super.key,
+    required this.internetStatus,
+    required this.child,
+  });
 
-  final InternetConnection apiConnection;
+  final InternetStatus internetStatus;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        OfflineBanner(connection: apiConnection),
+        OfflineBanner(internetStatus: internetStatus),
         Expanded(child: child),
       ],
     );
   }
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.apiConnection});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key, required this.syncManager});
 
-  final InternetConnection apiConnection;
+  final OutboxSyncManager syncManager;
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late final InternetConnection apiConnection;
+  InternetStatus _internetStatus = InternetStatus.connected;
+
+  late StreamSubscription<InternetStatus> _apiConnectionSubscription;
+  late final AppLifecycleListener _apiConnectionSListener;
+
+  StreamSubscription<InternetStatus> _createApiConnectionSubscription() {
+    final apiClient = context.read<MosquitoAlert>();
+    final authProvider = context.read<AuthProvider>();
+
+    return InternetConnection.createInstance(
+      useDefaultOptions: false,
+      enableStrictCheck: true,
+      customCheckOptions: [
+        // NOTE: this is dummy, all the logic is in customConnectivityCheck
+        InternetCheckOption(uri: Uri.parse(apiClient.dio.options.baseUrl)),
+      ],
+      customConnectivityCheck: (option) async {
+        try {
+          final pingApi = apiClient.getPingApi();
+          final response = await pingApi.retrieve();
+
+          return InternetCheckResult(
+            option: option,
+            isSuccess: response.statusCode == 204,
+          );
+        } catch (e) {
+          return InternetCheckResult(option: option, isSuccess: false);
+        }
+      },
+    ).onStatusChange.listen((status) async {
+      setState(() {
+        _internetStatus = status;
+      });
+      if (status == InternetStatus.connected) {
+        if (!authProvider.isAuthenticated) {
+          try {
+            await authProvider.restoreSession();
+          } catch (e) {
+            print('Error auto logging in: $e');
+            return;
+          }
+        }
+        unawaited(widget.syncManager.syncAll());
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _apiConnectionSubscription = _createApiConnectionSubscription();
+    _apiConnectionSListener = AppLifecycleListener(
+      onResume: () {
+        _apiConnectionSubscription = _createApiConnectionSubscription();
+      },
+      onPause: () {
+        _apiConnectionSubscription.cancel();
+        setState(() {
+          _internetStatus = InternetStatus.connected;
+        });
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _apiConnectionSubscription.cancel();
+    _apiConnectionSListener.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +210,7 @@ class MyApp extends StatelessWidget {
             ),
           ],
           builder: (context, child) {
-            return AppShell(apiConnection: apiConnection, child: child!);
+            return AppShell(internetStatus: _internetStatus, child: child!);
           },
           home: Consumer<OnboardingProvider>(
             builder: (context, onboardingProvider, child) {

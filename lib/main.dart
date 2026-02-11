@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -104,42 +103,6 @@ Future<void> main({String env = 'prod'}) async {
 
   await TrackingService.configure(repository: fixesRepository);
 
-  // Auto-sync when online
-  final apiConnection = InternetConnection.createInstance(
-    useDefaultOptions: false,
-    enableStrictCheck: true,
-    customCheckOptions: [
-      // NOTE: this is dummy, all the logic is in customConnectivityCheck
-      InternetCheckOption(uri: Uri.parse(apiClient.dio.options.baseUrl)),
-    ],
-    customConnectivityCheck: (option) async {
-      try {
-        final pingApi = apiClient.getPingApi();
-        final response = await pingApi.retrieve();
-
-        return InternetCheckResult(
-          option: option,
-          isSuccess: response.statusCode == 204,
-        );
-      } catch (_) {
-        return InternetCheckResult(option: option, isSuccess: false);
-      }
-    },
-  );
-  apiConnection.onStatusChange.listen((status) async {
-    if (status == InternetStatus.connected) {
-      if (!authProvider.isAuthenticated) {
-        try {
-          await authProvider.restoreSession();
-        } catch (e) {
-          print('Error auto logging in: $e');
-          return;
-        }
-      }
-      await syncManager.syncAll();
-    }
-  });
-
   InAppReviewManager.configure(
     observationRepository,
     biteRepository,
@@ -172,7 +135,7 @@ Future<void> main({String env = 'prod'}) async {
         ),
         ChangeNotifierProvider<FixesProvider>(create: (_) => FixesProvider()),
       ],
-      child: MyApp(apiConnection: apiConnection),
+      child: MyApp(syncManager: syncManager),
     ),
   );
 }

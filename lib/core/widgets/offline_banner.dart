@@ -3,59 +3,46 @@ import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class OfflineBanner extends StatefulWidget {
-  const OfflineBanner({super.key, required this.connection});
+  const OfflineBanner({super.key, required this.internetStatus});
 
-  final InternetConnection connection;
+  final InternetStatus internetStatus;
 
   @override
   State<OfflineBanner> createState() => _OfflineBannerState();
 }
 
 class _OfflineBannerState extends State<OfflineBanner> {
-  InternetStatus? _status;
-  InternetStatus? _previousStatus;
+  InternetStatus _previousStatus = InternetStatus.connected;
   Timer? _onlineTimer;
 
   @override
-  void initState() {
-    super.initState();
-    _initConnectionStatus();
-
-    widget.connection.onStatusChange.listen((status) {
-      if (!mounted) return;
-
-      _onlineTimer?.cancel();
-
-      // Show "Online" only if previous status was disconnected
-      bool showOnlineBanner =
-          _previousStatus == InternetStatus.disconnected &&
-          status == InternetStatus.connected;
-
-      setState(() {
-        _previousStatus = _status;
-        _status = status;
-      });
-
-      // When back online, hide after 1 second
-      if (showOnlineBanner) {
-        _onlineTimer = Timer(const Duration(seconds: 1), () {
-          if (!mounted) return;
-          setState(() {
-            _onlineTimer = null;
-          });
-        });
-      }
-    });
+  void didUpdateWidget(covariant OfflineBanner oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _handleStatusChange(widget.internetStatus);
   }
 
-  Future<void> _initConnectionStatus() async {
-    final status = await widget.connection.internetStatus;
-    if (!mounted) return;
+  void _handleStatusChange(InternetStatus status) {
+    // Check if we just went online
+    bool showOnlineBanner =
+        _previousStatus == InternetStatus.disconnected &&
+        status == InternetStatus.connected;
 
     setState(() {
-      _status = status;
       _previousStatus = status;
     });
+
+    if (showOnlineBanner) {
+      // Clear any existing timer
+      _onlineTimer?.cancel();
+
+      // Hide the online banner after 1 second
+      _onlineTimer = Timer(const Duration(seconds: 1), () {
+        if (!mounted) return;
+        setState(() {
+          _onlineTimer = null;
+        });
+      });
+    }
   }
 
   @override
@@ -67,15 +54,16 @@ class _OfflineBannerState extends State<OfflineBanner> {
   @override
   Widget build(BuildContext context) {
     final showBanner =
-        _status == InternetStatus.disconnected || _onlineTimer != null;
+        widget.internetStatus == InternetStatus.disconnected ||
+        _onlineTimer != null;
 
-    final text = _status == InternetStatus.disconnected
+    final text = widget.internetStatus == InternetStatus.disconnected
         ? 'Offline mode'
         : 'Online';
-    final color = _status == InternetStatus.disconnected
+    final color = widget.internetStatus == InternetStatus.disconnected
         ? Colors.blue
         : Colors.green;
-    final icon = _status == InternetStatus.disconnected
+    final icon = widget.internetStatus == InternetStatus.disconnected
         ? Icons.wifi_off
         : Icons.wifi;
 
@@ -85,7 +73,7 @@ class _OfflineBannerState extends State<OfflineBanner> {
       padding: EdgeInsets.symmetric(horizontal: 16),
       width: double.infinity,
       curve: Curves.easeInOut,
-      child: showBanner && _status != null
+      child: showBanner
           ? SafeArea(
               bottom: false,
               child: Padding(
