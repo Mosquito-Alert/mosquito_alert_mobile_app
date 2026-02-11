@@ -58,9 +58,9 @@ class _PartnersPageState extends State<PartnersPage> {
       Response<PaginatedPartnerList> response = await partnersApi.list();
       PaginatedPartnerList? partners = response.data;
 
-      if (partners == null || partners.results == null) return;
+      if (partners == null || partners.results.isEmpty) return;
 
-      for (var partner in partners.results!) {
+      for (var partner in partners.results) {
         markers.add(
           Marker(
             markerId: MarkerId(partner.id.toString()),

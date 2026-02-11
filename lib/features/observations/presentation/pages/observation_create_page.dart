@@ -213,7 +213,7 @@ class _ObservationCreatePageState extends State<ObservationCreatePage> {
             orderBy: ['-start_date'].build(),
           );
           final Campaign? campaign =
-              campaignsResponse.data?.results?.firstOrNull;
+              campaignsResponse.data?.results.firstOrNull;
           if (campaign != null) {
             final bool? showTutorial = await _showAlertCampaign(campaign);
 

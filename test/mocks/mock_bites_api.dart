@@ -96,25 +96,31 @@ class MockBitesApi extends sdk.BitesApi {
 
   @override
   Future<Response<sdk.PaginatedBiteList>> listMine({
-    int? page,
-    int? pageSize,
-    BuiltList<String>? orderBy,
+    String? boundaryUuid,
     int? countryId,
     DateTime? createdAtAfter,
     DateTime? createdAtBefore,
+    double? dist = 1000,
+    String? format,
+    num? geoPrecision,
+    BuiltList<String>? orderBy,
+    int? page,
+    int? pageSize,
+    BuiltList<double>? point,
     DateTime? receivedAtAfter,
     DateTime? receivedAtBefore,
     String? search,
     String? shortId,
+    BuiltList<String>? tags,
     DateTime? updatedAtAfter,
     DateTime? updatedAtBefore,
     String? userUuid,
     CancelToken? cancelToken,
-    Map<String, dynamic>? extra,
     Map<String, dynamic>? headers,
-    void Function(int, int)? onReceiveProgress,
-    void Function(int, int)? onSendProgress,
-    bool Function(int?)? validateStatus,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
   }) async {
     await Future.delayed(Duration(milliseconds: 100));
 

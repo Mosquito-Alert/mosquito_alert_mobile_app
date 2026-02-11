@@ -42,6 +42,6 @@ class NotificationRepository
       orderBy: BuiltList<String>(["-created_at"]),
     );
 
-    return (response.data!.results!.toList(), response.data!.next != null);
+    return (response.data!.results.toList(), response.data!.next != null);
   }
 }

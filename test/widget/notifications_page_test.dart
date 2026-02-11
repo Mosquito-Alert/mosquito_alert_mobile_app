@@ -51,7 +51,7 @@ void main() {
 
         // Then
         expect(response.statusCode, equals(200));
-        expect(response.data?.results?.length, equals(0));
+        expect(response.data?.results.length, equals(0));
         expect(response.data?.count, equals(0));
       },
     );
@@ -71,10 +71,10 @@ void main() {
 
       // Then
       expect(response.statusCode, equals(200));
-      expect(response.data?.results?.length, equals(1));
-      expect(response.data?.results?.first.id, equals(1));
+      expect(response.data?.results.length, equals(1));
+      expect(response.data?.results.first.id, equals(1));
       expect(
-        response.data?.results?.first.message.title,
+        response.data?.results.first.message.title,
         equals('Test Notification'),
       );
       expect(response.data?.count, equals(1));
@@ -98,7 +98,7 @@ void main() {
 
       // Then - First page should have 20 items
       expect(firstPageResponse.statusCode, equals(200));
-      expect(firstPageResponse.data?.results?.length, equals(20));
+      expect(firstPageResponse.data?.results.length, equals(20));
       expect(firstPageResponse.data?.count, equals(25));
       expect(firstPageResponse.data?.next, isNotNull);
 
@@ -107,7 +107,7 @@ void main() {
 
       // Then - Second page should have 5 items
       expect(secondPageResponse.statusCode, equals(200));
-      expect(secondPageResponse.data?.results?.length, equals(5));
+      expect(secondPageResponse.data?.results.length, equals(5));
       expect(secondPageResponse.data?.count, equals(25));
       expect(secondPageResponse.data?.next, isNull);
     });

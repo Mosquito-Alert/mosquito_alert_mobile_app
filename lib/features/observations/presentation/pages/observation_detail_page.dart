@@ -61,7 +61,7 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
         orderBy: ['-start_date'].build(),
       );
       setState(() {
-        activeCampaign = campaignsResponse.data?.results?.firstOrNull;
+        activeCampaign = campaignsResponse.data?.results.firstOrNull;
       });
     }
   }
