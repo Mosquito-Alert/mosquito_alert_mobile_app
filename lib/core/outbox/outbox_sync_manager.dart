@@ -5,6 +5,12 @@ class OutboxSyncManager {
 
   OutboxSyncManager(this._repositories);
 
+  Future<void> syncAllWithoutAuth() async {
+    for (final repo in _repositories.where((r) => !r.requiresAuth)) {
+      await repo.syncRepository();
+    }
+  }
+
   Future<void> syncAll() async {
     for (final repo in _repositories) {
       await repo.syncRepository();

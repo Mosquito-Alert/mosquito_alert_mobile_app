@@ -47,8 +47,12 @@ class AuthProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      await _repository.createGuestAccount();
-      _isAuthenticated = true;
+      final newUser = await _repository.createGuestAccount();
+      if (newUser.isOffline) {
+        _isAuthenticated = false;
+      } else {
+        await login(username: newUser.username!, password: newUser.password);
+      }
     } catch (e) {
       _isAuthenticated = false;
       rethrow;

@@ -27,6 +27,9 @@ abstract class ReportRepository<
   Future<TReport> sendCreateToApi({required TCreateReportRequest request});
 
   @override
+  bool get requiresAuth => true;
+
+  @override
   Future<(List<TReport> items, bool hasMore)> fetchPage({
     required int page,
     required int pageSize,

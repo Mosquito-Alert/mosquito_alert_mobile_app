@@ -167,31 +167,7 @@ class _LayoutPageState extends State<LayoutPage> with WidgetsBindingObserver {
       body: SafeArea(
         child: userProvider.isLoading || authProvider.isLoading
             ? Center(child: CircularProgressIndicator())
-            : userProvider.user == null
-            ? _retryPage()
             : drawerItems[_selectedDrawerIndex].destination,
-      ),
-    );
-  }
-
-  Widget _retryPage() {
-    return Center(
-      key: Key("retryPage"),
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(MyLocalizations.of(context, 'loading_failed_try_again')),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                _initUser();
-              },
-              child: Text(MyLocalizations.of(context, 'retry')),
-            ),
-          ],
-        ),
       ),
     );
   }

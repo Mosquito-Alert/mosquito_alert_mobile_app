@@ -1,12 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mosquito_alert_app/core/outbox/outbox_item.dart';
+import 'package:mosquito_alert_app/core/outbox/outbox_mixin.dart';
 import 'package:mosquito_alert_app/env/env.dart';
+import 'package:mosquito_alert_app/features/auth/data/models/user_registration_request.dart';
+import 'package:mosquito_alert_app/features/auth/domain/models/auth_user.dart';
 import 'package:mosquito_alert_app/features/device/presentation/state/data/device_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mosquito_alert_app/features/auth/utils/random.dart';
+import 'package:uuid/uuid.dart';
 
-class AuthRepository {
+class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
   static final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   static const _accessTokenKey = 'access_token';
@@ -23,6 +29,64 @@ class AuthRepository {
   AuthRepository({required MosquitoAlert apiClient, this.getCurrentDevice})
     : _authApi = apiClient.getAuthApi();
 
+  static const itemBoxName = 'offline_auth';
+
+  @override
+  bool get requiresAuth => false;
+
+  @override
+  String get repoName => 'auth';
+
+  @override
+  Box<AuthUser> get itemBox => Hive.box<AuthUser>(itemBoxName);
+
+  @override
+  AuthUser buildItemFromCreateRequest(UserRegistrationRequest request) {
+    return AuthUser.fromCreateRequest(request);
+  }
+
+  @override
+  UserRegistrationRequest createRequestFactory(Map<String, dynamic> payload) {
+    return UserRegistrationRequest.fromJson(payload);
+  }
+
+  @override
+  UserRegistrationRequest buildCreateRequestFromItem(AuthUser item) {
+    return UserRegistrationRequest.fromModel(item);
+  }
+
+  @override
+  OutboxTask buildOutboxTaskFromItem({required OutboxItem item}) {
+    return OutboxTask(
+      item: item,
+      action: () async {
+        switch (item.operation) {
+          case OutBoxOperation.create:
+            final request = createRequestFactory(item.payload);
+            try {
+              final newUser = await _sendCreateGuestToApi(request: request);
+              await login(
+                username: newUser.username!,
+                password: newUser.password,
+              );
+            } on DioException catch (e) {
+              if (e.response?.statusCode != null &&
+                  e.response!.statusCode! < 500) {
+                break;
+              }
+              rethrow;
+            } catch (e) {
+              print('Error processing create guest account outbox item: $e');
+              rethrow;
+            }
+            break;
+          default:
+            throw Exception("Unknown op: ${item.operation}");
+        }
+      },
+    );
+  }
+
   static Future<String?> getAccessToken() async {
     return await _storage.read(key: _accessTokenKey);
   }
@@ -35,14 +99,55 @@ class AuthRepository {
     await _storage.write(key: _accessTokenKey, value: accessToken);
   }
 
-  Future<void> createGuestAccount() async {
-    final password = getRandomPassword(10);
-    final request = GuestRegistrationRequest((b) => b..password = password);
+  Future<AuthUser> _sendCreateGuestToApi({
+    required UserRegistrationRequest request,
+  }) async {
     final response = await _authApi.signupGuest(
-      guestRegistrationRequest: request,
+      guestRegistrationRequest: GuestRegistrationRequest(
+        (b) => b..password = request.password,
+      ),
     );
-    final username = response.data!.username;
-    return login(username: username, password: password);
+    // Not setting localId since the user is already created in the backend
+    // and we won't be syncing it from the outbox
+    return AuthUser(
+      username: response.data!.username,
+      password: request.password,
+    );
+  }
+
+  Future<AuthUser> _createGuestApiOrLocal({
+    required UserRegistrationRequest request,
+  }) async {
+    AuthUser newAuthUser;
+    try {
+      newAuthUser = await _sendCreateGuestToApi(request: request);
+      await itemBox.delete(request.localId);
+    } on DioException catch (e) {
+      if (e.response?.statusCode != null && e.response!.statusCode! < 500) {
+        rethrow;
+      }
+      newAuthUser = buildItemFromCreateRequest(request);
+    }
+    return newAuthUser;
+  }
+
+  Future<AuthUser> createGuestAccount() async {
+    final request = UserRegistrationRequest(
+      password: getRandomPassword(10),
+      localId: Uuid().v4(),
+    );
+    final newGuestAuthUser = await _createGuestApiOrLocal(request: request);
+    if (newGuestAuthUser.localId != null) {
+      final createItem = OutboxItem(
+        id: request.localId,
+        repository: repoName,
+        operation: OutBoxOperation.create,
+        payload: request.toJson(),
+      );
+      final createTask = buildOutboxTaskFromItem(item: createItem);
+      await schedule(createTask, runNow: false);
+    }
+    return newGuestAuthUser;
   }
 
   // -------- LOGIN --------

@@ -1,5 +1,7 @@
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
+import 'package:mosquito_alert_app/features/auth/data/auth_repository.dart';
+import 'package:mosquito_alert_app/features/auth/domain/models/auth_user.dart';
 import 'package:mosquito_alert_app/features/bites/data/bite_repository.dart';
 import 'package:mosquito_alert_app/features/bites/domain/models/bite_report.dart';
 import 'package:mosquito_alert_app/features/breeding_sites/data/breeding_site_repository.dart';
@@ -28,6 +30,8 @@ Future<void> initHive() async {
     ..registerAdapters();
 
   await Future.wait([
+    // For AuthRepository offline storage
+    Hive.openBox<AuthUser>(AuthRepository.itemBoxName),
     // For ObservationRepository offline storage
     Hive.openBox<ObservationReport>(ObservationRepository.itemBoxName),
     // For BiteRepository offline storage

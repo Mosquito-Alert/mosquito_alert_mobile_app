@@ -16,6 +16,9 @@ class FixesRepository with OutboxMixin<FixModel, FixCreateRequest> {
   static const itemBoxName = 'offline_fixes';
 
   @override
+  bool get requiresAuth => true;
+
+  @override
   String get repoName => 'fixes';
 
   @override

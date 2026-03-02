@@ -3,6 +3,7 @@ import 'package:hive_ce/hive.dart';
 import 'package:built_value/serializer.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_item.dart';
+import 'package:mosquito_alert_app/features/auth/domain/models/auth_user.dart';
 import 'package:mosquito_alert_app/features/bites/domain/models/bite_report.dart';
 import 'package:mosquito_alert_app/features/breeding_sites/domain/models/breeding_site_report.dart';
 import 'package:mosquito_alert_app/features/fixes/domain/models/fix.dart';
@@ -19,6 +20,7 @@ import 'package:mosquito_alert_app/features/reports/domain/models/photo.dart';
     AdapterSpec<LocalPhoto>(),
     AdapterSpec<MemoryPhoto>(),
     AdapterSpec<FixModel>(),
+    AdapterSpec<AuthUser>(),
   ],
   reservedTypeIds: {100, 101, 102, 103, 104, 105, 106, 107, 108},
 )

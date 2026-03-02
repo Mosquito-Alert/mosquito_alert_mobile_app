@@ -7,6 +7,7 @@ import 'package:mosquito_alert_app/hive/hive_adapters.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
+    registerAdapter(AuthUserAdapter());
     registerAdapter(BiteReportAdapter());
     registerAdapter(BreedingSiteReportAdapter());
     registerAdapter(FixModelAdapter());
@@ -20,6 +21,7 @@ extension HiveRegistrar on HiveInterface {
 
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
+    registerAdapter(AuthUserAdapter());
     registerAdapter(BiteReportAdapter());
     registerAdapter(BreedingSiteReportAdapter());
     registerAdapter(FixModelAdapter());

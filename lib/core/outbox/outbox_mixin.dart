@@ -1,4 +1,5 @@
 import 'package:hive_ce/hive.dart';
+import 'package:synchronized/extension.dart';
 import 'package:mosquito_alert_app/core/data/models/requests.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_item.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_offline_model.dart';
@@ -9,6 +10,8 @@ mixin OutboxMixin<
   TCreateRequest extends CreateRequest
 > {
   final OutboxService outbox = OutboxService();
+
+  bool get requiresAuth;
 
   /// Each repository must return a unique name
   String get repoName;
@@ -59,35 +62,37 @@ mixin OutboxMixin<
   }
 
   Future<void> syncRepository() async {
-    final items = itemBox.values
-        .where((e) => e.localId != null)
-        .map(
-          (e) => OutboxItem(
-            id: e.localId,
-            repository: repoName,
-            operation: OutBoxOperation.create,
-            payload: buildCreateRequestFromItem(e).toJson(),
-          ),
-        )
-        .toList();
-
-    items.addAll(
-      outbox
-          .getAll()
-          .where(
-            (i) =>
-                i.repository == repoName &&
-                i.operation != OutBoxOperation.create,
+    return synchronized(() async {
+      final items = itemBox.values
+          .where((e) => e.localId != null)
+          .map(
+            (e) => OutboxItem(
+              id: e.localId,
+              repository: repoName,
+              operation: OutBoxOperation.create,
+              payload: buildCreateRequestFromItem(e).toJson(),
+            ),
           )
-          .toList(),
-    );
+          .toList();
 
-    for (final item in items) {
-      try {
-        await execute(buildOutboxTaskFromItem(item: item));
-      } catch (_) {
-        // Do nothing
+      items.addAll(
+        outbox
+            .getAll()
+            .where(
+              (i) =>
+                  i.repository == repoName &&
+                  i.operation != OutBoxOperation.create,
+            )
+            .toList(),
+      );
+
+      for (final item in items) {
+        try {
+          await execute(buildOutboxTaskFromItem(item: item));
+        } catch (_) {
+          // Do nothing
+        }
       }
-    }
+    });
   }
 }

@@ -61,7 +61,6 @@ class _MyAppState extends State<MyApp> {
 
   StreamSubscription<InternetStatus> _createApiConnectionSubscription() {
     final apiClient = context.read<MosquitoAlert>();
-    final authProvider = context.read<AuthProvider>();
 
     return InternetConnection.createInstance(
       useDefaultOptions: false,
@@ -84,10 +83,13 @@ class _MyAppState extends State<MyApp> {
         }
       },
     ).onStatusChange.listen((status) async {
+      final authProvider = context.read<AuthProvider>();
+      final userProvider = context.read<UserProvider>();
       setState(() {
         _internetStatus = status;
       });
       if (status == InternetStatus.connected) {
+        await widget.syncManager.syncAllWithoutAuth();
         if (!authProvider.isAuthenticated) {
           try {
             await authProvider.restoreSession();
@@ -96,7 +98,14 @@ class _MyAppState extends State<MyApp> {
             return;
           }
         }
-        unawaited(widget.syncManager.syncAll());
+        if (authProvider.isAuthenticated && userProvider.user == null) {
+          try {
+            await userProvider.fetchUser();
+          } catch (e) {
+            print('Error fetching user: $e');
+          }
+        }
+        await widget.syncManager.syncAll();
       }
     });
   }

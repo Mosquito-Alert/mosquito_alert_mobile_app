@@ -95,6 +95,7 @@ Future<void> main({String env = 'prod'}) async {
   final fixesRepository = FixesRepository(apiClient: apiClient);
 
   final syncManager = OutboxSyncManager([
+    authRepository,
     observationRepository,
     biteRepository,
     breedingSiteRepository,
