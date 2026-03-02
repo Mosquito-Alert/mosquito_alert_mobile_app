@@ -1176,11 +1176,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.1.36"
-      resolved-ref: "4c4cb6c40efcf034854556fd5d3014990a231707"
+      ref: "0.2.0"
+      resolved-ref: "0656bacc320c479635a2ef0c01859a53d6ba5681"
       url: "https://github.com/Mosquito-Alert/mosquito-alert-dart-sdk.git"
     source: git
-    version: "0.1.36"
+    version: "0.2.0"
   nested:
     dependency: transitive
     description:
