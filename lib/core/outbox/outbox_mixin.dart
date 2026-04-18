@@ -4,12 +4,14 @@ import 'package:mosquito_alert_app/core/data/models/requests.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_item.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_offline_model.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_service.dart';
+import 'package:mosquito_alert_app/core/outbox/outbox_sync_error.dart';
 
 mixin OutboxMixin<
   T extends OfflineModel,
   TCreateRequest extends CreateRequest
 > {
   final OutboxService outbox = OutboxService();
+  final OutboxErrorStore _errorStore = OutboxErrorStore();
 
   bool get requiresAuth;
 
@@ -32,8 +34,17 @@ mixin OutboxMixin<
     await outbox.remove(item.id);
     try {
       await task.run();
+    } on PermanentOutboxException catch (e) {
+      // Server permanently rejected this operation. Keep the local item
+      // around so the user can see it, retry manually, or delete it; do NOT
+      // reschedule and do NOT delete the local copy.
+      if (item.operation == OutBoxOperation.create) {
+        final request = createRequestFactory(item.payload);
+        await _errorStore.put(request.localId, e.message);
+      }
+      return;
     } catch (error) {
-      // Only runs if task.run() fails
+      // Retryable failure (network error, 5xx, etc.): reschedule.
       await schedule(task, runNow: false);
       return; // stop further execution
     }
@@ -42,6 +53,8 @@ mixin OutboxMixin<
     if (item.operation == OutBoxOperation.create) {
       final request = createRequestFactory(item.payload);
       await itemBox.delete(request.localId);
+      // Clear any previous permanent error now that the item is synced.
+      await _errorStore.remove(request.localId);
     }
   }
 
@@ -65,6 +78,9 @@ mixin OutboxMixin<
     return synchronized(() async {
       final items = itemBox.values
           .where((e) => e.localId != null)
+          // Skip items that previously failed permanently: the user must
+          // explicitly retry or delete them from the UI.
+          .where((e) => !_errorStore.hasError(e.localId!))
           .map(
             (e) => OutboxItem(
               id: e.localId,
@@ -94,5 +110,36 @@ mixin OutboxMixin<
         }
       }
     });
+  }
+
+  /// Returns the recorded permanent sync error for a locally-queued item, or
+  /// null if there is none.
+  String? getSyncError(String localId) => _errorStore.get(localId);
+
+  /// Clear any previous permanent sync error and attempt to send the locally
+  /// stored create again. Has no effect if [localId] is not in the local
+  /// item box.
+  Future<void> retryCreate(String localId) async {
+    final item = itemBox.get(localId);
+    if (item == null) return;
+    await _errorStore.remove(localId);
+    final request = buildCreateRequestFromItem(item);
+    final outboxItem = OutboxItem(
+      id: request.localId,
+      repository: repoName,
+      operation: OutBoxOperation.create,
+      payload: request.toJson(),
+    );
+    final task = buildOutboxTaskFromItem(item: outboxItem);
+    await schedule(task, runNow: true);
+  }
+
+  /// Remove a locally-queued item (and any pending outbox/error state) without
+  /// contacting the server. Used when the user gives up on a permanently
+  /// failed create.
+  Future<void> deleteLocal(String localId) async {
+    await outbox.remove(localId);
+    await itemBox.delete(localId);
+    await _errorStore.remove(localId);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mosquito_alert_app/core/outbox/outbox_sync_error.dart';
 import 'package:mosquito_alert_app/features/reports/domain/models/base_report.dart';
 import 'package:mosquito_alert_app/features/reports/presentation/pages/report_detail_page.dart';
 import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
@@ -17,6 +18,10 @@ class ReportListTile<TReport extends BaseReportModel> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localId = report.localId;
+    final hasSyncError =
+        localId != null && OutboxErrorStore().hasError(localId);
+
     return FutureBuilder<String>(
       future: report.locationDisplayName,
       builder: (context, snapshot) {
@@ -33,9 +38,11 @@ class ReportListTile<TReport extends BaseReportModel> extends StatelessWidget {
                   WidgetSpan(
                     alignment: PlaceholderAlignment.middle,
                     child: Icon(
-                      Icons.cloud_off_outlined,
+                      hasSyncError
+                          ? Icons.error_outline
+                          : Icons.cloud_off_outlined,
                       size: 16,
-                      color: Colors.grey[600],
+                      color: hasSyncError ? Colors.red : Colors.grey[600],
                     ),
                   ),
                   const WidgetSpan(child: SizedBox(width: 8)),

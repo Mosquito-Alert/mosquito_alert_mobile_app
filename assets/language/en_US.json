@@ -363,5 +363,10 @@
     "optional": "Optional",
     "photos-of-same-breeding-site": "Photos of the same breeding site from different angles.",
     "water-check": "Water check",
-    "larvae-check": "Larvae check"
+    "larvae-check": "Larvae check",
+    "sync_error_title": "Sync failed",
+    "sync_error_description": "We couldn't send this report to the server. You can try again, or delete this local copy and create a new report.",
+    "sync_error_retry_success": "Report uploaded successfully.",
+    "sync_error_retry_failed": "Retry failed. The server is still rejecting this report.",
+    "delete_local_copy": "Delete local copy"
 }

@@ -3,9 +3,21 @@ import 'package:dio/dio.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_item.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_mixin.dart';
+import 'package:mosquito_alert_app/core/outbox/outbox_sync_error.dart';
 import 'package:mosquito_alert_app/features/reports/data/models/base_report_request.dart';
 import 'package:mosquito_alert_app/features/reports/domain/models/base_report.dart';
 import 'package:mosquito_alert_app/core/repositories/pagination_repository.dart';
+
+/// True iff [statusCode] represents a permanent (non-retryable) HTTP failure.
+///
+/// We treat any 4xx as permanent except 408 (Request Timeout) and 429 (Too
+/// Many Requests), which are transient by spec and should be retried.
+bool isPermanentHttpStatus(int? statusCode) {
+  if (statusCode == null) return false;
+  if (statusCode < 400 || statusCode >= 500) return false;
+  if (statusCode == 408 || statusCode == 429) return false;
+  return true;
+}
 
 abstract class ReportRepository<
   TReport extends BaseReportModel,
@@ -86,8 +98,18 @@ abstract class ReportRepository<
             TReport newReport;
             try {
               newReport = await _createApiOrLocal(request: request);
-            } catch (_) {
-              break;
+            } on DioException catch (e) {
+              if (isPermanentHttpStatus(e.response?.statusCode)) {
+                // Server permanently rejected this report (e.g. 400/422).
+                // Surface it to the OutboxMixin so the local copy is kept
+                // and the user can retry manually or delete it.
+                throw PermanentOutboxException(
+                  _describeDioError(e),
+                  statusCode: e.response?.statusCode,
+                );
+              }
+              // Retryable (network error, 5xx, 408, 429): reschedule.
+              rethrow;
             }
             if (newReport.localId != null) {
               // Throw exception to re-schedule
@@ -100,8 +122,20 @@ abstract class ReportRepository<
               await (itemApi as dynamic).destroy(uuid: request.uuid);
             } on DioException catch (e) {
               if (e.response?.statusCode == 404) {
-                // Already deleted
+                // TODO(C2): Revisit whether treating a 404 on delete as
+                // success is always correct. Current assumption: the report
+                // is already gone server-side, so the queued delete can be
+                // dropped. If the server ever returns 404 for transient
+                // reasons (e.g. sharded reads during a failover) we would
+                // lose the delete intent. Re-evaluate when we have more
+                // telemetry on delete failures.
                 break;
+              }
+              if (isPermanentHttpStatus(e.response?.statusCode)) {
+                throw PermanentOutboxException(
+                  _describeDioError(e),
+                  statusCode: e.response?.statusCode,
+                );
               }
               rethrow;
             }
@@ -154,4 +188,13 @@ abstract class ReportRepository<
     );
     await schedule(deleteTask);
   }
+}
+
+String _describeDioError(DioException e) {
+  final code = e.response?.statusCode;
+  final body = e.response?.data;
+  final detail = body is Map && body['detail'] is String
+      ? body['detail'] as String
+      : (body?.toString() ?? e.message ?? 'Unknown error');
+  return code != null ? 'HTTP $code: $detail' : detail;
 }
