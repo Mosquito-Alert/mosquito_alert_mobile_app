@@ -10,6 +10,7 @@ import 'package:mosquito_alert_app/features/fixes/data/fixes_repository.dart';
 import 'package:mosquito_alert_app/features/fixes/domain/models/fix.dart';
 import 'package:mosquito_alert_app/features/observations/data/observation_repository.dart';
 import 'package:mosquito_alert_app/features/observations/domain/models/observation_report.dart';
+import 'package:mosquito_alert_app/core/outbox/outbox_backoff.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_sync_error.dart';
 import 'package:mosquito_alert_app/features/user/data/user_repository.dart';
 import 'package:mosquito_alert_app/hive/hive_adapters.dart';
@@ -45,5 +46,7 @@ Future<void> initHive() async {
     Hive.openBox<User>(UserRepository.itemBoxName),
     // For OutboxErrorStore: permanent per-item sync error messages
     OutboxErrorStore.init(),
+    // For OutboxBackoffStore: next-attempt timestamps for retryable failures
+    OutboxBackoffStore.init(),
   ]);
 }

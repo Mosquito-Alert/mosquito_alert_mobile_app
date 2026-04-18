@@ -1,6 +1,7 @@
 import 'package:hive_ce/hive.dart';
 import 'package:synchronized/extension.dart';
 import 'package:mosquito_alert_app/core/data/models/requests.dart';
+import 'package:mosquito_alert_app/core/outbox/outbox_backoff.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_item.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_offline_model.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_service.dart';
@@ -12,6 +13,7 @@ mixin OutboxMixin<
 > {
   final OutboxService outbox = OutboxService();
   final OutboxErrorStore _errorStore = OutboxErrorStore();
+  final OutboxBackoffStore _backoffStore = OutboxBackoffStore();
 
   bool get requiresAuth;
 
@@ -48,14 +50,20 @@ mixin OutboxMixin<
         // separate mechanism (e.g. a "sync problems" tray). Track with the
         // broader offline-first followups.
       }
+      // Permanent failures are terminal: clear any prior backoff so an
+      // explicit user retry starts from a clean slate.
+      await _backoffStore.clear(_backoffKey(item));
       return;
     } catch (error) {
-      // Retryable failure (network error, 5xx, etc.): reschedule.
+      // Retryable failure (network error, 5xx, etc.): reschedule with
+      // exponential backoff so we don't hot-loop on every sync tick.
+      _backoffStore.recordFailure(_backoffKey(item));
       await schedule(task, runNow: false);
       return; // stop further execution
     }
 
     // Runs only if task.run() succeeded
+    await _backoffStore.clear(_backoffKey(item));
     if (item.operation == OutBoxOperation.create) {
       final request = createRequestFactory(item.payload);
       await itemBox.delete(request.localId);
@@ -73,6 +81,9 @@ mixin OutboxMixin<
     }
     await outbox.add(item);
     if (!runNow) return;
+    // Explicit user/code-driven runNow honors the request immediately and
+    // resets backoff so retry isn't blocked by an in-progress wait.
+    await _backoffStore.clear(_backoffKey(item));
     try {
       await execute(task);
     } catch (_) {
@@ -87,6 +98,8 @@ mixin OutboxMixin<
           // Skip items that previously failed permanently: the user must
           // explicitly retry or delete them from the UI.
           .where((e) => !_errorStore.hasError(e.localId!))
+          // Skip items still inside their backoff window.
+          .where((e) => !_backoffStore.isBackedOff(e.localId!))
           .map(
             (e) => OutboxItem(
               id: e.localId,
@@ -103,7 +116,8 @@ mixin OutboxMixin<
             .where(
               (i) =>
                   i.repository == repoName &&
-                  i.operation != OutBoxOperation.create,
+                  i.operation != OutBoxOperation.create &&
+                  !_backoffStore.isBackedOff(i.id),
             )
             .toList(),
       );
@@ -134,6 +148,8 @@ mixin OutboxMixin<
     final item = itemBox.get(localId);
     if (item == null) return;
     await _errorStore.remove(localId);
+    // User-initiated retry should bypass any pending backoff.
+    await _backoffStore.clear(localId);
     final request = buildCreateRequestFromItem(item);
     final outboxItem = OutboxItem(
       id: request.localId,
@@ -152,5 +168,11 @@ mixin OutboxMixin<
     await outbox.remove(localId);
     await itemBox.delete(localId);
     await _errorStore.remove(localId);
+    await _backoffStore.clear(localId);
   }
+
+  /// Backoff is keyed by the OutboxItem id, which matches `localId` for
+  /// creates and is the random uuid for non-create ops. Wrapped in a tiny
+  /// helper so callers don't have to know about that.
+  String _backoffKey(OutboxItem item) => item.id;
 }
