@@ -41,6 +41,12 @@ mixin OutboxMixin<
       if (item.operation == OutBoxOperation.create) {
         final request = createRequestFactory(item.payload);
         await _errorStore.put(request.localId, e.message);
+      } else {
+        // TODO(outbox): permanent failures on non-create operations (update,
+        // delete) are currently dropped silently. They have no `localId` in
+        // the UI to attach an error to, so surfacing them requires a
+        // separate mechanism (e.g. a "sync problems" tray). Track with the
+        // broader offline-first followups.
       }
       return;
     } catch (error) {
