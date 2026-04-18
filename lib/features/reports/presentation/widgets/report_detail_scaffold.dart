@@ -320,12 +320,11 @@ class ReportDetailScaffold<TReport extends BaseReportModel>
 
   Future<void> _retry(BuildContext context) async {
     final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
     try {
       await provider.retrySync(item: report);
-      if (!context.mounted) return;
-      // If the retry cleared the error, the report may have been replaced by
-      // a server-backed copy and this route should refresh.
       final stillHasError = provider.getSyncError(report) != null;
+      if (!context.mounted) return;
       messenger.showSnackBar(
         SnackBar(
           content: Text(
@@ -337,7 +336,15 @@ class ReportDetailScaffold<TReport extends BaseReportModel>
           duration: const Duration(seconds: 3),
         ),
       );
+      // On a successful retry the local copy has been replaced in the item
+      // box by a server-backed report; this detail page is showing a stale
+      // offline snapshot, so pop back to the list where the parent provider
+      // will rebuild with the fresh data.
+      if (!stillHasError) {
+        navigator.pop(true);
+      }
     } catch (e) {
+      if (!context.mounted) return;
       messenger.showSnackBar(
         SnackBar(
           content: Text(e.toString()),

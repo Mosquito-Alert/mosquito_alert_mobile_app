@@ -112,8 +112,13 @@ mixin OutboxMixin<
     });
   }
 
-  /// Returns the recorded permanent sync error for a locally-queued item, or
-  /// null if there is none.
+  /// Returns the recorded permanent sync error for a locally-queued create,
+  /// or null if there is none.
+  ///
+  /// NOTE: Errors are only recorded for `create` operations, because only
+  /// creates have a local copy visible in the UI (keyed by `localId`).
+  /// Permanent failures on other operations (e.g. a 403 on delete) are
+  /// currently dropped silently by [execute].
   String? getSyncError(String localId) => _errorStore.get(localId);
 
   /// Clear any previous permanent sync error and attempt to send the locally

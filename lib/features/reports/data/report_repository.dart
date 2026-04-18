@@ -192,9 +192,37 @@ abstract class ReportRepository<
 
 String _describeDioError(DioException e) {
   final code = e.response?.statusCode;
-  final body = e.response?.data;
-  final detail = body is Map && body['detail'] is String
-      ? body['detail'] as String
-      : (body?.toString() ?? e.message ?? 'Unknown error');
+  final detail = _extractDioErrorDetail(e);
   return code != null ? 'HTTP $code: $detail' : detail;
+}
+
+/// Best-effort extraction of a human-readable message from common DRF-style
+/// error payloads:
+///   * `{"detail": "..."}`                        (auth / permission errors)
+///   * `{"non_field_errors": ["..."]}`            (validation errors)
+///   * `{"some_field": ["must not be blank"]}`    (field validation errors)
+///   * plain string body
+///   * anything else → fall back to the Dio message.
+String _extractDioErrorDetail(DioException e) {
+  final body = e.response?.data;
+  if (body is String && body.isNotEmpty) return body;
+  if (body is Map) {
+    final detail = body['detail'];
+    if (detail is String && detail.isNotEmpty) return detail;
+    final nonField = body['non_field_errors'];
+    if (nonField is List && nonField.isNotEmpty) {
+      return nonField.map((v) => v.toString()).join('; ');
+    }
+    // Pick the first field-level error message we can find.
+    for (final entry in body.entries) {
+      final value = entry.value;
+      if (value is String && value.isNotEmpty) {
+        return '${entry.key}: $value';
+      }
+      if (value is List && value.isNotEmpty) {
+        return '${entry.key}: ${value.map((v) => v.toString()).join('; ')}';
+      }
+    }
+  }
+  return e.message ?? 'Unknown error';
 }
