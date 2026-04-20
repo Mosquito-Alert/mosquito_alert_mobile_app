@@ -128,7 +128,7 @@ class TaskScheduler {
     await Workmanager().registerOneOffTask(
       'tracking_task_${time.millisecondsSinceEpoch}',
       'trackingTask',
-      initialDelay: diff,
+      initialDelay: diff.isNegative ? Duration.zero : diff,
       tag: taskTag,
     );
     await TaskQueue.add(time);
