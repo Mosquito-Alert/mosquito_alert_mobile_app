@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
-import 'package:mosquito_alert_app/features/device/presentation/state/data/device_repository.dart';
+import 'package:mosquito_alert_app/features/device/data/device_repository.dart';
 
 class DeviceProvider with ChangeNotifier {
   late final DevicesApi devicesApi;

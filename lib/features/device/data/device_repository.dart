@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/locale.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
-import 'package:mosquito_alert_app/features/device/presentation/state/data/models/device_info_data.dart';
+import 'package:mosquito_alert_app/features/device/data/models/device_info_data.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class DeviceRepository {

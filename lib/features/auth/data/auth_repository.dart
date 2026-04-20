@@ -7,7 +7,7 @@ import 'package:mosquito_alert_app/core/outbox/outbox_mixin.dart';
 import 'package:mosquito_alert_app/env/env.dart';
 import 'package:mosquito_alert_app/features/auth/data/models/user_registration_request.dart';
 import 'package:mosquito_alert_app/features/auth/domain/models/auth_user.dart';
-import 'package:mosquito_alert_app/features/device/presentation/state/data/device_repository.dart';
+import 'package:mosquito_alert_app/features/device/data/device_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mosquito_alert_app/features/auth/utils/random.dart';
 import 'package:uuid/uuid.dart';

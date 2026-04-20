@@ -12,7 +12,7 @@ import 'package:mosquito_alert_app/core/utils/InAppReviewManager.dart';
 import 'package:mosquito_alert_app/features/auth/data/auth_repository.dart';
 import 'package:mosquito_alert_app/features/bites/data/bite_repository.dart';
 import 'package:mosquito_alert_app/features/breeding_sites/data/breeding_site_repository.dart';
-import 'package:mosquito_alert_app/features/device/presentation/state/data/device_repository.dart';
+import 'package:mosquito_alert_app/features/device/data/device_repository.dart';
 import 'package:mosquito_alert_app/features/fixes/data/fixes_repository.dart';
 import 'package:mosquito_alert_app/features/fixes/presentation/state/fixes_provider.dart';
 import 'package:mosquito_alert_app/features/fixes/services/tracking_service.dart';
