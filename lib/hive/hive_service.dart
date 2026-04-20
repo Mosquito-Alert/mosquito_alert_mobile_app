@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/features/auth/data/auth_repository.dart';
@@ -29,9 +31,23 @@ Future<void> initHive() async {
     ..registerAdapter(UserAdapter())
     ..registerAdapters();
 
+  // See: https://github.com/hivedb/docs/blob/master/advanced/encrypted_box.md
+  const secureStorage = FlutterSecureStorage();
+  // if key not exists return null
+  final encryptionKeyString = await secureStorage.read(key: 'hive_key');
+  if (encryptionKeyString == null) {
+    final key = Hive.generateSecureKey();
+    await secureStorage.write(key: 'hive_key', value: base64UrlEncode(key));
+  }
+  final key = await secureStorage.read(key: 'hive_key');
+  final encryptionKeyUint8List = base64Url.decode(key!);
+
   await Future.wait([
     // For AuthRepository offline storage
-    Hive.openBox<AuthUser>(AuthRepository.itemBoxName),
+    Hive.openBox<AuthUser>(
+      AuthRepository.itemBoxName,
+      encryptionCipher: HiveAesCipher(encryptionKeyUint8List),
+    ),
     // For ObservationRepository offline storage
     Hive.openBox<ObservationReport>(ObservationRepository.itemBoxName),
     // For BiteRepository offline storage
