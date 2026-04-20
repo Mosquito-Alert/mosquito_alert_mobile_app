@@ -85,9 +85,11 @@ class _MyAppState extends State<MyApp> {
     ).onStatusChange.listen((status) async {
       final authProvider = context.read<AuthProvider>();
       final userProvider = context.read<UserProvider>();
-      setState(() {
-        _internetStatus = status;
-      });
+      if (mounted) {
+        setState(() {
+          _internetStatus = status;
+        });
+      }
       if (status == InternetStatus.connected) {
         await widget.syncManager.syncAllWithoutAuth();
         if (!authProvider.isAuthenticated) {
