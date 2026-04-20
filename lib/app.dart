@@ -6,7 +6,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_sync_manager.dart';
-import 'package:mosquito_alert_app/core/widgets/offline_banner.dart';
 import 'package:mosquito_alert_app/features/auth/presentation/state/auth_provider.dart';
 import 'package:mosquito_alert_app/features/onboarding/data/onboarding_repository.dart';
 import 'package:mosquito_alert_app/features/onboarding/presentation/pages/onboarding_flow_page.dart';
@@ -21,27 +20,6 @@ import 'package:provider/provider.dart';
 import 'features/user/presentation/state/user_provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
-class AppShell extends StatelessWidget {
-  const AppShell({
-    super.key,
-    required this.internetStatus,
-    required this.child,
-  });
-
-  final InternetStatus internetStatus;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        OfflineBanner(internetStatus: internetStatus),
-        Expanded(child: child),
-      ],
-    );
-  }
-}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key, required this.syncManager});
@@ -221,7 +199,7 @@ class _MyAppState extends State<MyApp> {
             ),
           ],
           builder: (context, child) {
-            return AppShell(internetStatus: _internetStatus, child: child!);
+            return Expanded(child: child!);
           },
           home: Consumer<OnboardingProvider>(
             builder: (context, onboardingProvider, child) {
