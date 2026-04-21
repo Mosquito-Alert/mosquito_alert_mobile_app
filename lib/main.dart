@@ -80,7 +80,7 @@ Future<void> main({String env = 'prod'}) async {
   final userProvider = await UserProvider.create(repository: userRepository);
 
   if (config.useAuth) {
-    await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
+    await Workmanager().initialize(callbackDispatcher);
     await Workmanager().registerPeriodicTask(
       outboxSyncTaskName,
       outboxSyncTaskName,

@@ -209,7 +209,6 @@ The repository uses GitHub Actions that run:
 
 ### Background Tasks
 - Uses `workmanager` package for background location tracking
-- Custom fork used (ref: 4ce0651) for iOS compatibility
 - Background tracking can be easily disabled in settings
 
 ### Permissions Used

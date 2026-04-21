@@ -2,7 +2,7 @@ import UIKit
 import Flutter
 import GoogleMaps
 import Firebase
-import workmanager
+import workmanager_apple
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
