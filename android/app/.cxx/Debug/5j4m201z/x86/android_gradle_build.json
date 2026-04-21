@@ -1,0 +1,28 @@
+{
+  "buildFiles": [
+    "/home/epou/snap/flutter/common/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/home/epou/Android/Sdk/cmake/3.18.1/bin/ninja",
+      "-C",
+      "/home/epou/Development/Mosquito-Alert-Mobile-App/android/app/.cxx/Debug/5j4m201z/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/home/epou/Android/Sdk/cmake/3.18.1/bin/ninja",
+    "-C",
+    "/home/epou/Development/Mosquito-Alert-Mobile-App/android/app/.cxx/Debug/5j4m201z/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {},
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/home/epou/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/clang.lld",
+      "cppCompilerExecutable": "/home/epou/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++.lld"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": []
+}

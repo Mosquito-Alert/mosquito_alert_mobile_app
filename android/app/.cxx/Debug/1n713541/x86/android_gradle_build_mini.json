@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/home/epou/snap/flutter/common/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/home/epou/Android/Sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/home/epou/Development/Mosquito-Alert-Mobile-App/android/app/.cxx/Debug/1n713541/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/home/epou/Android/Sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/home/epou/Development/Mosquito-Alert-Mobile-App/android/app/.cxx/Debug/1n713541/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

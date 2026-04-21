@@ -1,0 +1,2 @@
+/home/epou/Development/Mosquito-Alert-Mobile-App/android/app/.cxx/Debug/1n713541/x86/CMakeFiles/edit_cache.dir
+/home/epou/Development/Mosquito-Alert-Mobile-App/android/app/.cxx/Debug/1n713541/x86/CMakeFiles/rebuild_cache.dir
