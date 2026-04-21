@@ -47,7 +47,7 @@ dependencies:
       url: https://github.com/Mosquito-Alert/mosquito-alert-dart-sdk.git
       ref: 0.2.0
   flutter_secure_storage: ^10.0.0
-  infinite_scroll_pagination: ^5.1.0
+  infinite_scroll_pagination: ^5.1.1
   provider: ^6.1.5
   built_collection: ^5.1.1
   app_set_id: ^1.3.0
