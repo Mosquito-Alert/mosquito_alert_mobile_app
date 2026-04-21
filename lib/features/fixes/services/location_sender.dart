@@ -31,7 +31,7 @@ class LocationSender {
 
   Future<void> sendLocation() async {
     Position pos = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
     );
     int battery = await Battery().batteryLevel;
 

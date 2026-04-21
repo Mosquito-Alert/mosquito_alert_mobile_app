@@ -99,8 +99,10 @@ class _LocationSelectorState extends State<LocationSelector> {
 
       // Get current position && update state variable
       phonePosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-        timeLimit: timeout,
+        locationSettings: LocationSettings(
+          accuracy: LocationAccuracy.high,
+          timeLimit: timeout,
+        ),
       );
 
       // Update state variables.
