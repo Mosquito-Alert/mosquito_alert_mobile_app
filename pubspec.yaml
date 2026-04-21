@@ -56,7 +56,7 @@ dependencies:
   timeago: ^3.7.1
   intl: ^0.20.2
   html: ^0.15.6
-  country_codes: ^3.3.0
+  country_codes_plus: ^5.1.0
   path_provider: ^2.1.5
   json_annotation: ^4.11.0
   internet_connection_checker_plus: ^2.9.1+1

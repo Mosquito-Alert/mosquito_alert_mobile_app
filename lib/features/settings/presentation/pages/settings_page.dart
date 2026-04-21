@@ -10,7 +10,7 @@ import 'package:mosquito_alert_app/features/user/presentation/state/user_provide
 import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 import 'package:provider/provider.dart';
-import 'package:country_codes/country_codes.dart';
+import 'package:country_codes_plus/country_codes_plus.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage();

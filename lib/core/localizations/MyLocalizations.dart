@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 import 'package:geocoding/geocoding.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:country_codes/country_codes.dart';
+import 'package:country_codes_plus/country_codes_plus.dart';
 import 'package:intl/intl.dart';
 
 class MyLocalizations {

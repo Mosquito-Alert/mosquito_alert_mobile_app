@@ -30,7 +30,7 @@ import 'package:mosquito_alert_app/hive/hive_service.dart';
 import 'package:mosquito_alert_app/services/api_service.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
-import 'package:country_codes/country_codes.dart';
+import 'package:country_codes_plus/country_codes_plus.dart';
 
 import 'features/user/presentation/state/user_provider.dart';
 
