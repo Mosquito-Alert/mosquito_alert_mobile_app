@@ -189,9 +189,6 @@ class _MyAppState extends State<MyApp> {
               },
             ),
           ],
-          builder: (context, child) {
-            return Expanded(child: child!);
-          },
           home: Consumer<OnboardingProvider>(
             builder: (context, onboardingProvider, child) {
               return onboardingProvider.isCompleted
