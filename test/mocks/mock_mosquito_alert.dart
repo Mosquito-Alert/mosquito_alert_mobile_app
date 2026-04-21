@@ -9,8 +9,8 @@ class MockMosquitoAlert extends sdk.MosquitoAlert {
   final MockBitesApi _bitesApi;
 
   MockMosquitoAlert()
-      : _notificationsApi = MockNotificationsApi(Dio(), sdk.serializers),
-        _bitesApi = MockBitesApi();
+    : _notificationsApi = MockNotificationsApi(Dio(), sdk.serializers),
+      _bitesApi = MockBitesApi();
 
   @override
   sdk.NotificationsApi getNotificationsApi() => _notificationsApi;

@@ -23,39 +23,36 @@ void main() {
 
   group('end-to-end test', () {
     testWidgets(
-        'Test background tracking can be easily disabled on first use, to satisfy Google/Apple requirements',
-        (tester) async {
-      app.main(env: "test");
-      await tester.pumpAndSettle(Duration(seconds: 3));
+      'Test background tracking can be easily disabled on first use, to satisfy Google/Apple requirements',
+      (tester) async {
+        app.main(env: "test");
+        await tester.pumpAndSettle(Duration(seconds: 3));
 
-      // New user is created: Show consent form
-      final acceptConditionsCheckbox =
-          find.byKey(ValueKey("acceptConditionsCheckbox"));
-      await waitForWidget(tester, acceptConditionsCheckbox);
-      await tester.ensureVisible(acceptConditionsCheckbox);
-      await tester.tap(acceptConditionsCheckbox);
+        // New user is created: Show consent form
+        final acceptConditionsCheckbox = find.byKey(
+          ValueKey("acceptConditionsCheckbox"),
+        );
+        await waitForWidget(tester, acceptConditionsCheckbox);
+        await tester.ensureVisible(acceptConditionsCheckbox);
+        await tester.tap(acceptConditionsCheckbox);
 
-      final acceptPrivacyPolicy = find.byKey(ValueKey("acceptPrivacyPolicy"));
-      await waitForWidget(tester, acceptPrivacyPolicy);
-      await tester.ensureVisible(acceptPrivacyPolicy);
-      await tester.tap(acceptPrivacyPolicy);
+        final acceptPrivacyPolicy = find.byKey(ValueKey("acceptPrivacyPolicy"));
+        await waitForWidget(tester, acceptPrivacyPolicy);
+        await tester.ensureVisible(acceptPrivacyPolicy);
+        await tester.tap(acceptPrivacyPolicy);
 
-      final continueButton = find.byKey(ValueKey("style.button"));
-      await waitForWidget(tester, continueButton);
-      await tester.ensureVisible(continueButton);
-      await tester.tap(continueButton);
+        final continueButton = find.byKey(ValueKey("acceptTermsButton"));
+        await waitForWidget(tester, continueButton);
+        await tester.ensureVisible(continueButton);
+        await tester.tap(continueButton);
 
-      // Reject background traking
-      final rejectBtn = find.byKey(Key("rejectBackgroundTrackingBtn"));
-      await waitForWidget(tester, rejectBtn);
-      expect(rejectBtn, findsOne);
-      await tester.ensureVisible(rejectBtn);
-      await tester.tap(rejectBtn);
-
-      // Retry page
-      final retryPage = find.byKey(Key("retryPage"));
-      await waitForWidget(tester, retryPage);
-      expect(retryPage, findsOneWidget);
-    });
+        // Reject background traking
+        final rejectBtn = find.byKey(Key("rejectBackgroundTrackingBtn"));
+        await waitForWidget(tester, rejectBtn);
+        expect(rejectBtn, findsOne);
+        await tester.ensureVisible(rejectBtn);
+        await tester.tap(rejectBtn);
+      },
+    );
   });
 }

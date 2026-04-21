@@ -1,31 +1,40 @@
 import 'dart:async';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
+import 'package:mosquito_alert_app/app.dart';
 import 'package:mosquito_alert_app/app_config.dart';
-import 'package:mosquito_alert_app/pages/main/drawer_and_header.dart';
-import 'package:mosquito_alert_app/providers/auth_provider.dart';
-import 'package:mosquito_alert_app/providers/device_provider.dart';
-import 'package:mosquito_alert_app/providers/notification_provider.dart';
-import 'package:mosquito_alert_app/providers/report_provider.dart';
+import 'package:mosquito_alert_app/core/outbox/outbox_service.dart';
+import 'package:mosquito_alert_app/core/outbox/outbox_sync_manager.dart';
+import 'package:mosquito_alert_app/core/utils/InAppReviewManager.dart';
+import 'package:mosquito_alert_app/features/auth/data/auth_repository.dart';
+import 'package:mosquito_alert_app/features/bites/data/bite_repository.dart';
+import 'package:mosquito_alert_app/features/breeding_sites/data/breeding_site_repository.dart';
+import 'package:mosquito_alert_app/features/device/data/device_repository.dart';
+import 'package:mosquito_alert_app/features/fixes/data/fixes_repository.dart';
+import 'package:mosquito_alert_app/features/fixes/presentation/state/fixes_provider.dart';
+import 'package:mosquito_alert_app/features/fixes/services/tracking_service.dart';
+import 'package:mosquito_alert_app/features/notifications/data/firebase_messaging_service.dart';
+import 'package:mosquito_alert_app/features/observations/data/observation_repository.dart';
+import 'package:mosquito_alert_app/features/settings/presentation/state/settings_provider.dart';
+import 'package:mosquito_alert_app/features/auth/presentation/state/auth_provider.dart';
+import 'package:mosquito_alert_app/features/notifications/presentation/state/notification_provider.dart';
+import 'package:mosquito_alert_app/features/notifications/notification_repository.dart';
+import 'package:mosquito_alert_app/features/observations/presentation/state/observation_provider.dart';
+import 'package:mosquito_alert_app/features/bites/presentation/state/bite_provider.dart';
+import 'package:mosquito_alert_app/features/breeding_sites/presentation/state/breeding_site_provider.dart';
+import 'package:mosquito_alert_app/features/user/data/user_repository.dart';
+import 'package:mosquito_alert_app/hive/hive_service.dart';
 import 'package:mosquito_alert_app/services/api_service.dart';
-import 'package:mosquito_alert_app/utils/BackgroundTracking.dart';
-import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
-import 'package:mosquito_alert_app/utils/MyLocalizationsDelegate.dart';
-import 'package:mosquito_alert_app/utils/ObserverUtils.dart';
-import 'package:mosquito_alert_app/utils/style.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:country_codes/country_codes.dart';
 
-import 'providers/user_provider.dart';
+import 'features/user/presentation/state/user_provider.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+const String outboxSyncTaskName = "outboxSyncTask";
 
 Future<void> main({String env = 'prod'}) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +45,7 @@ Future<void> main({String env = 'prod'}) async {
   ]);
 
   await AppConfig.setEnvironment(env);
+  final config = await AppConfig.loadConfig();
 
   try {
     await Firebase.initializeApp();
@@ -43,23 +53,62 @@ Future<void> main({String env = 'prod'}) async {
     print('$err');
   }
 
+  // Initialize Hive
+  await initHive();
+  // Initialize Outbox
+  await OutboxService().init();
+
   await CountryCodes.init();
 
-  final authProvider = AuthProvider();
-  await authProvider.init();
+  final ApiService apiService = ApiService(baseUrl: config.baseUrl);
+  final apiClient = apiService.client;
 
-  final ApiService apiService =
-      await ApiService.init(authProvider: authProvider);
-  final MosquitoAlert apiClient = apiService.client;
+  final deviceRepository = await DeviceRepository.create(apiClient: apiClient);
+  final authRepository = AuthRepository(
+    apiClient: apiClient,
+    getCurrentDevice: () async {
+      return deviceRepository.currentDevice ??
+          await deviceRepository.registerCurrentDevice();
+    },
+  );
+  final authProvider = AuthProvider(repository: authRepository);
+  await authProvider.restoreSession();
 
-  authProvider.setApiClient(apiClient);
-  final userProvider = await UserProvider.create(apiClient: apiClient);
-  final deviceProvider = await DeviceProvider.create(apiClient: apiClient);
+  FirebaseMessagingService.configure(deviceRepository: deviceRepository);
 
-  final appConfig = await AppConfig.loadConfig();
-  if (appConfig.useAuth) {
+  final userRepository = UserRepository(apiClient: apiClient);
+  final userProvider = await UserProvider.create(repository: userRepository);
+
+  if (config.useAuth) {
     await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
+    await Workmanager().registerPeriodicTask(
+      outboxSyncTaskName,
+      outboxSyncTaskName,
+      frequency: const Duration(minutes: 15), // minimum on Android/iOS
+    );
   }
+
+  // Initialize repositories
+  final observationRepository = ObservationRepository(apiClient: apiClient);
+  final biteRepository = BiteRepository(apiClient: apiClient);
+  final breedingSiteRepository = BreedingSiteRepository(apiClient: apiClient);
+  final fixesRepository = FixesRepository(apiClient: apiClient);
+
+  final syncManager = OutboxSyncManager([
+    authRepository,
+    observationRepository,
+    biteRepository,
+    breedingSiteRepository,
+    fixesRepository,
+  ]);
+
+  await TrackingService.configure(repository: fixesRepository);
+
+  InAppReviewManager.configure(
+    observationRepository,
+    biteRepository,
+    breedingSiteRepository,
+  );
 
   runApp(
     MultiProvider(
@@ -67,21 +116,27 @@ Future<void> main({String env = 'prod'}) async {
         Provider<MosquitoAlert>.value(value: apiClient),
         ChangeNotifierProvider<AuthProvider>.value(value: authProvider),
         ChangeNotifierProvider<UserProvider>.value(value: userProvider),
-        ChangeNotifierProvider<DeviceProvider>.value(value: deviceProvider),
+        ChangeNotifierProvider<SettingsProvider>(
+          create: (_) => SettingsProvider(),
+        ),
         ChangeNotifierProvider<NotificationProvider>(
-          create: (_) => NotificationProvider(apiClient: apiClient),
+          create: (_) => NotificationProvider(
+            repository: NotificationRepository(apiClient: apiClient),
+          ),
         ),
         ChangeNotifierProvider<ObservationProvider>(
-          create: (_) => ObservationProvider(apiClient: apiClient),
+          create: (_) => ObservationProvider(repository: observationRepository),
         ),
         ChangeNotifierProvider<BiteProvider>(
-          create: (_) => BiteProvider(apiClient: apiClient),
+          create: (_) => BiteProvider(repository: biteRepository),
         ),
         ChangeNotifierProvider<BreedingSiteProvider>(
-          create: (_) => BreedingSiteProvider(apiClient: apiClient),
-        )
+          create: (_) =>
+              BreedingSiteProvider(repository: breedingSiteRepository),
+        ),
+        ChangeNotifierProvider<FixesProvider>(create: (_) => FixesProvider()),
       ],
-      child: MyApp(),
+      child: MyApp(syncManager: syncManager),
     ),
   );
 }
@@ -95,160 +150,72 @@ void callbackDispatcher() {
       print('$err');
     }
 
-    final authProvider = AuthProvider();
-    await authProvider.init();
+    final config = await AppConfig.loadConfig();
 
-    final ApiService apiService =
-        await ApiService.init(authProvider: authProvider);
-    final MosquitoAlert apiClient = apiService.client;
+    // Initialize Hive
+    await initHive();
+    // Initialize Outbox
+    await OutboxService().init();
 
-    authProvider.setApiClient(apiClient);
+    final ApiService apiService = ApiService(baseUrl: config.baseUrl);
+    final apiClient = apiService.client;
 
-    final userProvider = await UserProvider.create(apiClient: apiClient);
-    final deviceProvider = await DeviceProvider.create(apiClient: apiClient);
-    String? username = authProvider.username;
-    String? password = authProvider.password;
-    if (username == null && password == null) {
-      return Future.value(
-          false); // No user credentials available, cannot proceed
-    }
+    final authRepository = AuthRepository(apiClient: apiClient);
     try {
-      await authProvider.login(username: username!, password: password!);
-      await userProvider.fetchUser();
-    } catch (e) {
-      print('Error logging in: $e');
-      return Future.value(false); // Login failed, cannot proceed
-    }
-    try {
-      await deviceProvider.registerDevice();
-      if (deviceProvider.device != null) {
-        await authProvider.setDevice(deviceProvider.device!);
-      }
-    } catch (e) {
-      print('Error registering device: $e');
+      await authRepository.restoreSession();
+    } catch (_) {
+      // Do nothing. There are task that can work offline.
     }
 
-    BackgroundTracking.configure(apiClient: apiClient);
+    final fixesRepository = FixesRepository(apiClient: apiClient);
+
+    await TrackingService.configure(repository: fixesRepository);
     // Support 3 possible outcomes:
     // - Future.value(true): task is successful
     // - Future.value(false): task failed and needs to be retried
     // - Future.error(): task failed.
 
     switch (task) {
+      case outboxSyncTaskName:
+        final observationRepository = ObservationRepository(
+          apiClient: apiClient,
+        );
+        final biteRepository = BiteRepository(apiClient: apiClient);
+        final breedingSiteRepository = BreedingSiteRepository(
+          apiClient: apiClient,
+        );
+
+        final syncManager = OutboxSyncManager([
+          observationRepository,
+          biteRepository,
+          breedingSiteRepository,
+          fixesRepository,
+        ]);
+
+        try {
+          await syncManager.syncAll();
+        } catch (e) {
+          return Future.error(e);
+        }
+        return Future.value(true);
       case 'trackingTask':
         // NOTE: do not use await, it should return a Future value
-        return BackgroundTracking.sendLocationUpdate();
+        try {
+          await TrackingService.sendLocationNow();
+        } catch (e) {
+          return Future.error(e);
+        }
+        return Future.value(true);
       case 'scheduleDailyTasks':
-        int numTaskAlreadyScheduled =
-            inputData?['numTaskAlreadyScheduled'] ?? 0;
-        // NOTE: do not use await, it should return a Future value
-        return BackgroundTracking.scheduleDailyTrackingTask(
-            numScheduledTasks: numTaskAlreadyScheduled);
+        try {
+          await TrackingService.scheduleDailyTasks();
+        } catch (e) {
+          return Future.error(e);
+        }
+        return Future.value(true);
       default:
         // If the task doesn't match, return true as a fallback
         return Future.value(true);
     }
   });
-}
-
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-
-  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(
-    analytics: FirebaseAnalytics.instance,
-    routeFilter: (route) {
-      return route is PageRoute && route.settings.name != '/';
-    },
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return OverlaySupport(
-        child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Style.colorPrimary,
-          brightness: Brightness.light,
-          primary: Style.colorPrimary,
-          secondary: Style.colorPrimary,
-        ),
-        scaffoldBackgroundColor: Colors.white,
-        useMaterial3: true,
-        // Explicitly set component themes to use your primary color
-        checkboxTheme: CheckboxThemeData(
-          fillColor:
-              WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-            if (states.contains(WidgetState.selected)) {
-              return Style.colorPrimary;
-            }
-            return Colors.transparent;
-          }),
-          checkColor: WidgetStateProperty.all(Colors.white),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Style.colorPrimary,
-            foregroundColor: Colors.white,
-          ),
-        ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(
-            foregroundColor: Style.colorPrimary,
-            side: BorderSide(color: Style.colorPrimary),
-          ),
-        ),
-        textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-            foregroundColor: Style.colorPrimary,
-          ),
-        ),
-        // Configure text themes to use your primary color
-        textTheme: TextTheme(
-          headlineLarge: TextStyle(
-            color: Style.colorPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-          headlineMedium: TextStyle(
-            color: Style.colorPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-          headlineSmall: TextStyle(
-            color: Style.colorPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-          titleLarge: TextStyle(
-            color: Style.colorPrimary,
-            fontWeight: FontWeight.bold,
-          ),
-          titleMedium: TextStyle(
-            color: Style.colorPrimary,
-            fontWeight: FontWeight.w600,
-          ),
-          titleSmall: TextStyle(
-            color: Style.colorPrimary,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        // Override primary color references
-        primaryColor: Style.colorPrimary,
-        primaryColorDark: Style.colorPrimary,
-        primaryColorLight: Style.colorPrimary,
-      ),
-      navigatorKey: navigatorKey,
-      navigatorObservers: <NavigatorObserver>[
-        observer,
-        ObserverUtils.routeObserver
-      ],
-      home: const MainVC(),
-      localizationsDelegates: [
-        MyLocalizationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: context.watch<UserProvider>().locale,
-      supportedLocales: MyLocalizations.supportedLocales,
-    ));
-  }
 }

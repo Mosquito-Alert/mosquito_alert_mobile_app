@@ -22,17 +22,17 @@ class AppConfig {
 
     if (env == null || env.isEmpty) {
       throw Exception(
-          'AppConfig env is not defined. Be sure to call AppConfig.setEnvironment');
+        'AppConfig env is not defined. Be sure to call AppConfig.setEnvironment',
+      );
     }
 
-    final contents = await rootBundle.loadString(
-      'assets/config/$env.json',
-    );
+    final contents = await rootBundle.loadString('assets/config/$env.json');
 
     final json = jsonDecode(contents);
 
     return AppConfig(
-        baseUrl: json['baseUrl'] ?? MosquitoAlert.basePath,
-        useAuth: json['useAuth']);
+      baseUrl: json['baseUrl'] ?? MosquitoAlert.basePath,
+      useAuth: json['useAuth'],
+    );
   }
 }

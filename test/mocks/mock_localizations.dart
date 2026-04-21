@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mosquito_alert_app/utils/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
 
 // Mock MyLocalizations for testing
 class MockMyLocalizations implements MyLocalizations {

@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as sdk;
-import 'package:mosquito_alert_app/pages/notification_pages/notifications_page.dart';
-import 'package:mosquito_alert_app/pages/notification_pages/notification_detail_page.dart';
-import 'package:mosquito_alert_app/providers/notification_provider.dart';
-import 'package:mosquito_alert_app/services/analytics_service.dart';
+import 'package:mosquito_alert_app/features/notifications/notification_repository.dart';
+import 'package:mosquito_alert_app/features/notifications/presentation/pages/notification_detail_page.dart';
+import 'package:mosquito_alert_app/features/notifications/presentation/pages/notification_list_page.dart';
+import 'package:mosquito_alert_app/features/notifications/presentation/state/notification_provider.dart';
 import 'package:provider/provider.dart';
 
 // Import shared mocks
 import '../mocks/mocks.dart';
 
-Widget createTestWidget({
-  MockMosquitoAlert? mockClient,
-}) {
+Widget createTestWidget({MockMosquitoAlert? mockClient}) {
   return ChangeNotifierProvider<NotificationProvider>(
-    create: (_) =>
-        NotificationProvider(apiClient: mockClient ?? MockMosquitoAlert()),
-    child: MaterialApp(
-      home: NotificationsPage(
-        analyticsService: MockAnalyticsService(),
+    create: (_) => NotificationProvider(
+      repository: NotificationRepository(
+        apiClient: mockClient ?? MockMosquitoAlert(),
       ),
-      localizationsDelegates: const [
-        MockMyLocalizationsDelegate(),
-      ],
+    ),
+    child: MaterialApp(
+      home: NotificationsPage(),
+      localizationsDelegates: const [MockMyLocalizationsDelegate()],
       supportedLocales: const [Locale('en')],
     ),
   );
@@ -44,19 +41,20 @@ void main() {
     });
 
     test(
-        'MockNotificationsApi should return empty list when no notifications set',
-        () async {
-      // Given
-      mockApi.setNotifications([]);
+      'MockNotificationsApi should return empty list when no notifications set',
+      () async {
+        // Given
+        mockApi.setNotifications([]);
 
-      // When
-      final response = await mockApi.listMine();
+        // When
+        final response = await mockApi.listMine();
 
-      // Then
-      expect(response.statusCode, equals(200));
-      expect(response.data?.results?.length, equals(0));
-      expect(response.data?.count, equals(0));
-    });
+        // Then
+        expect(response.statusCode, equals(200));
+        expect(response.data?.results.length, equals(0));
+        expect(response.data?.count, equals(0));
+      },
+    );
 
     test('MockNotificationsApi should return notifications when set', () async {
       // Given
@@ -73,23 +71,26 @@ void main() {
 
       // Then
       expect(response.statusCode, equals(200));
-      expect(response.data?.results?.length, equals(1));
-      expect(response.data?.results?.first.id, equals(1));
-      expect(response.data?.results?.first.message.title,
-          equals('Test Notification'));
+      expect(response.data?.results.length, equals(1));
+      expect(response.data?.results.first.id, equals(1));
+      expect(
+        response.data?.results.first.message.title,
+        equals('Test Notification'),
+      );
       expect(response.data?.count, equals(1));
     });
 
     test('MockNotificationsApi should handle pagination correctly', () async {
       // Given - Create 25 notifications
       final notifications = List.generate(
-          25,
-          (index) => createTestNotification(
-                id: index + 1,
-                title: 'Notification ${index + 1}',
-                body: 'Body ${index + 1}',
-                isRead: false,
-              ));
+        25,
+        (index) => createTestNotification(
+          id: index + 1,
+          title: 'Notification ${index + 1}',
+          body: 'Body ${index + 1}',
+          isRead: false,
+        ),
+      );
       mockApi.setNotifications(notifications);
 
       // When - Get first page
@@ -97,7 +98,7 @@ void main() {
 
       // Then - First page should have 20 items
       expect(firstPageResponse.statusCode, equals(200));
-      expect(firstPageResponse.data?.results?.length, equals(20));
+      expect(firstPageResponse.data?.results.length, equals(20));
       expect(firstPageResponse.data?.count, equals(25));
       expect(firstPageResponse.data?.next, isNotNull);
 
@@ -106,7 +107,7 @@ void main() {
 
       // Then - Second page should have 5 items
       expect(secondPageResponse.statusCode, equals(200));
-      expect(secondPageResponse.data?.results?.length, equals(5));
+      expect(secondPageResponse.data?.results.length, equals(5));
       expect(secondPageResponse.data?.count, equals(25));
       expect(secondPageResponse.data?.next, isNull);
     });
@@ -122,8 +123,9 @@ void main() {
       mockApi.setNotifications([testNotification]);
 
       // When
-      final patchRequest =
-          sdk.PatchedNotificationRequest((b) => b..isRead = true);
+      final patchRequest = sdk.PatchedNotificationRequest(
+        (b) => b..isRead = true,
+      );
       final response = await mockApi.partialUpdate(
         id: 1,
         patchedNotificationRequest: patchRequest,
@@ -134,8 +136,9 @@ void main() {
       expect(response.data?.isRead, equals(true));
     });
 
-    testWidgets('should display no notifications message when empty',
-        (WidgetTester tester) async {
+    testWidgets('should display no notifications message when empty', (
+      WidgetTester tester,
+    ) async {
       // Given
       mockApi.setNotifications([]);
 
@@ -147,7 +150,8 @@ void main() {
       } catch (e) {
         // Firebase exception is expected in test environment, continue with test
         print(
-            "Expected Firebase exception: ${e.toString().substring(0, 100)}...");
+          "Expected Firebase exception: ${e.toString().substring(0, 100)}...",
+        );
       }
 
       // Then - Check that the widget structure exists despite Firebase errors
@@ -161,8 +165,9 @@ void main() {
       expect(find.byType(ListTile), findsNothing);
     });
 
-    testWidgets('should display read notifications with grey background',
-        (WidgetTester tester) async {
+    testWidgets('should display read notifications with grey background', (
+      WidgetTester tester,
+    ) async {
       // Given
       final readNotification = createTestNotification(
         id: 1,
@@ -185,16 +190,18 @@ void main() {
       // Then - Check proper color coding
       expect(find.byType(ListTile), findsNWidgets(2));
 
-      final listTiles =
-          tester.widgetList<ListTile>(find.byType(ListTile)).toList();
+      final listTiles = tester
+          .widgetList<ListTile>(find.byType(ListTile))
+          .toList();
       // First tile (read) should have white background
       expect(listTiles[0].tileColor, equals(Colors.white));
       // Second tile (unread) should have grey background
       expect(listTiles[1].tileColor, equals(Colors.grey[200]));
     });
 
-    testWidgets('should mark notification as read when tapped',
-        (WidgetTester tester) async {
+    testWidgets('should mark notification as read when tapped', (
+      WidgetTester tester,
+    ) async {
       // Given
       final unreadNotification = createTestNotification(
         id: 1,
@@ -228,8 +235,9 @@ void main() {
       expect(listTile.tileColor, equals(Colors.white));
     });
 
-    testWidgets('should handle API errors gracefully',
-        (WidgetTester tester) async {
+    testWidgets('should handle API errors gracefully', (
+      WidgetTester tester,
+    ) async {
       // Given - Setup API to return error
       mockApi.setNotifications([]);
 

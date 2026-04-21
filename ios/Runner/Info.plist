@@ -6,6 +6,7 @@
 		<array>
 			<string>trackingTask</string>
 			<string>scheduleDailyTasks</string>
+			<string>outboxSyncTask</string>
 		</array>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>

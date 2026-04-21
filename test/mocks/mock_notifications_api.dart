@@ -30,17 +30,22 @@ class MockNotificationsApi extends sdk.NotificationsApi {
     final startIndex = (currentPage - 1) * size;
     final endIndex = startIndex + size;
 
-    final pageNotifications = _notifications.sublist(startIndex,
-        endIndex > _notifications.length ? _notifications.length : endIndex);
+    final pageNotifications = _notifications.sublist(
+      startIndex,
+      endIndex > _notifications.length ? _notifications.length : endIndex,
+    );
 
     final hasNext = endIndex < _notifications.length;
-    final nextUrl =
-        hasNext ? 'http://example.com/?page=${currentPage + 1}' : null;
+    final nextUrl = hasNext
+        ? 'http://example.com/?page=${currentPage + 1}'
+        : null;
 
-    final paginatedList = sdk.PaginatedNotificationList((b) => b
-      ..results = ListBuilder<sdk.Notification>(pageNotifications)
-      ..next = nextUrl
-      ..count = _notifications.length);
+    final paginatedList = sdk.PaginatedNotificationList(
+      (b) => b
+        ..results = ListBuilder<sdk.Notification>(pageNotifications)
+        ..next = nextUrl
+        ..count = _notifications.length,
+    );
 
     return Response<sdk.PaginatedNotificationList>(
       data: paginatedList,
@@ -59,8 +64,10 @@ class MockNotificationsApi extends sdk.NotificationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final notification = _notifications.firstWhere((n) => n.id == id,
-        orElse: () => throw Exception('Notification not found'));
+    final notification = _notifications.firstWhere(
+      (n) => n.id == id,
+      orElse: () => throw Exception('Notification not found'),
+    );
 
     return Response<sdk.Notification>(
       data: notification,
@@ -84,7 +91,8 @@ class MockNotificationsApi extends sdk.NotificationsApi {
     if (index == -1) throw Exception('Notification not found');
 
     final updatedNotification = _notifications[index].rebuild(
-        (b) => b..isRead = patchedNotificationRequest?.isRead ?? b.isRead);
+      (b) => b..isRead = patchedNotificationRequest?.isRead ?? b.isRead,
+    );
 
     _notifications[index] = updatedNotification;
 

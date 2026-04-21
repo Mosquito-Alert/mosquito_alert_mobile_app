@@ -3,8 +3,10 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 /// Abstract analytics service to enable mocking in tests
 abstract class AnalyticsService {
   Future<void> logScreenView({required String screenName});
-  Future<void> logSelectContent(
-      {required String contentType, required String itemId});
+  Future<void> logSelectContent({
+    required String contentType,
+    required String itemId,
+  });
 }
 
 /// Firebase Analytics implementation
@@ -20,8 +22,10 @@ class FirebaseAnalyticsService implements AnalyticsService {
   }
 
   @override
-  Future<void> logSelectContent(
-      {required String contentType, required String itemId}) async {
+  Future<void> logSelectContent({
+    required String contentType,
+    required String itemId,
+  }) async {
     try {
       await FirebaseAnalytics.instance.logSelectContent(
         contentType: contentType,
@@ -42,8 +46,10 @@ class MockAnalyticsService implements AnalyticsService {
   }
 
   @override
-  Future<void> logSelectContent(
-      {required String contentType, required String itemId}) async {
+  Future<void> logSelectContent({
+    required String contentType,
+    required String itemId,
+  }) async {
     // Do nothing in tests
   }
 }
