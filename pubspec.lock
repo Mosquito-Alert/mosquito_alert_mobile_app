@@ -1216,11 +1216,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.2.0"
-      resolved-ref: "0656bacc320c479635a2ef0c01859a53d6ba5681"
+      ref: "0.3.1"
+      resolved-ref: "2786d766b922323ef325ac3c2aeca47847ab1e17"
       url: "https://github.com/Mosquito-Alert/mosquito-alert-dart-sdk.git"
     source: git
-    version: "0.2.0"
+    version: "0.3.1"
   native_toolchain_c:
     dependency: transitive
     description:
