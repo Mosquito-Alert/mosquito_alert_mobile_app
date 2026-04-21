@@ -32,7 +32,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late final InternetConnection apiConnection;
-  InternetStatus _internetStatus = InternetStatus.connected;
 
   late StreamSubscription<InternetStatus> _apiConnectionSubscription;
   late final AppLifecycleListener _apiConnectionSListener;
@@ -63,11 +62,6 @@ class _MyAppState extends State<MyApp> {
     ).onStatusChange.listen((status) async {
       final authProvider = context.read<AuthProvider>();
       final userProvider = context.read<UserProvider>();
-      if (mounted) {
-        setState(() {
-          _internetStatus = status;
-        });
-      }
       if (status == InternetStatus.connected) {
         await widget.syncManager.syncAllWithoutAuth();
         if (!authProvider.isAuthenticated) {
@@ -100,9 +94,6 @@ class _MyAppState extends State<MyApp> {
       },
       onPause: () {
         _apiConnectionSubscription.cancel();
-        setState(() {
-          _internetStatus = InternetStatus.connected;
-        });
       },
     );
   }
