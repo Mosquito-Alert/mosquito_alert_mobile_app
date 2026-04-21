@@ -22,8 +22,8 @@ dependencies:
   firebase_messaging: ^16.2.0
   firebase_core: ^4.7.0
   auto_size_text: ^3.0.0
-  device_info_plus: ^11.3.0
-  package_info_plus: ^9.0.0
+  device_info_plus: ^12.4.0
+  package_info_plus: ^9.0.1
   intro_slider: ^3.0.10
   permission_handler: ^12.0.1
   language_picker: ^0.4.5
@@ -54,7 +54,7 @@ dependencies:
     git:
       url: https://github.com/Mosquito-Alert/mosquito-alert-dart-sdk.git
       ref: 0.2.0
-  flutter_secure_storage: ^9.2.4
+  flutter_secure_storage: ^10.0.0
   infinite_scroll_pagination: ^5.1.0
   provider: ^6.1.5
   built_collection: ^5.1.1
