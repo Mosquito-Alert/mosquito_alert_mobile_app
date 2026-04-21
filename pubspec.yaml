@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^2.1.0
   flutter_localizations:
     sdk: flutter
   google_maps_flutter: ^2.12.3
