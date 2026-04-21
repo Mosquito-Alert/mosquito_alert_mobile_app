@@ -45,6 +45,7 @@ coverage/
 **/web/**/lib/generated_plugin_registrant.dart
 
 # Android related
+android/app/.cxx
 android/app/google-services.json
 **/gradle-wrapper.jar
 **/android/**/gradle-wrapper.jar
