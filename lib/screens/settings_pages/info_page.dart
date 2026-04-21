@@ -40,13 +40,15 @@ class _InfoPageState extends State<InfoPage> {
               SettingsMenuWidget(
                 MyLocalizations.of(context, 'info_scores_txt'),
                 () {
+                  final locale = Localizations.localeOf(context);
+                  final languageCode = locale.languageCode;
+                  final url =
+                      "https://app.mosquitoalert.com/$languageCode/info/score";
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       settings: RouteSettings(name: '/info/scoring'),
-                      builder: (context) => InfoPageInWebview(
-                        MyLocalizations.of(context, 'url_scoring_1'),
-                      ),
+                      builder: (context) => InfoPageInWebview(url),
                     ),
                   );
                 },
@@ -59,9 +61,8 @@ class _InfoPageState extends State<InfoPage> {
                     context,
                     MaterialPageRoute(
                       settings: RouteSettings(name: '/info/about_project'),
-                      builder: (context) => InfoPageInWebview(
-                        MyLocalizations.of(context, 'url_about_project'),
-                      ),
+                      builder: (context) =>
+                          InfoPageInWebview("https://www.mosquitoalert.com"),
                     ),
                   );
                 },
@@ -74,9 +75,8 @@ class _InfoPageState extends State<InfoPage> {
                     context,
                     MaterialPageRoute(
                       settings: RouteSettings(name: '/info/about_us'),
-                      builder: (context) => InfoPageInWebview(
-                        MyLocalizations.of(context, 'url_about_us'),
-                      ),
+                      builder: (context) =>
+                          InfoPageInWebview("https://www.mosquitoalert.com"),
                     ),
                   );
                 },
