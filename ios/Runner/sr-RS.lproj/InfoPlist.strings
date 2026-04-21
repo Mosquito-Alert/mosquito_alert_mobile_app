@@ -4,33 +4,33 @@
  * Locale: sr_RS, Serbian (Serbia)
  * Tagged: info-plist
  * Exported by: Enric Pou
- * Exported at: Mon, 21 Jul 2025 10:18:46 +0200
+ * Exported at: Tue, 21 Apr 2026 15:44:37 +0200
  */
 
 /* loco:66339ba61600bb5f87001572
  * A message that tells the user why the app is requesting access to the device’s camera. */
-NSCameraUsageDescription = "Снимим и делим фотографије да бих пружио визуелне доказе у вашим извештајима.";
+NSCameraUsageDescription = "Snimim i delim fotografije da bih obezbedio vizuelne dokaze u izveštajima.";
 
 /* loco:66339c0f9dc6f586f60faac2
  * A message that tells the user why the app is requesting access to the user’s location information at all times. */
-NSLocationAlwaysAndWhenInUseUsageDescription = "Дозволите приступ локацији за анонимно гео-праћење у позадини ниске резолуције како бисте побољшали научну вредност ваших запажања.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "Dozvolite pristup lokaciji za anonimno geo-praćenje u pozadini niske rezolucije kako biste poboljšali naučnu vrednost vaših zapažanja.";
 
 /* loco:66339c792a448f22630c2d62
  * A message that tells the user why the app is requesting access to the user’s location information while the app is running in the foreground. */
-NSLocationWhenInUseUsageDescription = "Користим ГПС за прецизно означавање локације у вашим извештајима.";
+NSLocationWhenInUseUsageDescription = "Koristite GPS za preciznije obeležavanje lokacije vašeg izveštaja.";
 
 /* loco:66339ccb3972ba9d6a0ee1f4
  * A message that tells the user why the app is requesting add-only access to the user’s photo library. */
-NSPhotoLibraryAddUsageDescription = "сачувам фотографије снимљене апликацијом у галерију вашег уређаја.";
+NSPhotoLibraryAddUsageDescription = "Sačuvajte fotografije fotografisane kroz aplikaciju u vašu galeriju.";
 
 /* loco:66339d1180b2837b700d7446
  * A message that tells the user why the app is requesting access to the user’s photo library. */
-NSPhotoLibraryUsageDescription = "Приступ вашој галерији фотографија да приложите постојеће слике вашим извештајима.";
+NSPhotoLibraryUsageDescription = "Pristupite vašoj galeriji da biste zakačili postojeću fotografiju u izveštaj.";
 
 /* loco:679b86631fb7c762a90b8312
  * A message that tells the user why the app is requesting permission to send notifications. */
-NSUserNotificationsUsageDescription = "Користимо обавештења да бисмо вас обавештавали о статусу ваших доприноса.";
+NSUserNotificationsUsageDescription = "Koristimo obaveštenja da bismo vas informisali o statusu vašeg doprinosa.";
 
 /* loco:679b868034f40c577d0e1d22
  * A message that tells the user why the app is requesting permission to track the user across sessions. */
-NSUserTrackingUsageDescription = "Користимо идентификатор вашег уређаја да бисмо вас пратили кроз сесије и да бисмо сходно томе сачували ваше доприносе.";
+NSUserTrackingUsageDescription = "Koristimo identifikator vašeg uređenja da bismo vas pratili i kroz sesije i da bismo shodno tome sačuvali vaše doprinose.";
