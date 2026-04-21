@@ -71,13 +71,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       // User score
                       InkWell(
                         onTap: () {
+                          final locale = Localizations.localeOf(context);
+                          final languageCode = locale.languageCode;
+
+                          final url =
+                              "https://webserver.mosquitoalert.com/$languageCode/stats/user_ranking/1/${user?.uuid ?? 'not_found'}";
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               settings: RouteSettings(name: '/user_score'),
-                              builder: (context) => InfoPageInWebview(
-                                "${MyLocalizations.of(context, 'url_point_1')}/${user?.uuid ?? 'not_found'}",
-                              ),
+                              builder: (context) => InfoPageInWebview(url),
                             ),
                           );
                         },

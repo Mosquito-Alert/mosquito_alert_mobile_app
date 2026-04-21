@@ -232,7 +232,6 @@ class _ObservationCreatePageState extends State<ObservationCreatePage> {
   }
 
   Future<bool?> _showAlertCampaign(Campaign activeCampaign) {
-    final appName = MyLocalizations.of(context, 'app_name');
     final campaignBody = MyLocalizations.of(
       context,
       'alert_campaign_found_create_body',
@@ -245,7 +244,7 @@ class _ObservationCreatePageState extends State<ObservationCreatePage> {
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text(appName),
+          title: Text('Mosquito Alert'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[

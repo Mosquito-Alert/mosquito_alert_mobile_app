@@ -167,7 +167,7 @@ class _TermsPageState extends State<TermsPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => InfoPageInWebview(
-                                MyLocalizations.of(context, 'url_about_us'),
+                                "https://www.mosquitoalert.com",
                                 localHtml: false,
                               ),
                             ),
