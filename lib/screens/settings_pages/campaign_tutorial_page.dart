@@ -10,7 +10,7 @@ class CampaignTutorialPage extends StatefulWidget {
 }
 
 class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
-  List<Slide> slides = [];
+  List<ContentConfig> slides = [];
 
   Function? goToTab;
 
@@ -45,8 +45,8 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
       ),
       body: SafeArea(
         child: IntroSlider(
-          slides: initSlides(),
-          showSkipBtn: false,
+          listContentConfig: initSlides(),
+          isShowSkipBtn: false,
           renderNextBtn: renderNextBtn(),
           renderDoneBtn: renderDoneBtn(),
           onDonePress: () {
@@ -58,15 +58,16 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
             ),
             overlayColor: WidgetStateProperty.all(Style.colorPrimary),
           ),
-          colorDot: Style.colorPrimary.withValues(alpha: 0.4),
-          sizeDot: 6.0,
-          colorActiveDot: Style.colorPrimary,
+          indicatorConfig: IndicatorConfig(
+            colorIndicator: Style.colorPrimary.withValues(alpha: 0.4),
+            sizeIndicator: 6.0,
+            colorActiveIndicator: Style.colorPrimary,
+          ),
           listCustomTabs: renderListCustomTabs(),
-          backgroundColorAllSlides: Colors.white,
+          backgroundColorAllTabs: Colors.white,
           refFuncGoToTab: (refFunc) {
             goToTab = refFunc;
           },
-          hideStatusBar: false,
           prevButtonStyle: ButtonStyle(
             foregroundColor: WidgetStateProperty.all(Style.colorPrimary),
             overlayColor: WidgetStateProperty.all(Style.colorPrimary),
@@ -77,11 +78,11 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
   }
 
   // Slide Management
-  List<Slide> initSlides() {
+  List<ContentConfig> initSlides() {
     slides.clear();
     for (var idx = 0; idx < 9; idx++) {
       slides.add(
-        Slide(
+        ContentConfig(
           title: '',
           description: MyLocalizations.of(
             context,

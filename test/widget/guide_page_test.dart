@@ -59,7 +59,7 @@ void main() {
       // Verify the slider has 9 slides by checking for slide indicator dots
       // IntroSlider creates dots for each slide
       final introSlider = tester.widget<IntroSlider>(find.byType(IntroSlider));
-      expect(introSlider.slides?.length, equals(9));
+      expect(introSlider.listContentConfig?.length, equals(9));
     });
 
     testWidgets('should display first slide content initially', (
@@ -272,10 +272,9 @@ void main() {
       final introSlider = tester.widget<IntroSlider>(find.byType(IntroSlider));
 
       // Verify slider configuration
-      expect(introSlider.showSkipBtn, equals(false));
-      expect(introSlider.sizeDot, equals(6.0));
-      expect(introSlider.backgroundColorAllSlides, equals(Colors.white));
-      expect(introSlider.hideStatusBar, equals(false));
+      expect(introSlider.isShowSkipBtn, equals(false));
+      expect(introSlider.indicatorConfig?.sizeIndicator, equals(6.0));
+      expect(introSlider.backgroundColorAllTabs, equals(Colors.white));
     });
 
     testWidgets(

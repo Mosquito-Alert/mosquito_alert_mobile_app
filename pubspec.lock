@@ -1056,10 +1056,10 @@ packages:
     dependency: "direct main"
     description:
       name: intro_slider
-      sha256: cfbaf3c2dc02aaa50067a2a51f144b5bd697a744243f30269eca0f3596ca675f
+      sha256: "0c458fa5231456f4cd0f6c4e0fc78e05fba607750fa4fda7d75c4d962c35022b"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.10"
+    version: "4.2.5"
   io:
     dependency: transitive
     description:

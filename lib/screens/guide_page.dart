@@ -17,7 +17,7 @@ class GuidePage extends StatefulWidget {
 }
 
 class _GuidePageState extends State<GuidePage> {
-  List<Slide> slides = [];
+  List<ContentConfig> slides = [];
   late AnalyticsService _analyticsService;
 
   @override
@@ -31,9 +31,9 @@ class _GuidePageState extends State<GuidePage> {
     await _analyticsService.logScreenView(screenName: '/mosquito_guide');
   }
 
-  List<Slide> initSlides() {
+  List<ContentConfig> initSlides() {
     slides.add(
-      Slide(
+      ContentConfig(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_01'),
         pathImage: 'assets/img/gallery/guia_1.webp',
@@ -41,56 +41,56 @@ class _GuidePageState extends State<GuidePage> {
       ),
     );
     slides.add(
-      Slide(
+      ContentConfig(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_02'),
         pathImage: 'assets/img/gallery/guia_2.webp',
       ),
     );
     slides.add(
-      Slide(
+      ContentConfig(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_03'),
         pathImage: 'assets/img/gallery/guia_3.webp',
       ),
     );
     slides.add(
-      Slide(
+      ContentConfig(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_04'),
         pathImage: 'assets/img/gallery/guia_4.webp',
       ),
     );
     slides.add(
-      Slide(
+      ContentConfig(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_05'),
         pathImage: 'assets/img/gallery/guia_5.webp',
       ),
     );
     slides.add(
-      Slide(
+      ContentConfig(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_06'),
         pathImage: 'assets/img/gallery/guia_6.webp',
       ),
     );
     slides.add(
-      Slide(
+      ContentConfig(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_07'),
         pathImage: 'assets/img/gallery/guia_7.webp',
       ),
     );
     slides.add(
-      Slide(
+      ContentConfig(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_08'),
         pathImage: 'assets/img/gallery/guia_8.webp',
       ),
     );
     slides.add(
-      Slide(
+      ContentConfig(
         title: '',
         description: MyLocalizations.of(context, 'gallery_info_09'),
         pathImage: 'assets/img/gallery/guia_9.webp',
@@ -154,8 +154,8 @@ class _GuidePageState extends State<GuidePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: IntroSlider(
-        slides: initSlides(),
-        showSkipBtn: false,
+        listContentConfig: initSlides(),
+        isShowSkipBtn: false,
         renderNextBtn: renderNextBtn(),
         renderDoneBtn: renderDoneBtn(),
         onDonePress: onDonePress,
@@ -165,12 +165,13 @@ class _GuidePageState extends State<GuidePage> {
           ),
           overlayColor: WidgetStateProperty.all(Style.colorPrimary),
         ),
-        colorDot: Style.colorPrimary.withValues(alpha: 0.4),
-        sizeDot: 6.0,
-        colorActiveDot: Style.colorPrimary,
+        indicatorConfig: IndicatorConfig(
+          colorIndicator: Style.colorPrimary.withValues(alpha: 0.4),
+          sizeIndicator: 6.0,
+          colorActiveIndicator: Style.colorPrimary,
+        ),
         listCustomTabs: renderListCustomTabs(),
-        backgroundColorAllSlides: Colors.white,
-        hideStatusBar: false,
+        backgroundColorAllTabs: Colors.white,
         prevButtonStyle: ButtonStyle(
           foregroundColor: WidgetStateProperty.all(Style.colorPrimary),
           overlayColor: WidgetStateProperty.all(Style.colorPrimary),
