@@ -60,8 +60,8 @@ dependencies:
   path_provider: ^2.1.5
   json_annotation: ^4.11.0
   internet_connection_checker_plus: ^2.9.1+1
-  hive_ce: ^2.15.1
-  hive_ce_flutter: ^2.3.3
+  hive_ce: ^2.19.3
+  hive_ce_flutter: ^2.3.4
   synchronized: ^3.4.0
 
 dependency_overrides:
