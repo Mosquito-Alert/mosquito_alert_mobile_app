@@ -33,7 +33,7 @@ dependencies:
   webview_flutter: ^4.13.1
   workmanager: ^0.9.0+3
   battery_plus: ^7.0.0
-  badges: ^3.1.2
+  badges: ^3.2.0
   cached_network_image: ^3.3.1
   camera: ^0.11.2
   flutter_sliding_up_panel: ^2.1.1
