@@ -4,7 +4,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_sync_manager.dart';
 import 'package:mosquito_alert_app/features/auth/presentation/state/auth_provider.dart';
 import 'package:mosquito_alert_app/features/onboarding/data/onboarding_repository.dart';
@@ -14,6 +13,7 @@ import 'package:mosquito_alert_app/screens/layout_page.dart';
 import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
 import 'package:mosquito_alert_app/core/localizations/MyLocalizationsDelegate.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
+import 'package:mosquito_alert_app/services/api_service.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
@@ -31,35 +31,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late final InternetConnection apiConnection;
-
   late StreamSubscription<InternetStatus> _apiConnectionSubscription;
   late final AppLifecycleListener _apiConnectionSListener;
 
-  StreamSubscription<InternetStatus> _createApiConnectionSubscription() {
-    final apiClient = context.read<MosquitoAlert>();
-
-    return InternetConnection.createInstance(
-      useDefaultOptions: false,
-      enableStrictCheck: true,
-      customCheckOptions: [
-        // NOTE: this is dummy, all the logic is in customConnectivityCheck
-        InternetCheckOption(uri: Uri.parse(apiClient.dio.options.baseUrl)),
-      ],
-      customConnectivityCheck: (option) async {
-        try {
-          final pingApi = apiClient.getPingApi();
-          final response = await pingApi.retrieve();
-
-          return InternetCheckResult(
-            option: option,
-            isSuccess: response.statusCode == 204,
-          );
-        } catch (e) {
-          return InternetCheckResult(option: option, isSuccess: false);
-        }
-      },
-    ).onStatusChange.listen((status) async {
+  StreamSubscription<InternetStatus> _listenToConnectivityChanges(
+    InternetConnection internetConnection,
+  ) {
+    return internetConnection.onStatusChange.listen((status) async {
       final authProvider = context.read<AuthProvider>();
       final userProvider = context.read<UserProvider>();
       if (status == InternetStatus.connected) {
@@ -87,10 +65,16 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _apiConnectionSubscription = _createApiConnectionSubscription();
+    final apiService = context.read<ApiService>();
+    _apiConnectionSubscription = _listenToConnectivityChanges(
+      apiService.connection,
+    );
     _apiConnectionSListener = AppLifecycleListener(
       onResume: () {
-        _apiConnectionSubscription = _createApiConnectionSubscription();
+        _apiConnectionSubscription.cancel();
+        _apiConnectionSubscription = _listenToConnectivityChanges(
+          apiService.connection,
+        );
       },
       onPause: () {
         _apiConnectionSubscription.cancel();

@@ -113,6 +113,7 @@ Future<void> main({String env = 'prod'}) async {
   runApp(
     MultiProvider(
       providers: [
+        Provider<ApiService>.value(value: apiService),
         Provider<MosquitoAlert>.value(value: apiClient),
         ChangeNotifierProvider<AuthProvider>.value(value: authProvider),
         ChangeNotifierProvider<UserProvider>.value(value: userProvider),
