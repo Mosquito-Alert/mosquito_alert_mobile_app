@@ -42,7 +42,7 @@ class ObservationCreateRequest extends BaseCreateReportWithPhotosRequest {
           ),
       ),
       photos: observation.photos != null
-          ? observation.photos as List<BaseUploadPhoto>
+          ? observation.photos!.whereType<BaseUploadPhoto>().toList()
           : [],
       eventEnvironment: observation.eventEnvironment,
       eventMoment: observation.eventMoment,
