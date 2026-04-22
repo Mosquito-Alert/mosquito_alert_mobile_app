@@ -28,6 +28,18 @@ class _CameraController extends ChangeNotifier {
   final selectedImages = <Uint8List>[];
   var images = <AssetEntity>[];
 
+  /// Number of photos the user picked or captured during the current session
+  /// that could not be encoded as JPEG and were therefore not added to
+  /// [selectedImages]. Callers should consult this after [openGallery] /
+  /// [captureImage] returns and surface an error to the user so they have a
+  /// chance to retake / reselect. Reset between sessions by calling
+  /// [resetFailedCount].
+  int failedImageCount = 0;
+
+  void resetFailedCount() {
+    failedImageCount = 0;
+  }
+
   Future<void> loadRecentGalleryImages(BuildContext context) async {
     if (!(await isRecentPhotosFeatureEnabled(context))) {
       images.clear();
@@ -63,15 +75,38 @@ class _CameraController extends ChangeNotifier {
     return true;
   }
 
-  Future<void> compressAndAddToSelectedImages(File file) async {
-    // Target JPEG, max 4K (3840x2160). Quality 85 is visually indistinguishable
-    // from 98 on photographs but produces files roughly 5x smaller, keeping
-    // multi-photo uploads well below typical server/proxy request-size limits.
+  /// Re-encodes [file] as JPEG (the only format the backend currently
+  /// accepts) and adds the bytes to [selectedImages]. Returns `true` on
+  /// success.
+  ///
+  /// This is a citizen-science app whose photos are classified by
+  /// entomologists and used for public-health decisions. The encoding
+  /// settings below (4K long edge, quality 98, EXIF preserved) match the
+  /// app's long-standing behaviour and must not be changed without input
+  /// from the classification team.
+  ///
+  /// Robustness on iOS, where gallery photos are routinely HEIC/HEIF:
+  ///
+  ///   1. Fast path: [FlutterImageCompress.compressWithFile]. Efficient
+  ///      when it works, but returns `null` intermittently for some HEIC
+  ///      inputs (HDR, live-photo variants, certain ICC profiles).
+  ///   2. Fallback: [FlutterImageCompress.compressWithList], which reads
+  ///      the file into memory and routes through native ImageIO on iOS.
+  ///      This handles the HEIC/HEIF variants the fast path fails on,
+  ///      using the same quality settings — no quality trade-off.
+  ///
+  /// If both attempts fail, the photo is dropped and `false` is returned.
+  /// We never upload the raw file bytes unmodified: on iOS that would mean
+  /// uploading HEIC data mislabeled as `image/jpeg`, which the server
+  /// rejects and leaves the report permanently stuck in the outbox. The
+  /// caller is expected to surface a visible error so the user can retake
+  /// or reselect.
+  Future<bool> compressAndAddToSelectedImages(File file) async {
     const int maxWidth = 3840;
     const int maxHeight = 2160;
-    const int quality = 85;
+    const int quality = 98;
 
-    // Fast path: compress directly from the file path.
+    // Attempt 1: file path (fast path).
     try {
       final compressed = await FlutterImageCompress.compressWithFile(
         file.absolute.path,
@@ -84,15 +119,13 @@ class _CameraController extends ChangeNotifier {
       );
       if (compressed != null) {
         selectedImages.add(compressed);
-        return;
+        return true;
       }
     } catch (e) {
       debugPrint('compressWithFile failed for ${file.path}: $e');
     }
 
-    // Fallback: compress from raw bytes. iOS gallery photos are often HEIC/HEIF
-    // and compressWithFile sometimes returns null for them; compressWithList
-    // routes through native ImageIO, which handles those inputs reliably.
+    // Attempt 2: in-memory compression (handles iOS HEIC/HEIF reliably).
     try {
       final rawBytes = await file.readAsBytes();
       final compressed = await FlutterImageCompress.compressWithList(
@@ -104,22 +137,20 @@ class _CameraController extends ChangeNotifier {
         format: CompressFormat.jpeg,
         keepExif: true,
       );
-      selectedImages.add(compressed);
-      return;
+      if (compressed.isNotEmpty) {
+        selectedImages.add(compressed);
+        return true;
+      }
     } catch (e) {
       debugPrint('compressWithList fallback failed for ${file.path}: $e');
     }
 
-    // Both attempts failed. Do NOT upload the raw bytes: HEIC/HEIF data sent
-    // as image/jpeg causes the server to reject the report and leaves it
-    // permanently stuck in the outbox. Dropping the photo is the safer
-    // behaviour — the user can see it didn't appear and retake it.
-    debugPrint(
-      'Skipping ${file.path}: could not produce a JPEG via either compression path.',
-    );
+    failedImageCount++;
+    return false;
   }
 
   Future<void> openGallery() async {
+    resetFailedCount();
     final picker = ImagePicker();
     List<XFile> pickedImages = [];
     if (multiple) {
@@ -134,6 +165,7 @@ class _CameraController extends ChangeNotifier {
   }
 
   Future<void> captureImage(File file) async {
+    resetFailedCount();
     await compressAndAddToSelectedImages(file);
   }
 }
@@ -413,11 +445,37 @@ class _WhatsappCameraState extends State<CameraWithGallery>
       final image = await _cameraController!.takePicture();
 
       final file = File(image.path);
+      final countBefore = controller.selectedImages.length;
       await controller.captureImage(file);
-      Navigator.pop(context, controller.selectedImages);
+      if (!mounted) return;
+      _showPhotoFailureIfAny(controller.failedImageCount);
+      // Only pop if we actually captured an image. Otherwise stay on the
+      // camera so the user can retake without losing the session.
+      if (controller.selectedImages.length > countBefore) {
+        Navigator.pop(context, controller.selectedImages);
+      }
     } catch (e) {
       print('Error capturing image: $e');
     }
+  }
+
+  /// Shows a SnackBar describing how many photos were dropped during the most
+  /// recent gallery pick or camera capture, if any. Citizen-science reports
+  /// must not silently lose photos: the user needs to know so they can retake
+  /// or reselect.
+  void _showPhotoFailureIfAny(int failedCount) {
+    if (failedCount <= 0 || !mounted) return;
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    if (messenger == null) return;
+    final message = failedCount == 1
+        ? MyLocalizations.of(context, 'photo_processing_failed')
+        : MyLocalizations.of(
+            context,
+            'photo_processing_failed_plural',
+          ).replaceAll('{count}', failedCount.toString());
+    messenger.showSnackBar(
+      SnackBar(content: Text(message), duration: const Duration(seconds: 4)),
+    );
   }
 
   Widget onlyOneMosquitoBadge(BuildContext context, dynamic widget) {
@@ -504,11 +562,12 @@ class _WhatsappCameraState extends State<CameraWithGallery>
           setState(() {});
         }
 
-        await controller.openGallery().then((_) {
-          if (controller.selectedImages.isNotEmpty && mounted) {
-            Navigator.pop(context, controller.selectedImages);
-          }
-        });
+        await controller.openGallery();
+        if (!mounted) return;
+        _showPhotoFailureIfAny(controller.failedImageCount);
+        if (controller.selectedImages.isNotEmpty) {
+          Navigator.pop(context, controller.selectedImages);
+        }
       },
       child: Container(
         width: 50,
@@ -574,8 +633,12 @@ class _WhatsappCameraState extends State<CameraWithGallery>
       child: GestureDetector(
         onTap: () async {
           final file = await asset.file;
-          if (file != null) {
-            await controller.captureImage(file);
+          if (file == null || !mounted) return;
+          final countBefore = controller.selectedImages.length;
+          await controller.captureImage(file);
+          if (!mounted) return;
+          _showPhotoFailureIfAny(controller.failedImageCount);
+          if (controller.selectedImages.length > countBefore) {
             Navigator.pop(context, controller.selectedImages);
           }
         },
