@@ -41,9 +41,12 @@ class ObservationCreateRequest extends BaseCreateReportWithPhotosRequest {
             observation.location.source_.name,
           ),
       ),
-      photos: observation.photos != null
-          ? observation.photos as List<BaseUploadPhoto>
-          : [],
+      // `observation.photos` is typed as `List<BasePhoto>?`, which cannot be
+      // cast to `List<BaseUploadPhoto>` even when every element is one.
+      // `whereType` performs element-wise filtering and returns a correctly
+      // typed list, avoiding the runtime TypeError that would otherwise
+      // crash `syncRepository` for every queued offline observation.
+      photos: observation.photos?.whereType<BaseUploadPhoto>().toList() ?? [],
       eventEnvironment: observation.eventEnvironment,
       eventMoment: observation.eventMoment,
       note: observation.note,
