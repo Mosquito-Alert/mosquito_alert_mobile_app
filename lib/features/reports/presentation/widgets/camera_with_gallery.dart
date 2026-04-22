@@ -64,32 +64,59 @@ class _CameraController extends ChangeNotifier {
   }
 
   Future<void> compressAndAddToSelectedImages(File file) async {
+    // Target JPEG, max 4K (3840x2160). Quality 85 is visually indistinguishable
+    // from 98 on photographs but produces files roughly 5x smaller, keeping
+    // multi-photo uploads well below typical server/proxy request-size limits.
+    const int maxWidth = 3840;
+    const int maxHeight = 2160;
+    const int quality = 85;
+
+    // Fast path: compress directly from the file path.
     try {
-      // Try compressing image to JPEG 4K max = 3840x2160
-      Uint8List? compressedImage = await FlutterImageCompress.compressWithFile(
+      final compressed = await FlutterImageCompress.compressWithFile(
         file.absolute.path,
-        minWidth: 3840,
-        minHeight: 2160,
-        quality: 98,
+        minWidth: maxWidth,
+        minHeight: maxHeight,
+        quality: quality,
         autoCorrectionAngle: true,
         format: CompressFormat.jpeg,
         keepExif: true,
       );
-
-      if (compressedImage != null) {
-        selectedImages.add(compressedImage);
-      } else {
-        // Compression returned null, add original file bytes
-        print(
-          'Warning: Compression returned null for file ${file.path}. Adding original image.',
-        );
-        selectedImages.add(await file.readAsBytes());
+      if (compressed != null) {
+        selectedImages.add(compressed);
+        return;
       }
     } catch (e) {
-      // On any error, add the original file to selectedImages
-      print('Error compressing file ${file.path}: $e');
-      selectedImages.add(await file.readAsBytes());
+      debugPrint('compressWithFile failed for ${file.path}: $e');
     }
+
+    // Fallback: compress from raw bytes. iOS gallery photos are often HEIC/HEIF
+    // and compressWithFile sometimes returns null for them; compressWithList
+    // routes through native ImageIO, which handles those inputs reliably.
+    try {
+      final rawBytes = await file.readAsBytes();
+      final compressed = await FlutterImageCompress.compressWithList(
+        rawBytes,
+        minWidth: maxWidth,
+        minHeight: maxHeight,
+        quality: quality,
+        autoCorrectionAngle: true,
+        format: CompressFormat.jpeg,
+        keepExif: true,
+      );
+      selectedImages.add(compressed);
+      return;
+    } catch (e) {
+      debugPrint('compressWithList fallback failed for ${file.path}: $e');
+    }
+
+    // Both attempts failed. Do NOT upload the raw bytes: HEIC/HEIF data sent
+    // as image/jpeg causes the server to reject the report and leaves it
+    // permanently stuck in the outbox. Dropping the photo is the safer
+    // behaviour — the user can see it didn't appear and retake it.
+    debugPrint(
+      'Skipping ${file.path}: could not produce a JPEG via either compression path.',
+    );
   }
 
   Future<void> openGallery() async {
