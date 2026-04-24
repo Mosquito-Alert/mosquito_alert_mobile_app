@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as sdk;
 import 'package:mosquito_alert_app/core/outbox/outbox_item.dart';
@@ -58,11 +57,8 @@ class FixesRepository with OutboxMixin<FixModel, FixCreateRequest> {
               );
 
               await itemApi.create(fixRequest: fixRequest);
-            } on DioException catch (e) {
-              if (e.response?.statusCode != null &&
-                  e.response!.statusCode! < 500) {
-                break;
-              }
+            } catch (e) {
+              print('Error processing create fix outbox item: $e');
               rethrow;
             }
             break;

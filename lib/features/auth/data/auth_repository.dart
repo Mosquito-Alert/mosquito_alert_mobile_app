@@ -69,12 +69,6 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
                 username: newUser.username!,
                 password: newUser.password,
               );
-            } on DioException catch (e) {
-              if (e.response?.statusCode != null &&
-                  e.response!.statusCode! < 500) {
-                break;
-              }
-              rethrow;
             } catch (e) {
               print('Error processing create guest account outbox item: $e');
               rethrow;
@@ -122,10 +116,7 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
     try {
       newAuthUser = await _sendCreateGuestToApi(request: request);
       await itemBox.delete(request.localId);
-    } on DioException catch (e) {
-      if (e.response?.statusCode != null && e.response!.statusCode! < 500) {
-        rethrow;
-      }
+    } on DioException catch (_) {
       newAuthUser = buildItemFromCreateRequest(request);
     }
     return newAuthUser;
@@ -235,7 +226,7 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
           );
           return true;
         } on DioException catch (e) {
-          if (e.response?.statusCode != null && e.response!.statusCode! < 500) {
+          if (e.response?.statusCode != null && e.response!.statusCode == 400) {
             // Invalid tokens
             await _storage.delete(key: _accessTokenKey);
             await _storage.delete(key: _refreshTokenKey);
@@ -266,7 +257,7 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
         await login(username: username, password: password);
         return true;
       } on DioException catch (e) {
-        if (e.response?.statusCode != null && e.response!.statusCode! < 500) {
+        if (e.response?.statusCode != null && e.response!.statusCode == 400) {
           // Invalid credentials
           await _storage.delete(key: _usernameKey);
           await _storage.delete(key: _passwordKey);
