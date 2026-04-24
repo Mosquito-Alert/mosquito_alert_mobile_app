@@ -25,10 +25,10 @@ class BreedingSiteCreateRequest extends BaseCreateReportWithPhotosRequest {
     required this.siteType,
     required this.hasWater,
     required this.hasLarvae,
+    super.note,
+    super.tags,
     this.inPublicArea,
     this.hasNearMosquitoes,
-    String? note,
-    List<String>? tags,
     required super.localId,
   });
 

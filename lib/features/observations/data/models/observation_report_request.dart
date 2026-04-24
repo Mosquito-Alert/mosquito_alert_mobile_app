@@ -24,8 +24,8 @@ class ObservationCreateRequest extends BaseCreateReportWithPhotosRequest {
     required super.photos,
     required this.eventEnvironment,
     required this.eventMoment,
-    String? note,
-    List<String>? tags,
+    super.note,
+    super.tags,
     required super.localId,
   });
 
