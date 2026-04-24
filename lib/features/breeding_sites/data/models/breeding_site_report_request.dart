@@ -44,9 +44,7 @@ class BreedingSiteCreateRequest extends BaseCreateReportWithPhotosRequest {
             breedingSite.location.source_.name,
           ),
       ),
-      photos: breedingSite.photos != null
-          ? breedingSite.photos as List<BaseUploadPhoto>
-          : [],
+      photos: (breedingSite.photos ?? []).whereType<BaseUploadPhoto>().toList(),
       siteType: breedingSite.siteType,
       hasWater: breedingSite.hasWater,
       inPublicArea: breedingSite.inPublicArea,
