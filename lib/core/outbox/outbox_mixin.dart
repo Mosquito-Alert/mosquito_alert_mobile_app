@@ -29,16 +29,20 @@ mixin OutboxMixin<
   /// Repository must implement method dispatcher
   Future<void> execute(OutboxTask task) async {
     final item = task.item;
-    await outbox.remove(item.id);
     try {
       await task.run();
     } catch (error) {
-      // Only runs if task.run() fails
+      // Only runs if task.run() fails. The outbox entry is left in place so
+      // the task can be retried on the next sync cycle.
       await schedule(task, runNow: false);
       return; // stop further execution
     }
 
-    // Runs only if task.run() succeeded
+    // Only remove the outbox entry (and associated local item) after the
+    // task has successfully completed. Removing it beforehand risked losing
+    // the record entirely if the action threw after the remove but before
+    // reschedule could persist it.
+    await outbox.remove(item.id);
     if (item.operation == OutBoxOperation.create) {
       final request = createRequestFactory(item.payload);
       await itemBox.delete(request.localId);
