@@ -330,7 +330,19 @@ class _WhatsappCameraState extends State<CameraWithGallery>
             future: _initializeControllerFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return CameraPreview(_cameraController!);
+                return CameraPreview(
+                  _cameraController!,
+                  child: LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                          return GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTapDown: (details) =>
+                                onViewFinderTap(details, constraints),
+                          );
+                        },
+                  ),
+                );
               } else {
                 return Center(child: CircularProgressIndicator());
               }
@@ -343,6 +355,18 @@ class _WhatsappCameraState extends State<CameraWithGallery>
         ],
       ),
     );
+  }
+
+  void onViewFinderTap(TapDownDetails details, BoxConstraints constraints) {
+    if (_cameraController == null) {
+      return;
+    }
+    final offset = Offset(
+      details.localPosition.dx / constraints.maxWidth,
+      details.localPosition.dy / constraints.maxHeight,
+    );
+    _cameraController!.setExposurePoint(offset);
+    _cameraController!.setFocusPoint(offset);
   }
 
   Widget cameraAndGalleryButtons(
