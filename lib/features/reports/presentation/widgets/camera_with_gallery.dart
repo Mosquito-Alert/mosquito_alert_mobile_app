@@ -222,7 +222,7 @@ class _WhatsappCameraState extends State<CameraWithGallery>
 
       _cameraController = CameraController(
         backCamera,
-        ResolutionPreset.high,
+        ResolutionPreset.ultraHigh,
         enableAudio: false,
       );
 
