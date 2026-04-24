@@ -25,10 +25,10 @@ BreedingSiteCreateRequest _$BreedingSiteCreateRequestFromJson(
   ),
   hasWater: json['hasWater'] as bool?,
   hasLarvae: json['hasLarvae'] as bool?,
-  inPublicArea: json['inPublicArea'] as bool?,
-  hasNearMosquitoes: json['hasNearMosquitoes'] as bool?,
   note: json['note'] as String?,
   tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
+  inPublicArea: json['inPublicArea'] as bool?,
+  hasNearMosquitoes: json['hasNearMosquitoes'] as bool?,
   localId: json['localId'] as String,
 );
 
