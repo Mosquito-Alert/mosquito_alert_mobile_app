@@ -135,10 +135,7 @@ abstract class ReportRepository<
     try {
       newReport = await sendCreateToApi(request: request);
       await itemBox.delete(request.localId);
-    } on DioException catch (e) {
-      if (e.response?.statusCode != null && e.response!.statusCode! < 500) {
-        rethrow;
-      }
+    } on DioException catch (_) {
       newReport = buildItemFromCreateRequest(request);
     }
     return newReport;
