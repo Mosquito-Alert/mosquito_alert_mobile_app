@@ -74,11 +74,11 @@ abstract class PaginatedProvider<
   Future<void> loadMore() async {
     if (isLoading || !hasMore) return;
 
-    int nextPage = page + 1;
-    if (nextPage == 1) {
+    if (page == 0) {
       return loadInitial();
     }
 
+    int nextPage = page + 1;
     isLoading = true;
     notifyListeners();
 
