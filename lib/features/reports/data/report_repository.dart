@@ -53,7 +53,13 @@ abstract class ReportRepository<
       items.sort((a, b) => b.createdAt.compareTo(a.createdAt));
       return (items, response.data?.next != null);
     } on DioException catch (e) {
-      if (e.response?.statusCode == 404) {
+      if (e.response == null) {
+        // Network error
+        if (page == 1 && items.isNotEmpty) {
+          return (items, false);
+        }
+        rethrow;
+      } else if (e.response!.statusCode == 404) {
         return (items, false);
       } else {
         rethrow;

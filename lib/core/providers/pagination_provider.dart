@@ -74,10 +74,14 @@ abstract class PaginatedProvider<
   Future<void> loadMore() async {
     if (isLoading || !hasMore) return;
 
+    int nextPage = page + 1;
+    if (nextPage == 1) {
+      return loadInitial();
+    }
+
     isLoading = true;
     notifyListeners();
 
-    int nextPage = page + 1;
     try {
       final (newItems, newHasMore) = await fetchPage(
         page: nextPage,
