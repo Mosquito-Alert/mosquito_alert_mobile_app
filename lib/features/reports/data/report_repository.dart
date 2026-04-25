@@ -89,14 +89,13 @@ abstract class ReportRepository<
         switch (item.operation) {
           case OutBoxOperation.create:
             final request = createRequestFactory(item.payload);
-            TReport newReport;
-            try {
-              newReport = await _createApiOrLocal(request: request);
-            } catch (_) {
-              break;
-            }
+            // Let any exception propagate so the outbox can reschedule the
+            // task. Previously this block swallowed all errors and allowed
+            // `execute()` to treat the attempt as a success, which silently
+            // deleted the local report without it ever reaching the server.
+            final newReport = await _createApiOrLocal(request: request);
             if (newReport.localId != null) {
-              // Throw exception to re-schedule
+              // Still offline / server unreachable; signal a retry.
               throw Exception("Failed to create report");
             }
             break;
