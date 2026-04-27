@@ -69,20 +69,6 @@ class _InfoPageState extends State<InfoPage> {
               ),
               SizedBox(height: 10),
               SettingsMenuWidget(
-                MyLocalizations.of(context, 'coordination_txt'),
-                () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      settings: RouteSettings(name: '/info/about_us'),
-                      builder: (context) =>
-                          InfoPageInWebview("https://www.mosquitoalert.com"),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(height: 10),
-              SettingsMenuWidget(
                 MyLocalizations.of(context, 'partners_txt'),
                 () {
                   Navigator.push(
