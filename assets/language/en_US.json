@@ -69,6 +69,8 @@
     "breeding_report_title": "Report a breeding site",
     "not_a_mosquito": "It is not a mosquito",
     "photo_required_alert": "You must attach at least one photo",
+    "photo_processing_failed": "Could not process that photo. Please try another photo or retake it.",
+    "photo_processing_failed_plural": "Could not process {count} of the selected photos. Please try different photos.",
     "bs_info_adult_title": "Attach a photo",
     "bs_info_adult_title_optional": "If you can, attach a photo",
     "continue_without_photo": "Continue without photo",
