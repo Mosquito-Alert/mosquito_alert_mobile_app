@@ -1,5 +1,3 @@
-.fvm/*
-!.fvm/fvm_config.json
 .vscode/settings.json
 # exclude all .env files from source control
 *.env
@@ -34,7 +32,6 @@ lib/env/env.g.dart
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
-.fvm/flutter_sdk
 .packages
 .pub-cache/
 .pub/
@@ -103,3 +100,7 @@ svc-keyfile.json
 # Lockfiles
 Podfile.lock
 yarn.lock
+
+# FVM Version Cache
+.fvm/
+!.fvm/fvm_config.json
