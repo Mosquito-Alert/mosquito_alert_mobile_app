@@ -34,3 +34,6 @@ NSUserNotificationsUsageDescription = "We use notifications to keep you updated 
 /* loco:679b868034f40c577d0e1d22
  * A message that tells the user why the app is requesting permission to track the user across sessions. */
 NSUserTrackingUsageDescription = "We use your device identifier to track you across sessions and to save your contributions accordingly.";
+
+/* Added for App Store privacy validation; this is a fallback string when iOS resolves the base localization. */
+NSAppleMusicUsageDescription = "We request this permission only when needed by iOS components used in the app.";

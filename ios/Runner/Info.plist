@@ -148,8 +148,12 @@
 		<string>We use your image gallery to save photos taken with the app to your device's gallery</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>We use your image gallery to save photos taken with the app to your device's gallery</string>
+		<key>NSUserTrackingUsageDescription</key>
+		<string>We request permission to measure app usage and improve mosquito reporting experience.</string>
 		<key>NSUserNotificationsUsageDescription</key>
 		<string>We use notifications to keep you updated on the status of your reports</string>
+		<key>NSAppleMusicUsageDescription</key>
+		<string>We request this permission only when needed by iOS components used in the app.</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>UIBackgroundModes</key>
