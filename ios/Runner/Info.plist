@@ -152,8 +152,6 @@
 		<string>We use your device identifier to track you across sessions and to save your contributions accordingly.</string>
 		<key>NSUserNotificationsUsageDescription</key>
 		<string>We use notifications to keep you updated on the status of your reports</string>
-		<key>NSAppleMusicUsageDescription</key>
-		<string>We request this permission only when needed by iOS components used in the app.</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>UIBackgroundModes</key>
