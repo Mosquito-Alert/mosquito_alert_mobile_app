@@ -244,6 +244,8 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
       if (legacyUsername != null) {
         username = legacyUsername;
         password = Env.oldPassword;
+        await _storage.write(key: _usernameKey, value: username);
+        await _storage.write(key: _passwordKey, value: password);
         await _storage.write(
           key: _autoChangePasswordKey,
           value: getRandomPassword(10),
