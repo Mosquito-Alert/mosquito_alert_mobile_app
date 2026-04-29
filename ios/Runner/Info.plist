@@ -148,6 +148,8 @@
 		<string>We use your image gallery to save photos taken with the app to your device's gallery</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>We use your image gallery to save photos taken with the app to your device's gallery</string>
+		<key>NSUserTrackingUsageDescription</key>
+		<string>We use your device identifier to track you across sessions and to save your contributions accordingly.</string>
 		<key>NSUserNotificationsUsageDescription</key>
 		<string>We use notifications to keep you updated on the status of your reports</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
