@@ -27,6 +27,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
+        android:allowBackup="false"
 >
         <activity
             android:name=".MainActivity"
