@@ -25,6 +25,7 @@ import 'package:mosquito_alert_app/features/notifications/notification_repositor
 import 'package:mosquito_alert_app/features/observations/presentation/state/observation_provider.dart';
 import 'package:mosquito_alert_app/features/bites/presentation/state/bite_provider.dart';
 import 'package:mosquito_alert_app/features/breeding_sites/presentation/state/breeding_site_provider.dart';
+import 'package:mosquito_alert_app/features/reports/data/legacy_local_reports_migration.dart';
 import 'package:mosquito_alert_app/features/user/data/user_repository.dart';
 import 'package:mosquito_alert_app/hive/hive_service.dart';
 import 'package:mosquito_alert_app/services/api_service.dart';
@@ -57,6 +58,7 @@ Future<void> main({String env = 'prod'}) async {
   await initHive();
   // Initialize Outbox
   await OutboxService().init();
+  await migrateLegacyLocalReports();
 
   await CountryCodes.init();
 

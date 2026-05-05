@@ -44,18 +44,20 @@ class _ReportList<TReport extends BaseReportModel>
   List<Object> _addHeaders(List<TReport> objects) {
     if (objects.isEmpty) return [];
 
+    final sortedObjects = [...objects]
+      ..sort((a, b) => b.createdAtLocal.compareTo(a.createdAtLocal));
+
     // Group items by date
     final List<Object> itemsWithHeaders = [];
     DateTime? lastDate;
-    for (var item in objects) {
+    for (var item in sortedObjects) {
       final createdAt = item.createdAtLocal.toLocal();
       final currentDate = DateTime(
         createdAt.year,
         createdAt.month,
         createdAt.day,
       );
-      // NOTE: assuming items are sorted by createdAt descending
-      if (lastDate == null || currentDate.isBefore(lastDate)) {
+      if (lastDate == null || currentDate != lastDate) {
         itemsWithHeaders.add(SectionHeader(currentDate));
         lastDate = currentDate;
       }
