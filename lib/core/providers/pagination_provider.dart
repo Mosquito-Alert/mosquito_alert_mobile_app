@@ -80,6 +80,7 @@ abstract class PaginatedProvider<
 
     int nextPage = page + 1;
     isLoading = true;
+    error = null;
     notifyListeners();
 
     try {
@@ -91,7 +92,6 @@ abstract class PaginatedProvider<
       hasMore = newHasMore;
     } catch (e) {
       error = e.toString();
-      hasMore = false;
       nextPage = page; // stay on the same page on error
     } finally {
       page = nextPage;
