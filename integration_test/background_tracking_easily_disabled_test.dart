@@ -18,6 +18,20 @@ Future<void> waitForWidget(
   throw Exception('Widget not found: $finder');
 }
 
+Future<void> waitForWidgetGone(
+  WidgetTester tester,
+  Finder finder, {
+  Duration timeout = const Duration(seconds: 15),
+}) async {
+  final end = DateTime.now().add(timeout);
+  while (DateTime.now().isBefore(end)) {
+    await tester.pump();
+    if (finder.evaluate().isEmpty) return;
+    await Future.delayed(const Duration(milliseconds: 100));
+  }
+  throw Exception('Widget still found: $finder');
+}
+
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   binding.framePolicy = LiveTestWidgetsFlutterBindingFramePolicy.fullyLive;
@@ -63,6 +77,7 @@ void main() {
         expect(rejectBtn, findsOne);
         await tester.ensureVisible(rejectBtn);
         await tester.tap(rejectBtn);
+        await waitForWidgetGone(tester, rejectBtn);
         await tester.pumpAndSettle();
       },
     );
