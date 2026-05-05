@@ -45,6 +45,11 @@ abstract class ReportRepository<
         page: page,
         pageSize: pageSize,
         orderBy: BuiltList<String>(["-created_at"]),
+        // Explicitly disable the SDK's default `dist=1000` (km) filter,
+        // which would otherwise be sent on every request and cause the
+        // server to omit the user's reports that are far from their
+        // current/last known location.
+        dist: null,
       );
 
       for (final item in response.data?.results ?? []) {
@@ -73,6 +78,9 @@ abstract class ReportRepository<
       final response = await (itemApi as dynamic).listMine(
         page: 1,
         pageSize: 1,
+        // See note in `fetchPage`: explicitly opt out of the SDK's default
+        // `dist=1000` distance filter so we get the true total count.
+        dist: null,
       );
       count += response.data?.count as int;
     } catch (_) {
