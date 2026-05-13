@@ -64,7 +64,7 @@ Future<void> main({String env = 'prod'}) async {
   final apiClient = apiService.client;
 
   final deviceRepository = await DeviceRepository.create(apiClient: apiClient);
-  final authRepository = AuthRepository(
+  final authRepository = await AuthRepository.create(
     apiClient: apiClient,
     getCurrentDevice: () async {
       return deviceRepository.currentDevice ??
@@ -72,12 +72,15 @@ Future<void> main({String env = 'prod'}) async {
     },
   );
   final authProvider = AuthProvider(repository: authRepository);
-  await authProvider.restoreSession();
+  await authProvider.restoreSession(forceLogin: true);
 
   FirebaseMessagingService.configure(deviceRepository: deviceRepository);
 
   final userRepository = UserRepository(apiClient: apiClient);
-  final userProvider = await UserProvider.create(repository: userRepository);
+  final userProvider = await UserProvider.create(
+    repository: userRepository,
+    authProvider: authProvider,
+  );
 
   if (config.useAuth) {
     await Workmanager().initialize(callbackDispatcher);
@@ -161,7 +164,7 @@ void callbackDispatcher() {
     final ApiService apiService = ApiService(baseUrl: config.baseUrl);
     final apiClient = apiService.client;
 
-    final authRepository = AuthRepository(apiClient: apiClient);
+    final authRepository = await AuthRepository.create(apiClient: apiClient);
     try {
       await authRepository.restoreSession();
     } catch (_) {

@@ -23,10 +23,12 @@ class _LocationInfoConsentPageState extends State<LocationInfoConsentPage> {
       _isLoading = true;
     });
 
+    final fixesProvider = context.read<FixesProvider>();
+
     try {
       await PermissionsManager.requestPermissions();
       await widget.onCompleted?.call();
-      final fixesProvider = context.read<FixesProvider>();
+
       await fixesProvider.enableTracking(runImmediately: true);
     } finally {
       if (mounted) {

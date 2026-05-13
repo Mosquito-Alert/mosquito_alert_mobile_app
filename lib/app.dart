@@ -6,9 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_sync_manager.dart';
 import 'package:mosquito_alert_app/features/auth/presentation/state/auth_provider.dart';
-import 'package:mosquito_alert_app/features/onboarding/data/onboarding_repository.dart';
 import 'package:mosquito_alert_app/features/onboarding/presentation/pages/onboarding_flow_page.dart';
-import 'package:mosquito_alert_app/features/onboarding/presentation/state/onboarding_provider.dart';
 import 'package:mosquito_alert_app/screens/layout_page.dart';
 import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
 import 'package:mosquito_alert_app/core/localizations/MyLocalizationsDelegate.dart';
@@ -91,109 +89,104 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<OnboardingProvider>(
-      create: (_) => OnboardingProvider(repository: OnboardingRepository()),
-      child: OverlaySupport.global(
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Style.colorPrimary,
-              brightness: Brightness.light,
-              primary: Style.colorPrimary,
-              secondary: Style.colorPrimary,
-            ),
-            scaffoldBackgroundColor: Colors.white,
-            useMaterial3: true,
-            // Explicitly set component themes to use your primary color
-            checkboxTheme: CheckboxThemeData(
-              fillColor: WidgetStateProperty.resolveWith<Color>((
-                Set<WidgetState> states,
-              ) {
-                if (states.contains(WidgetState.selected)) {
-                  return Style.colorPrimary;
-                }
-                return Colors.transparent;
-              }),
-              checkColor: WidgetStateProperty.all(Colors.white),
-            ),
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Style.colorPrimary,
-                foregroundColor: Colors.white,
-              ),
-            ),
-            outlinedButtonTheme: OutlinedButtonThemeData(
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Style.colorPrimary,
-                side: BorderSide(color: Style.colorPrimary),
-              ),
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(foregroundColor: Style.colorPrimary),
-            ),
-            // Configure text themes to use your primary color
-            textTheme: TextTheme(
-              headlineLarge: TextStyle(
-                color: Style.colorPrimary,
-                fontWeight: FontWeight.bold,
-              ),
-              headlineMedium: TextStyle(
-                color: Style.colorPrimary,
-                fontWeight: FontWeight.bold,
-              ),
-              headlineSmall: TextStyle(
-                color: Style.colorPrimary,
-                fontWeight: FontWeight.bold,
-              ),
-              titleLarge: TextStyle(
-                color: Style.colorPrimary,
-                fontWeight: FontWeight.bold,
-              ),
-              titleMedium: TextStyle(
-                color: Style.colorPrimary,
-                fontWeight: FontWeight.w600,
-              ),
-              titleSmall: TextStyle(
-                color: Style.colorPrimary,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            // Override primary color references
-            primaryColor: Style.colorPrimary,
-            primaryColorDark: Style.colorPrimary,
-            primaryColorLight: Style.colorPrimary,
+    final authProvider = context.watch<AuthProvider>();
+
+    return OverlaySupport.global(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Style.colorPrimary,
+            brightness: Brightness.light,
+            primary: Style.colorPrimary,
+            secondary: Style.colorPrimary,
           ),
-          navigatorKey: navigatorKey,
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(
-              analytics: FirebaseAnalytics.instance,
-              routeFilter: (route) {
-                return route is PageRoute && route.settings.name != '/';
-              },
+          scaffoldBackgroundColor: Colors.white,
+          useMaterial3: true,
+          // Explicitly set component themes to use your primary color
+          checkboxTheme: CheckboxThemeData(
+            fillColor: WidgetStateProperty.resolveWith<Color>((
+              Set<WidgetState> states,
+            ) {
+              if (states.contains(WidgetState.selected)) {
+                return Style.colorPrimary;
+              }
+              return Colors.transparent;
+            }),
+            checkColor: WidgetStateProperty.all(Colors.white),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Style.colorPrimary,
+              foregroundColor: Colors.white,
             ),
-          ],
-          home: Consumer<OnboardingProvider>(
-            builder: (context, onboardingProvider, child) {
-              return onboardingProvider.isCompleted
-                  ? LayoutPage()
-                  : OnboardingFlowPage(
-                      onCompleted: () async {
-                        final authProvider = context.read<AuthProvider>();
-                        await authProvider.createGuestAccount();
-                      },
-                    );
+          ),
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: OutlinedButton.styleFrom(
+              foregroundColor: Style.colorPrimary,
+              side: BorderSide(color: Style.colorPrimary),
+            ),
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(foregroundColor: Style.colorPrimary),
+          ),
+          // Configure text themes to use your primary color
+          textTheme: TextTheme(
+            headlineLarge: TextStyle(
+              color: Style.colorPrimary,
+              fontWeight: FontWeight.bold,
+            ),
+            headlineMedium: TextStyle(
+              color: Style.colorPrimary,
+              fontWeight: FontWeight.bold,
+            ),
+            headlineSmall: TextStyle(
+              color: Style.colorPrimary,
+              fontWeight: FontWeight.bold,
+            ),
+            titleLarge: TextStyle(
+              color: Style.colorPrimary,
+              fontWeight: FontWeight.bold,
+            ),
+            titleMedium: TextStyle(
+              color: Style.colorPrimary,
+              fontWeight: FontWeight.w600,
+            ),
+            titleSmall: TextStyle(
+              color: Style.colorPrimary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          // Override primary color references
+          primaryColor: Style.colorPrimary,
+          primaryColorDark: Style.colorPrimary,
+          primaryColorLight: Style.colorPrimary,
+        ),
+        navigatorKey: navigatorKey,
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(
+            analytics: FirebaseAnalytics.instance,
+            routeFilter: (route) {
+              return route is PageRoute && route.settings.name != '/';
             },
           ),
-          localizationsDelegates: [
-            MyLocalizationsDelegate(),
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          locale: context.watch<UserProvider>().locale,
-          supportedLocales: MyLocalizations.supportedLocales,
-        ),
+        ],
+        home: authProvider.hasCredentials
+            ? LayoutPage()
+            : OnboardingFlowPage(
+                onCompleted: () async {
+                  final authProvider = context.read<AuthProvider>();
+                  await authProvider.createGuestAccount();
+                },
+              ),
+        localizationsDelegates: [
+          MyLocalizationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: context.watch<UserProvider>().locale,
+        supportedLocales: MyLocalizations.supportedLocales,
       ),
     );
   }

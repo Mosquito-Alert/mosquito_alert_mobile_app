@@ -2,12 +2,14 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/features/auth/presentation/state/auth_provider.dart';
 import 'package:mosquito_alert_app/features/user/data/user_repository.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider extends ChangeNotifier {
   final UserRepository _repository;
+  final AuthProvider _authProvider;
 
   User? _user;
   User? get user => _user;
@@ -17,9 +19,27 @@ class UserProvider extends ChangeNotifier {
 
   bool isLoading = false;
 
-  UserProvider._({required UserRepository repository})
-    : _repository = repository {
+  late final VoidCallback _authListener;
+
+  UserProvider._({
+    required UserRepository repository,
+    required AuthProvider authProvider,
+  }) : _repository = repository,
+       _authProvider = authProvider {
     _listenToUser();
+    _authListener = () async {
+      if (!_authProvider.isAuthenticated) {
+        await setUser(null);
+      }
+    };
+
+    _authProvider.addListener(_authListener);
+  }
+
+  @override
+  void dispose() {
+    _authProvider.removeListener(_authListener);
+    super.dispose();
   }
 
   void _listenToUser() {
@@ -30,8 +50,12 @@ class UserProvider extends ChangeNotifier {
 
   static Future<UserProvider> create({
     required UserRepository repository,
+    required AuthProvider authProvider,
   }) async {
-    final provider = UserProvider._(repository: repository);
+    final provider = UserProvider._(
+      repository: repository,
+      authProvider: authProvider,
+    );
     await provider._initLanguage();
     return provider;
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
@@ -13,6 +15,8 @@ import 'package:mosquito_alert_app/features/auth/utils/random.dart';
 import 'package:uuid/uuid.dart';
 
 class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
+  final _authController = StreamController<bool>.broadcast();
+
   static final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   static const _accessTokenKey = 'access_token';
@@ -22,12 +26,49 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
   static const _deviceIdKey = 'device_id';
   static const _autoChangePasswordKey = 'auto_change_password';
 
-  final AuthApi _authApi;
+  late final AuthApi _authApi;
 
   final Future<Device> Function()? getCurrentDevice;
 
-  AuthRepository({required MosquitoAlert apiClient, this.getCurrentDevice})
+  AuthRepository._({required MosquitoAlert apiClient, this.getCurrentDevice})
     : _authApi = apiClient.getAuthApi();
+
+  static Future<AuthRepository> create({
+    required MosquitoAlert apiClient,
+    Future<Device> Function()? getCurrentDevice,
+  }) async {
+    final repository = AuthRepository._(
+      apiClient: apiClient,
+      getCurrentDevice: getCurrentDevice,
+    );
+
+    await repository._init();
+    return repository;
+  }
+
+  Future<void> _init() async {
+    String? username = await _storage.read(key: _usernameKey);
+    String? password = await _storage.read(key: _passwordKey);
+
+    // Migrate old auth system if needed
+    if (username == null && password == null) {
+      final prefs = await SharedPreferences.getInstance();
+      final String? legacyUsername = prefs.getString('uuid');
+      if (legacyUsername != null) {
+        username = legacyUsername;
+        password = Env.oldPassword;
+
+        await _setCredentials(username: username, password: password);
+        await _storage.write(
+          key: _autoChangePasswordKey,
+          value: getRandomPassword(10),
+        );
+        await prefs.remove('uuid');
+      }
+    }
+
+    _authController.add(await hasCredentials());
+  }
 
   static const itemBoxName = 'offline_auth';
 
@@ -93,6 +134,24 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
     await _storage.write(key: _accessTokenKey, value: accessToken);
   }
 
+  Future<void> _setCredentials({
+    required String username,
+    required String password,
+  }) async {
+    await _storage.write(key: _usernameKey, value: username);
+    await _storage.write(key: _passwordKey, value: password);
+    _authController.add(true);
+  }
+
+  Stream<bool> get authChanges => _authController.stream;
+
+  Future<bool> hasCredentials() async {
+    final username = await _storage.read(key: _usernameKey);
+    final password = await _storage.read(key: _passwordKey);
+    final hasOfflineCredentials = itemBox.isNotEmpty;
+    return hasOfflineCredentials || (username != null && password != null);
+  }
+
   Future<AuthUser> _sendCreateGuestToApi({
     required UserRegistrationRequest request,
   }) async {
@@ -137,6 +196,7 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
       );
       final createTask = buildOutboxTaskFromItem(item: createItem);
       await schedule(createTask, runNow: false);
+      _authController.add(true);
     }
     return newGuestAuthUser;
   }
@@ -169,8 +229,7 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
       appUserTokenObtainPairRequest: request,
     );
 
-    await _storage.write(key: _usernameKey, value: username);
-    await _storage.write(key: _passwordKey, value: password);
+    await _setCredentials(username: username, password: password);
     await _storage.write(key: _deviceIdKey, value: deviceId);
     await _storage.write(key: _accessTokenKey, value: response.data!.access);
     await _storage.write(key: _refreshTokenKey, value: response.data!.refresh);
@@ -204,14 +263,15 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
     final request = PasswordChangeRequest((b) => b..password = password);
 
     await _authApi.changePassword(passwordChangeRequest: request);
-    await _storage.write(key: _passwordKey, value: password);
+    final username = await _storage.read(key: _usernameKey);
+    await _setCredentials(username: username!, password: password);
   }
 
   // -------- RESTORE SESSION (OFFLINE SAFE) --------
-  Future<bool> restoreSession() async {
-    final access = await _storage.read(key: _accessTokenKey);
-    final refresh = await _storage.read(key: _refreshTokenKey);
-    if (access != null && refresh != null) {
+  Future<bool> restoreSession({bool forceLogin = false}) async {
+    final access = await getAccessToken();
+    final refresh = await getRefreshToken();
+    if (!forceLogin && access != null && refresh != null) {
       final lastLoggedInDeviceId = await _storage.read(key: _deviceIdKey);
       final currentDeviceId = await DeviceRepository.getDeviceId();
       if (lastLoggedInDeviceId != null &&
@@ -237,32 +297,14 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
 
     String? username = await _storage.read(key: _usernameKey);
     String? password = await _storage.read(key: _passwordKey);
-    // Migrate old auth system if needed
-    if (username == null && password == null) {
-      final prefs = await SharedPreferences.getInstance();
-      String? legacyUsername = prefs.getString('uuid');
-      if (legacyUsername != null) {
-        username = legacyUsername;
-        password = Env.oldPassword;
-        await _storage.write(key: _usernameKey, value: username);
-        await _storage.write(key: _passwordKey, value: password);
-        await _storage.write(
-          key: _autoChangePasswordKey,
-          value: getRandomPassword(10),
-        );
-        await prefs.remove('uuid');
-      }
-    }
-
     if (username != null && password != null) {
       try {
         await login(username: username, password: password);
         return true;
       } on DioException catch (e) {
-        if (e.response?.statusCode != null && e.response!.statusCode == 400) {
-          // Invalid credentials
-          await _storage.delete(key: _usernameKey);
-          await _storage.delete(key: _passwordKey);
+        final status = e.response?.statusCode;
+        if (status == 400 || status == 401) {
+          await logout();
         }
       }
     }
@@ -272,6 +314,10 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
 
   // -------- LOGOUT --------
   Future<void> logout() async {
+    // TODO: Ensure all itemBox data is cleared across repositories.
+    // Otherwise, stale data may persist and be re-associated with the next logged-in user.
+    await itemBox.clear();
     await _storage.deleteAll();
+    _authController.add(false);
   }
 }
