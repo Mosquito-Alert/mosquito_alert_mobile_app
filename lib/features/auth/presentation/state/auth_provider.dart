@@ -11,6 +11,13 @@ class AuthProvider with ChangeNotifier {
   bool _hasCredentials = false;
   bool get hasCredentials => _hasCredentials;
 
+  void _setHasCredentials(bool value) {
+    _hasCredentials = value;
+    if (!value) {
+      _isAuthenticated = false;
+    }
+  }
+
   bool _isAuthenticated = false;
   bool get isAuthenticated => _isAuthenticated;
 
@@ -23,13 +30,10 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> _init() async {
-    _hasCredentials = await _repository.hasCredentials();
+    _setHasCredentials(await _repository.hasCredentials());
     notifyListeners();
     _sub = _repository.authChanges.listen((hasCredentials) {
-      _hasCredentials = hasCredentials;
-      if (!hasCredentials) {
-        _isAuthenticated = false;
-      }
+      _setHasCredentials(hasCredentials);
       notifyListeners();
     });
   }
@@ -80,7 +84,7 @@ class AuthProvider with ChangeNotifier {
       final newUser = await _repository.createGuestAccount();
       if (newUser.isOffline) {
         _isAuthenticated = false;
-        _hasCredentials = true;
+        _setHasCredentials(true);
       } else {
         await login(username: newUser.username!, password: newUser.password);
       }
