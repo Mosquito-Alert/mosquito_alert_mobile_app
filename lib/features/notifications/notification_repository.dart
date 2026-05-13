@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:dio/dio.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as sdk;
 import 'package:mosquito_alert_app/core/repositories/pagination_repository.dart';
 
@@ -36,12 +37,26 @@ class NotificationRepository
     required int page,
     required int pageSize,
   }) async {
-    final response = await itemApi.listMine(
-      page: page,
-      pageSize: pageSize,
-      orderBy: BuiltList<String>(["-created_at"]),
-    );
+    try {
+      final response = await itemApi.listMine(
+        page: page,
+        pageSize: pageSize,
+        orderBy: BuiltList<String>(["-created_at"]),
+      );
 
-    return (response.data!.results.toList(), response.data!.next != null);
+      return (
+        response.data?.results.toList() ?? <sdk.Notification>[],
+        response.data?.next != null,
+      );
+    } on DioException catch (e) {
+      if (e.response == null) {
+        // Network error
+        rethrow;
+      } else if (e.response!.statusCode == 404) {
+        return (<sdk.Notification>[], false);
+      } else {
+        rethrow;
+      }
+    }
   }
 }
