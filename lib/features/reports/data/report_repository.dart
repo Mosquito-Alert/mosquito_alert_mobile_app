@@ -6,6 +6,7 @@ import 'package:mosquito_alert_app/core/outbox/outbox_mixin.dart';
 import 'package:mosquito_alert_app/features/reports/data/models/base_report_request.dart';
 import 'package:mosquito_alert_app/features/reports/domain/models/base_report.dart';
 import 'package:mosquito_alert_app/core/repositories/pagination_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ReportRepository<
   TReport extends BaseReportModel,
@@ -24,6 +25,7 @@ abstract class ReportRepository<
     required super.itemApi,
   });
 
+  Future<List<TReport>> migratePendingFromOldSystem(); // Migrate from 4.1.0
   Future<TReport> sendCreateToApi({required TCreateReportRequest request});
 
   @override
@@ -68,6 +70,20 @@ abstract class ReportRepository<
         rethrow;
       }
     }
+  }
+
+  @override
+  Future<void> syncRepository() async {
+    // Migrate any report from old system if needed
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final savedReports = prefs.getStringList('reportsList');
+
+      migratePendingFromOldSystem();
+    } catch (e) {
+      print('Error migrating reports from old system: $e');
+    }
+    return super.syncRepository();
   }
 
   Future<int> getCount() async {

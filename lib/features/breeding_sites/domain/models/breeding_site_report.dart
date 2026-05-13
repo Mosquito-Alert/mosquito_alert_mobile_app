@@ -3,6 +3,7 @@ import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/features/breeding_sites/data/models/breeding_site_report_request.dart';
 import 'package:mosquito_alert_app/features/reports/domain/models/base_report.dart';
 import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/features/reports/domain/models/legacy_report.dart';
 import 'package:mosquito_alert_app/features/reports/domain/models/photo.dart';
 
 class BreedingSiteReport extends BaseReportWithPhotos {
@@ -79,6 +80,29 @@ class BreedingSiteReport extends BaseReportWithPhotos {
       hasLarvae: request.hasLarvae,
       note: request.note,
       tags: request.tags,
+    );
+  }
+
+  factory BreedingSiteReport.fromLegacyReport(LegacyReport legacy) {
+    if (legacy.type != 'site') {
+      throw Exception('Legacy report is not a breeding site report');
+    }
+    return BreedingSiteReport(
+      localId: legacy.version_UUID,
+      createdAt: legacy.creation_time,
+      location: legacy.location,
+      photos: legacy.photos,
+      siteType:
+          ((legacy.responses
+                  ?.where((response) => response?.question_id == 12)
+                  .firstOrNull
+                  ?.answer_id) ==
+              121)
+          ? BreedingSiteSiteTypeEnum.stormDrain
+          : BreedingSiteSiteTypeEnum.other,
+      hasWater: legacy.hasWater,
+      hasLarvae: legacy.hasLarvae,
+      note: legacy.note,
     );
   }
 
