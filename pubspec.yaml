@@ -36,7 +36,6 @@ dependencies:
   badges: ^3.2.0
   cached_network_image: ^3.4.1
   camera: ^0.12.0+1
-  flutter_sliding_up_panel: ^2.1.1
   image_picker: ^1.2.2
   photo_manager: ^3.9.0
   textfield_tags: ^3.0.1
