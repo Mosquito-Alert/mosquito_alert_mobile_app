@@ -29,12 +29,6 @@ class _CameraController extends ChangeNotifier {
   var images = <AssetEntity>[];
 
   Future<void> loadRecentGalleryImages(BuildContext context) async {
-    if (!(await isRecentPhotosFeatureEnabled(context))) {
-      images.clear();
-      notifyListeners();
-      return;
-    }
-
     final result = await PhotoManager.requestPermissionExtend();
     if (!result.hasAccess) return;
 
@@ -42,6 +36,12 @@ class _CameraController extends ChangeNotifier {
       final List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
         type: RequestType.image,
         onlyAll: true,
+        filterOption: FilterOptionGroup(
+          imageOption: const FilterOption(
+            sizeConstraint: SizeConstraint(ignoreSize: true),
+          ),
+          orders: [OrderOption(type: OrderOptionType.createDate, asc: false)],
+        ),
       );
 
       if (albums.isEmpty) return;
@@ -57,10 +57,6 @@ class _CameraController extends ChangeNotifier {
       images.clear();
       notifyListeners();
     }
-  }
-
-  Future<bool> isRecentPhotosFeatureEnabled(BuildContext context) async {
-    return true;
   }
 
   Future<void> compressAndAddToSelectedImages(File file) async {
