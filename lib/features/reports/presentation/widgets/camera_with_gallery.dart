@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sliding_up_panel/flutter_sliding_up_panel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -149,7 +148,6 @@ class CameraWithGallery extends StatefulWidget {
 class _WhatsappCameraState extends State<CameraWithGallery>
     with WidgetsBindingObserver {
   late _CameraController controller;
-  final panel = SlidingUpPanelController();
   bool _isCameraPermissionGranted = false;
   List<CameraDescription> _cameras = [];
   CameraController? _cameraController;
@@ -160,7 +158,6 @@ class _WhatsappCameraState extends State<CameraWithGallery>
     WidgetsBinding.instance.removeObserver(this);
     _cameraController?.dispose();
     controller.dispose();
-    panel.dispose();
     super.dispose();
   }
 
@@ -199,12 +196,6 @@ class _WhatsappCameraState extends State<CameraWithGallery>
     // Delay the photo loading slightly to ensure proper initialization
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadRecentPhotosIfPermissionGranted();
-    });
-
-    panel.addListener(() {
-      if (panel.status.name == 'hidden') {
-        controller.selectedImages.clear();
-      }
     });
   }
 
