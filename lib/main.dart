@@ -31,13 +31,29 @@ import 'package:mosquito_alert_app/services/api_service.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:country_codes_plus/country_codes_plus.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/user/presentation/state/user_provider.dart';
 
 const String outboxSyncTaskName = "outboxSyncTask";
 
+Future<void> clearSecureStorageOnReinstall() async {
+  // See: https://github.com/juliansteenbakker/flutter_secure_storage/issues/897
+  String key = 'isFreshInstall';
+  final prefs = await SharedPreferences.getInstance();
+  final isFreshInstall = prefs.getBool(key) ?? false;
+
+  if (!isFreshInstall) {
+    await FlutterSecureStorage().deleteAll();
+    await prefs.setBool(key, true);
+  }
+}
+
 Future<void> main({String env = 'prod'}) async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await clearSecureStorageOnReinstall();
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
