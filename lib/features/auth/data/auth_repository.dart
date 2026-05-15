@@ -317,7 +317,14 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
     // TODO: Ensure all itemBox data is cleared across repositories.
     // Otherwise, stale data may persist and be re-associated with the next logged-in user.
     await itemBox.clear();
-    await _storage.deleteAll();
+
+    await _storage.delete(key: _accessTokenKey);
+    await _storage.delete(key: _refreshTokenKey);
+    await _storage.delete(key: _usernameKey);
+    await _storage.delete(key: _passwordKey);
+    await _storage.delete(key: _deviceIdKey);
+    await _storage.delete(key: _autoChangePasswordKey);
+
     _authController.add(false);
   }
 }
