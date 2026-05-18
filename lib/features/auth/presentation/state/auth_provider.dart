@@ -53,10 +53,27 @@ class AuthProvider with ChangeNotifier {
       );
     } catch (e) {
       _isAuthenticated = false;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
     }
+
+    // Self-heal: if the stored credentials were rejected and wiped during
+    // restoreSession (so we now have no credentials at all) but the user has
+    // previously completed onboarding on this install, silently create a
+    // fresh guest account. This prevents users who hit a stale/rotated/
+    // staging-server credential in their iOS Keychain from being bounced
+    // back through the onboarding flow on every launch.
+    if (!_isAuthenticated &&
+        !_hasCredentials &&
+        await _repository.wasOnboarded()) {
+      try {
+        await _createGuestAccountInternal();
+      } catch (_) {
+        // Best-effort: if recovery itself fails (e.g. no network), the
+        // outbox will retry the registration on its next sync cycle.
+      }
+    }
+
+    _isLoading = false;
+    notifyListeners();
   }
 
   Future<void> login({
@@ -81,19 +98,30 @@ class AuthProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final newUser = await _repository.createGuestAccount();
-      if (newUser.isOffline) {
-        _isAuthenticated = false;
-        _setHasCredentials(true);
-      } else {
-        await login(username: newUser.username!, password: newUser.password);
-      }
+      await _createGuestAccountInternal();
     } catch (e) {
       _isAuthenticated = false;
       rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  /// Creates a guest account without touching `_isLoading`. Used both by the
+  /// public [createGuestAccount] (which manages loading state) and by the
+  /// self-heal path in [restoreSession].
+  Future<void> _createGuestAccountInternal() async {
+    final newUser = await _repository.createGuestAccount();
+    if (newUser.isOffline) {
+      _isAuthenticated = false;
+      _setHasCredentials(true);
+    } else {
+      await _repository.login(
+        username: newUser.username!,
+        password: newUser.password,
+      );
+      _isAuthenticated = true;
     }
   }
 

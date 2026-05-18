@@ -26,6 +26,13 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
   static const _deviceIdKey = 'device_id';
   static const _autoChangePasswordKey = 'auto_change_password';
 
+  /// SharedPreferences flag indicating the user has, at some point in the
+  /// past, successfully obtained credentials on this install. Used to decide
+  /// whether to silently self-heal (re-create a guest account) when stored
+  /// credentials are later rejected by the server, instead of bouncing the
+  /// user back to onboarding.
+  static const _onboardingCompletedKey = 'auth_onboarding_completed';
+
   late final AuthApi _authApi;
 
   final Future<Device> Function()? getCurrentDevice;
@@ -67,7 +74,24 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
       }
     }
 
+    // Backfill the onboarding flag for installs that pre-date its
+    // introduction: any user that already has credentials must have
+    // completed onboarding previously.
+    if (await hasCredentials() && !await wasOnboarded()) {
+      await _markOnboarded();
+    }
+
     _authController.add(await hasCredentials());
+  }
+
+  Future<bool> wasOnboarded() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_onboardingCompletedKey) ?? false;
+  }
+
+  Future<void> _markOnboarded() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_onboardingCompletedKey, true);
   }
 
   static const itemBoxName = 'offline_auth';
@@ -233,6 +257,7 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
     await _storage.write(key: _deviceIdKey, value: deviceId);
     await _storage.write(key: _accessTokenKey, value: response.data!.access);
     await _storage.write(key: _refreshTokenKey, value: response.data!.refresh);
+    await _markOnboarded();
 
     final autoChangePassword = await _storage.read(key: _autoChangePasswordKey);
     if (autoChangePassword != null) {
@@ -286,11 +311,18 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
           );
           return true;
         } on DioException catch (e) {
-          if (e.response?.statusCode != null && e.response!.statusCode == 400) {
-            // Invalid tokens
+          final status = e.response?.statusCode;
+          if (status != null && status >= 400 && status < 500) {
+            // Refresh token is no longer accepted by the server. Drop the
+            // stale tokens so the username/password path below runs. We
+            // intentionally do not clear the username/password yet because
+            // they may still be valid.
             await _storage.delete(key: _accessTokenKey);
             await _storage.delete(key: _refreshTokenKey);
           }
+          // For 5xx / network / timeout errors, fall through and let the
+          // username/password path try; if that also fails transiently we
+          // keep existing credentials for a later retry.
         }
       }
     }
@@ -303,9 +335,20 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
         return true;
       } on DioException catch (e) {
         final status = e.response?.statusCode;
-        if (status == 400 || status == 401) {
+        if (status != null && status >= 400 && status < 500) {
+          // The server rejected the stored credentials (400 invalid request,
+          // 401 unauthorized, 403 forbidden, 404 user-not-found, 422 etc.).
+          // These are not transient: the credentials are no longer usable,
+          // so wipe them. The provider layer will self-heal by creating a
+          // fresh guest account if the user has previously onboarded.
           await logout();
         }
+        // 5xx / network / timeout: leave credentials in place for a retry.
+      } catch (_) {
+        // Non-DioException: something unexpected went wrong in the auth
+        // chain. Treat it as a credential failure so we don't leave the
+        // user in a phantom-authenticated state.
+        await logout();
       }
     }
 
