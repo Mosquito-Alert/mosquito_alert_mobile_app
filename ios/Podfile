@@ -8,6 +8,9 @@ project 'Runner', {
   'Debug' => :debug,
   'Profile' => :release,
   'Release' => :release,
+  'Debug-DevTF' => :debug,
+  'Profile-DevTF' => :release,
+  'Release-DevTF' => :release,
 }
 
 def flutter_root
