@@ -238,6 +238,7 @@ class AuthRepository with OutboxMixin<AuthUser, UserRegistrationRequest> {
     if (autoChangePassword != null) {
       try {
         await changePassword(password: autoChangePassword);
+        password = autoChangePassword;
         await _storage.delete(key: _autoChangePasswordKey);
       } on DioException catch (_) {
         // Ignore password change errors
