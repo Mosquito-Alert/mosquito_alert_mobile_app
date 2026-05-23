@@ -51,7 +51,7 @@ jobs:
 
       # The timeout for a single step in Github Actions is 12 minutes
     - name: Build debug appbundle (avoids test loader timeouts)
-      run: flutter build appbundle --debug
+      run: flutter build appbundle --debug --flavor prod --target lib/main.dart
 
     - name: Free up disk space that comes by default with the emulator
       run: |

@@ -35,7 +35,7 @@ jobs:
         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_ANDROID_BASE64 }}
 
     - name: Build Android on debug mode (capture logs)
-      run: flutter build appbundle --debug 2>&1 | tee build_log.txt
+      run: flutter build appbundle --debug --flavor prod --target lib/main.dart 2>&1 | tee build_log.txt
 
     - name: Check for obsolete Java version warnings
       run: |

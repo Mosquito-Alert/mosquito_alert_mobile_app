@@ -68,6 +68,30 @@ android {
             ]
     }
 
+    // Build flavors:
+    //   prod -> applicationId "ceab.movelab.tigatrapp"       (production server)
+    //   dev  -> applicationId "ceab.movelab.tigatrapp.dev"   (testing server)
+    //
+    // Build commands:
+    //   fvm flutter build appbundle --flavor prod --target lib/main.dart
+    //   fvm flutter build appbundle --flavor dev  --target lib/main_dev.dart
+    //
+    // The Flutter --target flag selects which Dart entry point (and thus which
+    // assets/config/<env>.json) is used; the Gradle --flavor flag selects the
+    // applicationId / app name / launcher icon / google-services.json overlay.
+    flavorDimensions "env"
+    productFlavors {
+        prod {
+            dimension "env"
+            resValue "string", "app_name", "Mosquito Alert"
+        }
+        dev {
+            dimension "env"
+            applicationIdSuffix ".dev"
+            resValue "string", "app_name", "Test Mosquito Alert"
+        }
+    }
+
     signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']

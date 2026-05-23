@@ -44,6 +44,7 @@ coverage/
 # Android related
 android/app/.cxx
 android/app/google-services.json
+android/app/src/dev/google-services.json
 **/gradle-wrapper.jar
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
