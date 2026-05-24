@@ -46,6 +46,7 @@ class MyLocalizations {
     Locale('sr', 'RS'),
     Locale('sv', 'SE'),
     Locale('tr', 'TR'),
+    Locale('vi', 'VN'),
   ];
 
   /// List of unique language codes
