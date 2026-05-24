@@ -4,6 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_sync_manager.dart';
 import 'package:mosquito_alert_app/features/auth/presentation/state/auth_provider.dart';
 import 'package:mosquito_alert_app/features/onboarding/presentation/pages/onboarding_flow_page.dart';
@@ -171,6 +172,24 @@ class _MyAppState extends State<MyApp> {
             },
           ),
         ],
+        builder: (context, child) {
+          if (child == null) return const SizedBox.shrink();
+          // For non-production flavors (e.g. the `dev` Android flavor and the
+          // iOS DevTF scheme that ship as "Test Mosquito Alert"), overlay a
+          // persistent ribbon on every screen so testers can tell at a glance
+          // that they are not in the public app and that any reports they
+          // submit go to the development backend.
+          if (AppConfig.isProduction) return child;
+          return Directionality(
+            textDirection: TextDirection.ltr,
+            child: Banner(
+              message: 'TEST',
+              location: BannerLocation.topEnd,
+              color: Colors.red.shade700,
+              child: child,
+            ),
+          );
+        },
         home: authProvider.hasCredentials
             ? LayoutPage()
             : OnboardingFlowPage(
