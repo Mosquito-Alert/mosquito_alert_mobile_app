@@ -15,7 +15,7 @@ Ask for the `.env` file to any of our mobile developers, paste in the root folde
 
 ### Android
 #### Requirements
-- Java 21 (And set it to JAVA_HOME on Windows or shell config on macOS)
+- Java 17 (And set it to JAVA_HOME on Windows or shell config on macOS)
 
 1. Clone the repository to your local machine
 2. Go to android/local.properties and at the end of the file add the following lines: (If the file doesn't exist, just create it yourself)

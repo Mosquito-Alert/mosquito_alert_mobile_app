@@ -24,8 +24,7 @@ class AuthProvider with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  AuthProvider({required AuthRepository repository})
-    : _repository = repository {
+  AuthProvider({required this._repository}) {
     _init();
   }
 

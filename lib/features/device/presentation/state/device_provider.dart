@@ -8,8 +8,7 @@ class DeviceProvider with ChangeNotifier {
   final DeviceRepository _repository;
   Device? device;
 
-  DeviceProvider({required DeviceRepository repository})
-    : _repository = repository;
+  DeviceProvider({required this._repository});
 
   Future<void> registerDevice() async {
     if (device != null) {

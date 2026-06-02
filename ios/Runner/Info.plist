@@ -45,11 +45,13 @@
 			<string>tr-TR</string>
 		</array>
 		<key>CFBundleName</key>
+		<string>mosquito_alert</string>
+		<key>CFBundleDisplayName</key>
 		<string>Mosquito Alert</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
-		<string>$(MARKETING_VERSION)</string>
+		<string>$(FLUTTER_BUILD_NAME)</string>
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleURLTypes</key>
@@ -64,11 +66,32 @@
 			</dict>
 		</array>
 		<key>CFBundleVersion</key>
-		<string>$(CURRENT_PROJECT_VERSION)</string>
+		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>FirebaseAppDelegateProxyEnabled</key>
 		<false/>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
+		<key>UIApplicationSceneManifest</key>
+        <dict>
+                <key>UIApplicationSupportsMultipleScenes</key>
+                <false/>
+                <key>UISceneConfigurations</key>
+                <dict>
+                        <key>UIWindowSceneSessionRoleApplication</key>
+                        <array>
+                                <dict>
+                                        <key>UISceneClassName</key>
+                                        <string>UIWindowScene</string>
+                                        <key>UISceneConfigurationName</key>
+                                        <string>flutter</string>
+                                        <key>UISceneDelegateClassName</key>
+                                        <string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+                                        <key>UISceneStoryboardFile</key>
+                                        <string>Main</string>
+                                </dict>
+                        </array>
+                </dict>
+        </dict>
 		<key>MinimumOSVersion</key>
 		<string>13.0</string>
 		<key>NSAppTransportSecurity</key>
@@ -165,8 +188,6 @@
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>
 		<string>Main</string>
-		<key>UIStatusBarHidden</key>
-		<false/>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
@@ -178,9 +199,5 @@
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
-		<key>UIViewControllerBasedStatusBarAppearance</key>
-		<false/>
-		<key>io.flutter.embedded_views_preview</key>
-		<true/>
 	</dict>
 </plist>
