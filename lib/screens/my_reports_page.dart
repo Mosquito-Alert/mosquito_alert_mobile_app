@@ -12,16 +12,16 @@ import 'package:mosquito_alert_app/features/breeding_sites/presentation/pages/br
 import 'package:mosquito_alert_app/features/breeding_sites/presentation/state/breeding_site_provider.dart';
 import 'package:mosquito_alert_app/features/observations/presentation/pages/observation_detail_page.dart';
 import 'package:mosquito_alert_app/features/observations/presentation/state/observation_provider.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 
 import 'package:provider/provider.dart';
 
 class MyReportsPage extends StatefulWidget {
-  const MyReportsPage({Key? key}) : super(key: key);
+  const MyReportsPage({super.key});
 
   @override
-  _MyReportsPageState createState() => _MyReportsPageState();
+  State<MyReportsPage> createState() => _MyReportsPageState();
 }
 
 class _MyReportsPageState extends State<MyReportsPage> {

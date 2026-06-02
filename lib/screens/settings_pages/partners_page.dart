@@ -6,14 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/core/widgets/info_page_webview.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
-import 'package:mosquito_alert_app/core/utils/Utils.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
+import 'package:mosquito_alert_app/core/utils/utils.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 import 'package:provider/provider.dart';
 
 class PartnersPage extends StatefulWidget {
+  const PartnersPage({super.key});
+
   @override
-  _PartnersPageState createState() => _PartnersPageState();
+  State<PartnersPage> createState() => _PartnersPageState();
 }
 
 class _PartnersPageState extends State<PartnersPage> {
@@ -51,7 +53,7 @@ class _PartnersPageState extends State<PartnersPage> {
     );
   }
 
-  getInitialData() async {
+  Future<void> getInitialData() async {
     // Set loading state to true initially
     loadingStream.add(true);
     try {
@@ -141,7 +143,7 @@ class _PartnersPageState extends State<PartnersPage> {
               if (snapshot.hasData == false || snapshot.data == false) {
                 return Container();
               }
-              return Utils.loading(snapshot.data);
+              return Utils.loading(snapshot.data!);
             },
           ),
         ),

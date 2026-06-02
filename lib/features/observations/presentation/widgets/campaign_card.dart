@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/features/observations/domain/models/observation_report.dart';
 import 'package:mosquito_alert_app/screens/settings_pages/campaign_tutorial_page.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 
 class CampaignCard extends StatelessWidget {
@@ -10,10 +10,10 @@ class CampaignCard extends StatelessWidget {
   final ObservationReport observation;
 
   const CampaignCard({
-    Key? key,
+    super.key,
     required this.campaign,
     required this.observation,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +32,7 @@ class CampaignCard extends StatelessWidget {
                       children: [
                         TextSpan(
                           text:
-                              MyLocalizations.of(
-                                context,
-                                "alert_campaing_found_title",
-                              ) +
-                              " ",
+                              "${MyLocalizations.of(context, "alert_campaing_found_title")} ",
                         ),
                         TextSpan(
                           text: observation.shortId,

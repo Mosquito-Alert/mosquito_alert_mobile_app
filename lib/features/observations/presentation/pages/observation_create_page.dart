@@ -16,14 +16,16 @@ import 'package:mosquito_alert_app/features/reports/presentation/widgets/report_
 import 'package:mosquito_alert_app/features/reports/presentation/widgets/location_selector.dart';
 import 'package:mosquito_alert_app/features/settings/presentation/state/settings_provider.dart';
 import 'package:mosquito_alert_app/screens/settings_pages/campaign_tutorial_page.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class ObservationCreatePage extends StatefulWidget {
+  const ObservationCreatePage({super.key});
+
   @override
-  _ObservationCreatePageState createState() => _ObservationCreatePageState();
+  State<ObservationCreatePage> createState() => _ObservationCreatePageState();
 }
 
 class _ObservationCreatePageState extends State<ObservationCreatePage> {
@@ -92,7 +94,7 @@ class _ObservationCreatePageState extends State<ObservationCreatePage> {
       stepPages: [
         // Step 1: Photo selection
         StepPage(
-          canContinue: ValueNotifier<bool>(photos.length >= 1),
+          canContinue: ValueNotifier<bool>(photos.isNotEmpty),
           onDisplay: () {
             _logAnalyticsEvent('report_add_photos');
             setState(() {
@@ -162,9 +164,7 @@ class _ObservationCreatePageState extends State<ObservationCreatePage> {
             });
           },
           child: ReportCreationEnvironmentStep(
-            initialEnvironmentName: eventEnvironment != null
-                ? eventEnvironment!.name
-                : null,
+            initialEnvironmentName: eventEnvironment?.name,
             title: MyLocalizations.of(context, "question_13"),
             allowNullOption: false,
             onChanged: (value) {
@@ -217,7 +217,7 @@ class _ObservationCreatePageState extends State<ObservationCreatePage> {
           if (campaign != null) {
             final bool? showTutorial = await _showAlertCampaign(campaign);
 
-            if (showTutorial == true) {
+            if (showTutorial == true && context.mounted) {
               await Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => CampaignTutorialPage()),

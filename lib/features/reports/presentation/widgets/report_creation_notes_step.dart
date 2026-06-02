@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 
 /// Shared notes and submit page that can be used by any report workflow
@@ -9,13 +9,13 @@ class ReportCreationNotesStep extends StatefulWidget {
   final Function(String? notes) onChange;
 
   const ReportCreationNotesStep({
-    Key? key,
+    super.key,
     this.initialNotes,
     required this.onChange,
-  }) : super(key: key);
+  });
 
   @override
-  _ReportCreationNotesStepState createState() =>
+  State<ReportCreationNotesStep> createState() =>
       _ReportCreationNotesStepState();
 }
 
@@ -44,10 +44,7 @@ class _ReportCreationNotesStepState extends State<ReportCreationNotesStep> {
       children: [
         // Notes section
         Text(
-          MyLocalizations.of(context, 'notes') +
-              ' (' +
-              MyLocalizations.of(context, 'optional') +
-              ')',
+          '${MyLocalizations.of(context, 'notes')} (${MyLocalizations.of(context, 'optional')})',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
 

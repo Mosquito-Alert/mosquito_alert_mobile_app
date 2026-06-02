@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 import 'package:mosquito_alert_app/features/bites/domain/models/body_part.dart';
 
@@ -25,7 +25,7 @@ class BiteStickMan extends StatefulWidget {
   });
 
   @override
-  _BiteStickManState createState() => _BiteStickManState();
+  State<BiteStickMan> createState() => _BiteStickManState();
 }
 
 class _BiteStickManState extends State<BiteStickMan> {
@@ -50,7 +50,7 @@ class _BiteStickManState extends State<BiteStickMan> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
+      child: SizedBox(
         width: 320,
         height: 480,
         child: Stack(

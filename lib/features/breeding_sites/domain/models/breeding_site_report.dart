@@ -1,8 +1,8 @@
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/features/breeding_sites/data/models/breeding_site_report_request.dart';
 import 'package:mosquito_alert_app/features/reports/domain/models/base_report.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/features/reports/domain/models/photo.dart';
 
 class BreedingSiteReport extends BaseReportWithPhotos {

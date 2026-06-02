@@ -30,7 +30,6 @@ class SettingsProvider with ChangeNotifier {
         if (oldHashtag.startsWith('#')) {
           oldHashtag = oldHashtag.substring(1);
         }
-        ;
         await prefs.remove('hashtag');
         await prefs.setStringList('hashtags', [oldHashtag]);
       }

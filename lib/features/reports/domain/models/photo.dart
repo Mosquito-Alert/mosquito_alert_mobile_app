@@ -62,8 +62,8 @@ class LocalPhoto extends BaseUploadPhoto {
   Future<MultipartFile> toMultipartFile() async {
     return await MultipartFile.fromFile(
       path,
-      filename: this.filename,
-      contentType: this.contentType,
+      filename: filename,
+      contentType: contentType,
     );
   }
 
@@ -96,8 +96,8 @@ class MemoryPhoto extends BaseUploadPhoto {
   Future<MultipartFile> toMultipartFile() async {
     return MultipartFile.fromBytes(
       bytes,
-      filename: this.filename,
-      contentType: this.contentType,
+      filename: filename,
+      contentType: contentType,
     );
   }
 
@@ -125,6 +125,7 @@ class RemotePhoto extends BasePhoto {
     return RemotePhoto(photo.url);
   }
 
+  @override
   Widget buildWidget({required double size}) {
     return CachedNetworkImage(
       imageUrl: url,

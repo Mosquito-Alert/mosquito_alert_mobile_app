@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:mosquito_alert_app/features/reports/domain/models/base_report.dart';
 import 'package:mosquito_alert_app/features/reports/domain/models/report_detail_field.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 
 class ReportInfoList<TReport extends BaseReportModel> extends StatelessWidget {
   final TReport report;
@@ -34,7 +34,7 @@ class ReportInfoList<TReport extends BaseReportModel> extends StatelessWidget {
           future: report.locationDisplayName,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text(MyLocalizations.of(context, 'loading') + '...');
+              return Text('${MyLocalizations.of(context, 'loading')}...');
             } else {
               final location =
                   snapshot.data ??
@@ -57,7 +57,7 @@ class ReportInfoList<TReport extends BaseReportModel> extends StatelessWidget {
             leading: Icon(f.icon, color: Style.colorPrimary),
             title: Text(f.value),
           );
-        }).toList(),
+        }),
       if (report.tags != null && report.tags!.isNotEmpty)
         ListTile(
           leading: Icon(Icons.sell, color: Style.colorPrimary),

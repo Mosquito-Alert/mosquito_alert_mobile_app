@@ -3,17 +3,21 @@ import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:intro_slider/intro_slider.dart';
 import 'package:markdown/markdown.dart';
 import 'package:mosquito_alert_app/services/analytics_service.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 
 class GuidePage extends StatefulWidget {
   final Function goBackToHomepage;
   final AnalyticsService? analyticsService;
 
-  GuidePage({required this.goBackToHomepage, this.analyticsService});
+  const GuidePage({
+    super.key,
+    required this.goBackToHomepage,
+    this.analyticsService,
+  });
 
   @override
-  _GuidePageState createState() => _GuidePageState();
+  State<GuidePage> createState() => _GuidePageState();
 }
 
 class _GuidePageState extends State<GuidePage> {
@@ -117,7 +121,7 @@ class _GuidePageState extends State<GuidePage> {
     for (var i = 0; i < slides.length; i++) {
       var currentSlide = slides[i];
       tabs.add(
-        Container(
+        SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: Container(

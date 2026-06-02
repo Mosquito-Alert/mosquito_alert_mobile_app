@@ -17,7 +17,7 @@ class OutboxItem {
          operation != OutBoxOperation.create || id != null,
          'id is mandatory for create operation',
        ),
-       this.id = id ?? Uuid().v4();
+       id = id ?? Uuid().v4();
 }
 
 class OutboxTask {

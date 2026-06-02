@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/features/user/presentation/state/user_provider.dart';
 import 'package:mosquito_alert_app/core/widgets/info_page_webview.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:provider/provider.dart';
@@ -26,14 +26,15 @@ class CustomDrawer extends StatefulWidget {
   final List<CustomDrawerItem> items;
   final int selectedIndex;
 
-  CustomDrawer({
+  const CustomDrawer({
+    super.key,
     required this.onTapChanged,
     required this.items,
     this.selectedIndex = 0,
   });
 
   @override
-  _CustomDrawerState createState() => _CustomDrawerState();
+  State<CustomDrawer> createState() => _CustomDrawerState();
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
@@ -48,9 +49,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 
   Future<void> getPackageInfo() async {
-    PackageInfo _packageInfo = await PackageInfo.fromPlatform();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
     setState(() {
-      packageInfo = _packageInfo;
+      this.packageInfo = packageInfo;
     });
   }
 
@@ -194,7 +195,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             fontSize: 8,
           ),
         ),
-        Container(
+        SizedBox(
           width: 150,
           child: Text(
             uuid,

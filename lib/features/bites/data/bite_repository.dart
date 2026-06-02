@@ -7,9 +7,8 @@ import 'package:mosquito_alert_app/features/reports/data/report_repository.dart'
 
 class BiteRepository
     extends ReportRepository<BiteReport, Bite, BitesApi, BiteCreateRequest> {
-  BiteRepository({required MosquitoAlert apiClient})
+  BiteRepository({required super.apiClient})
     : super(
-        apiClient: apiClient,
         itemApi: apiClient.getBitesApi(),
         itemFactory: (item) => BiteReport.fromSdkBite(item),
       );

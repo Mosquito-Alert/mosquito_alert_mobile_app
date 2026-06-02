@@ -6,17 +6,17 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mosquito_alert/mosquito_alert.dart' as sdk;
 import 'package:mosquito_alert_app/features/notifications/presentation/pages/notification_detail_page.dart';
 import 'package:mosquito_alert_app/features/notifications/presentation/state/notification_provider.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/html_parser.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationsPage extends StatefulWidget {
-  const NotificationsPage({Key? key}) : super(key: key);
+  const NotificationsPage({super.key});
 
   @override
-  _NotificationsPageState createState() => _NotificationsPageState();
+  State<NotificationsPage> createState() => _NotificationsPageState();
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {

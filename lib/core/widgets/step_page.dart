@@ -9,17 +9,17 @@ class StepPage extends StatefulWidget {
   final bool allowScroll;
 
   const StepPage({
-    Key? key,
+    super.key,
     required this.canContinue,
     required this.child,
     this.onDisplay,
     this.padding = const EdgeInsets.fromLTRB(16, 16, 16, 0),
     this.fullScreen = false,
     this.allowScroll = true,
-  }) : super(key: key);
+  });
 
   @override
-  _StepPageState createState() => _StepPageState();
+  State<StepPage> createState() => _StepPageState();
 }
 
 class _StepPageState extends State<StepPage> {

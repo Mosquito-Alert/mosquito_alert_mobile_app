@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/features/onboarding/presentation/pages/location_info_consent_page.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 
 class LocationConsentPage extends StatelessWidget {
@@ -30,9 +30,9 @@ class LocationConsentPage extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: OutlinedButton(
-                  child: Text(MyLocalizations.of(context, "no_show_info")),
                   onPressed: () async => await onCompleted?.call(),
                   key: const Key("rejectBackgroundTrackingBtn"),
+                  child: Text(MyLocalizations.of(context, "no_show_info")),
                 ),
               ),
               Expanded(

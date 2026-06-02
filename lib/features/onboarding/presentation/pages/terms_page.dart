@@ -4,16 +4,16 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/core/widgets/info_page_webview.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 
 class TermsPage extends StatefulWidget {
   final Future<void> Function()? onAccepted;
 
-  TermsPage({this.onAccepted});
+  const TermsPage({super.key, this.onAccepted});
 
   @override
-  _TermsPageState createState() => _TermsPageState();
+  State<TermsPage> createState() => _TermsPageState();
 }
 
 class _TermsPageState extends State<TermsPage> {
@@ -38,12 +38,12 @@ class _TermsPageState extends State<TermsPage> {
           padding: const EdgeInsets.all(16),
           child: FilledButton(
             key: ValueKey("acceptTermsButton"),
-            child: Text(MyLocalizations.of(context, 'continue_txt')),
             onPressed: acceptPrivacy && acceptConditions
                 ? () async {
                     await widget.onAccepted?.call();
                   }
                 : null,
+            child: Text(MyLocalizations.of(context, 'continue_txt')),
           ),
         ),
       ),

@@ -5,6 +5,8 @@ import 'package:mosquito_alert_app/features/notifications/presentation/state/not
 import 'package:provider/provider.dart';
 
 class NotificationBadge extends StatelessWidget {
+  const NotificationBadge({super.key});
+
   @override
   Widget build(BuildContext context) {
     final unreadNotifications = context

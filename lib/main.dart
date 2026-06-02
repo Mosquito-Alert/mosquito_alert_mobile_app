@@ -8,7 +8,7 @@ import 'package:mosquito_alert_app/app.dart';
 import 'package:mosquito_alert_app/app_config.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_service.dart';
 import 'package:mosquito_alert_app/core/outbox/outbox_sync_manager.dart';
-import 'package:mosquito_alert_app/core/utils/InAppReviewManager.dart';
+import 'package:mosquito_alert_app/core/utils/in_app_review_manager.dart';
 import 'package:mosquito_alert_app/features/auth/data/auth_repository.dart';
 import 'package:mosquito_alert_app/features/bites/data/bite_repository.dart';
 import 'package:mosquito_alert_app/features/breeding_sites/data/breeding_site_repository.dart';

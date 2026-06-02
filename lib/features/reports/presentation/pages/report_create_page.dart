@@ -4,8 +4,8 @@ import 'package:mosquito_alert_app/features/reports/domain/models/base_report.da
 import 'package:mosquito_alert_app/core/widgets/step_page.dart';
 import 'package:mosquito_alert_app/core/widgets/step_page_container.dart';
 import 'package:mosquito_alert_app/features/reports/presentation/widgets/report_creation_step_indicator.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
-import 'package:mosquito_alert_app/core/utils/InAppReviewManager.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
+import 'package:mosquito_alert_app/core/utils/in_app_review_manager.dart';
 
 /// Uses PageView slider architecture for step-by-step progression
 class ReportCreatePage<TReport extends BaseReportModel> extends StatefulWidget {
@@ -16,7 +16,8 @@ class ReportCreatePage<TReport extends BaseReportModel> extends StatefulWidget {
   final Future<void> Function(BuildContext context, dynamic report)?
   onSubmitSuccess;
 
-  ReportCreatePage({
+  const ReportCreatePage({
+    super.key,
     required this.title,
     required this.stepPages,
     this.analyticsParameters,
@@ -25,7 +26,8 @@ class ReportCreatePage<TReport extends BaseReportModel> extends StatefulWidget {
   });
 
   @override
-  _ReportCreatePageState createState() => _ReportCreatePageState();
+  State<ReportCreatePage<TReport>> createState() =>
+      _ReportCreatePageState<TReport>();
 }
 
 class _ReportCreatePageState<TReport extends BaseReportModel>
@@ -118,8 +120,8 @@ class _ReportCreatePageState<TReport extends BaseReportModel>
           ),
           centerTitle: true,
           bottom: PreferredSize(
-            child: ReportCreationStepIndicator(tabController: _tabController),
             preferredSize: Size.fromHeight(0),
+            child: ReportCreationStepIndicator(tabController: _tabController),
           ),
         ),
         body: Stack(
@@ -149,7 +151,7 @@ class _ReportCreatePageState<TReport extends BaseReportModel>
                     try {
                       newReport = await widget.onSubmit(context);
                     } catch (e) {
-                      if (!mounted) return;
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(e.toString()),
@@ -158,14 +160,15 @@ class _ReportCreatePageState<TReport extends BaseReportModel>
                         ),
                       );
                     } finally {
-                      if (mounted) {
+                      if (context.mounted) {
                         setState(() => isSubmitting = false);
                       }
                     }
 
-                    if (newReport == null || !mounted) return;
+                    if (newReport == null || !context.mounted) return;
                     await widget.onSubmitSuccess?.call(context, newReport);
 
+                    if (!context.mounted) return;
                     Navigator.of(context).popUntil((route) => route.isFirst);
                     InAppReviewManager.requestInAppReview(context);
                   },

@@ -4,13 +4,13 @@ import 'package:mosquito_alert_app/core/widgets/info_page_webview.dart';
 import 'package:mosquito_alert_app/screens/settings_pages/campaign_tutorial_page.dart';
 import 'package:mosquito_alert_app/screens/settings_pages/components/settings_menu_widget.dart';
 import 'package:mosquito_alert_app/screens/settings_pages/partners_page.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 
 class InfoPage extends StatefulWidget {
-  InfoPage();
+  const InfoPage({super.key});
 
   @override
-  _InfoPageState createState() => _InfoPageState();
+  State<InfoPage> createState() => _InfoPageState();
 }
 
 class _InfoPageState extends State<InfoPage> {

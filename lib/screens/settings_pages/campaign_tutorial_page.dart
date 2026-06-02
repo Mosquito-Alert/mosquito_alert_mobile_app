@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:intro_slider/intro_slider.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 
 class CampaignTutorialPage extends StatefulWidget {
+  const CampaignTutorialPage({super.key});
+
   @override
-  _CampaignTutorialPageState createState() => _CampaignTutorialPageState();
+  State<CampaignTutorialPage> createState() => _CampaignTutorialPageState();
 }
 
 class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
@@ -110,7 +112,7 @@ class _CampaignTutorialPageState extends State<CampaignTutorialPage> {
     for (var i = 0; i < slides.length; i++) {
       var currentSlide = slides[i];
       tabs.add(
-        Container(
+        SizedBox(
           width: double.infinity,
           height: double.infinity,
           child: Container(

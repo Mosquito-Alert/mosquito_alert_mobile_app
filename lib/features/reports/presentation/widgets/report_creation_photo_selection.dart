@@ -15,17 +15,17 @@ class ReportCreationPhotoSelection extends StatefulWidget {
   final String? thumbnailText;
 
   const ReportCreationPhotoSelection({
-    Key? key,
+    super.key,
     required this.photos,
     required this.onPhotosChanged,
     this.onPrevious,
     this.maxPhotos = 3,
     this.infoBadgeTextKey,
     this.thumbnailText,
-  }) : super(key: key);
+  });
 
   @override
-  _ReportCreationPhotoSelectionState createState() =>
+  State<ReportCreationPhotoSelection> createState() =>
       _ReportCreationPhotoSelectionState();
 }
 

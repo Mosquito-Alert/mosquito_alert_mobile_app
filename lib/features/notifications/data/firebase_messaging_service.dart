@@ -66,10 +66,12 @@ class FirebaseMessagingService {
       refresh: true,
     );
 
-    Navigator.push(
-      ctx,
-      MaterialPageRoute(builder: (_) => page, fullscreenDialog: true),
-    );
+    if (ctx.mounted) {
+      Navigator.push(
+        ctx,
+        MaterialPageRoute(builder: (_) => page, fullscreenDialog: true),
+      );
+    }
   }
 
   void _handleForegroundMessage(RemoteMessage message) {

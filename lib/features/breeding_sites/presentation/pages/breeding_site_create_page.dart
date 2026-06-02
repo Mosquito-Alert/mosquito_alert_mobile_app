@@ -14,13 +14,15 @@ import 'package:mosquito_alert_app/features/reports/presentation/widgets/report_
 import 'package:mosquito_alert_app/features/reports/presentation/widgets/report_creation_photo_selection.dart';
 import 'package:mosquito_alert_app/features/reports/presentation/widgets/location_selector.dart';
 import 'package:mosquito_alert_app/features/settings/presentation/state/settings_provider.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class BreedingSiteCreatePage extends StatefulWidget {
+  const BreedingSiteCreatePage({super.key});
+
   @override
-  _BreedingSiteCreatePageState createState() => _BreedingSiteCreatePageState();
+  State<BreedingSiteCreatePage> createState() => _BreedingSiteCreatePageState();
 }
 
 class _BreedingSiteCreatePageState extends State<BreedingSiteCreatePage> {
@@ -219,7 +221,7 @@ class _BreedingSiteCreatePageState extends State<BreedingSiteCreatePage> {
         ),
         // Step 2: Photo selection
         StepPage(
-          canContinue: ValueNotifier<bool>(photos.length >= 1),
+          canContinue: ValueNotifier<bool>(photos.isNotEmpty),
           onDisplay: () {
             _logAnalyticsEvent('report_add_photos');
             setState(() {

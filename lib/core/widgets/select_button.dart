@@ -26,7 +26,7 @@ class SelectButton<T> extends StatefulWidget {
   });
 
   @override
-  _SelectButtonState<T> createState() => _SelectButtonState<T>();
+  State<SelectButton<T>> createState() => _SelectButtonState<T>();
 }
 
 class _SelectButtonState<T> extends State<SelectButton<T>> {

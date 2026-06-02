@@ -8,8 +8,8 @@ import 'package:mosquito_alert_app/core/outbox/outbox_sync_manager.dart';
 import 'package:mosquito_alert_app/features/auth/presentation/state/auth_provider.dart';
 import 'package:mosquito_alert_app/features/onboarding/presentation/pages/onboarding_flow_page.dart';
 import 'package:mosquito_alert_app/screens/layout_page.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizationsDelegate.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations_delegate.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 import 'package:mosquito_alert_app/services/api_service.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -36,6 +36,9 @@ class _MyAppState extends State<MyApp> {
     InternetConnection internetConnection,
   ) {
     return internetConnection.onStatusChange.listen((status) async {
+      if (!mounted) {
+        return;
+      }
       final authProvider = context.read<AuthProvider>();
       final userProvider = context.read<UserProvider>();
       if (status == InternetStatus.connected) {

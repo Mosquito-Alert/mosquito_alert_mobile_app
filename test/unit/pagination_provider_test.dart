@@ -22,8 +22,7 @@ class FakePaginationRepository extends PaginationRepository<int, Object> {
 
 class TestPaginatedProvider
     extends PaginatedProvider<int, FakePaginationRepository> {
-  TestPaginatedProvider({required FakePaginationRepository repository})
-    : super(repository: repository);
+  TestPaginatedProvider({required super.repository});
 }
 
 void main() {

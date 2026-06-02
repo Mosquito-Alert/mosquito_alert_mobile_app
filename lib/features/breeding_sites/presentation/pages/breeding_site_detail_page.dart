@@ -7,17 +7,17 @@ import 'package:mosquito_alert_app/core/widgets/common_widgets.dart';
 import 'package:mosquito_alert_app/features/reports/presentation/pages/report_detail_page.dart';
 import 'package:mosquito_alert_app/features/reports/presentation/widgets/report_detail_scaffold.dart';
 import 'package:mosquito_alert_app/features/breeding_sites/presentation/state/breeding_site_provider.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:provider/provider.dart';
 
 class BreedingSiteDetailPage extends ReportDetailPage<BreedingSiteReport> {
   const BreedingSiteDetailPage({
-    Key? key,
+    super.key,
     required BreedingSiteReport breedingSite,
-  }) : super(key: key, item: breedingSite);
+  }) : super(item: breedingSite);
 
   @override
-  _BreedingSiteDetailPageState createState() => _BreedingSiteDetailPageState();
+  State<BreedingSiteDetailPage> createState() => _BreedingSiteDetailPageState();
 }
 
 class _BreedingSiteDetailPageState extends State<BreedingSiteDetailPage> {

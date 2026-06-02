@@ -6,7 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -136,7 +136,7 @@ class CameraWithGallery extends StatefulWidget {
   ///```
   ///
   const CameraWithGallery({
-    key,
+    super.key,
     this.multiple = true,
     this.infoBadgeTextKey = '',
   });
@@ -176,9 +176,11 @@ class _WhatsappCameraState extends State<CameraWithGallery>
       setState(() {
         _isCameraPermissionGranted = status.isGranted;
       });
-      if (status.isGranted && mounted) {
+      if (status.isGranted) {
         await _initializeCamera();
-        controller.loadRecentGalleryImages(context);
+        if (mounted) {
+          controller.loadRecentGalleryImages(context);
+        }
       }
     }
     if (mounted) {
@@ -219,7 +221,9 @@ class _WhatsappCameraState extends State<CameraWithGallery>
           print(
             "Error: _initializeCamera timed out before it could initialize.",
           );
-          Navigator.pop(context);
+          if (mounted) {
+            Navigator.pop(context);
+          }
         },
       );
       setState(() {});
@@ -236,7 +240,9 @@ class _WhatsappCameraState extends State<CameraWithGallery>
       });
       if (status.isGranted) {
         await _initializeCamera();
-        controller.loadRecentGalleryImages(context);
+        if (mounted) {
+          controller.loadRecentGalleryImages(context);
+        }
       }
     }
   }
@@ -398,7 +404,9 @@ class _WhatsappCameraState extends State<CameraWithGallery>
 
       final file = File(image.path);
       await controller.captureImage(file);
-      Navigator.pop(context, controller.selectedImages);
+      if (mounted) {
+        Navigator.pop(context, controller.selectedImages);
+      }
     } catch (e) {
       print('Error capturing image: $e');
     }
@@ -489,7 +497,7 @@ class _WhatsappCameraState extends State<CameraWithGallery>
         }
 
         await controller.openGallery().then((_) {
-          if (controller.selectedImages.isNotEmpty && mounted) {
+          if (controller.selectedImages.isNotEmpty && context.mounted) {
             Navigator.pop(context, controller.selectedImages);
           }
         });
@@ -508,7 +516,7 @@ class _WhatsappCameraState extends State<CameraWithGallery>
       bottom: 120 + MediaQuery.of(context).padding.bottom,
       left: 0,
       right: 0,
-      child: Container(
+      child: SizedBox(
         height: 90,
         child: AnimatedBuilder(
           animation: controller,
@@ -560,7 +568,9 @@ class _WhatsappCameraState extends State<CameraWithGallery>
           final file = await asset.file;
           if (file != null) {
             await controller.captureImage(file);
-            Navigator.pop(context, controller.selectedImages);
+            if (context.mounted) {
+              Navigator.pop(context, controller.selectedImages);
+            }
           }
         },
         child: Container(

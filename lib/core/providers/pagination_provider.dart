@@ -59,7 +59,7 @@ abstract class PaginatedProvider<
         page: page,
         pageSize: pageSize,
       );
-      this._items = newItems;
+      _items = newItems;
       hasMore = newHasMore;
     } catch (e) {
       error = e.toString();
@@ -88,7 +88,7 @@ abstract class PaginatedProvider<
         page: nextPage,
         pageSize: pageSize,
       );
-      this._items.addAll(newItems);
+      _items.addAll(newItems);
       hasMore = newHasMore;
     } catch (e) {
       error = e.toString();

@@ -3,22 +3,20 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mosquito_alert_app/core/utils/Utils.dart';
+import 'package:mosquito_alert_app/core/utils/utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class InfoPageInWebview extends StatefulWidget {
   final String? url;
   final bool localHtml;
 
-  InfoPageInWebview(this.url, {this.localHtml = false});
+  const InfoPageInWebview(this.url, {super.key, this.localHtml = false});
 
   @override
-  _InfoPageInWebviewState createState() => _InfoPageInWebviewState();
+  State<InfoPageInWebview> createState() => _InfoPageInWebviewState();
 }
 
 class _InfoPageInWebviewState extends State<InfoPageInWebview> {
-  var title;
-
   StreamController<bool> loadingStream = StreamController<bool>.broadcast();
 
   late WebViewController _controller;
@@ -60,9 +58,7 @@ class _InfoPageInWebviewState extends State<InfoPageInWebview> {
           appBar: AppBar(
             backgroundColor: Colors.white,
             centerTitle: true,
-            title: title == null
-                ? Image.asset('assets/img/ic_logo.webp', height: 45)
-                : Text(title),
+            title: Image.asset('assets/img/ic_logo.webp', height: 45),
           ),
           body: SafeArea(
             child: Stack(
@@ -78,9 +74,7 @@ class _InfoPageInWebviewState extends State<InfoPageInWebview> {
                   builder:
                       (BuildContext context, AsyncSnapshot<bool> snapLoading) {
                         if (snapLoading.data == true) {
-                          return Container(
-                            child: Center(child: Utils.loading(true)),
-                          );
+                          return Center(child: Utils.loading(true));
                         }
                         return Container();
                       },

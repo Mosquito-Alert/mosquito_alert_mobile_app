@@ -9,11 +9,11 @@ import 'package:mosquito_alert_app/features/reports/presentation/widgets/report_
 import 'package:provider/provider.dart';
 
 class BiteDetailPage extends ReportDetailPage<BiteReport> {
-  const BiteDetailPage({Key? key, required BiteReport bite})
-    : super(key: key, item: bite);
+  const BiteDetailPage({super.key, required BiteReport bite})
+    : super(item: bite);
 
   @override
-  _BiteDetailPageState createState() => _BiteDetailPageState();
+  State<BiteDetailPage> createState() => _BiteDetailPageState();
 }
 
 class _BiteDetailPageState extends State<BiteDetailPage> {

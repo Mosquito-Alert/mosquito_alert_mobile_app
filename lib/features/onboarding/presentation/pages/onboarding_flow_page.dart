@@ -22,6 +22,7 @@ class OnboardingFlowPage extends StatelessWidget {
                       try {
                         await onCompleted?.call();
                       } catch (e) {
+                        if (!navigatorContext.mounted) return;
                         ScaffoldMessenger.of(navigatorContext).showSnackBar(
                           SnackBar(
                             content: Text(e.toString()),

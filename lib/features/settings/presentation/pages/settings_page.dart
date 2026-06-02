@@ -7,16 +7,16 @@ import 'package:mosquito_alert_app/features/fixes/services/permissions_manager.d
 import 'package:mosquito_alert_app/features/settings/presentation/state/settings_provider.dart';
 import 'package:mosquito_alert_app/core/widgets/tags_text_field.dart';
 import 'package:mosquito_alert_app/features/user/presentation/state/user_provider.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 import 'package:provider/provider.dart';
 import 'package:country_codes_plus/country_codes_plus.dart';
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage();
+  const SettingsPage({super.key});
 
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
@@ -147,7 +147,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       Icons.sell_outlined,
                       color: Colors.black,
                     ),
-                    initiallyExpanded: settingsProvider.hashtags.length > 0,
+                    initiallyExpanded: settingsProvider.hashtags.isNotEmpty,
                     title: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -158,7 +158,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                         ),
                         const Spacer(),
-                        if (settingsProvider.hashtags.length > 0)
+                        if (settingsProvider.hashtags.isNotEmpty)
                           Badge.count(
                             count: settingsProvider.hashtags.length,
                             backgroundColor: Colors.grey,
@@ -204,19 +204,19 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Language _localeToLanguage(Locale locale) {
-    final _tempBaseLanguage = Language.fromIsoCode(locale.languageCode);
-    final _numDuplicatedLanguages = MyLocalizations.supportedLocales
+    final tempBaseLanguage = Language.fromIsoCode(locale.languageCode);
+    final numDuplicatedLanguages = MyLocalizations.supportedLocales
         .where((l) => l.languageCode == locale.languageCode)
         .length;
 
     return Language(
-      _tempBaseLanguage.isoCode +
+      tempBaseLanguage.isoCode +
           (locale.countryCode != null && locale.countryCode!.isNotEmpty
-              ? "_" + locale.countryCode!
+              ? "_${locale.countryCode!}"
               : ""),
-      _tempBaseLanguage.name,
-      _tempBaseLanguage.nativeName.split(',').first +
-          (_numDuplicatedLanguages > 1 && locale.countryCode != null
+      tempBaseLanguage.name,
+      tempBaseLanguage.nativeName.split(',').first +
+          (numDuplicatedLanguages > 1 && locale.countryCode != null
               ? (() {
                   try {
                     final details = CountryCodes.detailsForLocale(locale);
@@ -257,12 +257,14 @@ class _SettingsPageState extends State<SettingsPage> {
             await userProvider.setLocale(locale);
           } catch (e) {
             print('Error setting locale: $e');
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Could not update language on server.'),
-                duration: Duration(seconds: 3),
-              ),
-            );
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Could not update language on server.'),
+                  duration: Duration(seconds: 3),
+                ),
+              );
+            }
           }
         },
         itemBuilder: (Language language) {
