@@ -7,11 +7,13 @@ import 'package:mosquito_alert_app/features/bites/presentation/pages/bite_create
 import 'package:mosquito_alert_app/features/breeding_sites/presentation/pages/breeding_site_create_page.dart';
 import 'package:mosquito_alert_app/features/observations/presentation/pages/observation_create_page.dart';
 import 'package:mosquito_alert_app/screens/public_map.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {

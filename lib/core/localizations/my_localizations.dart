@@ -130,7 +130,7 @@ class MyLocalizations {
   static void _initializeTimeagoMessages() {
     if (_timeagoInitialized) return;
 
-    final Map<String, timeago.LookupMessages> _localeMessages = {
+    final Map<String, timeago.LookupMessages> localeMessages = {
       // 'bg',
       'bn': timeago.BnMessages(),
       'bn_short': timeago.BnShortMessages(),
@@ -175,7 +175,7 @@ class MyLocalizations {
       'zh_short': timeago.ZhCnMessages(),
     };
 
-    _localeMessages.forEach((key, value) {
+    localeMessages.forEach((key, value) {
       timeago.setLocaleMessages(key, value);
     });
 

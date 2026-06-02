@@ -7,7 +7,7 @@ class Style {
 
   // Texts
   static Widget title(
-    text, {
+    String? text, {
     color,
     maxLines,
     textAlign,
@@ -29,7 +29,7 @@ class Style {
   }
 
   static Widget titleMedium(
-    text, {
+    String? text, {
     color,
     maxLines,
     textAlign,
@@ -51,7 +51,7 @@ class Style {
   }
 
   static Widget body(
-    text, {
+    String? text, {
     color,
     maxLines,
     textAlign,
@@ -72,7 +72,7 @@ class Style {
   }
 
   static Widget bodySmall(
-    text, {
+    String? text, {
     color,
     maxLines,
     textAlign,

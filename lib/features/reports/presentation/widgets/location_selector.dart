@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 
 class LocationSelector extends StatefulWidget {
   final double? initialLatitude;
@@ -16,15 +16,15 @@ class LocationSelector extends StatefulWidget {
   final Function(bool isLoading)? onLoadingChanged;
 
   const LocationSelector({
-    Key? key,
+    super.key,
     required this.onLocationChanged,
     this.initialLatitude,
     this.initialLongitude,
     this.onLoadingChanged,
-  }) : super(key: key);
+  });
 
   @override
-  _LocationSelectorState createState() => _LocationSelectorState();
+  State<LocationSelector> createState() => _LocationSelectorState();
 }
 
 class _LocationSelectorState extends State<LocationSelector> {

@@ -18,7 +18,7 @@ class FixesProvider extends ChangeNotifier {
   }
 
   Future<void> _init() async {
-    _isEnabled = await TrackingService.isEnabled;
+    _isEnabled = TrackingService.isEnabled;
     _scheduledTasks = await TrackingService.getScheduledTasks();
     // Listen to live updates from TaskQueue
     _taskSub = TaskQueue.stream.listen((tasks) {
@@ -39,7 +39,7 @@ class FixesProvider extends ChangeNotifier {
       print('Error configuring TrackingService: $e');
     }
 
-    _isEnabled = await TrackingService.isEnabled;
+    _isEnabled = TrackingService.isEnabled;
     _scheduledTasks = await TrackingService.getScheduledTasks();
     notifyListeners();
   }

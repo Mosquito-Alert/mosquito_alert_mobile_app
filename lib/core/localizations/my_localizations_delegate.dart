@@ -1,4 +1,4 @@
-import 'MyLocalizations.dart';
+import 'my_localizations.dart';
 import 'package:flutter/material.dart';
 
 class MyLocalizationsDelegate extends LocalizationsDelegate<MyLocalizations> {

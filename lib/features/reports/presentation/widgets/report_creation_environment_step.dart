@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 
 class ReportCreationEnvironmentStep extends StatefulWidget {
@@ -18,7 +18,7 @@ class ReportCreationEnvironmentStep extends StatefulWidget {
   });
 
   @override
-  _ReportCreationEnvironmentStepState createState() =>
+  State<ReportCreationEnvironmentStep> createState() =>
       _ReportCreationEnvironmentStepState();
 }
 
@@ -26,7 +26,7 @@ class _ReportCreationEnvironmentStepState
     extends State<ReportCreationEnvironmentStep> {
   String? selectedEnvironmentName;
 
-  List<Map<String, dynamic>> _environmentOptions = [
+  final List<Map<String, dynamic>> _environmentOptions = [
     {
       'value': ObservationEventEnvironmentEnum.vehicle,
       'titleKey': 'question_4_answer_41',

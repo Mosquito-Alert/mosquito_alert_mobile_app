@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/core/widgets/step_page.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 
 class StepPageContainer extends StatelessWidget {
   final StepPage child;
@@ -8,6 +8,7 @@ class StepPageContainer extends StatelessWidget {
   final VoidCallback onContinue;
 
   const StepPageContainer({
+    super.key,
     required this.child,
     required this.onContinue,
     this.buttonText,
@@ -17,9 +18,9 @@ class StepPageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final continueButton = ValueListenableBuilder<bool>(
       valueListenable: child.canContinue,
-      builder: (_, value, __) => FilledButton(
-        child: Text(buttonText ?? MyLocalizations.of(context, 'continue_txt')),
+      builder: (_, value, _) => FilledButton(
         onPressed: value ? onContinue : null,
+        child: Text(buttonText ?? MyLocalizations.of(context, 'continue_txt')),
       ),
     );
 

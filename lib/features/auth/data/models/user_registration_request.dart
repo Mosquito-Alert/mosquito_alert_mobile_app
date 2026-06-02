@@ -26,5 +26,6 @@ class UserRegistrationRequest extends CreateRequest {
   factory UserRegistrationRequest.fromJson(Map<String, dynamic> json) =>
       _$UserRegistrationRequestFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$UserRegistrationRequestToJson(this);
 }

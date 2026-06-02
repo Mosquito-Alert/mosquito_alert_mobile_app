@@ -88,8 +88,9 @@ abstract class BaseReportModel extends OfflineModel {
     }
 
     // 4. Final fallback: just coordinates if no name found
-    if (cityName != null && countryName != null)
+    if (cityName != null && countryName != null) {
       return [cityName, countryName].join(", ");
+    }
     if (cityName != null) return cityName;
     if (countryName != null) return countryName;
 

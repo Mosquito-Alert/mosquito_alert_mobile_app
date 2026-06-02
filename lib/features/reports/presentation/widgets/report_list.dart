@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+// ignore: implementation_imports
 import 'package:infinite_scroll_pagination/src/defaults/first_page_exception_indicator.dart';
 import 'package:mosquito_alert_app/features/reports/domain/models/base_report.dart';
 import 'package:mosquito_alert_app/features/reports/presentation/widgets/report_list_tile.dart';
 import 'package:mosquito_alert_app/features/reports/presentation/state/report_provider.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 
 class ReportList<TReport extends BaseReportModel> extends StatefulWidget {
   final ReportProvider<TReport, dynamic> provider;
@@ -18,7 +19,7 @@ class ReportList<TReport extends BaseReportModel> extends StatefulWidget {
   });
 
   @override
-  _ReportList createState() => _ReportList();
+  State<ReportList<TReport>> createState() => _ReportList<TReport>();
 }
 
 class SectionHeader {

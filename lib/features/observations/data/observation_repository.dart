@@ -15,9 +15,8 @@ class ObservationRepository
           ObservationsApi,
           ObservationCreateRequest
         > {
-  ObservationRepository({required MosquitoAlert apiClient})
+  ObservationRepository({required super.apiClient})
     : super(
-        apiClient: apiClient,
         itemApi: apiClient.getObservationsApi(),
         itemFactory: (item) => ObservationReport.fromSdkObservation(item),
       );
@@ -48,6 +47,7 @@ class ObservationRepository
     return ObservationCreateRequest.fromModel(item);
   }
 
+  @override
   Future<ObservationReport> sendCreateToApi({
     required ObservationCreateRequest request,
   }) async {
@@ -57,10 +57,10 @@ class ObservationRepository
     }
     final photosRequest = BuiltList<MultipartFile>(photosMultipart);
 
-    final event_environment_serializer =
+    final eventEnvironmentSerializer =
         ObservationEventEnvironmentEnum.serializer
             as PrimitiveSerializer<ObservationEventEnvironmentEnum>;
-    final event_moment_serializer =
+    final eventMomentSerializer =
         ObservationEventMomentEnum.serializer
             as PrimitiveSerializer<ObservationEventMomentEnum>;
 
@@ -72,7 +72,7 @@ class ObservationRepository
       note: request.note,
       tags: request.tags != null ? BuiltList<String>(request.tags!) : null,
       eventEnvironment: request.eventEnvironment != null
-          ? (event_environment_serializer.serialize(
+          ? (eventEnvironmentSerializer.serialize(
                   serializers,
                   request.eventEnvironment!,
                   specifiedType: const FullType(
@@ -82,7 +82,7 @@ class ObservationRepository
                 as String)
           : null,
       eventMoment: request.eventMoment != null
-          ? (event_moment_serializer.serialize(
+          ? (eventMomentSerializer.serialize(
                   serializers,
                   request.eventMoment!,
                   specifiedType: const FullType(ObservationEventMomentEnum),

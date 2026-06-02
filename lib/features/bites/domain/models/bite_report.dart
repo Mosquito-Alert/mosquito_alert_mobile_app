@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/features/bites/data/models/bite_report_request.dart';
 import 'package:mosquito_alert_app/features/reports/domain/models/base_report.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 
 class BiteReport extends BaseReportModel {
   final BiteCounts counts;

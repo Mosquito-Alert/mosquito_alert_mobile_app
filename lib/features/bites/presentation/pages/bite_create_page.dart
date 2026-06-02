@@ -11,15 +11,17 @@ import 'package:mosquito_alert_app/features/reports/presentation/widgets/report_
 import 'package:mosquito_alert_app/features/reports/presentation/widgets/report_creation_notes_step.dart';
 import 'package:mosquito_alert_app/features/reports/presentation/widgets/location_selector.dart';
 import 'package:mosquito_alert_app/features/settings/presentation/state/settings_provider.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:mosquito_alert_app/features/bites/presentation/widgets/bite_stickman.dart';
 import 'package:mosquito_alert_app/features/bites/domain/models/body_part.dart';
 import 'package:uuid/uuid.dart';
 
 class BiteCreatePage extends StatefulWidget {
+  const BiteCreatePage({super.key});
+
   @override
-  _BiteCreatePageState createState() => _BiteCreatePageState();
+  State<BiteCreatePage> createState() => _BiteCreatePageState();
 }
 
 class _BiteCreatePageState extends State<BiteCreatePage> {
@@ -133,9 +135,7 @@ class _BiteCreatePageState extends State<BiteCreatePage> {
             });
           },
           child: ReportCreationEnvironmentStep(
-            initialEnvironmentName: eventEnvironment != null
-                ? eventEnvironment!.name
-                : null,
+            initialEnvironmentName: eventEnvironment?.name,
             title: MyLocalizations.of(context, "question_4"),
             allowNullOption: true,
             onChanged: (value) {

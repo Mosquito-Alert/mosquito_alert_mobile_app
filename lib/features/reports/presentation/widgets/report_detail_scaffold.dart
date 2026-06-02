@@ -6,7 +6,7 @@ import 'package:mosquito_alert_app/features/reports/presentation/widgets/report_
 import 'package:mosquito_alert_app/features/reports/presentation/widgets/report_map.dart';
 import 'package:mosquito_alert_app/features/reports/presentation/state/report_provider.dart';
 import 'package:mosquito_alert_app/features/reports/data/report_repository.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 
 class ReportDetailScaffold<TReport extends BaseReportModel>
@@ -45,9 +45,13 @@ class ReportDetailScaffold<TReport extends BaseReportModel>
                     setState(() => isDeleting = true);
                     try {
                       await provider.delete(item: report);
-                      Navigator.of(context).pop(true);
+                      if (context.mounted) {
+                        Navigator.of(context).pop(true);
+                      }
                     } catch (e) {
-                      Navigator.of(context).pop(false);
+                      if (context.mounted) {
+                        Navigator.of(context).pop(false);
+                      }
                     } finally {
                       setState(() => isDeleting = false);
                     }
@@ -93,7 +97,9 @@ class ReportDetailScaffold<TReport extends BaseReportModel>
                         onSelected: (value) async {
                           if (value == 1) {
                             bool? deleted = await _showDeleteDialog(context);
-                            if (deleted == true) Navigator.pop(context, true);
+                            if (deleted == true && context.mounted) {
+                              Navigator.pop(context, true);
+                            }
                           }
                         },
                         itemBuilder: (context) => [

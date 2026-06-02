@@ -15,9 +15,8 @@ class BreedingSiteRepository
           BreedingSitesApi,
           BreedingSiteCreateRequest
         > {
-  BreedingSiteRepository({required MosquitoAlert apiClient})
+  BreedingSiteRepository({required super.apiClient})
     : super(
-        apiClient: apiClient,
         itemApi: apiClient.getBreedingSitesApi(),
         itemFactory: (item) => BreedingSiteReport.fromSdkBreedingSite(item),
       );
@@ -60,7 +59,7 @@ class BreedingSiteRepository
     }
     final photosRequest = BuiltList<MultipartFile>(photosMultipart);
 
-    final site_type_serializer =
+    final siteTypeSerializer =
         BreedingSiteSiteTypeEnum.serializer
             as PrimitiveSerializer<BreedingSiteSiteTypeEnum>;
 
@@ -72,7 +71,7 @@ class BreedingSiteRepository
       note: request.note,
       tags: request.tags != null ? BuiltList<String>(request.tags!) : null,
       siteType:
-          (site_type_serializer.serialize(
+          (siteTypeSerializer.serialize(
                 serializers,
                 request.siteType,
                 specifiedType: const FullType(BreedingSiteSiteTypeEnum),

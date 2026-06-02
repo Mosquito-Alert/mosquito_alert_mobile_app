@@ -10,7 +10,7 @@ class TrackingService {
   factory TrackingService() => _instance;
   TrackingService._internal();
 
-  static String _isEnabledPrefsKey = 'trackingEnabled';
+  static final String _isEnabledPrefsKey = 'trackingEnabled';
   static late SharedPreferences _prefs;
 
   static const dailyTaskCount = 5;
@@ -63,7 +63,7 @@ class TrackingService {
 
     // Register the periodic task, being schedule every night
     print(
-      "Nightly scheduler for background tracking starting at ${nextMidnight} (in ${timeUntilMidnight})",
+      "Nightly scheduler for background tracking starting at $nextMidnight (in $timeUntilMidnight)",
     );
     await Workmanager().registerPeriodicTask(
       'scheduleDailyTasks',

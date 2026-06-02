@@ -115,7 +115,7 @@ class DeviceRepository {
   }
 
   Future<void> updateFcmToken(String fcmToken) async {
-    if (_cachedDevice == null) return null;
+    if (_cachedDevice == null) return;
     final request = PatchedDeviceUpdateRequest((b) => b..fcmToken = fcmToken);
     await devicesApi.partialUpdate(
       deviceId: _cachedDevice!.deviceId,

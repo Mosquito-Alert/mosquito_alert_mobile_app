@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:mosquito_alert_app/core/utils/Utils.dart';
+import 'package:mosquito_alert_app/core/utils/utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PublicMap extends StatefulWidget {
+  const PublicMap({super.key});
+
   @override
-  _PublicMapState createState() => _PublicMapState();
+  State<PublicMap> createState() => _PublicMapState();
 }
 
 class _PublicMapState extends State<PublicMap> {
@@ -64,7 +66,7 @@ class _PublicMapState extends State<PublicMap> {
                   return Container();
                 }
 
-                return Container(child: Center(child: Utils.loading(true)));
+                return Center(child: Utils.loading(true));
               },
             ),
           ],

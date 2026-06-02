@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/features/reports/domain/models/base_report.dart';
 import 'package:mosquito_alert_app/features/reports/presentation/pages/report_detail_page.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 
 class ReportListTile<TReport extends BaseReportModel> extends StatelessWidget {
   final TReport report;
@@ -9,11 +9,11 @@ class ReportListTile<TReport extends BaseReportModel> extends StatelessWidget {
   final ReportDetailPage<TReport> reportDetailPage;
 
   const ReportListTile({
-    Key? key,
+    super.key,
     required this.report,
     required this.reportDetailPage,
     this.leadingBuilder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class ReportListTile<TReport extends BaseReportModel> extends StatelessWidget {
       future: report.locationDisplayName,
       builder: (context, snapshot) {
         final subtitle = snapshot.connectionState == ConnectionState.waiting
-            ? MyLocalizations.of(context, 'loading') + '...'
+            ? '${MyLocalizations.of(context, 'loading')}...'
             : (snapshot.data ??
                   MyLocalizations.of(context, 'unknown_location'));
 

@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/features/reports/presentation/widgets/camera_with_gallery.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 
 class PhotoSelector extends StatefulWidget {
@@ -13,16 +13,16 @@ class PhotoSelector extends StatefulWidget {
   final String? infoBadgeTextKey;
 
   const PhotoSelector({
-    Key? key,
+    super.key,
     required this.selectedPhotos,
     required this.onPhotosChanged,
     this.maxPhotos = 3,
     this.thumbnailText,
     this.infoBadgeTextKey,
-  }) : super(key: key);
+  });
 
   @override
-  _PhotoSelectorState createState() => _PhotoSelectorState();
+  State<PhotoSelector> createState() => _PhotoSelectorState();
 }
 
 class _PhotoSelectorState extends State<PhotoSelector> {
@@ -105,73 +105,70 @@ class _PhotoSelectorState extends State<PhotoSelector> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          // Image preview
-          Expanded(
-            flex: 1,
-            child: Container(
-              margin: EdgeInsets.only(bottom: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.grey[200],
-              ),
-              child: _previewedPhotoIndex != null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: Image.memory(
-                        widget.selectedPhotos[_previewedPhotoIndex!],
-                        fit: BoxFit.contain,
-                      ),
-                    )
-                  : Center(
-                      child: Text(
-                        MyLocalizations.of(context, 'no-photo-selected'),
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
+    return Column(
+      children: [
+        // Image preview
+        Expanded(
+          flex: 1,
+          child: Container(
+            margin: EdgeInsets.only(bottom: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.grey[200],
+            ),
+            child: _previewedPhotoIndex != null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: Image.memory(
+                      widget.selectedPhotos[_previewedPhotoIndex!],
+                      fit: BoxFit.contain,
                     ),
-            ),
+                  )
+                : Center(
+                    child: Text(
+                      MyLocalizations.of(context, 'no-photo-selected'),
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),
+                  ),
           ),
-          if (widget.thumbnailText != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 6.0),
-              child: Text(
-                widget.thumbnailText!, // safe because we checked != null
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey[700],
-                ),
-                textAlign: TextAlign.start,
+        ),
+        if (widget.thumbnailText != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6.0),
+            child: Text(
+              widget.thumbnailText!, // safe because we checked != null
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey[700],
               ),
+              textAlign: TextAlign.start,
             ),
-
-          // Image thumbnails
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            alignment: WrapAlignment.center,
-            children: [
-              ...widget.selectedPhotos.map((photo) {
-                int index = widget.selectedPhotos.indexOf(photo);
-                bool isSelected =
-                    index == _previewedPhotoIndex; // selected index
-
-                return _buildThumbnailWidget(
-                  photo: photo,
-                  isSelected: isSelected,
-                  onTap: () => _selectPreviewPhoto(index),
-                  onRemoveTap: () => _removePhoto(index),
-                );
-              }).toList(),
-              if (_canAddMore)
-                // Add photo button
-                _buildAddPhotoWidget(),
-            ],
           ),
-        ],
-      ),
+
+        // Image thumbnails
+        Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          alignment: WrapAlignment.center,
+          children: [
+            ...widget.selectedPhotos.map((photo) {
+              int index = widget.selectedPhotos.indexOf(photo);
+              bool isSelected = index == _previewedPhotoIndex; // selected index
+
+              return _buildThumbnailWidget(
+                photo: photo,
+                isSelected: isSelected,
+                onTap: () => _selectPreviewPhoto(index),
+                onRemoveTap: () => _removePhoto(index),
+              );
+            }),
+            if (_canAddMore)
+              // Add photo button
+              _buildAddPhotoWidget(),
+          ],
+        ),
+      ],
     );
   }
 
@@ -218,7 +215,7 @@ class _PhotoSelectorState extends State<PhotoSelector> {
             child: InkWell(
               onTap: onRemoveTap,
               borderRadius: BorderRadius.circular(12),
-              child: Container(
+              child: SizedBox(
                 width: 18,
                 height: 18,
                 child: Icon(Icons.close, color: Colors.white, size: 12),

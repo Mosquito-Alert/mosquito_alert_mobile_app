@@ -14,12 +14,12 @@ import 'package:provider/provider.dart';
 
 class ObservationDetailPage extends ReportDetailPage<ObservationReport> {
   const ObservationDetailPage({
-    Key? key,
+    super.key,
     required ObservationReport observation,
-  }) : super(key: key, item: observation);
+  }) : super(item: observation);
 
   @override
-  _ObservationDetailPageState createState() => _ObservationDetailPageState();
+  State<ObservationDetailPage> createState() => _ObservationDetailPageState();
 }
 
 class _ObservationDetailPageState extends State<ObservationDetailPage> {
@@ -53,8 +53,8 @@ class _ObservationDetailPageState extends State<ObservationDetailPage> {
     final observationDateAllowsCampaign =
         DateTime.now().difference(observation.createdAt) <= Duration(days: 2);
     if (observationCountry != null && observationDateAllowsCampaign) {
-      final _campaignsApi = apiClient.getCampaignsApi();
-      final campaignsResponse = await _campaignsApi.list(
+      final campaignsApi = apiClient.getCampaignsApi();
+      final campaignsResponse = await campaignsApi.list(
         countryId: observationCountry.id,
         isActive: true,
         pageSize: 1,

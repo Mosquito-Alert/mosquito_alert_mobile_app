@@ -12,7 +12,7 @@ import 'package:mosquito_alert_app/features/notifications/presentation/state/not
 import 'package:mosquito_alert_app/features/notifications/presentation/widgets/notification_badge.dart';
 import 'package:mosquito_alert_app/features/user/presentation/state/user_provider.dart';
 import 'package:mosquito_alert_app/screens/widgets/custom_drawer.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:mosquito_alert_app/features/settings/presentation/pages/settings_page.dart';
 import 'package:mosquito_alert_app/screens/home_page.dart';
@@ -21,8 +21,10 @@ import 'package:mosquito_alert_app/screens/guide_page.dart';
 import 'package:mosquito_alert_app/screens/settings_pages/info_page.dart';
 
 class LayoutPage extends StatefulWidget {
+  const LayoutPage({super.key});
+
   @override
-  _LayoutPageState createState() => _LayoutPageState();
+  State<LayoutPage> createState() => _LayoutPageState();
 }
 
 class _LayoutPageState extends State<LayoutPage> with WidgetsBindingObserver {
@@ -71,6 +73,8 @@ class _LayoutPageState extends State<LayoutPage> with WidgetsBindingObserver {
       return;
     }
 
+    if (!mounted) return;
+
     final authProvider = context.read<AuthProvider>();
     final userProvider = context.read<UserProvider>();
 
@@ -89,7 +93,7 @@ class _LayoutPageState extends State<LayoutPage> with WidgetsBindingObserver {
 
   Future<void> _initTrackingService() async {
     final fixesProvider = context.read<FixesProvider>();
-    final trackingEnabled = await TrackingService.isEnabled;
+    final trackingEnabled = TrackingService.isEnabled;
     if (trackingEnabled) {
       await fixesProvider.enableTracking();
     } else {

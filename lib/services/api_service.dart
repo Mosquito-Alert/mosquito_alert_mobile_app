@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
+// ignore: implementation_imports
 import 'package:mosquito_alert/src/auth/jwt_auth.dart';
 import 'package:mosquito_alert_app/features/auth/data/auth_repository.dart';
 

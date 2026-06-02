@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mosquito_alert_app/features/fixes/presentation/state/fixes_provider.dart';
 import 'package:mosquito_alert_app/features/fixes/services/permissions_manager.dart';
-import 'package:mosquito_alert_app/core/localizations/MyLocalizations.dart';
+import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 import 'package:provider/provider.dart';
 
@@ -57,10 +57,10 @@ class _LocationInfoConsentPageState extends State<LocationInfoConsentPage> {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: FilledButton(
+                onPressed: _isLoading ? null : _handleButtonPressed,
                 child: Text(
                   MyLocalizations.of(context, 'turn_on_location_button'),
                 ),
-                onPressed: _isLoading ? null : _handleButtonPressed,
               ),
             ),
           ),
