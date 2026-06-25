@@ -44,8 +44,10 @@
 			<string>sv-SE</string>
 			<string>tr-TR</string>
 		</array>
+		<key>CFBundleDisplayName</key>
+		<string>$(INFOPLIST_KEY_CFBundleDisplayName)</string>
 		<key>CFBundleName</key>
-		<string>Mosquito Alert</string>
+		<string>$(INFOPLIST_KEY_CFBundleName)</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
