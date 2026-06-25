@@ -10,8 +10,8 @@ import 'package:intl/intl.dart';
 
 class MyLocalizations {
   final Locale locale;
-  final Map<dynamic, dynamic> _localisedValues;
-  final Map<dynamic, dynamic> _fallbackValues;
+  final Map<String, String> _localisedValues;
+  final Map<String, String> _fallbackValues;
 
   static bool _timeagoInitialized = false;
 
@@ -54,7 +54,7 @@ class MyLocalizations {
   // Loading JSON + resolving locale
   // ---------------------------------------------------------------------------
 
-  static Future<Map<String, dynamic>> _loadJsonAsset(Locale locale) async {
+  static Future<Map<String, String>> _loadJsonAsset(Locale locale) async {
     final fileName =
         (locale.countryCode != null && locale.countryCode!.isNotEmpty)
         ? '${locale.languageCode}_${locale.countryCode}'
@@ -63,7 +63,7 @@ class MyLocalizations {
     final path = 'assets/language/$fileName.json';
     try {
       final jsonContent = await rootBundle.loadString(path);
-      return json.decode(jsonContent);
+      return Map<String, String>.from(json.decode(jsonContent));
     } catch (e) {
       // Return empty map on failure to avoid null checks
       return {};
@@ -189,7 +189,13 @@ class MyLocalizations {
     // Check if the key is null or empty
     if (key == null || key.isEmpty) return '';
 
-    return _localisedValues[key] ?? _fallbackValues[key] ?? '';
+    final localized = _localisedValues[key];
+    if (localized?.trim().isNotEmpty ?? false) return localized!;
+
+    final fallback = _fallbackValues[key];
+    if (fallback?.trim().isNotEmpty ?? false) return fallback!;
+
+    return '';
   }
 
   static String of(BuildContext context, String? key) {
