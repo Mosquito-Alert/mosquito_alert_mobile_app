@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mosquito_alert_app/features/settings/presentation/state/settings_provider.dart';
+import 'package:mosquito_alert_app/features/settings/data/settings_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -16,11 +17,13 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('hashtag', testCase['input']!);
 
-      // Instantiate provider (this triggers migration in _init)
-      final provider = SettingsProvider();
+      // Create repository and allow its migration to complete
+      final repository = SettingsRepository();
+      await Future<void>.delayed(const Duration(milliseconds: 50));
 
-      // Allow async _init() to complete
-      await Future<void>.delayed(Duration.zero);
+      // Instantiate provider (this loads hashtags after migration)
+      final provider = SettingsProvider(repository);
+      await Future<void>.delayed(const Duration(milliseconds: 50));
 
       // Verify that 'hashtag' is removed
       expect(prefs.containsKey('hashtag'), false);
