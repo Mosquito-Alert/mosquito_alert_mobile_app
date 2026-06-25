@@ -26,6 +26,7 @@ import 'package:mosquito_alert_app/features/observations/presentation/state/obse
 import 'package:mosquito_alert_app/features/bites/presentation/state/bite_provider.dart';
 import 'package:mosquito_alert_app/features/breeding_sites/presentation/state/breeding_site_provider.dart';
 import 'package:mosquito_alert_app/features/user/data/user_repository.dart';
+import 'package:mosquito_alert_app/features/settings/data/settings_repository.dart';
 import 'package:mosquito_alert_app/hive/hive_service.dart';
 import 'package:mosquito_alert_app/services/api_service.dart';
 import 'package:provider/provider.dart';
@@ -112,6 +113,7 @@ Future<void> main({String env = 'prod'}) async {
   final biteRepository = BiteRepository(apiClient: apiClient);
   final breedingSiteRepository = BreedingSiteRepository(apiClient: apiClient);
   final fixesRepository = FixesRepository(apiClient: apiClient);
+  final settingsRepository = SettingsRepository();
 
   final syncManager = OutboxSyncManager([
     authRepository,
@@ -137,7 +139,7 @@ Future<void> main({String env = 'prod'}) async {
         ChangeNotifierProvider<AuthProvider>.value(value: authProvider),
         ChangeNotifierProvider<UserProvider>.value(value: userProvider),
         ChangeNotifierProvider<SettingsProvider>(
-          create: (_) => SettingsProvider(),
+          create: (_) => SettingsProvider(settingsRepository),
         ),
         ChangeNotifierProvider<NotificationProvider>(
           create: (_) => NotificationProvider(
