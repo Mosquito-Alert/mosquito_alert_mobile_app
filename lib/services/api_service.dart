@@ -42,8 +42,8 @@ class ApiService {
       baseUrl: baseUrl,
       connectTimeout: const Duration(seconds: 5),
       // A lower receiveTimeout causes a timeout on the notifications endpoint
-      receiveTimeout: const Duration(seconds: 30),
-      sendTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(minutes: 1),
+      sendTimeout: const Duration(minutes: 5),
     );
 
     final Dio dio = Dio(options);
