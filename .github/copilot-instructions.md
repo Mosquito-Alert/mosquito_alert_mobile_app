@@ -7,10 +7,10 @@ Mosquito Alert is a Flutter mobile application for citizen science mosquito repo
 ## Working Effectively
 
 ### Initial Setup and Dependencies
-- **CRITICAL**: Install Java 21 for Android development:
+- **CRITICAL**: Install Java 17 for Android development:
   ```bash
-  sudo apt-get update && sudo apt-get install -y openjdk-21-jdk
-  export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+  sudo apt-get update && sudo apt-get install -y openjdk-17-jdk
+  export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
   export PATH=$JAVA_HOME/bin:$PATH
   ```
 - Install FVM (Flutter Version Manager):
@@ -59,7 +59,7 @@ Mosquito Alert is a Flutter mobile application for citizen science mosquito repo
 ### Building the Application
 
 #### Android Build
-- **Prerequisites**: Java 21, Android SDK, google-services.json file
+- **Prerequisites**: Java 17, Android SDK, google-services.json file
 - Debug build:
   ```bash
   fvm flutter build appbundle --debug
@@ -126,7 +126,7 @@ After making changes, ALWAYS test these core scenarios:
 The repository uses GitHub Actions that run:
 1. Static analysis (`flutter analyze`) - takes 2-3 minutes
 2. Unit tests (`flutter test`) - takes 3-5 minutes
-3. Android build with Java 21 - takes 10-15 minutes
+3. Android build with Java 17 - takes 10-15 minutes
 4. iOS build on macOS - takes 15-25 minutes
 5. Integration tests with Android emulator - takes 15-25 minutes
 
@@ -147,11 +147,10 @@ The repository uses GitHub Actions that run:
 │   ├── services/          # Business logic services
 │   └── utils/             # Utility functions and helpers
 ├── android/
-│   ├── app/build.gradle   # Android app configuration (Java 21)
+│   ├── app/build.gradle   # Android app configuration (Java 17)
 │   ├── local.properties   # Local Android settings (create manually)
 │   └── app/google-services.json  # Firebase config (from secrets)
 ├── ios/
-│   ├── Podfile           # CocoaPods dependencies (iOS 16+)
 │   └── Runner/GoogleService-Info.plist  # Firebase config (create manually)
 ├── assets/               # Images, fonts, HTML content
 ├── integration_test/     # Integration test suite
@@ -222,7 +221,7 @@ The repository uses GitHub Actions that run:
 
 ### Build Failures
 - **"pubspec.lock out of date"**: Run `fvm flutter pub get` and commit changes
-- **Java version errors**: Ensure Java 21 is installed and JAVA_HOME is set
+- **Java version errors**: Ensure Java 17 is installed and JAVA_HOME is set
 - **Google services missing**: Create required Firebase configuration files
 - **Pod install fails**: Update CocoaPods and retry `pod install`
 

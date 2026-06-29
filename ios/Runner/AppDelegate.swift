@@ -23,7 +23,7 @@ import workmanager_apple
     WorkmanagerPlugin.registerBGProcessingTask(withIdentifier: "trackingTask")
     WorkmanagerPlugin.registerPeriodicTask(withIdentifier: "scheduleDailyTasks", frequency: NSNumber(value: 24 * 60 * 60))
     WorkmanagerPlugin.registerPeriodicTask(withIdentifier: "outboxSyncTask", frequency: NSNumber(value: 15 * 60))
- 
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

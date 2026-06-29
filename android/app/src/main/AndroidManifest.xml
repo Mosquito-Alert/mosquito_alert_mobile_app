@@ -21,14 +21,13 @@
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" tools:node="remove" />
 
     <application
-        tools:replace="android:label"
         android:label="Mosquito Alert"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
-        android:allowBackup="false"
->
+        android:allowBackup="false">
         <activity
             android:name=".MainActivity"
             android:exported="true"

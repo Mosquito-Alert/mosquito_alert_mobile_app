@@ -15,7 +15,7 @@ Ask for the `.env` file to any of our mobile developers, paste in the root folde
 
 ### Android
 #### Requirements
-- Java 21 (And set it to JAVA_HOME on Windows or shell config on macOS)
+- Java 17 (And set it to JAVA_HOME on Windows or shell config on macOS)
 
 1. Clone the repository to your local machine
 2. Go to android/local.properties and at the end of the file add the following lines: (If the file doesn't exist, just create it yourself)
@@ -33,6 +33,12 @@ fvm flutter pub get
 5. That's all! If you have problems, don't hesitate to open an issue on [Github Issues](https://github.com/Mosquito-Alert/Mosquito-Alert-Mobile-App/issues) and we'll be happy to help you!
 
 ### iOS
+
+Requirements:
+- Xcode >= 26.1.1  ([see](https://developer.apple.com/news/?id=ueeok6yw))
+- macOS >= 10.14
+
+Steps:
 1. Clone the repository to your local machine
 2. Go to ios/Runner and create the file GoogleService-Info.plist
 3. Run the following commands, one by one

@@ -21,11 +21,7 @@ class UserProvider extends ChangeNotifier {
 
   late final VoidCallback _authListener;
 
-  UserProvider._({
-    required UserRepository repository,
-    required AuthProvider authProvider,
-  }) : _repository = repository,
-       _authProvider = authProvider {
+  UserProvider._({required this._repository, required this._authProvider}) {
     _listenToUser();
     _authListener = () async {
       if (!_authProvider.isAuthenticated) {
