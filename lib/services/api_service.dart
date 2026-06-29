@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 // ignore: implementation_imports
 import 'package:mosquito_alert/src/auth/jwt_auth.dart';
@@ -14,6 +15,7 @@ class ApiService {
 
   ApiService({String baseUrl = ''}) : _client = _buildClient(baseUrl) {
     _connection = InternetConnection.createInstance(
+      triggerStream: Connectivity().onConnectivityChanged,
       checkInterval: const Duration(seconds: 30),
       useDefaultOptions: false,
       enableStrictCheck: true,
@@ -61,5 +63,9 @@ class ApiService {
     );
 
     return MosquitoAlert(dio: dio);
+  }
+
+  Future<void> shutdown() async {
+    await _connection.dispose();
   }
 }
