@@ -74,7 +74,7 @@ dependencies:
   connectivity_plus: ^7.2.0
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
-  synchronized: ^3.4.0
+  synchronized: ^3.4.1
 
   built_value: any
 dev_dependencies:
