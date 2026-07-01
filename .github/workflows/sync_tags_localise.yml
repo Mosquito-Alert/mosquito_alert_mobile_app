@@ -10,7 +10,7 @@ jobs:
     
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v6
+              uses: actions/checkout@v7
 
             - name: Delete tag in localise if exist.
               uses: fjogeleit/http-request-action@v2
