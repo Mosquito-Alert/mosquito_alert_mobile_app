@@ -136,17 +136,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     itemCount: widget.items.length,
                     itemBuilder: (_, index) {
                       final item = widget.items[index];
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: _selectedIndex == index
-                              ? Colors.orange.shade200
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
+                      return Material(
+                        color: _selectedIndex == index
+                            ? Colors.orange.shade200
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(50),
                         child: ListTile(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
                           title: Text(
                             item.title,
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                           ),
                           leading: Icon(item.icon, color: Colors.black),
                           minLeadingWidth: 0,
