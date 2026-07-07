@@ -19,6 +19,8 @@ class MyLocalizations {
 
   static const defaultFallbackLocale = Locale('en', 'US');
 
+  // NOTE: When adding new languages, please check that the mosquito alert
+  // API supports the new language. If not, please add it to the API first.
   static List<Locale> supportedLocales = <Locale>[
     Locale('bg', 'BG'),
     Locale('bn', 'BD'),
