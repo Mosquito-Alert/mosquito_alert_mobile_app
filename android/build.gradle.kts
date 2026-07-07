@@ -19,6 +19,16 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+subprojects {
+    configurations.all {
+        resolutionStrategy {
+            // TODO: Remove when flutter_workmanager has been updated
+            // See: https://github.com/fluttercommunity/flutter_workmanager/issues/666
+            force("androidx.work:work-runtime:2.11.2")
+        }
+    }
+}
+
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
