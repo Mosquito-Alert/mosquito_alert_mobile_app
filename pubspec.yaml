@@ -70,7 +70,7 @@ dependencies:
   country_codes_plus: ^5.1.1
   path_provider: ^2.1.6
   json_annotation: ^4.12.0
-  internet_connection_checker_plus: ^3.1.0
+  internet_connection_checker_plus: ^3.1.1
   connectivity_plus: ^7.2.0
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
