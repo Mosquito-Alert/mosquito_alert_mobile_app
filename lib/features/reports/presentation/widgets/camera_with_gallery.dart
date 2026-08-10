@@ -485,22 +485,28 @@ class _WhatsappCameraState extends State<CameraWithGallery>
   Widget galleryButton(BuildContext context, _CameraController controller) {
     return GestureDetector(
       onTap: () async {
-        final result = await PhotoManager.requestPermissionExtend();
-        if (!result.hasAccess) {
-          await openAppSettings();
+        // Deliberately no permission check here. openGallery() goes through
+        // ImagePicker, which hands off to the system photo picker (Android 13+
+        // ACTION_PICK_IMAGES, iOS PHPickerViewController). Those are
+        // user-mediated and require no runtime permission, so gating on
+        // PhotoManager only added a way to fail: some vendor ROMs report no
+        // access even when the OS has granted it, and we then sent the user to
+        // Settings instead of opening their photos (#773).
+        try {
+          await controller.openGallery();
+        } catch (e) {
+          debugPrint('Error opening gallery: $e');
           return;
         }
 
-        if (result.hasAccess && mounted) {
-          // Trigger a rebuild to show recent photos strip if it wasn't visible before
-          setState(() {});
+        if (controller.selectedImages.isNotEmpty && context.mounted) {
+          Navigator.pop(context, controller.selectedImages);
+          return;
         }
 
-        await controller.openGallery().then((_) {
-          if (controller.selectedImages.isNotEmpty && context.mounted) {
-            Navigator.pop(context, controller.selectedImages);
-          }
-        });
+        // Nothing was picked. The user may still have granted photo access
+        // from within the picker, so re-check for the recent photos strip.
+        await _loadRecentPhotosIfPermissionGranted();
       },
       child: Container(
         width: 50,
