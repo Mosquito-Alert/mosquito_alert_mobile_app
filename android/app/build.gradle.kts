@@ -28,6 +28,14 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    buildFeatures {
+        // Required for the per-flavor resValue("string", "app_name", ...) below.
+        // This defaults to off in this AGP setup, and without it configuring the
+        // app project fails with "Product Flavor prod contains custom resource
+        // values, but the feature is disabled".
+        resValues = true
+    }
+
     defaultConfig {
         applicationId = "ceab.movelab.tigatrapp"
 
@@ -40,6 +48,29 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders["googlemapsKey"] = googlemapsKey
+    }
+
+    // The flavor selects applicationId / app name / launcher icon /
+    // google-services.json overlay. The Dart entrypoint is chosen separately
+    // with --target (lib/main.dart vs lib/main_dev.dart), which is what picks
+    // the assets/config/<env>.json backend.
+    //
+    // NOTE: once flavors exist Gradle requires one, so builds must now pass
+    // --flavor, e.g.
+    //   fvm flutter build appbundle --release --flavor prod --target lib/main.dart
+    //   fvm flutter build appbundle --release --flavor dev  --target lib/main_dev.dart
+    flavorDimensions += "env"
+
+    productFlavors {
+        create("prod") {
+            dimension = "env"
+            resValue("string", "app_name", "Mosquito Alert")
+        }
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            resValue("string", "app_name", "Test Mosquito Alert")
+        }
     }
 
     signingConfigs {
