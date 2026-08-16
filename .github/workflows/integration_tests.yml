@@ -51,7 +51,7 @@ jobs:
 
       # The timeout for a single step in Github Actions is 12 minutes
     - name: Build debug appbundle (avoids test loader timeouts)
-      run: flutter build appbundle --debug
+      run: flutter build appbundle --debug --flavor prod --target lib/main.dart
 
     - name: Free up disk space that comes by default with the emulator
       run: |
@@ -78,4 +78,8 @@ jobs:
         script: |
           adb wait-for-device
           adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
-          flutter test integration_test
+          # --flavor is required now that product flavors exist. Without it
+          # Gradle assembles every flavor, including dev, whose applicationId
+          # (ceab.movelab.tigatrapp.dev) has no client in the CI
+          # google-services.json and fails processDevDebugGoogleServices.
+          flutter test integration_test --flavor prod
