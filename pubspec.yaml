@@ -49,6 +49,11 @@ dependencies:
   cached_network_image: ^3.4.1
   camera: ^0.12.0+1
   image_picker: ^1.2.2
+  # Direct dependency only so we can set useAndroidPhotoPicker = true. The
+  # plugin still defaults it to false, which falls back to ACTION_GET_CONTENT
+  # and requires READ_MEDIA_IMAGES. See camera_with_gallery.dart (#773).
+  image_picker_android: ^0.8.13
+  image_picker_platform_interface: ^2.10.1
   photo_manager: ^3.9.0
   textfield_tags: ^3.0.1
   in_app_review: ^2.0.12

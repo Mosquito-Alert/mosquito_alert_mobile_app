@@ -6,6 +6,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_android/image_picker_android.dart';
+import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -87,7 +89,25 @@ class _CameraController extends ChangeNotifier {
     }
   }
 
+  /// Opt in to the Android 13+ system photo picker (ACTION_PICK_IMAGES).
+  ///
+  /// image_picker still defaults `useAndroidPhotoPicker` to false, which makes
+  /// it fall back to ACTION_GET_CONTENT. That path requests READ_MEDIA_IMAGES
+  /// first and silently gives up when it is denied, so the gallery button
+  /// appears to do nothing. The system photo picker needs no runtime
+  /// permission at all, which keeps the gallery reachable even when photo
+  /// access is denied or a vendor ROM misreports it (#773).
+  ///
+  /// No-op on iOS, where the platform instance is not [ImagePickerAndroid].
+  static void _enableAndroidPhotoPicker() {
+    final platform = ImagePickerPlatform.instance;
+    if (platform is ImagePickerAndroid) {
+      platform.useAndroidPhotoPicker = true;
+    }
+  }
+
   Future<void> openGallery() async {
+    _enableAndroidPhotoPicker();
     final picker = ImagePicker();
     List<XFile> pickedImages = [];
     if (multiple) {
@@ -485,22 +505,28 @@ class _WhatsappCameraState extends State<CameraWithGallery>
   Widget galleryButton(BuildContext context, _CameraController controller) {
     return GestureDetector(
       onTap: () async {
-        final result = await PhotoManager.requestPermissionExtend();
-        if (!result.hasAccess) {
-          await openAppSettings();
+        // Deliberately no permission check here. openGallery() goes through
+        // ImagePicker, which hands off to the system photo picker (Android 13+
+        // ACTION_PICK_IMAGES, iOS PHPickerViewController). Those are
+        // user-mediated and require no runtime permission, so gating on
+        // PhotoManager only added a way to fail: some vendor ROMs report no
+        // access even when the OS has granted it, and we then sent the user to
+        // Settings instead of opening their photos (#773).
+        try {
+          await controller.openGallery();
+        } catch (e) {
+          debugPrint('Error opening gallery: $e');
           return;
         }
 
-        if (result.hasAccess && mounted) {
-          // Trigger a rebuild to show recent photos strip if it wasn't visible before
-          setState(() {});
+        if (controller.selectedImages.isNotEmpty && context.mounted) {
+          Navigator.pop(context, controller.selectedImages);
+          return;
         }
 
-        await controller.openGallery().then((_) {
-          if (controller.selectedImages.isNotEmpty && context.mounted) {
-            Navigator.pop(context, controller.selectedImages);
-          }
-        });
+        // Nothing was picked. The user may still have granted photo access
+        // from within the picker, so re-check for the recent photos strip.
+        await _loadRecentPhotosIfPermissionGranted();
       },
       child: Container(
         width: 50,
