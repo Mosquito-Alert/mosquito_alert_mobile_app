@@ -6,9 +6,19 @@ import 'package:camera/camera.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_android/image_picker_android.dart';
+import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
+
+/// Photo-library permission we care about: images only, no media location.
+const _photoPermissionOption = PermissionRequestOption(
+  androidPermission: AndroidPermission(
+    type: RequestType.image,
+    mediaLocation: false,
+  ),
+);
 
 class _CameraController extends ChangeNotifier {
   ///
@@ -28,7 +38,11 @@ class _CameraController extends ChangeNotifier {
   var images = <AssetEntity>[];
 
   Future<void> loadRecentGalleryImages(BuildContext context) async {
-    final result = await PhotoManager.requestPermissionExtend();
+    // Check, never request. This is called from lifecycle callbacks, and
+    // requesting here would re-prompt on every resume (#778).
+    final result = await PhotoManager.getPermissionState(
+      requestOption: _photoPermissionOption,
+    );
     if (!result.hasAccess) return;
 
     try {
@@ -87,7 +101,25 @@ class _CameraController extends ChangeNotifier {
     }
   }
 
+  /// Opt in to the Android 13+ system photo picker (ACTION_PICK_IMAGES).
+  ///
+  /// image_picker still defaults `useAndroidPhotoPicker` to false, which makes
+  /// it fall back to ACTION_GET_CONTENT. That path requests READ_MEDIA_IMAGES
+  /// first and silently gives up when it is denied, so the gallery button
+  /// appears to do nothing. The system photo picker needs no runtime
+  /// permission at all, which keeps the gallery reachable even when photo
+  /// access is denied or a vendor ROM misreports it (#773).
+  ///
+  /// No-op on iOS, where the platform instance is not [ImagePickerAndroid].
+  static void _enableAndroidPhotoPicker() {
+    final platform = ImagePickerPlatform.instance;
+    if (platform is ImagePickerAndroid) {
+      platform.useAndroidPhotoPicker = true;
+    }
+  }
+
   Future<void> openGallery() async {
+    _enableAndroidPhotoPicker();
     final picker = ImagePicker();
     List<XFile> pickedImages = [];
     if (multiple) {
@@ -195,9 +227,11 @@ class _WhatsappCameraState extends State<CameraWithGallery>
     controller = _CameraController(multiple: widget.multiple);
     _requestCameraPermission();
 
-    // Delay the photo loading slightly to ensure proper initialization
+    // Delay the photo loading slightly to ensure proper initialization.
+    // This is the one place we may prompt for photo access; every other call
+    // site only checks the existing state (#778).
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadRecentPhotosIfPermissionGranted();
+      _loadRecentPhotosIfPermissionGranted(allowRequest: true);
     });
   }
 
@@ -247,10 +281,27 @@ class _WhatsappCameraState extends State<CameraWithGallery>
     }
   }
 
-  Future<void> _loadRecentPhotosIfPermissionGranted() async {
+  /// Loads the recent-photos strip if we have photo access.
+  ///
+  /// [allowRequest] must only be true on the first call for this screen. When
+  /// false we merely read the current state, which never shows a dialog.
+  ///
+  /// Requesting unconditionally here caused a feedback loop (#778): on a
+  /// permanently denied permission Android shows and instantly auto-denies the
+  /// dialog, which returns the app to `resumed`, which called this again --
+  /// flickering a dialog 10+ times a second for as long as the screen was up.
+  Future<void> _loadRecentPhotosIfPermissionGranted({
+    bool allowRequest = false,
+  }) async {
     if (!mounted) return;
 
-    final result = await PhotoManager.requestPermissionExtend();
+    final result = allowRequest
+        ? await PhotoManager.requestPermissionExtend(
+            requestOption: _photoPermissionOption,
+          )
+        : await PhotoManager.getPermissionState(
+            requestOption: _photoPermissionOption,
+          );
     if (result.hasAccess) {
       if (mounted) {
         controller.loadRecentGalleryImages(context);
@@ -485,22 +536,28 @@ class _WhatsappCameraState extends State<CameraWithGallery>
   Widget galleryButton(BuildContext context, _CameraController controller) {
     return GestureDetector(
       onTap: () async {
-        final result = await PhotoManager.requestPermissionExtend();
-        if (!result.hasAccess) {
-          await openAppSettings();
+        // Deliberately no permission check here. openGallery() goes through
+        // ImagePicker, which hands off to the system photo picker (Android 13+
+        // ACTION_PICK_IMAGES, iOS PHPickerViewController). Those are
+        // user-mediated and require no runtime permission, so gating on
+        // PhotoManager only added a way to fail: some vendor ROMs report no
+        // access even when the OS has granted it, and we then sent the user to
+        // Settings instead of opening their photos (#773).
+        try {
+          await controller.openGallery();
+        } catch (e) {
+          debugPrint('Error opening gallery: $e');
           return;
         }
 
-        if (result.hasAccess && mounted) {
-          // Trigger a rebuild to show recent photos strip if it wasn't visible before
-          setState(() {});
+        if (controller.selectedImages.isNotEmpty && context.mounted) {
+          Navigator.pop(context, controller.selectedImages);
+          return;
         }
 
-        await controller.openGallery().then((_) {
-          if (controller.selectedImages.isNotEmpty && context.mounted) {
-            Navigator.pop(context, controller.selectedImages);
-          }
-        });
+        // Nothing was picked. The user may still have granted photo access
+        // from within the picker, so re-check for the recent photos strip.
+        await _loadRecentPhotosIfPermissionGranted();
       },
       child: Container(
         width: 50,

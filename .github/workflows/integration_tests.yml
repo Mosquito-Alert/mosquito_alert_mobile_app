@@ -78,4 +78,8 @@ jobs:
         script: |
           adb wait-for-device
           adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
-          flutter test integration_test
+          # --flavor is required now that product flavors exist. Without it
+          # Gradle assembles every flavor, including dev, whose applicationId
+          # (ceab.movelab.tigatrapp.dev) has no client in the CI
+          # google-services.json and fails processDevDebugGoogleServices.
+          flutter test integration_test --flavor prod
