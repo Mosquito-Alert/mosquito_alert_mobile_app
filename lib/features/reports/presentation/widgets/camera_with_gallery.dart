@@ -12,6 +12,14 @@ import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+/// Photo-library permission we care about: images only, no media location.
+const _photoPermissionOption = PermissionRequestOption(
+  androidPermission: AndroidPermission(
+    type: RequestType.image,
+    mediaLocation: false,
+  ),
+);
+
 class _CameraController extends ChangeNotifier {
   ///
   /// don't necessary to use this class
@@ -30,7 +38,11 @@ class _CameraController extends ChangeNotifier {
   var images = <AssetEntity>[];
 
   Future<void> loadRecentGalleryImages(BuildContext context) async {
-    final result = await PhotoManager.requestPermissionExtend();
+    // Check, never request. This is called from lifecycle callbacks, and
+    // requesting here would re-prompt on every resume (#778).
+    final result = await PhotoManager.getPermissionState(
+      requestOption: _photoPermissionOption,
+    );
     if (!result.hasAccess) return;
 
     try {
@@ -215,9 +227,11 @@ class _WhatsappCameraState extends State<CameraWithGallery>
     controller = _CameraController(multiple: widget.multiple);
     _requestCameraPermission();
 
-    // Delay the photo loading slightly to ensure proper initialization
+    // Delay the photo loading slightly to ensure proper initialization.
+    // This is the one place we may prompt for photo access; every other call
+    // site only checks the existing state (#778).
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadRecentPhotosIfPermissionGranted();
+      _loadRecentPhotosIfPermissionGranted(allowRequest: true);
     });
   }
 
@@ -267,10 +281,27 @@ class _WhatsappCameraState extends State<CameraWithGallery>
     }
   }
 
-  Future<void> _loadRecentPhotosIfPermissionGranted() async {
+  /// Loads the recent-photos strip if we have photo access.
+  ///
+  /// [allowRequest] must only be true on the first call for this screen. When
+  /// false we merely read the current state, which never shows a dialog.
+  ///
+  /// Requesting unconditionally here caused a feedback loop (#778): on a
+  /// permanently denied permission Android shows and instantly auto-denies the
+  /// dialog, which returns the app to `resumed`, which called this again --
+  /// flickering a dialog 10+ times a second for as long as the screen was up.
+  Future<void> _loadRecentPhotosIfPermissionGranted({
+    bool allowRequest = false,
+  }) async {
     if (!mounted) return;
 
-    final result = await PhotoManager.requestPermissionExtend();
+    final result = allowRequest
+        ? await PhotoManager.requestPermissionExtend(
+            requestOption: _photoPermissionOption,
+          )
+        : await PhotoManager.getPermissionState(
+            requestOption: _photoPermissionOption,
+          );
     if (result.hasAccess) {
       if (mounted) {
         controller.loadRecentGalleryImages(context);
