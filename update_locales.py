@@ -11,7 +11,7 @@ MIN_PROGRESS_PERCENTAGE = 80
 # is below the MIN_PROGRESS_PERCENTAGE.
 # NOTE: fallback=auto will be used. Be sure to configure a custom fallback in localise.biz in
 #       case the fallback language is different than the source language.
-FORCE_LANGUAGES = ['es_UY']
+FORCE_LANGUAGES = ['es_UY', 'vi_VN']
 
 # Use fallback=auto for the following languages.
 # See: https://localise.biz/help/formats/exporting#fallback

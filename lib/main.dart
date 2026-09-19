@@ -63,6 +63,7 @@ Future<void> main({String env = 'prod'}) async {
 
   await AppConfig.setEnvironment(env);
   final config = await AppConfig.loadConfig();
+  await AppConfig.assertMatchesPackage();
 
   try {
     await Firebase.initializeApp();

@@ -13,10 +13,29 @@ val localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
     localProperties.load(FileInputStream(localPropertiesFile))
 }
-val googlemapsKey =
+// Maps keys are per-flavor. prod and test are separate Google Cloud API keys,
+// each restricted to its own package name + signing certificate. Using one in
+// the other flavor fails silently -- the app builds and runs, the map is just
+// blank -- so they must never be interchanged. A key restricted to iOS bundle
+// ids (see ios/Runner/AppDelegate.swift) will not work on Android either.
+val googlemapsKeyProd =
     localProperties.getProperty("googlemaps.Key")
         ?: System.getenv("GOOGLE_MAPS_KEY")
         ?: ""
+val googlemapsKeyTest =
+    localProperties.getProperty("googlemaps.KeyTest")
+        ?: System.getenv("GOOGLE_MAPS_KEY_TEST")
+        ?: ""
+
+// Empty is a legitimate setup for outside contributors (see README), so this
+// warns rather than fails -- but a distributable build with an empty key ships
+// a blank map, which is easy to miss until a tester reports it.
+if (googlemapsKeyProd.isEmpty()) {
+    logger.warn("googlemaps.Key is empty: prod builds will show a blank map.")
+}
+if (googlemapsKeyTest.isEmpty()) {
+    logger.warn("googlemaps.KeyTest is empty: dev/test builds will show a blank map.")
+}
 
 android {
     namespace = "com.example.mosquito_alert_app"
@@ -46,8 +65,6 @@ android {
         versionName = flutter.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        manifestPlaceholders["googlemapsKey"] = googlemapsKey
     }
 
     // The flavor selects applicationId / app name / launcher icon /
@@ -61,37 +78,58 @@ android {
     //   fvm flutter build appbundle --release --flavor dev  --target lib/main_dev.dart
     flavorDimensions += "env"
 
-    productFlavors {
-        create("prod") {
-            dimension = "env"
-            resValue("string", "app_name", "Mosquito Alert")
-        }
-        create("dev") {
-            dimension = "env"
-            applicationIdSuffix = ".dev"
-            resValue("string", "app_name", "Test Mosquito Alert")
-        }
+    // The two flavors are separate Play listings and must be signed with
+    // separate keys. The prod key is also the Play App Signing key for the live
+    // app, and Play rejects an upload signed with a key it already uses to sign
+    // APKs delivered to users -- so the dev/Test listing gets its own upload key.
+    val keystoreProperties = Properties()
+    val keystorePropertiesFile = rootProject.file("key.properties")
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(FileInputStream(keystorePropertiesFile))
     }
 
     signingConfigs {
         create("release") {
-            val keystorePropertiesFile = rootProject.file("key.properties")
-
-            if (keystorePropertiesFile.exists()) {
-                val keystoreProperties = Properties()
-                keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-
+            if (keystoreProperties.containsKey("keyAlias")) {
                 keyAlias = keystoreProperties["keyAlias"].toString()
                 keyPassword = keystoreProperties["keyPassword"].toString()
                 storeFile = file(keystoreProperties["storeFile"].toString())
                 storePassword = keystoreProperties["storePassword"].toString()
             }
         }
+        create("devRelease") {
+            if (keystoreProperties.containsKey("devKeyAlias")) {
+                keyAlias = keystoreProperties["devKeyAlias"].toString()
+                keyPassword = keystoreProperties["devKeyPassword"].toString()
+                storeFile = file(keystoreProperties["devStoreFile"].toString())
+                storePassword = keystoreProperties["devStorePassword"].toString()
+            }
+        }
+    }
+
+    productFlavors {
+        create("prod") {
+            dimension = "env"
+            resValue("string", "app_name", "Mosquito Alert")
+            signingConfig = signingConfigs.getByName("release")
+            manifestPlaceholders["googlemapsKey"] = googlemapsKeyProd
+        }
+        // Named "dev" rather than "test" because AGP rejects flavor names
+        // starting with "test". The applicationId suffix is ".test" to match the
+        // package name locked into the Test Mosquito Alert Play listing.
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".test"
+            resValue("string", "app_name", "Test Mosquito Alert")
+            signingConfig = signingConfigs.getByName("devRelease")
+            manifestPlaceholders["googlemapsKey"] = googlemapsKeyTest
+        }
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+            // No signingConfig here: a build type's config would override the
+            // per-flavor one set above, collapsing both flavors back onto one key.
             isMinifyEnabled = false
             isShrinkResources = false
         }

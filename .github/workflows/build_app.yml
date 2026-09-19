@@ -36,6 +36,11 @@ jobs:
 
     - name: Build Android on debug mode (capture logs)
       run: flutter build appbundle --debug --flavor prod --target lib/main.dart 2>&1 | tee build_log.txt
+      env:
+        # Optional. Unset resolves to an empty placeholder, which still compiles
+        # -- this job only checks that the build works, it ships nothing. Set the
+        # secret so the Maps key is not laptop-only, and so CI matches a real build.
+        GOOGLE_MAPS_KEY: ${{ secrets.GOOGLE_MAPS_KEY }}
 
     - name: Check for obsolete Java version warnings
       run: |
