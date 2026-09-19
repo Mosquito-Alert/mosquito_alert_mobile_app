@@ -97,7 +97,34 @@ flavors collapse onto one key.
 
 ---
 
-## 5. Not yet recorded
+## 5. Backend wiring guard
+
+The production app must talk to `https://api.mosquitoalert.com/v1` and Test
+Mosquito Alert to `https://apidev.mosquitoalert.com/v1`. Two mechanisms keep
+that true, because a regression here is silent:
+
+- `test/unit/environment_config_test.dart` runs in CI on every push/PR and
+  pins the resolved URL for each environment from the real config assets, the
+  entrypoint wiring (`lib/main.dart` defaults to `prod`; `main_dev.dart` passes
+  `dev`), and the package-to-environment table below against both the Gradle
+  flavors and the Xcode bundle ids.
+- `AppConfig.assertMatchesPackage()` runs at startup and throws if the
+  binary's package/bundle id disagrees with its loaded environment, so a build
+  made with the wrong `--flavor` / `--target` pairing crashes on launch instead
+  of misrouting data for a whole release.
+
+| Identity | Env |
+|---|---|
+| `ceab.movelab.tigatrapp`, `cat.ibeji.tigatrapp` | `prod` |
+| `ceab.movelab.tigatrapp.test`, `com.mosquitoalert.devtest` | `dev` |
+
+Note `prod.json` carries no `baseUrl`: production inherits the SDK's
+`MosquitoAlert.basePath`. The test pins the resolved value, so an SDK bump
+that moved it would fail CI rather than redirect production.
+
+---
+
+## 6. Not yet recorded
 
 Deliberately left blank rather than guessed at. Worth filling in next time
 someone does a production release:
