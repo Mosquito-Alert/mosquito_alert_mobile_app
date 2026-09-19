@@ -23,11 +23,17 @@ has never shipped before.
 
 Two things are worth internalizing because they cause most of the confusion:
 
-**Translations are not flavor-scoped.** `assets/language/` is declared once in
-`pubspec.yaml` and ships in *both* the `prod` and `dev` (Test Mosquito Alert)
-builds. There is no such thing as "adding a language to the test app only" —
-once the JSON is in the branch, both flavors have it. Testing in Test Mosquito
-Alert first is about *which build you release*, not about which files you touch.
+**Translation *files* are not flavor-scoped, but language *availability* is.**
+`assets/language/` is declared once in `pubspec.yaml` and ships in *both* the
+`prod` and `dev` (Test Mosquito Alert) builds. What differs per flavor is the
+offered-locale list: `MyLocalizations._betaLocales` (in
+`lib/core/localizations/my_localizations.dart`) names languages that are still
+under native-speaker review, and production builds exclude them from
+`supportedLocales` — not in the Settings picker, and a device set to that
+language falls back to English. The JSON still ships in the prod bundle,
+merely unreachable. To promote a beta language to production, delete its
+entry from `_betaLocales` (tests in `test/unit/beta_locales_test.dart` pin
+this behavior). As of Sep 2026, Vietnamese (`vi_VN`) is the only beta locale.
 
 **The runtime resolves a locale to a filename by string concatenation.**
 `MyLocalizations._loadJsonAsset` builds `<languageCode>_<countryCode>.json`, or
@@ -153,6 +159,12 @@ Locale('ar', 'MA'),   // must match the exported filename: ar_MA.json
 This one edit is what makes the language appear in the Settings picker; the
 display name and native name come from the `language_picker` package via
 `Language.fromIsoCode`, so no name strings are needed.
+
+**Decide where it launches.** If the language should be reviewable in Test
+Mosquito Alert before reaching production users, also add it to
+`MyLocalizations._betaLocales` (same file) and update
+`test/unit/beta_locales_test.dart`. Remove it from that list when the review
+comes back clean — that removal *is* the production launch.
 
 **On regional variants.** Register the region the translation was actually done
 in — Arabic was translated in Moroccan (`ar_MA`), so the entry is

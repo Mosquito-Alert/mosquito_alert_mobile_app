@@ -7,6 +7,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:country_codes_plus/country_codes_plus.dart';
 import 'package:intl/intl.dart';
+import 'package:mosquito_alert_app/app_config.dart';
 
 class MyLocalizations {
   final Locale locale;
@@ -21,7 +22,19 @@ class MyLocalizations {
 
   // NOTE: When adding new languages, please check that the mosquito alert
   // API supports the new language. If not, please add it to the API first.
-  static List<Locale> supportedLocales = <Locale>[
+  //
+  // Locales in [_betaLocales] are still under native-speaker review and are
+  // offered only in non-production builds (Test Mosquito Alert). Production
+  // hides them: not in the Settings picker, and a device set to that language
+  // falls back to English via [resolveLocale]. The translation JSON still
+  // ships in the bundle either way (assets are not flavor-scoped) -- it is
+  // simply unreachable in production. Promote a language by deleting its
+  // entry here.
+  static const List<Locale> _betaLocales = <Locale>[
+    Locale('vi', 'VN'),
+  ];
+
+  static const List<Locale> _allLocales = <Locale>[
     // Arabic was translated in Moroccan (ar_MA). Devices set to any other
     // Arabic region resolve here via resolveLocale's language-code fallback.
     Locale('ar', 'MA'),
@@ -51,6 +64,15 @@ class MyLocalizations {
     Locale('tr', 'TR'),
     Locale('vi', 'VN'),
   ];
+
+  /// Locales visible in this build. Pure function of [isProduction] so the
+  /// gating is unit-testable without loading AppConfig.
+  static List<Locale> localesFor({required bool isProduction}) => isProduction
+      ? _allLocales.where((l) => !_betaLocales.contains(l)).toList()
+      : List.of(_allLocales);
+
+  static List<Locale> get supportedLocales =>
+      localesFor(isProduction: AppConfig.isProduction);
 
   /// List of unique language codes
   static List<String> languages() =>
