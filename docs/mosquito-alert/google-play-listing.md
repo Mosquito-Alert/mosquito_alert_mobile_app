@@ -136,8 +136,20 @@ someone does a production release:
 - [ ] Release cadence and who approves a rollout.
 - [ ] Whether the App Store side of a release is documented anywhere.
 - [ ] Where `JRBP_Keystore` and its password are backed up.
-- [ ] Which Google Cloud project owns the production Maps key (the key the
-      shipping APK embeds ends `…muV0`; as of Sep 2026 the console our IT lead
-      uses holds a *different* "production" key, so that console is likely a
-      stale or parallel project — Maps keys only work when their own project
-      has billing + Maps SDK for Android enabled).
+- [x] Which Google Cloud project owns the production Maps key — **resolved
+      2026-09-25**: `mosquitoalert-push-service` (project number
+      `960892168613`), i.e. the Firebase project. The Android prod key `…muV0`
+      is Firebase's auto-created Android API key (the same key appears in
+      `google-services.json`), and the iOS key `…Fd4A` in `AppDelegate.swift`
+      (committed 2020 by the agency account `xsenmarti@dribba.com`) lives in
+      the same project. Established from the `consumer: projects/<number>`
+      metadata Google returns in API error responses — a failing, unbilled
+      request with the key is enough; no console access needed.
+      Console: `console.cloud.google.com/apis/credentials?project=mosquitoalert-push-service`;
+      owners: `.../iam-admin/iam?project=mosquitoalert-push-service`.
+      The Test Mosquito Alert key `…HSQA` was minted in a **different**
+      project (`513372110086`) — the console our IT lead had been using —
+      which is why it never worked. Re-mint it in `mosquitoalert-push-service`.
+- [ ] Which accounts are Owners of `mosquitoalert-push-service`, and whether
+      any are former-vendor (Dribba) accounts only. Ensure at least two
+      CREAF-controlled accounts hold Owner.
