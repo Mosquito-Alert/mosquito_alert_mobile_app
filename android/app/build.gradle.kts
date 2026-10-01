@@ -43,6 +43,9 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        // Required by flutter_local_notifications, together with the
+        // coreLibraryDesugaring dependency below.
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -150,6 +153,8 @@ flutter {
 }
 
 dependencies {
+    // Version from the flutter_local_notifications README (Gradle setup).
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
     // See last version here: https://maven.google.com/web/index.html#com.google.android.material:material
     implementation("com.google.android.material:material:1.14.0")
 }
