@@ -41,6 +41,8 @@ jobs:
               with:
                 add-paths: |
                     assets/language/*
+                    ios/Runner/InfoPlist.strings
+                    ios/Runner/*.lproj/InfoPlist.strings
                 commit-message: Automatic locales update for tag ${{ github.ref_name }}
                 branch: i18n/update_${{ github.ref_name }}
                 branch-suffix: timestamp
