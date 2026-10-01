@@ -56,7 +56,6 @@ class _LocationSelectorState extends State<LocationSelector> {
       showLoading: true,
       requestPermission: false,
       timeout: const Duration(seconds: 10),
-      fallbackCenterOnError: true,
     );
   }
 
@@ -65,7 +64,6 @@ class _LocationSelectorState extends State<LocationSelector> {
     bool showError = false,
     bool requestPermission = false,
     Duration timeout = const Duration(seconds: 10),
-    bool fallbackCenterOnError = false,
   }) async {
     if (showLoading) {
       setState(() {
@@ -159,17 +157,13 @@ class _LocationSelectorState extends State<LocationSelector> {
     return GoogleMap(
       onMapCreated: (GoogleMapController controller) {
         _mapController = controller;
-        if (position == null) {
-          widget.onLocationChanged(
-            defaultPosition.latitude,
-            defaultPosition.longitude,
-            LocationRequestSource_Enum.manual,
-          );
-        }
       },
+      // Without a fix, defaultPosition is only where the camera starts; it
+      // must never be reported as the report's location (#790). Start zoomed
+      // out so the user can pan to the right place.
       initialCameraPosition: CameraPosition(
         target: position ?? defaultPosition,
-        zoom: 15,
+        zoom: position != null ? 15 : 2,
       ),
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
