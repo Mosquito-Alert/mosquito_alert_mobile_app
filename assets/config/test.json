@@ -1,4 +1,5 @@
 {
     "baseUrl": "https://api.example/v1",
-    "useAuth": false
+    "useAuth": false,
+    "crashReporting": false
 }
