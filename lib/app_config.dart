@@ -9,7 +9,23 @@ class AppConfig {
   final String baseUrl;
   final bool useAuth;
 
-  AppConfig({required this.baseUrl, required this.useAuth});
+  /// Whether Firebase Crashlytics may collect and upload crash reports.
+  /// Only an explicit JSON `true` turns it on; absent or anything else is off.
+  /// Keep it off until the privacy policy, the Play Data safety form and the
+  /// App Store privacy answers all cover crash data (see #789).
+  final bool crashReporting;
+
+  AppConfig({
+    required this.baseUrl,
+    required this.useAuth,
+    this.crashReporting = false,
+  });
+
+  factory AppConfig.fromJson(Map<String, dynamic> json) => AppConfig(
+    baseUrl: json['baseUrl'] ?? MosquitoAlert.basePath,
+    useAuth: json['useAuth'],
+    crashReporting: json['crashReporting'] == true,
+  );
 
   /// Name of the environment loaded by the most recent [loadConfig] call
   /// (e.g. `prod`, `dev`, `test`). Set as a static so widgets can decide
@@ -76,11 +92,6 @@ class AppConfig {
 
     final contents = await rootBundle.loadString('assets/config/$env.json');
 
-    final json = jsonDecode(contents);
-
-    return AppConfig(
-      baseUrl: json['baseUrl'] ?? MosquitoAlert.basePath,
-      useAuth: json['useAuth'],
-    );
+    return AppConfig.fromJson(jsonDecode(contents));
   }
 }
