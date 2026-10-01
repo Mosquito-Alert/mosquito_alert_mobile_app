@@ -5,8 +5,10 @@ import 'package:integration_test/integration_test_driver_extended.dart';
 /// Host-side driver for `integration_test/screenshots_test.dart`.
 ///
 /// Usage:
-///   flutter drive --driver=test_driver/screenshots_driver.dart \
-///     --target=integration_test/screenshots_test.dart -d <device>
+/// ```sh
+/// flutter drive --driver=test_driver/screenshots_driver.dart \
+///   --target=integration_test/screenshots_test.dart -d <device>
+/// ```
 ///
 /// Screenshots are written to `screenshots/<platform>/<name>.png`
 /// (override with SCREENSHOTS_DIR).
