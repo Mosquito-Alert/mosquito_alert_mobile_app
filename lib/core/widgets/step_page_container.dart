@@ -48,7 +48,12 @@ class StepPageContainer extends StatelessWidget {
           Positioned.fill(child: child),
 
           // Positioned button at bottom
-          Positioned(left: 16, right: 16, bottom: 16, child: continueButton),
+          PositionedDirectional(
+            start: 16,
+            end: 16,
+            bottom: 16,
+            child: continueButton,
+          ),
         ],
       ),
     );

@@ -181,7 +181,7 @@ class _PhotoSelectorState extends State<PhotoSelector> {
     return GestureDetector(
       onTap: onTap,
       child: Stack(
-        alignment: Alignment.topRight,
+        alignment: AlignmentDirectional.topEnd,
         children: [
           // Thumbnail image
           Container(
