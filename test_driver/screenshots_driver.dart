@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:integration_test/integration_test_driver_extended.dart';
 
-/// Host-side driver for `integration_test/screenshots_test.dart`.
+/// Host-side driver for `integration_test/screenshots.dart`.
 ///
 /// Usage:
 /// ```sh
 /// flutter drive --driver=test_driver/screenshots_driver.dart \
-///   --target=integration_test/screenshots_test.dart -d <device>
+///   --target=integration_test/screenshots.dart -d <device>
 /// ```
 ///
 /// Screenshots are written to `screenshots/<platform>/<name>.png`

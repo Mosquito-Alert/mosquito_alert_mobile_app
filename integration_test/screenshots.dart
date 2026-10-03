@@ -2,8 +2,12 @@
 // for use in store listings / ad creatives.
 //
 // Run with:
+// Not named *_test.dart on purpose: `flutter test integration_test` (CI)
+// must not collect it. It only makes sense under `flutter drive`, whose
+// driver saves the screenshots.
+//
 //   flutter drive --driver=test_driver/screenshots_driver.dart \
-//     --target=integration_test/screenshots_test.dart -d <device> \
+//     --target=integration_test/screenshots.dart -d <device> \
 //     [--dart-define=SCREENSHOT_LOCALE=vi] [--dart-define=SCREENSHOT_PREFIX=ios]
 import 'dart:io';
 
