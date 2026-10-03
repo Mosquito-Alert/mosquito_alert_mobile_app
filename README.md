@@ -20,9 +20,23 @@ Ask for the `.env` file to any of our mobile developers, paste in the root folde
 1. Clone the repository to your local machine
 2. Go to android/local.properties and at the end of the file add the following lines: (If the file doesn't exist, just create it yourself)
 ```
-# By leaving the values empty, the app will compile successfully but packages using this license will display an error (this is ok!)
+# Google Maps Android API keys, one per flavor. By leaving the values empty the
+# app still compiles and runs -- the map just renders blank. That is fine for
+# most development work.
+#   googlemaps.Key     -> prod flavor  (package ceab.movelab.tigatrapp)
+#   googlemaps.KeyTest -> dev flavor   (package ceab.movelab.tigatrapp.test)
 googlemaps.Key=
+googlemaps.KeyTest=
 ```
+These are the only entries in `local.properties` that a person maintains by
+hand. Everything else in that file (`sdk.dir`, `flutter.sdk`, `flutter.*`) is
+written by the tooling and is specific to your machine, so never copy someone
+else's copy of the file wholesale.
+
+Maintainers: the two Maps keys are distinct Google Cloud keys, each restricted
+to its own package name + signing certificate, and neither is the key used by
+iOS. Ask a maintainer for the values; see
+[docs/mosquito-alert/google-play-listing.md](docs/mosquito-alert/google-play-listing.md).
 3. Run the following commands, one by one
 ```
 fvm flutter pub get

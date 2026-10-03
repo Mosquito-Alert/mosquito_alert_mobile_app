@@ -10,15 +10,6 @@ import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:photo_manager/photo_manager.dart';
-
-/// Photo-library permission we care about: images only, no media location.
-const _photoPermissionOption = PermissionRequestOption(
-  androidPermission: AndroidPermission(
-    type: RequestType.image,
-    mediaLocation: false,
-  ),
-);
 
 class _CameraController extends ChangeNotifier {
   ///
@@ -35,42 +26,6 @@ class _CameraController extends ChangeNotifier {
   ///
   final bool multiple;
   final selectedImages = <Uint8List>[];
-  var images = <AssetEntity>[];
-
-  Future<void> loadRecentGalleryImages(BuildContext context) async {
-    // Check, never request. This is called from lifecycle callbacks, and
-    // requesting here would re-prompt on every resume (#778).
-    final result = await PhotoManager.getPermissionState(
-      requestOption: _photoPermissionOption,
-    );
-    if (!result.hasAccess) return;
-
-    try {
-      final List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
-        type: RequestType.image,
-        onlyAll: true,
-        filterOption: FilterOptionGroup(
-          imageOption: const FilterOption(
-            sizeConstraint: SizeConstraint(ignoreSize: true),
-          ),
-          orders: [OrderOption(type: OrderOptionType.createDate, asc: false)],
-        ),
-      );
-
-      if (albums.isEmpty) return;
-
-      final recentAlbum = albums.first;
-      final List<AssetEntity> recentAssets = await recentAlbum
-          .getAssetListRange(start: 0, end: 10);
-
-      images = recentAssets;
-      notifyListeners();
-    } catch (e) {
-      print('Error loading gallery images: $e');
-      images.clear();
-      notifyListeners();
-    }
-  }
 
   Future<void> compressAndAddToSelectedImages(File file) async {
     try {
@@ -210,13 +165,7 @@ class _WhatsappCameraState extends State<CameraWithGallery>
       });
       if (status.isGranted) {
         await _initializeCamera();
-        if (mounted) {
-          controller.loadRecentGalleryImages(context);
-        }
       }
-    }
-    if (mounted) {
-      await _loadRecentPhotosIfPermissionGranted();
     }
   }
 
@@ -226,13 +175,6 @@ class _WhatsappCameraState extends State<CameraWithGallery>
     WidgetsBinding.instance.addObserver(this);
     controller = _CameraController(multiple: widget.multiple);
     _requestCameraPermission();
-
-    // Delay the photo loading slightly to ensure proper initialization.
-    // This is the one place we may prompt for photo access; every other call
-    // site only checks the existing state (#778).
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadRecentPhotosIfPermissionGranted(allowRequest: true);
-    });
   }
 
   Future<void> _initializeCamera() async {
@@ -274,39 +216,6 @@ class _WhatsappCameraState extends State<CameraWithGallery>
       });
       if (status.isGranted) {
         await _initializeCamera();
-        if (mounted) {
-          controller.loadRecentGalleryImages(context);
-        }
-      }
-    }
-  }
-
-  /// Loads the recent-photos strip if we have photo access.
-  ///
-  /// [allowRequest] must only be true on the first call for this screen. When
-  /// false we merely read the current state, which never shows a dialog.
-  ///
-  /// Requesting unconditionally here caused a feedback loop (#778): on a
-  /// permanently denied permission Android shows and instantly auto-denies the
-  /// dialog, which returns the app to `resumed`, which called this again --
-  /// flickering a dialog 10+ times a second for as long as the screen was up.
-  Future<void> _loadRecentPhotosIfPermissionGranted({
-    bool allowRequest = false,
-  }) async {
-    if (!mounted) return;
-
-    final result = allowRequest
-        ? await PhotoManager.requestPermissionExtend(
-            requestOption: _photoPermissionOption,
-          )
-        : await PhotoManager.getPermissionState(
-            requestOption: _photoPermissionOption,
-          );
-    if (result.hasAccess) {
-      if (mounted) {
-        controller.loadRecentGalleryImages(context);
-        // Trigger a rebuild to show the recent photos strip immediately
-        setState(() {});
       }
     }
   }
@@ -394,7 +303,6 @@ class _WhatsappCameraState extends State<CameraWithGallery>
           ),
           onlyOneMosquitoBadge(context, widget),
           closeButton(context),
-          recentPhotosStrip(context, controller),
           cameraAndGalleryButtons(context, controller),
         ],
       ),
@@ -539,10 +447,11 @@ class _WhatsappCameraState extends State<CameraWithGallery>
         // Deliberately no permission check here. openGallery() goes through
         // ImagePicker, which hands off to the system photo picker (Android 13+
         // ACTION_PICK_IMAGES, iOS PHPickerViewController). Those are
-        // user-mediated and require no runtime permission, so gating on
-        // PhotoManager only added a way to fail: some vendor ROMs report no
-        // access even when the OS has granted it, and we then sent the user to
-        // Settings instead of opening their photos (#773).
+        // user-mediated and require no runtime permission -- the app declares
+        // no photo or storage permission at all, as Google Play's photo/video
+        // permissions policy requires. Gating here only ever added a way to
+        // fail: vendor ROMs misreported access and sent users to Settings
+        // instead of their photos (#773).
         try {
           await controller.openGallery();
         } catch (e) {
@@ -552,100 +461,13 @@ class _WhatsappCameraState extends State<CameraWithGallery>
 
         if (controller.selectedImages.isNotEmpty && context.mounted) {
           Navigator.pop(context, controller.selectedImages);
-          return;
         }
-
-        // Nothing was picked. The user may still have granted photo access
-        // from within the picker, so re-check for the recent photos strip.
-        await _loadRecentPhotosIfPermissionGranted();
       },
       child: Container(
         width: 50,
         height: 50,
         decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
         child: Icon(Icons.photo_library, color: Colors.black, size: 24),
-      ),
-    );
-  }
-
-  Widget recentPhotosStrip(BuildContext context, _CameraController controller) {
-    return Positioned(
-      bottom: 120 + MediaQuery.of(context).padding.bottom,
-      left: 0,
-      right: 0,
-      child: SizedBox(
-        height: 90,
-        child: AnimatedBuilder(
-          animation: controller,
-          builder: (context, _) {
-            if (controller.images.isEmpty) {
-              return Container();
-            }
-            return ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: controller.images.length,
-              itemBuilder: (context, index) {
-                final asset = controller.images[index];
-                return FutureBuilder<Widget>(
-                  future: _buildImage(context, controller, asset),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.hasData) {
-                      return snapshot.data!;
-                    }
-                    return Container();
-                  },
-                );
-              },
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Future<Widget> _buildImage(
-    BuildContext context,
-    _CameraController controller,
-    AssetEntity asset,
-  ) async {
-    final Uint8List? thumbnailData = await asset.thumbnailDataWithSize(
-      ThumbnailSize(200, 200),
-      quality: 80,
-    );
-
-    if (thumbnailData == null) {
-      return Container();
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2),
-      child: GestureDetector(
-        onTap: () async {
-          final file = await asset.file;
-          if (file != null) {
-            await controller.captureImage(file);
-            if (context.mounted) {
-              Navigator.pop(context, controller.selectedImages);
-            }
-          }
-        },
-        child: Container(
-          width: 70,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white38, width: 1),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.memory(
-              thumbnailData,
-              width: 70,
-              height: 70,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
       ),
     );
   }

@@ -13,7 +13,7 @@ publish_to: none
 # In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 4.3.1+2935
+version: 4.4.0+2939
 
 
 environment:
@@ -54,7 +54,6 @@ dependencies:
   # and requires READ_MEDIA_IMAGES. See camera_with_gallery.dart (#773).
   image_picker_android: ^0.8.13
   image_picker_platform_interface: ^2.10.1
-  photo_manager: ^3.9.0
   textfield_tags: ^3.0.1
   in_app_review: ^2.0.12
   firebase_analytics: ^12.4.3
