@@ -117,6 +117,26 @@ void main() {
       await AppConfig.assertMatchesPackage();
     });
 
+    test('the integration-test env is allowed on any package', () async {
+      // integration_test/ runs `app.main(env: 'test')` on a prod-flavor build.
+      for (final package in [
+        'ceab.movelab.tigatrapp',
+        'cat.ibeji.tigatrapp',
+        'ceab.movelab.tigatrapp.test',
+        'com.mosquitoalert.devtest',
+      ]) {
+        await runAs(package: package, env: 'test');
+        await AppConfig.assertMatchesPackage();
+      }
+    });
+
+    test('the test env really is inert (fake backend, no auth)', () async {
+      await AppConfig.setEnvironment('test');
+      final config = await AppConfig.loadConfig();
+      expect(Uri.parse(config.baseUrl).host, 'api.example');
+      expect(config.useAuth, isFalse);
+    });
+
     test('unknown package is never asserted on', () async {
       await runAs(package: 'com.example.other', env: 'dev');
       await AppConfig.assertMatchesPackage();

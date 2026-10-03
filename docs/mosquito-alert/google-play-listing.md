@@ -111,7 +111,9 @@ that true, because a regression here is silent:
 - `AppConfig.assertMatchesPackage()` runs at startup and throws if the
   binary's package/bundle id disagrees with its loaded environment, so a build
   made with the wrong `--flavor` / `--target` pairing crashes on launch instead
-  of misrouting data for a whole release.
+  of misrouting data for a whole release. The integration-test env (`test`:
+  fake backend at `api.example`, auth off) is exempt, because integration
+  tests deliberately run it on a prod-flavor build and it sends data nowhere.
 
 | Identity | Env |
 |---|---|

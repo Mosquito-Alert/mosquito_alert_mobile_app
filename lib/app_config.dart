@@ -45,6 +45,10 @@ class AppConfig {
   /// testers' fake reports going to production -- is a silent failure that
   /// could run for a whole release. Call after [loadConfig], foreground only.
   static Future<void> assertMatchesPackage() async {
+    // Integration tests run the prod-flavor binary with env "test", which
+    // points at a fake backend with auth off -- that pairing sends no data
+    // anywhere, so it is not the misrouting this check exists to catch.
+    if (envName == 'test') return;
     final info = await PackageInfo.fromPlatform();
     final expected = expectedEnvForPackage(info.packageName);
     if (expected != null && expected != envName) {
