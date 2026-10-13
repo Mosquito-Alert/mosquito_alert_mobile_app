@@ -1,3 +1,4 @@
 {
-    "useAuth": true
+    "useAuth": true,
+    "crashReporting": false
 }

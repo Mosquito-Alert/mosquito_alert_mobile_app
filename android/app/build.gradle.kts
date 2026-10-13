@@ -5,6 +5,12 @@ plugins {
     id("com.android.application")
     id("dev.flutter.flutter-gradle-plugin")
     id("com.google.gms.google-services")
+    // Required by firebase_crashlytics: generates the build ID resource
+    // (com.google.firebase.crashlytics.mapping_file_id) the SDK reads at
+    // startup. Leaving it out fails silently -- firebase_crashlytics sets
+    // com.crashlytics.RequireBuildId=false, so nothing crashes or warns --
+    // hence the tripwire in test/unit/crash_reporting_test.dart.
+    id("com.google.firebase.crashlytics")
 }
 
 
