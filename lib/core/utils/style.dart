@@ -17,7 +17,7 @@ class Style {
     return Text(
       text ?? '',
       maxLines: maxLines,
-      textAlign: textAlign ?? TextAlign.left,
+      textAlign: textAlign ?? TextAlign.start,
       overflow: maxLines != null ? TextOverflow.ellipsis : null,
       style: TextStyle(
         height: height,
@@ -39,7 +39,7 @@ class Style {
     return Text(
       text ?? '',
       maxLines: maxLines,
-      textAlign: textAlign ?? TextAlign.left,
+      textAlign: textAlign ?? TextAlign.start,
       overflow: maxLines != null ? TextOverflow.ellipsis : null,
       style: TextStyle(
         height: height,
@@ -61,7 +61,7 @@ class Style {
     return Text(
       text ?? '',
       maxLines: maxLines,
-      textAlign: textAlign ?? TextAlign.left,
+      textAlign: textAlign ?? TextAlign.start,
       overflow: maxLines != null ? TextOverflow.ellipsis : null,
       style: TextStyle(
         height: height,
@@ -82,7 +82,7 @@ class Style {
     return Text(
       text ?? '',
       maxLines: maxLines,
-      textAlign: textAlign ?? TextAlign.left,
+      textAlign: textAlign ?? TextAlign.start,
       overflow: maxLines != null ? TextOverflow.ellipsis : null,
       style: TextStyle(
         height: height,

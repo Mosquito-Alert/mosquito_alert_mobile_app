@@ -225,9 +225,9 @@ class _WhatsappCameraState extends State<CameraWithGallery>
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          Positioned(
+          PositionedDirectional(
             top: 40,
-            left: 16,
+            start: 16,
             child: IconButton(
               icon: Icon(Icons.close, color: Colors.white),
               onPressed: () => Navigator.pop(context),
@@ -325,13 +325,13 @@ class _WhatsappCameraState extends State<CameraWithGallery>
     BuildContext context,
     _CameraController controller,
   ) {
-    return Positioned(
+    return PositionedDirectional(
       bottom: 32 + MediaQuery.of(context).padding.bottom,
-      left: 0,
-      right: 0,
+      start: 0,
+      end: 0,
       child: Row(
         children: [
-          Expanded(child: SizedBox()), // empty on the left
+          Expanded(child: SizedBox()), // empty on the start side
           captureImageButton(),
           Expanded(
             child: Align(
@@ -377,7 +377,11 @@ class _WhatsappCameraState extends State<CameraWithGallery>
       child: Align(
         alignment: Alignment.topCenter,
         child: Padding(
-          padding: const EdgeInsets.only(top: 70, left: 16, right: 16),
+          padding: const EdgeInsetsDirectional.only(
+            top: 70,
+            start: 16,
+            end: 16,
+          ),
           child: Container(
             constraints: BoxConstraints(
               maxWidth: MediaQuery.of(context).size.width * 0.85,
@@ -414,7 +418,7 @@ class _WhatsappCameraState extends State<CameraWithGallery>
                       height: 1.4,
                       fontWeight: FontWeight.w500,
                     ),
-                    textAlign: TextAlign.left,
+                    textAlign: TextAlign.start,
                   ),
                 ),
               ],

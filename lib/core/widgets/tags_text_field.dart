@@ -88,10 +88,10 @@ class _TagsTextFieldState extends State<TagsTextField> {
                     controller: inputFieldValues.tagScrollController,
                     scrollDirection: Axis.vertical,
                     child: Padding(
-                      padding: const EdgeInsets.only(
+                      padding: const EdgeInsetsDirectional.only(
                         top: 8,
                         bottom: 8,
-                        left: 8,
+                        start: 8,
                       ),
                       child: Wrap(
                         runSpacing: 4.0,

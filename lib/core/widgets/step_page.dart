@@ -13,7 +13,7 @@ class StepPage extends StatefulWidget {
     required this.canContinue,
     required this.child,
     this.onDisplay,
-    this.padding = const EdgeInsets.fromLTRB(16, 16, 16, 0),
+    this.padding = const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
     this.fullScreen = false,
     this.allowScroll = true,
   });

@@ -198,6 +198,9 @@ class _BiteStickManState extends State<BiteStickMan> {
     VoidCallback? onTap,
   }) {
     // TODO: use FractionallySizedBox for better responsiveness
+    // Physical `left` on purpose (not PositionedDirectional): the regions sit
+    // over the body image, which does not mirror in RTL, so mirroring them
+    // would put each tap target over the wrong body part.
     return Positioned(
       left: relativeRect.left * 320, // Updated to match new container width
       top: relativeRect.top * 480, // Updated to match new container height
@@ -241,9 +244,9 @@ class _BiteStickManState extends State<BiteStickMan> {
                 ),
               // Show bite count badge if there are bites
               if (count > 0)
-                Positioned(
+                PositionedDirectional(
                   top: -2,
-                  right: 2,
+                  end: 2,
                   child: Container(
                     constraints: BoxConstraints(minWidth: 24, minHeight: 24),
                     padding: const EdgeInsets.all(6),

@@ -31,7 +31,7 @@ class SettingsMenuWidget extends StatelessWidget {
           children: [
             if (trailingText != null)
               Padding(
-                padding: const EdgeInsets.only(right: 8),
+                padding: const EdgeInsetsDirectional.only(end: 8),
                 child: Text(
                   trailingText!,
                   style: const TextStyle(color: Colors.black54, fontSize: 14),

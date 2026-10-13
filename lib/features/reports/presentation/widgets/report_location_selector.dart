@@ -227,9 +227,9 @@ class _LocationSelectorState extends State<LocationSelector> {
   }
 
   Widget _buildLocationButton() {
-    return Positioned(
+    return PositionedDirectional(
       top: 16,
-      right: 16,
+      end: 16,
       child: Material(
         key: Key("myLocationButton"),
         color: Colors.transparent,
@@ -290,10 +290,10 @@ class _LocationSelectorState extends State<LocationSelector> {
       return SizedBox.shrink();
     }
 
-    return Positioned(
+    return PositionedDirectional(
       top: 16,
-      left: 16,
-      right: 16,
+      start: 16,
+      end: 16,
       child: Container(
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(

@@ -101,7 +101,7 @@ class _ObservationCreatePageState extends State<ObservationCreatePage> {
               title = MyLocalizations.of(context, 'photos');
             });
           },
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
           allowScroll: false,
           child: ReportCreationPhotoSelection(
             photos: photos,
@@ -250,7 +250,7 @@ class _ObservationCreatePageState extends State<ObservationCreatePage> {
               children: <Widget>[
                 Style.body(
                   campaignBody,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.start,
                   fontSize: 15.0,
                   height: 1.2,
                 ),
