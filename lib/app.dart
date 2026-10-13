@@ -13,7 +13,6 @@ import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:mosquito_alert_app/core/localizations/my_localizations_delegate.dart';
 import 'package:mosquito_alert_app/core/utils/style.dart';
 import 'package:mosquito_alert_app/services/api_service.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
 import 'features/user/presentation/state/user_provider.dart';
@@ -95,126 +94,124 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
 
-    return OverlaySupport.global(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Style.colorPrimary,
-            brightness: Brightness.light,
-            primary: Style.colorPrimary,
-            secondary: Style.colorPrimary,
-          ),
-          scaffoldBackgroundColor: Colors.white,
-          useMaterial3: true,
-          // Explicitly set component themes to use your primary color
-          checkboxTheme: CheckboxThemeData(
-            fillColor: WidgetStateProperty.resolveWith<Color>((
-              Set<WidgetState> states,
-            ) {
-              if (states.contains(WidgetState.selected)) {
-                return Style.colorPrimary;
-              }
-              return Colors.transparent;
-            }),
-            checkColor: WidgetStateProperty.all(Colors.white),
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Style.colorPrimary,
-              foregroundColor: Colors.white,
-            ),
-          ),
-          outlinedButtonTheme: OutlinedButtonThemeData(
-            style: OutlinedButton.styleFrom(
-              foregroundColor: Style.colorPrimary,
-              side: BorderSide(color: Style.colorPrimary),
-            ),
-          ),
-          textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(foregroundColor: Style.colorPrimary),
-          ),
-          // Configure text themes to use your primary color
-          textTheme: TextTheme(
-            headlineLarge: TextStyle(
-              color: Style.colorPrimary,
-              fontWeight: FontWeight.bold,
-            ),
-            headlineMedium: TextStyle(
-              color: Style.colorPrimary,
-              fontWeight: FontWeight.bold,
-            ),
-            headlineSmall: TextStyle(
-              color: Style.colorPrimary,
-              fontWeight: FontWeight.bold,
-            ),
-            titleLarge: TextStyle(
-              color: Style.colorPrimary,
-              fontWeight: FontWeight.bold,
-            ),
-            titleMedium: TextStyle(
-              color: Style.colorPrimary,
-              fontWeight: FontWeight.w600,
-            ),
-            titleSmall: TextStyle(
-              color: Style.colorPrimary,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          // Override primary color references
-          primaryColor: Style.colorPrimary,
-          primaryColorDark: Style.colorPrimary,
-          primaryColorLight: Style.colorPrimary,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Style.colorPrimary,
+          brightness: Brightness.light,
+          primary: Style.colorPrimary,
+          secondary: Style.colorPrimary,
         ),
-        navigatorKey: navigatorKey,
-        navigatorObservers: [
-          FirebaseAnalyticsObserver(
-            analytics: FirebaseAnalytics.instance,
-            routeFilter: (route) {
-              return route is PageRoute && route.settings.name != '/';
-            },
+        scaffoldBackgroundColor: Colors.white,
+        useMaterial3: true,
+        // Explicitly set component themes to use your primary color
+        checkboxTheme: CheckboxThemeData(
+          fillColor: WidgetStateProperty.resolveWith<Color>((
+            Set<WidgetState> states,
+          ) {
+            if (states.contains(WidgetState.selected)) {
+              return Style.colorPrimary;
+            }
+            return Colors.transparent;
+          }),
+          checkColor: WidgetStateProperty.all(Colors.white),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Style.colorPrimary,
+            foregroundColor: Colors.white,
           ),
-        ],
-        builder: (context, child) {
-          if (child == null) return const SizedBox.shrink();
-          // For non-production flavors (e.g. the `dev` Android flavor and the
-          // iOS DevTF scheme that ship as "Test Mosquito Alert"), overlay a
-          // persistent ribbon on every screen so testers can tell at a glance
-          // that they are not in the public app and that any reports they
-          // submit go to the development backend.
-          if (AppConfig.isProduction) return child;
-          // Only the ribbon is pinned to LTR (via Banner's own textDirection /
-          // layoutDirection), never the subtree. Wrapping `child` in a
-          // Directionality here would sit below the Directionality that
-          // Localizations derives from the locale and override it, forcing
-          // RTL languages such as Arabic to lay out left-to-right -- in
-          // exactly the flavor used to review translations.
-          return Banner(
-            message: 'TEST',
-            location: BannerLocation.topEnd,
-            color: Colors.red.shade700,
-            textDirection: TextDirection.ltr,
-            layoutDirection: TextDirection.ltr,
-            child: child,
-          );
-        },
-        home: authProvider.hasCredentials
-            ? LayoutPage()
-            : OnboardingFlowPage(
-                onCompleted: () async {
-                  final authProvider = context.read<AuthProvider>();
-                  await authProvider.createGuestAccount();
-                },
-              ),
-        localizationsDelegates: [
-          MyLocalizationsDelegate(),
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: context.watch<UserProvider>().locale,
-        supportedLocales: MyLocalizations.supportedLocales,
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: Style.colorPrimary,
+            side: BorderSide(color: Style.colorPrimary),
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(foregroundColor: Style.colorPrimary),
+        ),
+        // Configure text themes to use your primary color
+        textTheme: TextTheme(
+          headlineLarge: TextStyle(
+            color: Style.colorPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+          headlineMedium: TextStyle(
+            color: Style.colorPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+          headlineSmall: TextStyle(
+            color: Style.colorPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+          titleLarge: TextStyle(
+            color: Style.colorPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+          titleMedium: TextStyle(
+            color: Style.colorPrimary,
+            fontWeight: FontWeight.w600,
+          ),
+          titleSmall: TextStyle(
+            color: Style.colorPrimary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        // Override primary color references
+        primaryColor: Style.colorPrimary,
+        primaryColorDark: Style.colorPrimary,
+        primaryColorLight: Style.colorPrimary,
       ),
+      navigatorKey: navigatorKey,
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(
+          analytics: FirebaseAnalytics.instance,
+          routeFilter: (route) {
+            return route is PageRoute && route.settings.name != '/';
+          },
+        ),
+      ],
+      builder: (context, child) {
+        if (child == null) return const SizedBox.shrink();
+        // For non-production flavors (e.g. the `dev` Android flavor and the
+        // iOS DevTF scheme that ship as "Test Mosquito Alert"), overlay a
+        // persistent ribbon on every screen so testers can tell at a glance
+        // that they are not in the public app and that any reports they
+        // submit go to the development backend.
+        if (AppConfig.isProduction) return child;
+        // Only the ribbon is pinned to LTR (via Banner's own textDirection /
+        // layoutDirection), never the subtree. Wrapping `child` in a
+        // Directionality here would sit below the Directionality that
+        // Localizations derives from the locale and override it, forcing
+        // RTL languages such as Arabic to lay out left-to-right -- in
+        // exactly the flavor used to review translations.
+        return Banner(
+          message: 'TEST',
+          location: BannerLocation.topEnd,
+          color: Colors.red.shade700,
+          textDirection: TextDirection.ltr,
+          layoutDirection: TextDirection.ltr,
+          child: child,
+        );
+      },
+      home: authProvider.hasCredentials
+          ? LayoutPage()
+          : OnboardingFlowPage(
+              onCompleted: () async {
+                final authProvider = context.read<AuthProvider>();
+                await authProvider.createGuestAccount();
+              },
+            ),
+      localizationsDelegates: [
+        MyLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: context.watch<UserProvider>().locale,
+      supportedLocales: MyLocalizations.supportedLocales,
     );
   }
 }

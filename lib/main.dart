@@ -71,6 +71,10 @@ Future<void> main({String env = 'prod'}) async {
     print('$err');
   }
 
+  if (config.useAuth) {
+    await FirebaseMessagingService.setUp();
+  }
+
   // Initialize Hive
   await initHive();
   // Initialize Outbox
