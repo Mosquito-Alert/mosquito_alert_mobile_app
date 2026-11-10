@@ -1,11 +1,11 @@
 # Firebase configuration for the dev flavor
 
-The `dev` flavor builds with applicationId `ceab.movelab.tigatrapp.dev`, so
+The `dev` flavor builds with applicationId `ceab.movelab.tigatrapp.test`, so
 the Google Services Gradle plugin needs a client entry matching that package
 name or `:app:processDevDebugGoogleServices` fails with:
 
 ```
-No matching client found for package name 'ceab.movelab.tigatrapp.dev'
+No matching client found for package name 'ceab.movelab.tigatrapp.test'
 ```
 
 ## You probably do not need a file in this directory
@@ -17,7 +17,7 @@ being built.
 
 So the simplest setup — and the one this repo uses — is a **single**
 `android/app/google-services.json` containing every package name, including
-`ceab.movelab.tigatrapp.dev`. Add the dev app in Firebase Console under the
+`ceab.movelab.tigatrapp.test`. Add the dev app in Firebase Console under the
 existing `mosquitoalert-push-service` project, re-download the file, and
 replace `android/app/google-services.json`. Both flavors then resolve from
 that one file and this directory needs no `google-services.json` at all.

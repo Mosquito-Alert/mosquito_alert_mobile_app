@@ -11,8 +11,11 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
+    <!-- No photo/storage permission on purpose. Photos come from the system
+         photo picker (image_picker with useAndroidPhotoPicker), which needs
+         none, and Google Play's photo/video permissions policy rejects
+         READ_MEDIA_IMAGES/VIDEO unless the picker is technically insufficient
+         for core functionality. -->
 
     <!-- Required for Google Analytics to access the Advertising ID on Android 13+ -->
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />

@@ -234,8 +234,18 @@ class _SettingsPageState extends State<SettingsPage> {
     builder: (context) => Theme(
       data: Theme.of(context).copyWith(primaryColor: Style.colorPrimary),
       child: LanguagePickerDialog(
+        // Sort by English name (with native-name tiebreak for es_ES/es_UY):
+        // raw compareTo on native names orders by UTF-16 code units, which
+        // dumps non-Latin scripts below every Latin entry -- Arabic ended up
+        // dead last -- and the search field matches English names, so the
+        // visible order should follow the same alphabet the search uses.
         languages: availableLanguages
-          ..sort((a, b) => a.nativeName.compareTo(b.nativeName)),
+          ..sort((a, b) {
+            final byName = a.name.toLowerCase().compareTo(b.name.toLowerCase());
+            return byName != 0
+                ? byName
+                : a.nativeName.compareTo(b.nativeName);
+          }),
         titlePadding: const EdgeInsets.all(8.0),
         searchCursorColor: Style.colorPrimary,
         searchInputDecoration: InputDecoration(
@@ -268,7 +278,17 @@ class _SettingsPageState extends State<SettingsPage> {
           }
         },
         itemBuilder: (Language language) {
-          return Text(language.nativeName);
+          // Show the English name alongside the native one; a list of bare
+          // native names hides languages from anyone who cannot read their
+          // script (Vietnamese and Arabic went unnoticed as "Tiếng Việt"
+          // and "العربية").
+          // Trim ISO qualifiers like "Greek, Modern (1453-)" to "Greek".
+          final englishName = language.name.split(',').first;
+          return Text(
+            language.nativeName == englishName
+                ? englishName
+                : '${language.nativeName} — $englishName',
+          );
         },
       ),
     ),

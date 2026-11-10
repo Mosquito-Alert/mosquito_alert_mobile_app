@@ -25,7 +25,7 @@ jobs:
       run: flutter pub get
 
     - name: Decode google-services.json
-      run: echo $GOOGLE_SERVICES_JSON | base64 --decode > android/app/google-services.json
+      run: printf '%s' "$GOOGLE_SERVICES_JSON" | tr -d '[:space:]' | base64 --decode > android/app/google-services.json
       env:
         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON_ANDROID_BASE64 }}
 

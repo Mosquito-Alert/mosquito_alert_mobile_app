@@ -1,3 +1,5 @@
+auth
+
 .fvm/*
 !.fvm/fvm_config.json
 .vscode/settings.json
@@ -104,3 +106,5 @@ svc-keyfile.json
 # Lockfiles
 Podfile.lock
 yarn.lock
+backups/
+google-services.json.bak
