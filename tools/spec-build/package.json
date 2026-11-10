@@ -1,0 +1,7 @@
+{
+  "name": "mosquitoalert-app-spec-build",
+  "private": true,
+  "description": "Builds the web page and PDF of the Mosquito Alert app specifications for quotation from their Markdown source",
+  "scripts": { "build": "./build.sh" },
+  "dependencies": { "playwright-core": "1.45.3" }
+}

@@ -1,0 +1,336 @@
+<title>{{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap">
+<style>
+  :root {
+    --ground: #F4F7F6;
+    --surface: #FFFFFF;
+    --ink: #13201D;
+    --ink-2: #4B5C57;
+    --line: #D5DEDB;
+    --line-strong: #B7C4C0;
+    --accent: #0D6A60;
+    --on-accent: #FFFFFF;
+    --accent-soft: #E0EFEB;
+    --ochre: #8F5E10;
+    --ochre-soft: #F5EAD5;
+    --code-bg: #EAF0EE;
+    --stripe: #13201D;
+
+    --f-display: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+    --f-body: "Public Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0D1312;
+      --surface: #141D1B;
+      --ink: #E2EBE8;
+      --ink-2: #9DB1AB;
+      --line: #283532;
+      --line-strong: #3A4A46;
+      --accent: #5DC1B3;
+      --on-accent: #0D1312;
+      --accent-soft: #15302C;
+      --ochre: #E3B05A;
+      --ochre-soft: #33280F;
+      --code-bg: #1A2522;
+      --stripe: #E2EBE8;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0D1312;
+    --surface: #141D1B;
+    --ink: #E2EBE8;
+    --ink-2: #9DB1AB;
+    --line: #283532;
+    --line-strong: #3A4A46;
+    --accent: #5DC1B3;
+    --on-accent: #0D1312;
+    --accent-soft: #15302C;
+    --ochre: #E3B05A;
+    --ochre-soft: #33280F;
+    --code-bg: #1A2522;
+    --stripe: #E2EBE8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    line-height: 1.6;
+    padding-inline: 20px;
+    padding-block: 0 48px;
+  }
+  a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  /* ---------- Header ---------- */
+  .masthead {
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-block: 0 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  /* Aedes albopictus leg banding: the one ornament */
+  .stripe {
+    height: 6px;
+    margin-bottom: 36px;
+    background: repeating-linear-gradient(90deg, var(--stripe) 0 18px, transparent 18px 26px);
+    opacity: .85;
+  }
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    margin: 0 0 12px;
+  }
+  .eyebrow .draft {
+    display: inline-block;
+    color: var(--ochre);
+    background: var(--ochre-soft);
+    padding: 1px 8px;
+    border-radius: 3px;
+    margin-left: 6px;
+    letter-spacing: .06em;
+  }
+  h1 {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(34px, 5vw, 50px);
+    line-height: 1.08;
+    letter-spacing: -.01em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+  .lede {
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 62ch;
+    margin: 0 0 28px;
+    text-wrap: pretty;
+  }
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px 32px;
+    margin: 0 0 28px;
+  }
+  .meta div { display: flex; flex-direction: column; gap: 2px; }
+  .meta dt {
+    font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2);
+  }
+  .meta dd { margin: 0; font-size: 15px; }
+
+  .glance {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .glance div {
+    padding: 14px 18px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin: 0 -1px -1px 0;
+  }
+  .glance .k {
+    display: block; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2);
+  }
+  .glance .v { display: block; font-size: 15px; font-weight: 600; margin-top: 3px; line-height: 1.35; }
+  .glance .num { font-variant-numeric: tabular-nums; }
+
+  .internal {
+    margin: 0 0 22px; padding: 10px 14px; border-radius: 6px;
+    background: var(--ochre-soft); color: var(--ink); font-size: 14.5px; max-width: 80ch;
+    box-shadow: inset 3px 0 0 var(--ochre);
+  }
+  .internal strong { color: var(--ochre); }
+
+  /* ---------- Layout ---------- */
+  .layout {
+    max-width: 1200px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 56px;
+    padding-top: 36px;
+  }
+  .toc-wrap { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow-y: auto; }
+  .toc summary {
+    list-style: none; cursor: pointer;
+    font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2);
+    padding-block: 4px 10px;
+  }
+  .toc summary::-webkit-details-marker { display: none; }
+  .toc ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+  .toc a {
+    display: grid; grid-template-columns: 26px 1fr; align-items: baseline;
+    padding: 5px 8px; border-radius: 4px;
+    color: var(--ink); text-decoration: none; font-size: 14px; line-height: 1.35;
+  }
+  .toc a:hover { background: var(--accent-soft); }
+  .toc-no { font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .toc-note { font-size: 13px; color: var(--ink-2); margin: 18px 8px 0; line-height: 1.45; }
+
+  main { min-width: 0; max-width: 900px; }
+
+  /* ---------- Document typography ---------- */
+  main h2 {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.2;
+    margin: 56px 0 16px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line-strong);
+    display: flex; gap: 14px; align-items: baseline;
+    text-wrap: balance;
+  }
+  main h2:first-child { margin-top: 0; }
+  .secno {
+    font-family: var(--f-mono); font-weight: 500; font-size: 15px; color: var(--accent);
+    min-width: 1.6em; font-variant-numeric: tabular-nums;
+  }
+  main h3 { font-size: 19px; font-weight: 700; line-height: 1.3; margin: 34px 0 10px; text-wrap: balance; }
+  .subno { font-family: var(--f-mono); font-weight: 500; font-size: 14px; color: var(--ink-2); margin-right: 4px; }
+  main p, main ul, main ol { max-width: 70ch; }
+  main p { margin: 0 0 14px; text-wrap: pretty; }
+  main ul, main ol { padding-left: 22px; margin: 0 0 16px; }
+  main li { margin-bottom: 6px; }
+  main li::marker { color: var(--ink-2); }
+  main strong { font-weight: 700; }
+  code {
+    font-family: var(--f-mono); font-size: .86em;
+    background: var(--code-bg); padding: 1px 5px; border-radius: 3px;
+  }
+  pre {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+    padding: 16px 18px; overflow-x: auto; margin: 0 0 18px;
+    font-size: 13px; line-height: 1.55;
+  }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  .pill, .rid-chip {
+    display: inline-block; font-family: var(--f-mono); font-size: 12px; font-weight: 600;
+    letter-spacing: .03em; line-height: 1; padding: 5px 7px 4px; border-radius: 3px; white-space: nowrap;
+  }
+  .pill-must { background: var(--accent); color: var(--on-accent); }
+  .pill-should { background: var(--ochre-soft); color: var(--ochre); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ochre) 35%, transparent); }
+  .rid-chip { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-strong); }
+  main li .pill, main li .rid-chip { margin-right: 6px; vertical-align: 1px; }
+
+  /* ---------- Tables ---------- */
+  .table-wrap {
+    overflow-x: auto; margin: 6px 0 22px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+  }
+  table { border-collapse: collapse; width: 100%; font-size: 14.5px; line-height: 1.5; }
+  th {
+    text-align: left; vertical-align: bottom;
+    font-size: 12px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-2);
+    padding: 10px 14px; border-bottom: 1px solid var(--line-strong);
+  }
+  td { vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.rid, td.pri { white-space: nowrap; width: 1%; }
+  td.rid { padding-right: 6px; }
+  .t-plain td:first-child { font-weight: 600; min-width: 150px; }
+  .t-plain td { min-width: 140px; }
+  .t-ids td:not(.rid) { min-width: 180px; }
+  .t-req td:last-child { min-width: 280px; }
+
+  /* ---------- Structure figure (section 4) ---------- */
+  .structure { margin: 8px 0 20px; display: grid; gap: 12px; }
+  .band { border-radius: 6px; padding: 14px 16px 16px; }
+  .band-public { background: var(--surface); border: 1px solid var(--line); }
+  .band-diary { background: var(--accent-soft); border: 1.5px dashed var(--accent); }
+  .band-head { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; margin-bottom: 10px; }
+  .band-title { font-weight: 700; font-size: 16px; }
+  .band-note { font-size: 13px; color: var(--ink-2); }
+  .band-diary .band-note { color: var(--accent); font-weight: 600; }
+  .band-items { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; max-width: none !important; }
+  .band-items li {
+    margin: 0; font-size: 14px; padding: 5px 11px; border-radius: 4px;
+    background: var(--ground); border: 1px solid var(--line);
+  }
+  .band-diary .band-items li { background: var(--surface); }
+
+  /* ---------- Footer ---------- */
+  .foot {
+    max-width: 1200px; margin: 64px auto 0; padding-top: 20px;
+    border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 12px 40px;
+    font-size: 13px; color: var(--ink-2);
+  }
+  .foot p { margin: 0; max-width: 70ch; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-top: 20px; }
+    .toc-wrap { position: static; max-height: none; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; }
+    .toc summary { padding: 6px 8px; }
+    .toc summary::after { content: " +"; }
+    .toc[open] summary::after { content: " −"; }
+    .toc-note { display: none; }
+    main h2 { font-size: 24px; margin-top: 44px; }
+  }
+  @media (min-width: 961px) { .toc summary { pointer-events: none; } }
+  @media (max-width: 480px) {
+    body { padding-inline: 16px; }
+    .lede { font-size: 17px; }
+    .glance div { padding: 12px 14px; }
+  }
+  @media print {
+    body { background: #fff; color: #000; }
+    .toc-wrap, .stripe { display: none; }
+    .layout { display: block; }
+    .table-wrap { overflow: visible; }
+    main { max-width: none; }
+    main h2 { break-after: avoid; }
+    tr { break-inside: avoid; }
+  }
+</style>
+
+{{HEADER}}
+
+<div class="layout">
+  <aside class="toc-wrap">
+    <details class="toc" id="toc" open>
+      <summary>Contents</summary>
+      <ol>{{TOC}}</ol>
+    </details>
+    {{TOCNOTE}}
+  </aside>
+  <main>
+{{BODY}}
+  </main>
+</div>
+
+<footer class="foot">
+  <p>Mosquito Alert is coordinated by CEAB-CSIC, UPF, CREAF and ICREA. This specification is published under CC BY 4.0; the app code is GPL-3.0.</p>
+  <p>Mosquito Alert · <a href="https://www.mosquitoalert.com">www.mosquitoalert.com</a> · <a href="https://github.com/Mosquito-Alert/mosquito_alert_mobile_app">github.com/Mosquito-Alert/mosquito_alert_mobile_app</a></p>
+</footer>
+
+<script>
+  (function () {
+    var toc = document.getElementById('toc');
+    var mq = window.matchMedia('(max-width: 960px)');
+    function sync() { if (mq.matches) toc.removeAttribute('open'); else toc.setAttribute('open', ''); }
+    sync();
+    if (mq.addEventListener) mq.addEventListener('change', sync);
+    toc.addEventListener('click', function (e) {
+      if (e.target.closest('a') && mq.matches) toc.removeAttribute('open');
+    });
+  })();
+</script>
