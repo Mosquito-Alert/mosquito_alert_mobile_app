@@ -29,7 +29,7 @@ dependencies:
   shared_preferences: ^2.5.5
   geolocator: ^14.0.3
   geocoding: ^4.0.0
-  dio: ^5.8.0+1
+  dio: ^5.10.0
   markdown: ^7.3.1
   firebase_messaging: ^16.4.1
   firebase_core: ^4.11.0
