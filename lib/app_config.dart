@@ -10,6 +10,16 @@ class AppConfig {
 
   AppConfig({required this.baseUrl, required this.useAuth});
 
+  /// Name of the environment loaded by the most recent [loadConfig] call
+  /// (e.g. `prod`, `dev`, `test`). Set as a static so widgets can decide
+  /// synchronously whether to show flavor-specific UI without having to
+  /// thread an [AppConfig] instance through the widget tree.
+  static String? envName;
+
+  /// Whether the current build is the production environment. Returns
+  /// `false` for `dev`, `test`, or any other non-prod environment.
+  static bool get isProduction => envName == 'prod';
+
   static Future<void> setEnvironment(String name) async {
     // Get the SharedPreferences instance
     final prefs = await SharedPreferences.getInstance();
@@ -25,6 +35,8 @@ class AppConfig {
         'AppConfig env is not defined. Be sure to call AppConfig.setEnvironment',
       );
     }
+
+    envName = env;
 
     final contents = await rootBundle.loadString('assets/config/$env.json');
 
