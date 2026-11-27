@@ -1,9 +1,13 @@
 // Drives the app through its main screens and captures a screenshot of each,
 // for use in store listings / ad creatives.
 //
+// Not named *_test.dart on purpose: `flutter test integration_test` (CI)
+// must not collect it. It only makes sense under `flutter drive`, whose
+// driver saves the screenshots.
+//
 // Run with:
 //   flutter drive --driver=test_driver/screenshots_driver.dart \
-//     --target=integration_test/screenshots_test.dart -d <device> \
+//     --target=integration_test/screenshots.dart -d <device> \
 //     [--dart-define=SCREENSHOT_LOCALE=vi] [--dart-define=SCREENSHOT_PREFIX=ios]
 import 'dart:io';
 
