@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
 import 'package:mosquito_alert_app/features/user/presentation/state/user_provider.dart';
-import 'package:mosquito_alert_app/core/widgets/info_page_webview.dart';
 import 'package:mosquito_alert_app/core/localizations/my_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -71,41 +70,24 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     child: Row(
                       children: <Widget>[
                         // User score
-                        InkWell(
-                          onTap: () {
-                            final locale = Localizations.localeOf(context);
-                            final languageCode = locale.languageCode;
-
-                            final url =
-                                "https://webserver.mosquitoalert.com/$languageCode/stats/user_ranking/1/${user?.uuid ?? 'not_found'}";
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                settings: RouteSettings(name: '/user_score'),
-                                builder: (context) => InfoPageInWebview(url),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('assets/img/points_box.webp'),
-                              ),
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/img/points_box.webp'),
                             ),
-                            child: Center(
-                              child: AutoSizeText(
-                                (user?.score.value ?? 0).toString(),
-                                maxLines: 1,
-                                maxFontSize: 26,
-                                minFontSize: 16,
-                                style: TextStyle(
-                                  color: Color(0xFF4B3D04),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 24,
-                                ),
+                          ),
+                          child: Center(
+                            child: AutoSizeText(
+                              (user?.score.value ?? 0).toString(),
+                              maxLines: 1,
+                              maxFontSize: 26,
+                              minFontSize: 16,
+                              style: TextStyle(
+                                color: Color(0xFF4B3D04),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 24,
                               ),
                             ),
                           ),
