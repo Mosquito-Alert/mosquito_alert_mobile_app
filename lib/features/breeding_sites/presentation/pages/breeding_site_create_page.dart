@@ -228,7 +228,7 @@ class _BreedingSiteCreatePageState extends State<BreedingSiteCreatePage> {
               title = MyLocalizations.of(context, 'photos');
             });
           },
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
           allowScroll: false,
           child: ReportCreationPhotoSelection(
             photos: photos,

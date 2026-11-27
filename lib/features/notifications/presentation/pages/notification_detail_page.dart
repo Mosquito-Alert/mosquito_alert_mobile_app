@@ -67,8 +67,8 @@ class _NotificationDetailPageState extends State<NotificationDetailPage> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
           child: Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(left: 16.0),
+            alignment: AlignmentDirectional.centerStart,
+            padding: const EdgeInsetsDirectional.only(start: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

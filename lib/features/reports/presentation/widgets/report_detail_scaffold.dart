@@ -156,10 +156,10 @@ class ReportDetailScaffold<TReport extends BaseReportModel>
                         fit: StackFit.expand,
                         children: [
                           topBarBackground!,
-                          Positioned(
+                          PositionedDirectional(
                             bottom: 0,
-                            left: 0,
-                            right: 0,
+                            start: 0,
+                            end: 0,
                             height: 80,
                             child: Container(
                               decoration: BoxDecoration(
@@ -174,10 +174,10 @@ class ReportDetailScaffold<TReport extends BaseReportModel>
                               ),
                             ),
                           ),
-                          Positioned(
+                          PositionedDirectional(
                             top: 0,
-                            left: 0,
-                            right: 0,
+                            start: 0,
+                            end: 0,
                             height: 100,
                             child: Container(
                               decoration: BoxDecoration(
@@ -199,9 +199,9 @@ class ReportDetailScaffold<TReport extends BaseReportModel>
             SliverToBoxAdapter(
               child: cardBuilder != null
                   ? Padding(
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        right: 16,
+                      padding: const EdgeInsetsDirectional.only(
+                        start: 16,
+                        end: 16,
                         top: 8,
                       ),
                       child: cardBuilder!.call(),
