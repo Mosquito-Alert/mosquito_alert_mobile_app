@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mosquito_alert_app/core/providers/dispose_safe_notifier.dart';
 import 'package:mosquito_alert_app/features/fixes/services/task_scheduler.dart';
 import 'package:mosquito_alert_app/features/fixes/services/tracking_service.dart';
 
-class FixesProvider extends ChangeNotifier {
+class FixesProvider extends ChangeNotifier with DisposeSafeNotifier {
   bool _isEnabled = false;
   List<DateTime> _scheduledTasks = [];
 

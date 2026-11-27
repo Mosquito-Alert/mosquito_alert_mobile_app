@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:mosquito_alert_app/core/providers/dispose_safe_notifier.dart';
 import 'package:mosquito_alert_app/core/repositories/pagination_repository.dart';
 
 abstract class PaginatedProvider<
   T,
   TRepository extends PaginationRepository<T, dynamic>
 >
-    extends ChangeNotifier {
+    extends ChangeNotifier
+    with DisposeSafeNotifier {
   final TRepository repository;
   final List<T> Function(List<T>)? orderFunction;
 
