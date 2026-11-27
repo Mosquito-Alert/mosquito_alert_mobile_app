@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:ui' show PlatformDispatcher;
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mosquito_alert/mosquito_alert.dart';
@@ -51,6 +53,34 @@ Future<void> clearSecureStorageOnReinstall() async {
   }
 }
 
+/// Applies the env config's `crashReporting` switch (see [AppConfig]).
+/// Collection also defaults to off natively (AndroidManifest.xml, Info.plist),
+/// which covers the time before this runs.
+Future<void> configureCrashReporting({required bool enabled}) async {
+  final crashlytics = FirebaseCrashlytics.instance;
+  // The SDK persists this and it overrides the native default, so it is set
+  // on every start, in both directions.
+  await crashlytics.setCrashlyticsCollectionEnabled(enabled);
+
+  if (!enabled) {
+    // While off, the SDK still keeps native crashes on the device and uploads
+    // that backlog once collection is turned on, so clear it on every start.
+    // The Dart handlers stay unset: they would only add to the backlog, keep
+    // uncaught async errors out of release logs, and stop framework errors
+    // from failing integration tests that run main().
+    await crashlytics.deleteUnsentReports();
+    return;
+  }
+
+  // recordFlutterFatalError also prints the error (it calls
+  // FlutterError.presentError), so console output is unchanged.
+  FlutterError.onError = crashlytics.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    crashlytics.recordError(error, stack, fatal: true);
+    return true;
+  };
+}
+
 Future<void> main({String env = 'prod'}) async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -67,6 +97,7 @@ Future<void> main({String env = 'prod'}) async {
 
   try {
     await Firebase.initializeApp();
+    await configureCrashReporting(enabled: config.crashReporting);
   } catch (err) {
     print('$err');
   }
