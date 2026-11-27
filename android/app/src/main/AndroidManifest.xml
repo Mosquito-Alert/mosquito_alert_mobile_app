@@ -65,6 +65,14 @@
             android:resource="@drawable/ic_launcher_monochrome" />
         <!-- [END fcm_default_icon] -->
 
+        <!-- Channel FCM posts to while the app is in the background. The app
+             creates it at startup with high importance so these show heads-up;
+             until it exists FCM falls back to a default-importance channel.
+             Must match LocalNotificationsService.channelId. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="high_importance_channel" />
+
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
