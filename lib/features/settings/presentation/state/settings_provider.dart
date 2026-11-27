@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mosquito_alert_app/core/providers/dispose_safe_notifier.dart';
 import 'package:mosquito_alert_app/features/settings/data/settings_repository.dart';
 
-class SettingsProvider with ChangeNotifier {
+class SettingsProvider with ChangeNotifier, DisposeSafeNotifier {
   final SettingsRepository _repository;
   List<String> _hashtags = [];
 
